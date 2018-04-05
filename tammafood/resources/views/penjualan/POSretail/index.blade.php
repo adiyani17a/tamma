@@ -1278,13 +1278,16 @@
 // paginate stock
 
 function getData(page){   
+    var lenght=$('#lenght').val();
+      var cari=$('#cari').val();
+      
   
   $.ajax(
         {
             url: baseUrl + '/penjualan/POSretail/stock/table-stock?page=' + page,
             type: "get",
             datatype: "html",
-           
+           data:  { lenght : lenght, cari : cari }, 
         })
         .done(function(data)
         {          
@@ -1314,8 +1317,9 @@ function getData(page){
         select: function(event, ui) 
         {
           console.log(ui);
-        $('#rnamaitem').val(ui.item.label);        
-        $('#rkode').val(ui.item.code);
+        $('#rnamaitem').val(ui.item.label);   
+        $('#code').val(ui.item.code);
+        $('#rkode').val(ui.item.id);
         $('#rdetailnama').val(ui.item.name);        
         $('#rqty').val(ui.item.qty);
         $("input[name='rqty']").focus();
@@ -1350,6 +1354,7 @@ function getData(page){
     var rtamp=[];
             function tambahreq() {   
         var kode  =$('#rkode').val();      
+        var code  =$('#code').val();      
         var nama  =$('#rdetailnama').val();                                
         var qty   =parseInt($('#rqty').val());        
         var Hapus = '<button type="button" class="btn btn-danger hapus" onclick="rhapus(this)"><i class="fa fa-trash-o"></i></button>';
@@ -1357,7 +1362,7 @@ function getData(page){
 
         if ( rindex == -1){     
             tableReq.row.add([
-              kode,
+              code,
               nama+'<input type="hidden" name="kode_item[]" class="kode_item kode" value="'+kode+'"><input type="hidden" name="nama_item[]" class="nama_item" value="'+nama+'"> ',
               '<input size="30" style="text-align:right;" type="text"  name="sd_qty[]" class="sd_qty form-control r_qty-'+kode+'" value="'+qty+'"> ',
               

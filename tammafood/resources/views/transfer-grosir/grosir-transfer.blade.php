@@ -17,8 +17,10 @@
               <td>{{$data->ti_note}}</td>
               <td>{{$data->ti_note}}</td>
               <td class="text-center">
-                  <a onclick="edit('{{$data->ti_id}}')" class="btn btn-warning btn-xs" title="Edit"><i class="glyphicon glyphicon-pencil"></i></a>
-                  <a onclick="hapus('{{$data->ti_id}}')" class="btn btn-danger btn-xs" title="Hapus"><i class="glyphicon glyphicon-trash"></i></a>
+                  <a onclick="edit('{{$data->ti_id}}')"    class="btn btn-warning btn-xs" title="Edit"   
+                    @if($data->ti_isapproved=='Y') disabled @endif><i class="fa fa-check-circle-o"></i></a>
+                  <a onclick="hapus('{{$data->ti_id}}')" class="btn btn-danger btn-xs" title="Hapus"
+                    @if($data->ti_isapproved=='Y') disabled @endif><i class="fa fa-check-circle-o"></i></a>
               </td>
          
             </tr> 

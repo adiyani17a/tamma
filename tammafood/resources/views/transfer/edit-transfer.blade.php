@@ -59,6 +59,7 @@
                                <label class="control-label tebal" >Masukan Kode / Nama</label>
                                   <div class="input-group input-group-sm" style="width: 100%;">
                                       <input type="text" id="rnamaitem" name="rnamaitem" class="form-control">
+                                      <input type="hidden" id="code" name="code" class="form-control">
                                       <input type="hidden" id="rkode" name="rsd_item" class="form-control">
                                       <input type="hidden" id="rdetailnama" name="rnama" class="form-control">                                     
                                       
@@ -73,7 +74,7 @@
                         </div> 
                       </form>
                         <div class="table-responsive">
-                          <table class="table tabelan table-bordered table-hover dt-responsive" id="detail-req" >
+                          <table class="table tabelan table-bordered table-hover dt-responsive" id="detail-req" style="width:100%" >
                            <thead align="right">
                             <tr>
                               <th width="10%">Kode</th>
@@ -87,7 +88,7 @@
                                     <tr>
                                       <td>{{$data->i_code}}</td>
                                       <td>{{$data->i_name}}</td>
-                                      <td><input class="text-right" type="" name="" value="{{$data->tidt_qty}}"></td>
+                                      <td><input style="width: 100%" class="text-right" type="" name="" value="{{$data->tidt_qty}}"></td>
                                       <td class="text-center">
                                         <button type="button" class="btn btn-danger hapus btn-xs" onclick="rhapus(this)"><i class="fa fa-trash-o"></i></button>
                                       </td>
@@ -102,7 +103,16 @@
 
 <script type="text/javascript">
    //transfer thoriq   
-       tableReq=$('#detail-req').DataTable();
+       tableReq=$('#detail-req').DataTable({
+          "columns": [ { "width": "10%px" }, { "width": "70%" }, { "width": "10%" }, { "width": "10%" }],
+          'columnDefs': [
+              {
+                  "targets": 3, // your case first column
+                  "className": "text-center",
+                  "width": "4%"
+             }
+          ],
+       });
     $("#rnamaitem").autocomplete({
         source: baseUrl+'/penjualan/POSretail/retail/transfer-item',
         minLength: 1,
@@ -110,7 +120,8 @@
         {
           console.log(ui);
         $('#rnamaitem').val(ui.item.label);        
-        $('#rkode').val(ui.item.code);
+        $('#rkode').val(ui.item.id);
+        $('#code').val(ui.item.code);
         $('#rdetailnama').val(ui.item.name);        
         $('#rqty').val(ui.item.qty);
         $("input[name='rqty']").focus();
@@ -144,17 +155,18 @@
     var rindex=0;
     var rtamp=[];
             function tambahreq() {   
+        var code  =$('#code').val(); 
         var kode  =$('#rkode').val();      
         var nama  =$('#rdetailnama').val();                                
         var qty   =parseInt($('#rqty').val());        
-        var Hapus = '<button type="button" class="btn btn-danger hapus" onclick="rhapus(this)"><i class="fa fa-trash-o"></i></button>';
+        var Hapus = '<button type="button" class="btn btn-danger hapus btn-xs text-center" onclick="rhapus(this)"><i class="fa fa-trash-o"></i></button>';
         var rindex = rtamp.indexOf(kode);
 
         if ( rindex == -1){     
             tableReq.row.add([
-              kode,
+              code,
               nama+'<input type="hidden" name="kode_item[]" class="kode_item kode" value="'+kode+'"><input type="hidden" name="nama_item[]" class="nama_item" value="'+nama+'"> ',
-              '<input size="30" style="text-align:right;" type="text"  name="sd_qty[]" class="sd_qty form-control r_qty-'+kode+'" value="'+qty+'"> ',
+              '<input style="text-align:right;width:100%" type="text"  name="sd_qty[]" class="sd_qty form-control r_qty-'+kode+'" value="'+qty+'"> ',
               
               Hapus
               ]);
@@ -171,4 +183,17 @@
           var kode  =$('#rkode').val('');      
           var nama  =$('#rdetailnama').val('');
         }
+
+
+        function rhapus(a){
+    var par = a.parentNode.parentNode;
+    tableReq.row(par).remove().draw(false);
+
+  var inputs = document.getElementsByClassName( 'kode' ),
+      names  = [].map.call(inputs, function( input ) {
+          return input.value;
+      });
+      rtamp = names;
+
+     }
 </script>

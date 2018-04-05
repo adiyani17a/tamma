@@ -9,6 +9,7 @@ use App\d_transferItemDt;
 use DB;
 use Validator;
 use Carbon\Carbon;
+use App\d_stock;
 class transferItemController extends Controller
 {
     public function noNota(){
@@ -29,7 +30,7 @@ class transferItemController extends Controller
         return view('transfer.index');
     }
      public function dataTransfer(){        
-        $transferItem=d_transferItem::paginate();
+        $transferItem=d_transferItem::where('ti_order',DB::raw("'RT'"))->paginate();
         return view('transfer.table-transfer',compact('transferItem'));
     }
     public function simpanTransfer(Request $request)
@@ -105,8 +106,28 @@ class transferItemController extends Controller
 
     }
 
+    public function HapusTransfer($id){
+        return DB::transaction(function () use ($id) {
+             $transferItem=d_transferItem::where('ti_id',$id);             
+             if($transferItem->first()->ti_isapproved=='Y'){
+                    $data=['status'=>'Gagal','info'=>'Maaf, Permintaan Transfer Item Telah di Setujui'];
+                    return json_encode($data);
+             }else{
+                  $transferItem->delete();
+                  $data=['status'=>'sukses'];
+                return json_encode($data);
+             }
+             
+        });
+    }
+
     public function indexGrosir(){
         return view('transfer-grosir.index-grosir');
+    }
+
+    public function dataTransferAppr(){        
+        $transferItem=d_transferItem::paginate();
+        return view('transfer-grosir.table-transfer',compact('transferItem'));
     }
    
     public function grosirTransfer(){        
@@ -129,8 +150,10 @@ class transferItemController extends Controller
     }
 
     public function simpanApprove(Request $request){
-return DB::transaction(function () use ($request) {         
-            for ($i=0; $i <count($request->tidt_id) ; $i++) { 
+return DB::transaction(function () use ($request) {    
+
+
+            for ($i=0; $i <count($request->tidt_id) ; $i++) {                 
                 $transferItemDt=d_transferItemDt::                        
                                 where('tidt_id',$request->tidt_id[$i])->
                                 where('tidt_detail',$request->tidt_detail[$i]);
@@ -141,7 +164,56 @@ return DB::transaction(function () use ($request) {
                     'tidt_qty_send'=>$request->qtySend[$i],
                     'tidt_sendtime'=>date('Y-m-d g:i:s'),
                 ]);
-            }
+
+                //update qty grosir 3/3
+                $stockGrosir=d_stock::                        
+                       where('s_item',$request->tidt_item[$i])->
+                       where('s_comp',DB::raw('3'))->
+                       where('s_position',DB::raw('3'));
+                if($stockGrosir->first()){
+                            $stockGrosir->update([
+                                's_qty'=>$stockGrosir->first()->s_qty-$request->qtySend[$i]
+                            ]);
+                }else{
+                            DB::rollback();
+                            $data=['status'=>'Gagal','info'=>'Stok Tidak Mencukupi'];
+                            return json_encode($data);
+                }
+
+
+
+                //
+                $stockRetailInGrosir=d_stock::                        
+                       where('s_item',$request->tidt_item[$i])->
+                       where('s_comp',DB::raw('11'))->
+                       where('s_position',DB::raw('3'));
+                       
+                if($stockRetailInGrosir->first()){
+                            $stockRetailInGrosir->update([
+                                's_qty'=>$stockRetailInGrosir->first()->s_qty+$request->qtySend[$i]
+                            ]);
+                    }else{
+                            $s_id=d_stock::max('s_id');
+                            d_stock::create([
+                                    's_id'      =>$s_id+1,
+                                    's_comp'    =>11,
+                                    's_position' =>3,
+                                    's_item'    =>$request->tidt_item[$i],
+                                    's_qty'     =>$request->qtySend[$i],
+
+                            ]);
+                    }
+                    }
+
+
+                $transferItem=d_transferItem::where('ti_id',$request->tidt_id);
+
+                $transferItem->update([
+                            'ti_isapproved'=>'Y',
+                            'ti_issent'=>'Y'
+                                ]);
+
+
                $data=['status'=>'sukses'];
                return json_encode($data);
         });
@@ -182,6 +254,43 @@ public function simpaPenerimaan(Request $request){
                     'tidt_qty_received'=>$request->qtyRecieved[$i],
                     'tidt_receivedtime'=>date('Y-m-d g:i:s'),
                 ]);
+
+                $stockPosisi=d_stock::                        
+                       where('s_item',$request->tidt_item[$i])->
+                       where('s_comp',DB::raw('11'))->
+                       where('s_position',DB::raw('3'));
+                if($stockPosisi->first()){
+                            $stockPosisi->update([
+                                's_qty'=>$stockPosisi->first()->s_qty-$request->qtyRecieved[$i]
+                            ]);
+                }else{
+                            DB::rollback();
+                            $data=['status'=>'Gagal','info'=>'Stok Tidak Mencukupi'];
+                            return json_encode($data);
+                }
+
+
+                 $stockRetail=d_stock::                        
+                       where('s_item',$request->tidt_item[$i])->
+                       where('s_comp',DB::raw('11'))->
+                       where('s_position',DB::raw('11'));
+                if($stockRetail->first()){
+                            $stockRetail->update([
+                                's_qty'=>$stockRetail->first()->s_qty+$request->qtyRecieved[$i]
+                            ]);
+                }else{
+                            $s_id=d_stock::max('s_id');
+                            d_stock::create([
+                                    's_id'      =>$s_id+1,
+                                    's_comp'    =>11,
+                                    's_position' =>11,
+                                    's_item'    =>$request->tidt_item[$i],
+                                    's_qty'     =>$request->qtyRecieved[$i],
+
+                            ]);
+                }
+
+
             }
                $data=['status'=>'sukses'];
                return json_encode($data);

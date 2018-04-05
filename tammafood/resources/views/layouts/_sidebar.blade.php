@@ -185,7 +185,7 @@
                             </li>
                             <li class="{{ Request::is('penjualan/rencanapenjualan/rencana') ? 'active' : '' || Request::is('penjualan/rencanapenjualan/*') ? 'active' : '' }}"><a href="{{ url('/penjualan/rencanapenjualan/rencana') }}"><span class="submenu-title">Rencana Penjualan</span></a>
                             </li>
-                            <li class="{{ Request::is('penjualan/POSretail/retail') ? 'active' : '' || Request::is('penjualan/POSretail/*') ? 'active' : '' }}"><a href="{{ url('/penjualan/POSretail/index') }}"><span class="submenu-title">POS Penjualan Retail</span></a>
+                            <li class="{{ Request::is('penjualan/POSretail/index') ? 'active' : ''}}"><a href="{{ url('/penjualan/POSretail/index') }}"><span class="submenu-title">POS Penjualan Retail</span></a>
                             </li>
                             <li class="{{ Request::is('penjualan/POSretail/transfer') ? 'active' : '' || Request::is('penjualan/POSretail/transfer/*') ? 'active' : '' }}"><a href="{{ url('penjualan/POSretail/transfer') }}"><span class="submenu-title">Ritail Transfer</span></a>
                             </li>

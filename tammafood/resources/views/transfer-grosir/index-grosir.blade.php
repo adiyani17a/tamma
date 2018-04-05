@@ -79,7 +79,7 @@
     datax();
     function datax(){
          $.ajax({
-                    url         : baseUrl+'/transfer/data-transfer',
+                    url         : baseUrl+'/transfer/data-transfer-appr',
                     type        : 'get',
                     timeout     : 10000,                                        
                     success     : function(response){
@@ -124,8 +124,10 @@
                     dataType:'json',                                      
                     success     : function(response){
                           if(response.status=='sukses'){
-                        location.reload();
-                      }
+                            location.reload();
+                          }else if(response.status=='Gagal'){
+                            toastr.warning(response.info);
+                          }
                     }
             });
      }

@@ -12,8 +12,8 @@ use App\m_item;
 class stockController extends Controller
 {
   public function tableStock(Request $request){
-    if($request->numberload=='')
-      $request->numberload=10;
+    if($request->lenght=='')
+      $request->lenght=10;
     $stock=m_item::leftjoin('d_stock',function($join){
         $join->on('i_id', '=', 's_item');        
         $join->on('s_comp', '=', 's_position');                
@@ -23,7 +23,7 @@ class stockController extends Controller
     ->orWhere('i_type', '=',DB::raw("'BP'"))   
     ->orderBy('i_name')
     //->toSql();
-    ->paginate($request->numberload);    
+    ->paginate($request->lenght);    
     
 
        if ($request->ajax()) {
@@ -55,7 +55,7 @@ class stockController extends Controller
       {
         if($query->s_qty=='')
           $query->s_qty=0;
-        $results[] = [ 'id' => $query->i_id, 'label' =>$query->i_code.'-'. $query->i_name, 'code' => $query->i_id,
+        $results[] = [ 'id' => $query->i_id, 'label' =>$query->i_code.'-'. $query->i_name, 'code' => $query->i_code,
                        'name' => $query->i_name ];
       }
     }

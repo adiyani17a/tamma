@@ -87,7 +87,7 @@
      }
 
 
-     function edit($id){
+     function editTransfer($id){
             $.ajax({
                     url         : baseUrl+'/transfer/data-transfer/'+$id+'/edit',
                     type        : 'get',
@@ -100,14 +100,18 @@
      }
 
 
-     function hapus($id){
+     function hapusTransfer($id){
             $.ajax({
-                    url         : baseUrl+'/transfer/data-transfer/'+$id+'/hapus',
+                    url         : baseUrl+'/transfer/data-transfer/hapus/'+$id,
                     type        : 'get',
-                    timeout     : 10000,                                        
+                    timeout     : 10000,    
+                    dataType    :'json',                                   
                     success     : function(response){
-                        $('#data-transfer').html(response);
-                        }
+                     
+                       if(response.status=='sukses'){                        
+                          datax();
+                       }
+                      }
             });
      }
 

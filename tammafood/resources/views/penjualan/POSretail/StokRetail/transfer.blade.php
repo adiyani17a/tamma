@@ -5,7 +5,7 @@
                 <div class="modal-content">
                   <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Inventory</h4>
+                    <h4 class="modal-title">Buat Transfer</h4>
                   </div>
                 <div class="modal-body">
                     <form action="get" id="save_request">
@@ -68,7 +68,8 @@
                                <label class="control-label tebal" >Masukan Kode / Nama</label>
                                   <div class="input-group input-group-sm" style="width: 100%;">
                                       <input type="text" id="rnamaitem" name="rnamaitem" class="form-control">
-                                      <input type="hidden" id="rkode" name="rsd_item" class="form-control">                                      
+                                      <input type="hidden" id="rkode" name="rsd_item" class="form-control">
+                                      <input type="hidden" id="code" class="form-control">                                      
                                       <input type="hidden" id="rdetailnama" name="rnama" class="form-control">                                     
                                       
                                   </div>

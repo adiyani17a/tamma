@@ -49,7 +49,7 @@
                                   <div class="form-group">
                                     <div class="input-icon right">
                                       <i class="glyphicon glyphicon-envelope"></i>
-                                      <input type="text" id="" name="ri_keterangan" class="form-control input-sm" value="{{$transferItem->ti_note}}">
+                                      <input disabled="" type="text" id="" name="ri_keterangan" class="form-control input-sm" value="{{$transferItem->ti_note}}">
                                     </div>                                
                                   </div>
                                 </div>
@@ -72,6 +72,7 @@
                                     <tr>
                                       <td>
                                           {{$data->tidt_item}}
+                                           <input type="hidden" name="tidt_item[]"  class="form-control" value="{{$data->tidt_item}}">
                                           <input type="hidden" name="tidt_id[]"  class="form-control" 
                                           value="{{$data->tidt_id}}">
                                           <input type="hidden" name="tidt_detail[]"  class="form-control" 

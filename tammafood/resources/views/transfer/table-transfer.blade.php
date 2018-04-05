@@ -27,9 +27,9 @@
                   @endif
               </td>
               <td class="text-center">
-                  <a onclick="edit('{{$data->ti_id}}')"    class="btn btn-warning btn-xs" title="Edit"   
+                  <a onclick="editTransfer('{{$data->ti_id}}')"    class="btn btn-warning btn-xs" title="Edit"   
                     @if($data->ti_isapproved=='Y') disabled @endif><i class="glyphicon glyphicon-pencil"></i></a>
-                  <a onclick="hapus('{{$data->ti_id}}')" class="btn btn-danger btn-xs" title="Hapus"
+                  <a onclick="hapusTransfer('{{$data->ti_id}}')" class="btn btn-danger btn-xs" title="Hapus"
                     @if($data->ti_isapproved=='Y') disabled @endif><i class="glyphicon glyphicon-trash"></i></a>
               </td>
          

@@ -203,6 +203,7 @@ Route::get('transfer/no-nota', 'transferItemController@noNota');
 
 Route::get('transfer/data-transfer', 'transferItemController@dataTransfer');
 Route::get('transfer/data-transfer/{id}/edit', 'transferItemController@editTransfer');
+Route::get('transfer/data-transfer/hapus/{id}', 'transferItemController@HapusTransfer');
 
 Route::get('transfer/penerimaan-transfer', 'transferItemController@dataPenerimaanTransfer');
 Route::get('transfer/lihat-penerimaan/{id}', 'transferItemController@lihatPenerimaan');
@@ -210,6 +211,7 @@ Route::get('transfer/penerimaan/simpa-penerimaan', 'transferItemController@simpa
 //transfer selesai
 
 //transfer grosir
+Route::get('transfer/data-transfer-appr', 'transferItemController@dataTransferAppr');
 Route::get('penjualan/transfer/grosir/transfer-item', 'Penjualan\stockController@transferItemGrosir');
 Route::get('penjualan/POSgrosir/transfer', 'transferItemController@indexGrosir');
 Route::get('penjualan/POSgrosir/approve-transfer/{id}/edit', 'transferItemController@approveTransfer');

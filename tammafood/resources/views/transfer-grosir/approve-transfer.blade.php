@@ -49,7 +49,7 @@
                                   <div class="form-group">
                                     <div class="input-icon right">
                                       <i class="glyphicon glyphicon-envelope"></i>
-                                      <input type="text" id="" name="ri_keterangan" class="form-control input-sm" value="{{$transferItem->ti_note}}">
+                                      <input disabled type="text" id="" name="ri_keterangan" class="form-control input-sm" value="{{$transferItem->ti_note}}">
                                     </div>                                
                                   </div>
                                 </div>
@@ -73,7 +73,8 @@
                               @foreach($transferItemDt as $data)
                                     <tr>
                                       <td>
-                                          {{$data->tidt_item}}
+                                          {{$data->i_code}}
+                                          <input type="hidden" name="tidt_item[]"  class="form-control" value="{{$data->tidt_item}}">
                                           <input type="hidden" name="tidt_id[]"  class="form-control" 
                                           value="{{$data->tidt_id}}">
                                           <input type="hidden" name="tidt_detail[]"  class="form-control" 
@@ -87,10 +88,12 @@
                                           @endif
                                       <td>{{$data->tidt_qty}}</td>
                                       <td>
-                                        <input type="text" name="qtyAppr[]"  class="form-control" value="{{$data->tidt_qty_appr}}">
+                                        <input onkeyup="aktifSend('{{$data->i_id}}')" id="qtyAppr-{{$data->i_id}}" type="text" name="qtyAppr[]"  class="form-control" value="{{$data->tidt_qty_appr}}">
                                       </td>
                                       <td>
-                                        <input id="ty" type="text" name="qtySend[]"  class="form-control" value="{{$data->tidt_qty_send}}" >
+                                        <input id="qtySend-{{$data->i_id}}" 
+                                        @if($data->tidt_qty_appr=='') disabled="" @endif
+                                        type="text" name="qtySend[]"  class="form-control" value="{{$data->tidt_qty_send}}" >
                                       </td>
                                     </tr>
                               @endforeach
@@ -110,5 +113,17 @@
 tableReq=$('#detail-req').DataTable();
 var item = $('#save_request :input').serialize();
 //var data = tableReq.$('input').serialize();
+function aktifSend(id) {  
+  var kondisi=$('#qtyAppr-'+id).val();
+  if(kondisi!=''){
+    $('#qtySend-'+id).removeAttr('disabled',false);
+  }
+  else if(kondisi==''){
+    $('#qtySend-'+id).attr('disabled',true);
+    $('#qtySend-'+id).val('');
+  
+  }
+  
+}
    
 </script>
