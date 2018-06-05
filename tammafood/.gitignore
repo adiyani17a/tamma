@@ -1,7 +1,4 @@
-<<<<<<< HEAD
-/vendor
 
-=======
 /node_modules
 /public/hot
 /public/storage
@@ -13,5 +10,5 @@ Homestead.json
 Homestead.yaml
 npm-debug.log
 yarn-error.log
->>>>>>> parent of 668f01b... x
+
 .env
