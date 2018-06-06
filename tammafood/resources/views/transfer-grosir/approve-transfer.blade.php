@@ -86,13 +86,15 @@
                                           @else
                                             {{$data->s_qty}}</td>
                                           @endif
-                                      <td>{{$data->tidt_qty}}</td>
                                       <td>
-                                        <input onkeyup="aktifSend('{{$data->i_id}}')" id="qtyAppr-{{$data->i_id}}" type="text" name="qtyAppr[]"  class="form-control" value="{{$data->tidt_qty_appr}}">
+                                         <input id="qty-{{$data->i_id}}" type="hidden" name="qty[]"  class="form-control" value="{{$data->tidt_qty}}">
+                                        {{$data->tidt_qty}}</td>
+                                      <td>
+                                        <input onkeyup="aktifSend('{{$data->i_id}}');HitungQtyApprove('{{$data->i_id}}');" id="qtyAppr-{{$data->i_id}}" type="text" name="qtyAppr[]"  class="form-control" value="{{$data->tidt_qty_appr}}">
                                       </td>
                                       <td>
-                                        <input id="qtySend-{{$data->i_id}}" 
-                                        @if($data->tidt_qty_appr=='') disabled="" @endif
+                                        <input onkeyup="HitungQtySend('{{$data->i_id}}');" id="qtySend-{{$data->i_id}}" 
+                                        @if($data->tidt_qty_appr=='' && $data->tidt_qty_send=='') readonly="" @endif 
                                         type="text" name="qtySend[]"  class="form-control" value="{{$data->tidt_qty_send}}" >
                                       </td>
                                     </tr>
@@ -116,14 +118,33 @@ var item = $('#save_request :input').serialize();
 function aktifSend(id) {  
   var kondisi=$('#qtyAppr-'+id).val();
   if(kondisi!=''){
-    $('#qtySend-'+id).removeAttr('disabled',false);
+    $('#qtySend-'+id).removeAttr('readonly',false);
   }
   else if(kondisi==''){
-    $('#qtySend-'+id).attr('disabled',true);
+    $('#qtySend-'+id).attr('readonly',true);
     $('#qtySend-'+id).val('');
   
   }
   
+}
+
+function HitungQtyApprove(id){
+  var qty = $('#qty-'+id).val();
+  var qtyAppr = $('#qtyAppr-'+id).val();
+  if(parseFloat(qty)<parseFloat(qtyAppr)){
+    toastr.warning('Jumlah Approve Melebihi Permintaan');
+    $('#qtyAppr-'+id).val('');
+      $('#qtySend-'+id).attr('readonly',true);
+  }
+}
+
+function HitungQtySend(id){
+  var qtyAppr = $('#qtyAppr-'+id).val();
+  var qtySend = $('#qtySend-'+id).val();
+  if(parseFloat(qtyAppr)<parseFloat(qtySend)){
+    toastr.warning('Jumlah Kirim Melebihi Approve');
+    $('#qtySend-'+id).val('');
+  }
 }
    
 </script>

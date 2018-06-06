@@ -69,9 +69,8 @@
                                   <div class="input-group input-group-sm" style="width: 100%;">
                                       <input type="text" id="rnamaitem" name="rnamaitem" class="form-control">
                                       <input type="hidden" id="rkode" name="rsd_item" class="form-control">
-                                      <input type="hidden" id="code" class="form-control">                                      
-                                      <input type="hidden" id="rdetailnama" name="rnama" class="form-control">                                     
-                                      
+                                      <input type="hidden" id="code" class="form-control">
+                                      <input type="hidden" id="rdetailnama" name="rnama" class="form-control">
                                   </div>
                               </div>        
                               <div class="col-md-6 col-sm-6 col-xs-12">
@@ -83,7 +82,7 @@
                         </div> 
                       </form>
                         <div class="table-responsive">
-                          <table class="table tabelan table-bordered table-hover dt-responsive" id="detail-req" >
+                          <table class="table tabelan table-bordered table-hover dt-responsive" id="detail-req" style="width: 100%" >
                            <thead align="right">
                             <tr>
                               <th width="10%">Kode</th>

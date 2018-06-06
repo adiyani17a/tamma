@@ -55,38 +55,19 @@
                                             </tr>
                                           </thead>
                                           <tbody>
+                                            @foreach($mem as $index => $data)
                                             <tr>
-                                              <td>1</td>
-                                              <td>Alpha</td>
-                                              <td>12-02-2018</td>
-                                              <td>Jl. alpha</td>
-                                              <td>Admin</td>
+                                              <td>{{$index+1}}</td>
+                                              <td>{{$data->m_name}}</td>
+                                              <td>{{date('d-m-Y',strtotime($data->m_birth_tgl))}}</td>
+                                              <td>{{$data->m_addr}}</td>                                              
+                                              <td>{{$data->g_name}}</td>
                                               <td>
-                                                <button class="btn btn-warning btn-sm" title="Edit"><i class="fa fa-pencil"></i></button>
-                                                <button class="btn btn-danger btn-sm" title="Hapus"><i class="fa fa-trash-o"></i></button>
+                                                <button class="btn btn-warning btn-sm" title="Edit" onclick="editUser('{{$data->m_id}}')"><i class="fa fa-pencil"></i></button>
+                                                <button class="btn btn-danger btn-sm" title="Hapus" onclick="hapusUser('{{$data->m_id}}')"><i class="fa fa-trash-o"></i></button>
                                               </td>
                                             </tr>
-                                            <tr>
-                                              <td>2</td>
-                                              <td>Bravo</td>
-                                              <td>12-02-2018</td>
-                                              <td>Jl. bravo</td>
-                                              <td>Owner</td>
-                                              <td>
-                                                <button class="btn btn-warning btn-sm" title="Edit"><i class="fa fa-pencil"></i></button>
-                                                <button class="btn btn-danger btn-sm" title="Hapus"><i class="fa fa-trash-o"></i></button>
-                                              </td>
-                                            </tr>
-                                            <tr>
-                                              <td>3</td>
-                                              <td>Charlie</td>
-                                              <td>12-02-2018</td>
-                                              <td>Jl. charlie</td>
-                                              <td>Kasir</td>
-                                              <td>
-                                                <button class="btn btn-warning btn-sm" title="Edit"><i class="fa fa-pencil"></i></button>
-                                                <button class="btn btn-danger btn-sm" title="Hapus"><i class="fa fa-trash-o"></i></button>
-                                              </td>
+                                            @endforeach
                                             </tr>
                                           </tbody>
                                         </table>
@@ -120,6 +101,12 @@
 @endsection
 @section("extra_scripts")
     <script type="text/javascript">
+      function editUser(id){
+        window.location.href =  baseUrl+'/system/hakakses/edit-user-akses/'+id+'/edit';
+      }
+      function hapusUser(id){
+        alert(id);
+      }
      $(document).ready(function() {
     var extensions = {
          "sFilterInput": "form-control input-sm",

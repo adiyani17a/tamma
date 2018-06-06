@@ -58,23 +58,23 @@
                              <div class="col-md-6 col-sm-6 col-xs-12">
                                <label class="control-label tebal" >Masukan Kode / Nama</label>
                                   <div class="input-group input-group-sm" style="width: 100%;">
-                                      <input type="text" id="rnamaitem" name="rnamaitem" class="form-control">
-                                      <input type="hidden" id="code" name="code" class="form-control">
-                                      <input type="hidden" id="rkode" name="rsd_item" class="form-control">
-                                      <input type="hidden" id="rdetailnama" name="rnama" class="form-control">                                     
+                                      <input type="text" id="tinamaitem" name="rnamaitem" class="form-control">
+                                      <input type="hidden" id="ticode" name="code" class="form-control">
+                                      <input type="hidden" id="tikode" name="rsd_item" class="form-control">
+                                      <input type="hidden" id="tidetailnama" name="rnama" class="form-control">                                     
                                       
                                   </div>
                               </div>        
                               <div class="col-md-6 col-sm-6 col-xs-12">
                                <label class="control-label tebal">Masukan Jumlah</label>
                                   <div class="input-group input-group-sm" style="width: 100%;">
-                                     <input type="number" id="rqty" name="rqty" class="form-control" >
+                                     <input type="number" id="tiqty" name="rqty" class="form-control" >
                                   </div>
                               </div>
                         </div> 
                       </form>
                         <div class="table-responsive">
-                          <table class="table tabelan table-bordered table-hover dt-responsive" id="detail-req" style="width:100%" >
+                          <table class="table tabelan table-bordered table-hover dt-responsive" id="detail-transfer" style="width:100%" >
                            <thead align="right">
                             <tr>
                               <th width="10%">Kode</th>
@@ -103,7 +103,7 @@
 
 <script type="text/javascript">
    //transfer thoriq   
-       tableReq=$('#detail-req').DataTable({
+    tableTf=$('#detail-transfer').DataTable({
           "columns": [ { "width": "10%px" }, { "width": "70%" }, { "width": "10%" }, { "width": "10%" }],
           'columnDefs': [
               {
@@ -113,23 +113,23 @@
              }
           ],
        });
-    $("#rnamaitem").autocomplete({
+    $("#tinamaitem").autocomplete({
         source: baseUrl+'/penjualan/POSretail/retail/transfer-item',
         minLength: 1,
         select: function(event, ui) 
         {
           console.log(ui);
-        $('#rnamaitem').val(ui.item.label);        
-        $('#rkode').val(ui.item.id);
-        $('#code').val(ui.item.code);
-        $('#rdetailnama').val(ui.item.name);        
-        $('#rqty').val(ui.item.qty);
+        $('#tinamaitem').val(ui.item.label);        
+        $('#tikode').val(ui.item.id);
+        $('#ticode').val(ui.item.code);
+        $('#tidetailnama').val(ui.item.name);        
+        $('#tiqty').val(ui.item.qty);
         $("input[name='rqty']").focus();
         }
       });
 
         //enter stock
-  $('#rqty').keypress(function(e){
+  $('#tiqty').keypress(function(e){
       var charCode;
       if ((e.which && e.which == 13)) {
         charCode = e.which;
@@ -138,15 +138,15 @@
           charCode = e.keyCode;
       }
       if ((e.which && e.which == 13)){
-        var isi   = $('#rqty').val();
-        var jumlah= $('#rdetailnama').val();
+        var isi   = $('#tiqty').val();
+        var jumlah= $('#tidetailnama').val();
         if(isi == '' || jumlah == ''){
           toastr.warning('Item dan Jumlah tidak boleh kosong');
           return false;
       }
-        tambahreq();
-        $("#rnamaitem").val('');
-        $("#rqty").val('');
+        tambahTransfer();
+        $("#tinamaitem").val('');
+        $("#tiqty").val('');
         $("input[name='rnamaitem']").focus();
            return false;  
       }
@@ -154,16 +154,16 @@
 
     var rindex=0;
     var rtamp=[];
-            function tambahreq() {   
-        var code  =$('#code').val(); 
-        var kode  =$('#rkode').val();      
-        var nama  =$('#rdetailnama').val();                                
-        var qty   =parseInt($('#rqty').val());        
+            function tambahTransfer() {   
+        var code  =$('#ticode').val(); 
+        var kode  =$('#tikode').val();      
+        var nama  =$('#tidetailnama').val();                                
+        var qty   =parseInt($('#tiqty').val());        
         var Hapus = '<button type="button" class="btn btn-danger hapus btn-xs text-center" onclick="rhapus(this)"><i class="fa fa-trash-o"></i></button>';
         var rindex = rtamp.indexOf(kode);
 
         if ( rindex == -1){     
-            tableReq.row.add([
+            tableTf.row.add([
               code,
               nama+'<input type="hidden" name="kode_item[]" class="kode_item kode" value="'+kode+'"><input type="hidden" name="nama_item[]" class="nama_item" value="'+nama+'"> ',
               '<input style="text-align:right;width:100%" type="text"  name="sd_qty[]" class="sd_qty form-control r_qty-'+kode+'" value="'+qty+'"> ',
@@ -171,7 +171,7 @@
               Hapus
               ]);
 
-            tableReq.draw();
+            tableTf.draw();
         rindex++;
         // console.log(rtamp);
         rtamp.push(kode);
@@ -180,16 +180,16 @@
             $(".r_qty-"+kode).val(qtyLawas+qty);
             }
 
-          var kode  =$('#rkode').val('');      
-          var nama  =$('#rdetailnama').val('');
+          var kode  =$('#tikode').val('');      
+          var nama  =$('#tidetailnama').val('');
         }
 
 
         function rhapus(a){
     var par = a.parentNode.parentNode;
-    tableReq.row(par).remove().draw(false);
+    tableTf.row(par).remove().draw(false);
 
-  var inputs = document.getElementsByClassName( 'kode' ),
+  var inputs = document.getElementsByClassName( 'tikode' ),
       names  = [].map.call(inputs, function( input ) {
           return input.value;
       });

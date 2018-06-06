@@ -26,13 +26,13 @@
       <table class="table tabelan table-bordered table-hover dt-responsive" id="detail-penjualan">
         <thead align="right">
           <tr>
-           <th width="20%">Nama</th>
-           <th width="2%">Jumlah</th>
-           <th width="2%">Satuan</th>
-           <th width="15%">Harga</th>
-           <th>Disc Percent</th>
-           <th>Disc Value</th>
-           <th width="17%">Total</th>
+           <th>Nama</th>
+         <th width="2%">Jumlah</th>
+         <th width="2%">Satuan</th>
+         <th width="15%">Harga</th>
+         <th width="11%">Disc Percent</th>
+         <th>Disc Value</th>
+         <th width="15%">Total</th>
            <th><button class="hidden" onclick="tambahEdit()">add</button></th>
           </tr>
         </thead> 
@@ -48,17 +48,24 @@
               <input type="hidden" name="nama_item[]" class="nama_item" value="{{ $x->i_name }}">
             </td>
             <td>
-              <input size="30" style="text-align:right" type="number"  name="sd_qty[]" class="sd_qty form-control qty-{{+$x->i_id }}" value="{{$x->sd_qty }}" onkeyup="UpdateHarga('{{ $x->i_id }}'); qtyInput('{{ $x->s_qty }}', '{{ $x->i_id }}')" onchange="qtyInput('{{ $x->s_qty }}', '{{ $x->i_id }}')">
+              <input size="30" style="text-align:right" type="number"  name="sd_qty[]" class="sd_qty form-control qty-{{+$x->i_id }}" value="{{$x->sd_qty }}" onkeyup="UpdateHarga('{{ $x->i_id }}'); qtyInput('{{ $x->i_id }}')" onchange="qtyInput('{{ $x->i_id }}')">
             </td>
             <td>
-              {{ $x->i_unit }}<input type="hidden" name="satuan[]" class="satuan" value="{{ $x->i_unit }}">
+              {{ $x->i_sat1 }}<input type="hidden" name="satuan[]" class="satuan" value="{{ $x->i_sat1 }}">
             </td>
             <td>
-              <input type="text" size="10" readonly style="text-align:right" name="harga_item[]" class="harga_item form-control harga-{{ $x->i_id }}" value="Rp. {{ number_format( $x->sd_price ,2,',','.')}}">
+              <input type="text" size="10" readonly style="text-align:right" name="harga_item[]" class="harga_item form-control harga-{{ $x->i_id }}" value="Rp. {{ number_format( $x->m_psell ,2,',','.')}}">
             </td>
-            <td><input type="text" class="form-control" value=""></td>
-            <td><input type="text" class="form-control" value=""></td>
-            <td >
+            <td><div class="input-group">
+              <input type="text" style="text-align:right" class="form-control discpercent hasildiscpercent" name="sd_disc_percent[]"  
+              value="@if($x->sd_disc_percent == null)0 @else {{ $x->sd_disc_percent }}  @endif"
+              onkeyup="discpercent(this, event)"><span class="input-group-addon">%</span></div>
+            </td>
+            <td><input type="text" style="text-align:right" class="form-control discvalue hasildiscvalue" name="sd_disc_value[]"  
+               value="@if($x->sd_disc_value == null)0 @else {{ $x->sd_disc_value }}  @endif"
+              onkeyup="discvalue(this, event)">
+            </td>
+            <td>
               <input type="text" size="200" readonly style="text-align:right" name="hasil[]" id="hasil" class="form-control hasil hasil-{{ $x->i_id }}" value="Rp. {{ number_format( $x->sd_total ,2,',','.')}}"><input type="hidden" size="200" readonly style="text-align:right" name="" id="hasil2" class="hasil2 form-control" value="'+b+'">
             </td>
             <td>
@@ -69,4 +76,3 @@
         </tbody>
       </table>
     </div>
-

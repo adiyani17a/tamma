@@ -1,4 +1,4 @@
-            <div class="modal fade" id="myTransfer" role="dialog">
+            <div class="modal fade" id="myTransferPenerimaan" role="dialog">
               <div class="modal-dialog modal-lg">
               
                 <!-- Modal content-->

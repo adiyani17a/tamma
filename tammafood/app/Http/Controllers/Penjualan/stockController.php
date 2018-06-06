@@ -1,37 +1,46 @@
-<?php
+<?php 
 
 namespace App\Http\Controllers\Penjualan;
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use DB;
+use Auth;
 use Response;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 use App\m_item;
+use App\d_stock;
+use DataTables;
+use App\mMember;
 
 class stockController extends Controller
 {
-  public function tableStock(Request $request){
-    if($request->lenght=='')
-      $request->lenght=10;
-    $stock=m_item::leftjoin('d_stock',function($join){
+
+  public function tableStock(){
+    $data=m_item::
+      select('i_name',
+             'i_type',
+             'i_group',
+             's_qty')
+      ->leftjoin('d_stock',function($join){
         $join->on('i_id', '=', 's_item');        
         $join->on('s_comp', '=', 's_position');                
-        $join->on('s_comp', '=',DB::raw("'11'"));           
-    })    
-    ->where('i_type', '=',DB::raw("'BJ'"))
-    ->orWhere('i_type', '=',DB::raw("'BP'"))   
-    ->orderBy('i_name')
-    //->toSql();
-    ->paginate($request->lenght);    
-    
-
-       if ($request->ajax()) {
-            return view('penjualan.POSretail.stokRetail.table-stock', compact('stock'));
-
-        }
-        
-    return view('penjualan.POSretail.StokRetail.stock',compact('stock'));
+        $join->on('s_comp', '=',DB::raw("'2'"));           
+      })    
+      ->where('i_type', '=',DB::raw("'BJ'"))
+      ->orWhere('i_type', '=',DB::raw("'BP'"))   
+      ->get();
+      // dd($data[3]);
+    return DataTables::of($data)
+    ->editColumn('s_qty', function ($data)  {
+          if ($data->s_qty == null) {
+              return '0';
+          }else{
+              return $data->s_qty;
+          }
+      })
+    ->addIndexColumn()
+    ->make(true);
   }
 
   public function transferItem(Request $request){
@@ -55,15 +64,15 @@ class stockController extends Controller
       {
         if($query->s_qty=='')
           $query->s_qty=0;
-        $results[] = [ 'id' => $query->i_id, 'label' =>$query->i_code.'-'. $query->i_name, 'code' => $query->i_code,
+        $results[] = [ 'id' => $query->i_id, 'label' =>$query->i_code.'-'. $query->i_name, 'code' => $query->i_id,
                        'name' => $query->i_name ];
       }
     }
  
-   return Response::json($results);
+    return Response::json($results);
   }
 
-    public function transferItemGrosir(Request $request){
+  public function transferItemGrosir(Request $request){
     
     $term = $request->term;
 
@@ -89,13 +98,14 @@ class stockController extends Controller
       foreach ($queries as $query) 
       {
         if($query->s_qty=='')
-          $query->s_qty=0;
+        $query->s_qty=0;
         $results[] = [ 'id' => $query->i_id, 'label' =>$query->i_code.'-'. $query->i_name.'('. $query->s_qty .')', 'code' => $query->i_id,
-                       'name' => $query->i_name, 's_qty'=>$query->s_qty];
+                       'name' => $query->i_name,
+                       'qty' => $query->s_qty ];
       }
     }
  
-   return Response::json($results);
+    return Response::json($results);
   }
 }
 

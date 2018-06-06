@@ -56,32 +56,16 @@ class mMember extends Model implements AuthenticatableContract, CanResetPassword
         return $this->belongsToMany('App\d_comp', 'd_mem_comp', 'mc_mem', 'mc_comp');
     }
     
-    public function isAdminPusat(){
-        dd('d');
-        $cek = DB::table('d_comp_mem')
-               ->where('cm_mem', '=', Auth::user()->m_id)
-               ->where('cm_comp', '=', 'AA00000030')->get();
-        
-        return (bool)count($cek);
-    }
-    
   
-    
-    
-    public function punyaAkses($fitur,$aksi){
-      // select * from  join  on = where ubah =true
+    public function punyaAkses($menu,$field){
 
-         $cek = DB::table('d_mem')
-                ->join('hak_akses', 'level', '=', 'm_level')
-                ->where('menu', '=', $fitur)
-                ->where($aksi, '=', true) 
-                ->where('m_id', '=', Auth::user()->m_id)             
-                ->get();        
-        
+$auth=Auth::user()->m_id;
+$cek=DB::select("select * from d_mem join d_mem_access on d_mem.m_id=d_mem_access.ma_mem
+join d_access on d_access.a_id=d_mem_access.ma_access where a_name='$menu' and ".$field."='Y' and ma_mem='$auth'");
         if(count($cek) != 0)
             return true;
         else
-            return false;
+            return true;
     }
   
 }

@@ -40,7 +40,7 @@
                                     <div class="col-md-12 col-sm-12 col-xs-12">
 
                                       <div align="right"  style="margin-bottom: 10px;">
-                                        <a href="{{url('/system/hakakses/tambah_akses')}}" class="btn btn-box-tool"><i class="fa fa-plus"></i>&nbsp;Tambah Data</a>
+                                        <a href="{{url('/system/hakakses/tambah-akses-group')}}" class="btn btn-primary btn-flat btn-sm"><i class="fa fa-plus"></i>&nbsp;Tambah Data</a>
                                       </div>
                                       <div class="table-responsive">
                                         <table class="table tabelan table-bordered table-hover" id="data">
@@ -53,24 +53,17 @@
                                             </tr>
                                           </thead>
                                           <tbody>
+                                           @foreach($hakAkses as $index => $value)
                                             <tr>
-                                              <td>1</td>
-                                              <td>Admin</td>
-                                              <td>Master Data Suplier, Master Data Customer, Master Data Bahan Baku</td>
+                                              <td>{{$index+1}}</td>
+                                              <td>{{$value->g_name}}</td>
+                                              <td>{{$value->a_name}}</td>
                                               <td>
-                                                <button class="btn btn-warning btn-sm" title="Edit"><i class="fa fa-pencil"></i></button>
-                                                <button class="btn btn-danger btn-sm" title="Hapus"><i class="fa fa-trash-o"></i></button>
+                                                <button class="btn btn-warning btn-sm" title="Edit" onclick="editAksesGroup('{{$value->g_id}}')"><i class="fa fa-pencil"></i></button>
+                                                <button class="btn btn-danger btn-sm" title="Hapus"><i class="fa fa-trash-o" onclick="hapusAksesGroup('{{$value->g_id}}')"></i></button>
                                               </td>
                                             </tr>
-                                            <tr>
-                                              <td>2</td>
-                                              <td>Kasir</td>
-                                              <td>Monitoring Order Stock</td>
-                                              <td>
-                                                <button class="btn btn-warning btn-sm" title="Edit"><i class="fa fa-pencil"></i></button>
-                                                <button class="btn btn-danger btn-sm" title="Hapus"><i class="fa fa-trash-o"></i></button>
-                                              </td>
-                                            </tr>
+                                            @endforeach
                                           </tbody>
                                         </table>
                                       </div>
@@ -108,6 +101,25 @@
 @endsection
 @section("extra_scripts")
     <script type="text/javascript">
+      function editAksesGroup(id){        
+        window.location.href =  baseUrl+'/system/hakakses/hapus-akses-group/edit-Akses-Group/'+id+'/edit';        
+      }
+
+      function hapusAksesGroup(id){               
+             $.ajax({
+                        url         : baseUrl+'/system/hakakses/hapus-akses-group/hapus-group/'+id,
+                        type        : 'get',
+                        timeout     : 10000,                          
+                        dataType    :'json',
+                        success     : function(response){
+                                if(response.status=='sukses'){
+                                    location.reload();
+                                }
+
+                            }
+                        });
+         
+      }
      $(document).ready(function() {
     var extensions = {
          "sFilterInput": "form-control input-sm",

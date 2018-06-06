@@ -1,20 +1,12 @@
-                                  <table class="table tabelan table-bordered table-hover dt-responsive" id="data3">
-                                    <thead>
-                                      <th>Tanggal</th>
-                                      <th>Nama Item</th>
-                                      <th>Jumlah Penjualan</th>
-                                    </thead>
-                                    <tbody>
-                                      @foreach ($leagues as $index => $league)
-                                       <tr>
-                                        <td>{{ date('d M Y', strtotime($league->s_date)) }}</td>
-                                        <td>{{ $league->i_name }}</td>
-                                        <td>{{ $league->jumlah }}</td>
-                                      </tr> 
-                                      @endforeach
-                                    </tbody>
-                                  </table>
-
-<script>
-  $('#data3').DataTable();
-</script>
+    <table class="table tabelan table-bordered table-hover dt-responsive" id="data3" style="width: 100%;">
+      <thead>
+        <th>No</th>
+        <th>Tanggal</th>
+        <th>Nama Item</th>
+        <th>Tipe Item</th>
+        <th>Group Item</th>
+        <th width="5%">Jumlah Penjualan</th>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>

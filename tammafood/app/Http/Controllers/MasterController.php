@@ -9,7 +9,7 @@ use DB;
 use Carbon\carbon;
 use Session;
 use Exception;
-use Yajra\Datatables\Datatables;
+use DataTables;
 
 class MasterController extends Controller
 {
@@ -36,9 +36,10 @@ class MasterController extends Controller
      public function cust()
     {
 
-         $list_cust = Customer::all();
+         // $list_cust = Customer::all();
 
-        return view('master/datacust/cust', ['customer' => $list_cust], compact('list_cust'));     
+        // return view('master/datacust/cust', ['customer' => $list_cust], compact('list_cust'));
+        return view('master/datacust/cust');     
     }
 
     public function barang()
@@ -51,19 +52,19 @@ class MasterController extends Controller
         return view('master.databarang.tambah_barang');
     }
 
-     public function getdata()
+    public function getdata()
     {
     $getdata = Customer::select('*')->get();
+    // dd($getdata);
     return Datatables::of($getdata)
-    ->addColumn('action', function ($getdata) {
-                    return'<div class="">    
-                               <a href="cust_edit/'.$getdata->id_cus_ut.'" class="btn btn-warning btn-sm" title="Edit"><i class="glyphicon glyphicon-pencil"></i></a>
-                               <a href="cust_delete/'.$getdata->id_cus_ut.'" class="btn btn-danger btn-sm" title="Hapus"><i class="glyphicon glyphicon-trash"></i></a>
-                          </div>   ';
+        ->addColumn('action', function ($data) {
+            return'<div class="">
+                       <a href="cust_edit/'.$data->c_id.'" class="btn btn-warning btn-sm" title="Edit"><i class="glyphicon glyphicon-pencil"></i></a>
+                       <a href="cust_delete/'.$data->c_id.'" class="btn btn-danger btn-sm" title="Hapus"><i class="glyphicon glyphicon-trash"></i></a>
+                    </div>';
                 })
-    ->make(true);
+        ->make(true);
     }
-
 
     public function cust_edit($id_cus_ut)
     {

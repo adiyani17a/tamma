@@ -69,9 +69,9 @@
                                <label class="control-label tebal" >Masukan Kode / Nama</label>
                                   <div class="input-group input-group-sm" style="width: 100%;">
                                       <input type="text" id="stf_namaitem" name="stf_namaitem" class="form-control">
-                                      <input type="" id="stf_kode" name="stf_item" class="form-control">        
-                                      <input type="" id="stf_detailnama" name="stf_nama" class="form-control">
-                                      <input type="" id="sstf_qty" name="sstf_qty" class="form-control">                                     
+                                      <input type="hidden" id="stf_kode" name="stf_item" class="form-control">        
+                                      <input type="hidden" id="stf_detailnama" name="stf_nama" class="form-control">
+                                      <input type="hidden" id="sstf_qty" name="sstf_qty" class="form-control">                                     
                                       
                                   </div>
                               </div>        

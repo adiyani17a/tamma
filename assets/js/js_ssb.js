@@ -131,7 +131,7 @@ if ($notifyContainer) {
     }
     
 
-    function rege(evt, data){		
+    function rege(evt, data){	
         var hitungKoma=0;
         var uang=$('.' + data).val();
         var code =  (evt.charCode) ? evt.charCode : ((evt.which) ? evt.which : evt.keyCode);

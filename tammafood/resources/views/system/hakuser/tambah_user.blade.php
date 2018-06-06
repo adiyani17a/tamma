@@ -43,7 +43,7 @@
                            </div>
                          
 
-                            <form method="POST">
+                            <form id="data-user">
 
                                 <div class="col-md-12 col-sm-12 col-xs-12 tamma-bg" style="padding-bottom: 10px;padding-top: 20px;margin-bottom: 15px;">
                                     
@@ -53,7 +53,8 @@
 
                                     <div class="col-md-3 col-sm-8 col-xs-12">
                                         <div class="form-group">
-                                            <input type="text" class="form-control input-sm" name="">
+                                            <input id="m_id" type="hidden" class="form-control input-sm disable" name="m_id">
+                                            <input type="text" class="form-control input-sm disable" name="Username">
                                         </div>
                                     </div>
 
@@ -63,7 +64,7 @@
 
                                     <div class="col-md-3 col-sm-8 col-xs-12">
                                         <div class="form-group">
-                                            <input type="text" class="form-control input-sm" name="">
+                                            <input type="Password" class="form-control input-sm disable" name="Password">
                                         </div>
                                     </div>
 
@@ -73,7 +74,7 @@
 
                                     <div class="col-md-3 col-sm-8 col-xs-12">
                                         <div class="form-group">
-                                            <input type="text" class="form-control input-sm" name="">
+                                            <input type="text" class="form-control input-sm disable" name="NamaLengkap">
                                         </div>
                                     </div>
                                     <div class="col-md-3 col-sm-4 col-xs-12">
@@ -82,7 +83,7 @@
                                     </div>
                                     <div class="col-md-3 col-sm-8 col-xs-12">
                                         <div class="form-group">
-                                            <input class="form-control datepicker2 input-sm" value="02-02-1990" type="text">
+                                            <input class="form-control datepicker2 input-sm disable" value="02-02-1990" type="text" name="TanggalLahir">
                                         </div>
                                         
                                     </div>
@@ -93,7 +94,7 @@
 
                                     <div class="col-md-9 col-sm-8 col-xs-12">
                                         <div class="form-group">
-                                            <textarea class="form-control"></textarea>
+                                            <textarea name="alamat" class="form-control disable"></textarea>
                                         </div>
                                     </div>
 
@@ -107,63 +108,126 @@
                                     </div>
                                     <div class="col-md-3 col-sm-8 col-xs-12">
                                         <div class="form-group">
-                                            <select class="form-control input-sm">
-                                                <option>Admin</option>
-                                                <option>Owner</option>
-                                                <option>Kasir</option>
+                                            <select class="form-control input-sm disable" name="groupAkses">
+                                                <option value="">-- Pilih Akses Group --</option>
+                                                @foreach($group as $data)
+                                                    <option value="{{$data->g_id}}">{{$data->g_name}}</option>
+                                                @endforeach
                                             </select>
                                         </div>
-                                        
                                     </div>
 
+
+                                     <div align="right" style="padding-top:10px;">
+                                    <div id="div_button_save" class="form-group">
+                                        <button type="button" id="button_save" class="btn btn-primary" onclick="simpanDataUser()">Simpan Data</button> 
+                                    </div>
                                 </div>
+
+                                </div>
+                             </form>
+<div class="col-md-12"  id="detail" >
+     <label class="tebal">- Hak Akses User</label>
 
                                 
                                 <div class="table-responsive">
-                                    <table class="table tabelan table-bordered table-hover" id="data">
+
+                                     <table class="table tabelan table-bordered table-hover" id="data-detail">
                                       <thead>
-                                     <tr>
-                                        <th>No</th>
-                                        <th>Nama Menu</th>
-                                        <th>Level 1</th>
-                                        <th>Level 2</th>
-                                        <th>Level 3</th>
-                                        
+                                     <tr>                                        
+                                        <th>Nama Menu</th>                                        
+                                        <th>Lihat</th>                                                                 
+                                        <th>Tambah</th>                                                               
+                                        <th>Perbarui</th>                                                             
+                                        <th>Hapus</th>
+                                        <th>Laporan</th>
+                                        <th>Unlock</th>
                                     </tr>
                                     </thead>
                                       <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>Master Data Suplier</td>
-                                            <td><input type="checkbox" class="checkbox" name="">&nbsp;Lihat</td>
-                                            <td><input type="checkbox" class="checkbox" name="">&nbsp;Lihat, Edit</td>
-                                            <td><input type="checkbox" class="checkbox" name="">&nbsp;Lihat, Tambah, Hapus, Edit</td>
-                                        </tr>
-                                        <tr>
-                                            <td>2</td>
-                                            <td>Master Data Customer</td>
-                                            <td><input type="checkbox" class="checkbox" name="">&nbsp;Lihat</td>
-                                            <td><input type="checkbox" class="checkbox" name="">&nbsp;Lihat, Edit</td>
-                                            <td><input type="checkbox" class="checkbox" name="">&nbsp;Lihat, Tambah, Hapus, Edit</td>
-                                        </tr>
-                                        <tr>
-                                            <td>3</td>
-                                            <td>Master Data Bahan Baku</td>
-                                            <td><input type="checkbox" class="checkbox" name="">&nbsp;Lihat</td>
-                                            <td><input type="checkbox" class="checkbox" name="">&nbsp;Lihat, Edit</td>
-                                            <td><input type="checkbox" class="checkbox" name="">&nbsp;Lihat, Tambah, Hapus, Edit</td>
-                                        </tr>
+                                        @php
+                                            $nomor=1;
+                                        @endphp    
+                                        
+                                        @foreach($access as $index => $data)
+                                        
+                                        @if($data->a_parrent==0)                                        
+                                            <tr style="background: #f7e8e8">    
+                                                <td>             
+                                                     <input type="hidden" name="id_access[]" value="{{$data->a_id}}">                                   
+                                                    {{$nomor}}. &nbsp; <strong>{{$data->a_name}}</strong>
+                                                </td>                
+                                                <td>     
+
+                                                     <input type="hidden" value="N" class="checkbox" name="view[]"  id="view-{{$data->a_id}}">
+                                                <input type="checkbox" class="checkbox" onchange="simpanView('{{$data->a_id}}')"  id="view1-{{$data->a_id}}">
+
+                                                </td>    
+                                                <td> 
+                                                    <input type="hidden" value="N" class="checkbox" name="insert[]" id="insert-{{$data->a_id}}">                                               
+                                                </td>
+                                                <td>  
+                                                    <input type="hidden" value="N" class="checkbox" name="update[]" id="update-{{$data->a_id}}">                                              
+                                                </td>
+                                                <td> 
+                                                     <input type="hidden" value="N" class="checkbox" name="delete[]" id="delete-{{$data->a_id}}">                                               
+                                                </td>
+                                                <td> 
+                                                     <input type="hidden" value="N" class="checkbox" name="laporan[]" id="laporan-{{$data->a_id}}">                                               
+                                                </td>
+                                                <td>                                                
+
+                                                     <input type="hidden" value="N" class="checkbox" name="unlock[]" id="unlock-{{$data->a_id}}">
+
+                                                </td>                                                                       
+                                                    @php
+                                                        $nomor++;
+                                                    @endphp    
+                                                </tr>
+                                            @else
+                                            <tr>    
+                                                <td>
+                                                <input type="hidden" name="id_access[]" value="{{$data->a_id}}">  
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{$data->a_name}}
+                                                </td>                                                
+                                                <td class="text-center">
+                                                <input type="checkbox" class="checkbox" onchange="simpanView('{{$data->a_id}}')"  id="view1-{{$data->a_id}}">
+                                                 <input type="hidden" value="N" class="checkbox" name="view[]"  id="view-{{$data->a_id}}">
+                                                </td>
+                                                <td class="text-center">
+                                                    <input type="checkbox" class="checkbox" onchange="simpanInsert('{{$data->a_id}}')" id="insert1-{{$data->a_id}}">
+
+                                                    <input type="hidden" value="N" class="checkbox" name="insert[]" id="insert-{{$data->a_id}}">
+                                                </td>
+                                                <td class="text-center">
+                                                    <input type="checkbox" class="checkbox" onchange="simpanUpdate('{{$data->a_id}}')" id="update1-{{$data->a_id}}">
+
+                                                     <input type="hidden" value="N" class="checkbox" name="update[]" id="update-{{$data->a_id}}">
+
+                                                </td>
+                                                <td class="text-center">
+                                                    <input type="checkbox" class="checkbox" onchange="simpanDelete('{{$data->a_id}}')" id="delete1-{{$data->a_id}}">
+
+                                                    <input type="hidden" value="N" class="checkbox" name="delete[]"  id="delete-{{$data->a_id}}">
+                                                </td>
+                                                <td class="text-center">
+                                                    <input type="checkbox" class="checkbox" name="laporan[]" onchange="simpanLaporan('{{$data->a_id}}')" id="laporan-{{$data->a_id}}">
+                                                </td>
+                                                <td class="text-center">
+                                                    <input type="checkbox" class="checkbox" name="unlock[]" onchange="simpanUnlock('{{$data->a_id}}')" value="1" id="unlock-{{$data->a_id}}">
+                                                </td>
+                                            </tr>
+                                            @endif
+                                            
+                                        
+                                       @endforeach
                                       </tbody>
                                     </table>
                                 </div>
 
-                                <div align="right" style="padding-top:10px;">
-                                    <div id="div_button_save" class="form-group">
-                                        <button type="button" id="button_save" class="btn btn-primary">Simpan Data</button> 
-                                    </div>
-                                </div>
+                               </div>
                                                          
-                            </form>
+                           
                         </div>
                                                              
                     </div>
@@ -176,6 +240,58 @@
 @endsection
 @section("extra_scripts")
 <script type="text/javascript"> 
+      function simpanDataUser(){
+        var dataUser=$('#data-user :input').serialize();
+        var dataDetail=$('#data-detail :input').serialize()
+         $.ajax({
+                    url         : baseUrl+'/system/hakuser/tambah_user/simpan-user',
+                    type        : 'get',
+                    timeout     : 10000,  
+                    data        : dataUser+'&'+dataDetail,
+                    dataType    :'json',
+                    success     : function(response){
+                            if(response.status=='sukses'){
+                                  window.location = baseUrl+'/system/hakuser/user';
+                            }
+                        }
+                    });
+      }
+         function simpanView(id){                            
+        if ($('#view1-'+id).prop('checked')) {            
+            $('#view-'+id).val('Y')
+        } else {
+            $('#view-'+id).val('N')            
+        }
+     }
+
+  function simpanInsert(id){                        
+        if ($('#insert1-'+id).prop('checked')) {
+               $('#insert-'+id).val('Y')
+        } else {
+            $('#insert-'+id).val('N')            
+        }
+     }
+       
+
+function simpanUpdate(id){           
+            
+        if ($('#update1-'+id).prop('checked')) {
+            $('#update-'+id).val('Y')
+        } else {
+            $('#update-'+id).val('N')            
+        }
+     }
+
+     function simpanDelete(id){                              
+        if ($('#delete1-'+id).prop('checked')) {
+          $('#delete-'+id).val('Y')
+        } else {
+            $('#delete-'+id).val('N')            
+        }
+     }
+       
+       
+
 $(document).ready(function() {
     var extensions = {
          "sFilterInput": "form-control input-sm",

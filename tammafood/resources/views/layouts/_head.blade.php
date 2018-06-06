@@ -3,6 +3,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
     <link rel="shortcut icon" href="{{ asset ('assets/images/icons/favicon.ico') }}">
     <link rel="apple-touch-icon" href="{{ asset ('assets/images/icons/favicon.png') }}">
     <link rel="apple-touch-icon" sizes="72x72" href="{{ asset ('assets/images/icons/favicon-72x72.png') }}">
@@ -27,8 +28,9 @@
     <link type="text/css" rel="stylesheet" href="{{ asset ('assets/styles/jquery.dataTables.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset ('assets/toastr/toastr.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset ('assets/toastr/toastr.min.css') }}">
-
-
+    <link rel="stylesheet" type="text/css" href="{{ asset ('assets/select2/select2.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset ('assets/select2/select2-bootstrap.css') }}">
+    <link type="text/css" rel="stylesheet" href="{{ asset ('assets/styles/timepicker.min.css') }}">
     <link type="text/css" rel="stylesheet" href="{{ asset ('assets/styles/css/ladda-themeless.min.css') }}">
 {{--     <link type="text/css" rel="stylesheet" href="{{ asset ('assets/styles/css/prism.css') }}"> --}}
 

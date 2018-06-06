@@ -22,14 +22,20 @@
                       <span class="label label-yellow">Approved</span>
                   @elseif($data->ti_isapproved=='Y' &&  $data->ti_issent=='Y' &&  $data->ti_isreceived=='N')
                       <span class="label label-blue">Send</span>
-                  @elseif($data->ti_isapproved=='Y' &&  $data->ti_issent=='Y' &&  $data->ti_isreceived=='N')
+                  @elseif($data->ti_isapproved=='Y' &&  $data->ti_issent=='Y' &&  $data->ti_isreceived=='Y')
                       <span class="label label-success">Received</span>
                   @endif
               </td>
               <td class="text-center">
+                  @if($data->ti_isapproved=='Y' &&  $data->ti_issent=='Y' &&  $data->ti_isreceived=='Y')
                   <a onclick="edit('{{$data->ti_id}}')"    class="btn btn-warning btn-xs" title="Setujui"   
-                    @if($data->ti_isapproved=='Y') disabled @endif><i class="fa fa-check-circle-o"></i>
-                  </a>
+                      ><i class="fa fa-eye"></i>Lihat
+                  </a>                    
+                  @else 
+                  <a onclick="edit('{{$data->ti_id}}')"    class="btn btn-warning btn-xs" title="Setujui"   
+                      ><i class="fa fa-check-circle-o"></i> Setujui & Kirim
+                  </a>                    
+                  @endif
               </td>
          
             </tr> 

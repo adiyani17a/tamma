@@ -22,7 +22,7 @@
                       <span class="label label-yellow">Approved</span>
                   @elseif($data->ti_isapproved=='Y' &&  $data->ti_issent=='Y' &&  $data->ti_isreceived=='N')
                       <span class="label label-blue">Send</span>
-                  @elseif($data->ti_isapproved=='Y' &&  $data->ti_issent=='Y' &&  $data->ti_isreceived=='N')
+                  @elseif($data->ti_isapproved=='Y' &&  $data->ti_issent=='Y' &&  $data->ti_isreceived=='Y')
                       <span class="label label-success">Received</span>
                   @endif
               </td>

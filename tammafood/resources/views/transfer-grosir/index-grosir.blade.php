@@ -9,12 +9,12 @@
                 <!--BEGIN TITLE & BREADCRUMB PAGE-->
                 <div id="title-breadcrumb-option-demo" class="page-title-breadcrumb">
                     <div class="page-header pull-left" style="font-family: 'Raleway', sans-serif;">
-                        <div class="page-title">Form Entri Penjualan Retail</div>
+                        <div class="page-title">Transfer Grosir</div>
                     </div>
                     <ol class="breadcrumb page-breadcrumb pull-right" style="font-family: 'Raleway', sans-serif;">
                         <li><i class="fa fa-home"></i>&nbsp;<a href="{{ url('/home') }}">Home</a>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
                         <li><i></i>&nbsp;Penjualan&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
-                        <li class="active">Form Entri Penjualan Retail</li>
+                        <li class="active">Transfer Grosir</li>
                     </ol>
                     <div class="clearfix">
                     </div>
@@ -53,14 +53,14 @@
 
             </div>                     
                               </div>
-                            </div>
+                            </div>                            
                           </div>
                           <!-- End DIv note-tab -->
-
                    @include('transfer-grosir.modal-transfer')        
                    
                  
         </div>
+        @include('transfer-grosir.modal-edit-tf-grosir')  
         <!-- End div generalTab -->
       </div>
     </div>
@@ -157,7 +157,7 @@
         $('#stf_namaitem').val(ui.item.label);        
         $('#stf_kode').val(ui.item.code);
         $('#stf_detailnama').val(ui.item.name);        
-        $('#sstf_qty').val(ui.item.s_qty);
+        $('#sstf_qty').val(ui.item.qty);
         $("input[name='stf_qty']").focus();
         }
       });
@@ -248,6 +248,30 @@ $('#stf_qty').keypress(function(e){
         })
       }
 
+       function updateTransfer($id) 
+      {
+        var item = $('#edit_request :input').serialize();
+        var data = tableTf.$('input').serialize();
+        $.ajax({
+        url : baseUrl + "/penjualan/POSgrosir/update-transfer-grosir/"+$id,
+        type: 'get',
+        data: item+'&'+data,
+        dataType:'json',
+        success:function(response){
+          
+          
+              if(response.status=='sukses'){
+
+              $("input[name='tf_nomor']").val('');
+              $("input[name='tf_admin']").val('');              
+              $("input[name='tf_ketetangan']").val('');
+              alert('Proses Telah Terkirim');                
+              $('#myTransferToRetail').modal('hide');
+              }    
+        }
+        })
+      }
+
   function rhapus(a){
     var par = a.parentNode.parentNode;
     tableReq.row(par).remove().draw(false);
@@ -276,12 +300,12 @@ function tfToRetail(){
 
       function editTransferGrosir($id){
             $.ajax({
-                    url         : baseUrl+'/penjualan/POSgrosir/transfer-grosir/'+$id+'/edit',
+                    url         : baseUrl+'/penjualan/POSgrosir/edit-transfer-grosir/'+$id+'/edit',
                     type        : 'get',
                     timeout     : 10000,                                        
                     success     : function(response){
-                        $('#data-transfer-appr').html(response);
-                         $('#myTransfer').modal('show');
+                        $('#edit-data-transfer').html(response);
+                         $('#EditTransfer').modal('show');
                         }
             });
      }
@@ -289,12 +313,17 @@ function tfToRetail(){
 
      function hapusTransferGrosir($id){
             $.ajax({
-                    url         : baseUrl+'/penjualan/POSgrosir/transfer-grosir/hapus'+$id,
+                    url         : baseUrl+'/penjualan/POSgrosir/hapus-transfer-grosir/hapus/'+$id,
                     type        : 'get',
-                    timeout     : 10000,                                        
+                    timeout     : 10000,    
+                    dataType    :'json',
                     success     : function(response){
-                        $('#data-transfer').html(response);
-                        }
+                          if(response.status=='sukses'){
+                                      alert('Berhasil Di Hapus');                                        
+                                      tfToRetail();
+                          }    
+                    }
+                        
             });
      }
 

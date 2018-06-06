@@ -22,15 +22,25 @@
                       <span class="label label-yellow">Approved</span>
                   @elseif($data->ti_isapproved=='Y' &&  $data->ti_issent=='Y' &&  $data->ti_isreceived=='N')
                       <span class="label label-blue">Send</span>
-                  @elseif($data->ti_isapproved=='Y' &&  $data->ti_issent=='Y' &&  $data->ti_isreceived=='N')
+                  @elseif($data->ti_isapproved=='Y' &&  $data->ti_issent=='Y' &&  $data->ti_isreceived=='Y')
                       <span class="label label-success">Received</span>
                   @endif
               </td>
               <td class="text-center">
+                @if($data->ti_isapproved=='N')
+                    @if(Auth::user()->punyaAkses('Ritail Transfer','ma_update'))
+                      <a onclick="editTransfer('{{$data->ti_id}}')"    class="btn btn-warning btn-xs" title="Edit"><i class="glyphicon glyphicon-pencil"></i></a>
+                    @endif
+                    @if(Auth::user()->punyaAkses('Ritail Transfer','ma_delete'))
+                        <a onclick="hapusTransfer('{{$data->ti_id}}')" class="btn btn-danger btn-xs" title="Hapus"
+                        ><i class="glyphicon glyphicon-trash"></i></a>
+                    @endif
+                @else
                   <a onclick="editTransfer('{{$data->ti_id}}')"    class="btn btn-warning btn-xs" title="Edit"   
-                    @if($data->ti_isapproved=='Y') disabled @endif><i class="glyphicon glyphicon-pencil"></i></a>
-                  <a onclick="hapusTransfer('{{$data->ti_id}}')" class="btn btn-danger btn-xs" title="Hapus"
-                    @if($data->ti_isapproved=='Y') disabled @endif><i class="glyphicon glyphicon-trash"></i></a>
+                  ><i class="fa fa-eye"></i></a>
+                @endif
+
+                  
               </td>
          
             </tr> 
