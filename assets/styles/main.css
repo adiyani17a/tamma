@@ -207,7 +207,7 @@ hr {
   background-color: #3C3C3C;
 }
 #page-wrapper {
-  min-height: 100%;
+  min-height: 100vh;
   padding: 0 !important;
   background-color: #f0f2f5;
   transition: 0.5s all linear;
