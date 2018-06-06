@@ -171,7 +171,12 @@ Route::get('/produksi/rencanaproduksi/produksi/autocomplete', 'Produksi\RencanaP
 Route::get('/penjualan/manajemenharga/harga', 'PenjualanController@harga');
 Route::get('/penjualan/manajemenpromosi/promosi', 'PenjualanController@promosi');
 Route::get('/penjualan/broadcastpromosi/promosi2', 'PenjualanController@promosi2');
-Route::get('/penjualan/rencanapenjualan/rencana', 'PenjualanController@rencana');
+
+	// rencana Penjualan
+	Route::get('/penjualan/rencanapenjualan/rencana', 'rencana_penjualan@index');
+	Route::get('/penjualan/rencanapenjualan/tambah_rencana', 'rencana_penjualan@tambah_rencana');
+	Route::get('/penjualan/rencanapenjualan/datatable_rencana', 'rencana_penjualan@datatable_rencana')->name('datatable_rencana');
+	// 
 Route::get('/penjualan/manajemenreturn/r_penjualan', 'PenjualanController@r_penjualan');
 Route::get('/penjualan/monitorprogress/progress', 'PenjualanController@progress');
 Route::get('/penjualan/rencanapenjualan/tambah_rencana', 'PenjualanController@tambah_rencana');
