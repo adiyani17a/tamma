@@ -182,8 +182,12 @@ Route::get('/penjualan/broadcastpromosi/promosi2', 'PenjualanController@promosi2
     Route::get('/penjualan/rencanapenjualan/edit_rencana/{id}', 'rencana_penjualan@edit_rencana');
     Route::get('/penjualan/rencanapenjualan/hapus_rencana/{id}', 'rencana_penjualan@hapus_rencana');
 	// 
+    // monitoring penjualan
+    Route::get('/penjualan/monitorprogress/progress', 'monitoring_penjualan@progress');
+    Route::get('/penjualan/monitorprogress/datatable_progress', 'monitoring_penjualan@datatable_progress')->name('datatable_progress');
+    Route::get('/penjualan/monitorprogress/datatable_progress1', 'monitoring_penjualan@datatable_progress1')->name('datatable_progress1');
+    // 
 Route::get('/penjualan/manajemenreturn/r_penjualan', 'PenjualanController@r_penjualan');
-Route::get('/penjualan/monitorprogress/progress', 'PenjualanController@progress');
 Route::get('/penjualan/monitoringorder/monitoring', 'PenjualanController@monitoringorder');
 Route::get('/penjualan/mutasistok/mutasi', 'PenjualanController@mutasi');
 Route::get('/penjualan/broadcastpromosi/tambah_promosi2', 'PenjualanController@tambah_promosi2');
