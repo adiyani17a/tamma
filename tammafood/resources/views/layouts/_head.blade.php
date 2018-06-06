@@ -38,4 +38,7 @@
         .center{
             text-align: center
         }
+        .right{
+            text-align: right;
+        }
     </style>

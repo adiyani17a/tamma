@@ -83,7 +83,7 @@
 
                               <div class="col-md-4 col-sm-6 col-xs-12">
                                 <div class="form-group">
-                                  <input type="text" id="id" name="id" readonly="" value="{{$id}}" class="form-control input-sm id">
+                                  <input type="text" id="id" name="id" readonly="" value="{{$data->rp_id}}" class="form-control input-sm id">
                                 </div>
                               </div>
 
@@ -97,7 +97,7 @@
 
                               <div class="col-md-4 col-sm-6 col-xs-12">
                                 <div class="form-group">
-                                  <input value="{{ $bulan }}" type="text" id="bulan" name="bulan" class="form-control input-sm datepicker">
+                                  <input value="{{ $data->rp_bulan }}" type="text" id="bulan" name="bulan" class="form-control input-sm datepicker">
                                 </div>
                               </div>
 
@@ -111,7 +111,7 @@
 
                               <div class="col-md-4 col-sm-6 col-xs-12">
                                 <div class="form-group">
-                                  <input type="text" id="periode" name="periode" class="form-control input-sm datepicker2">
+                                  <input type="text" id="periode" value="{{ carbon\carbon::parse($data->rp_periode)->format('d-m-Y') }}" name="periode" class="form-control input-sm datepicker2">
                                 </div>
                               </div>
 
@@ -125,7 +125,7 @@
 
                               <div class="col-md-4 col-sm-6 col-xs-12">
                                 <div class="form-group">
-                                  <input type="text" name="total_qty" readonly="" value="0" class="form-control input-sm value">
+                                  <input type="text" name="total_qty" readonly="" value="{{ $data->rp_target_qty }}" class="form-control input-sm value">
                                 </div>
                               </div>
 
@@ -139,7 +139,7 @@
 
                               <div class="col-md-4 col-sm-6 col-xs-12">
                                 <div class="form-group">
-                                  <input type="text" name="total_val" readonly="" value="0" class="form-control input-sm value2">
+                                  <input type="text" name="total_val" readonly="" value="{{ number_format($data->rp_target_value, 0, ",", ".")}}" class="form-control input-sm value2">
                                 </div>
                               </div>
 
@@ -197,12 +197,13 @@ $('.datepicker2').datepicker({
 
 
 $(document).ready(function(){
-
+  var id = '{{ $id }}';
   $('#data').DataTable({
     processing: false,
     serverSide: false,
     ajax: {
-        url:'{{ route('datatable_rencana1') }}',
+        url:'{{ route('datatable_rencana2') }}',
+        data:{id}
     },
     columnDefs: [
 

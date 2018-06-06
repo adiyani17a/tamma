@@ -64,7 +64,21 @@
 @endsection
 @section("extra_scripts")
 <script type="text/javascript">
-  $('#data').DataTable({
+  function edit(a) {
+    window.location = '{{ url('penjualan/rencanapenjualan/edit_rencana') }}' + '/' + a;
+  }
+
+  function hapus(id) {
+    var stay = confirm("Hapus Data?");
+    if (stay) {
+      window.location = '{{ url('penjualan/rencanapenjualan/hapus_rencana') }}' + '/' + id;
+    }
+    
+  }
+
+  $(document).ready(function(){
+
+    $('#data').DataTable({
       processing: true,
       serverSide: true,
       ajax: {
@@ -89,10 +103,16 @@
         {data: 'DT_Row_Index', name: 'DT_Row_Index'},
         {data: 'rp_bulan', name: 'rp_bulan'},
         {data: 'rp_target_qty', name: 'rp_target_qty'},
-        {data: 'rp_target_value', name: 'rp_target_value'},
+        {data: 'harga', name: 'harga'},
         {data: 'aksi', name: 'aksi'},
-      ]
-  });
+        ]
+    });
 
+    @if ($errors->any())
+      alert('Penjualan Untuk Bulan Ini Sudah Berjalan');
+    @endif 
+
+
+  })
 </script>
 @endsection()

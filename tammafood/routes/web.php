@@ -176,8 +176,11 @@ Route::get('/penjualan/broadcastpromosi/promosi2', 'PenjualanController@promosi2
 	Route::get('/penjualan/rencanapenjualan/rencana', 'rencana_penjualan@index');
 	Route::get('/penjualan/rencanapenjualan/tambah_rencana', 'rencana_penjualan@tambah_rencana');
     Route::get('/penjualan/rencanapenjualan/datatable_rencana', 'rencana_penjualan@datatable_rencana')->name('datatable_rencana');
-	Route::get('/penjualan/rencanapenjualan/datatable_rencana1', 'rencana_penjualan@datatable_rencana1')->name('datatable_rencana1');
+    Route::get('/penjualan/rencanapenjualan/datatable_rencana1', 'rencana_penjualan@datatable_rencana1')->name('datatable_rencana1');
+	Route::get('/penjualan/rencanapenjualan/datatable_rencana2', 'rencana_penjualan@datatable_rencana2')->name('datatable_rencana2');
     Route::get('/penjualan/rencanapenjualan/save_item', 'rencana_penjualan@save_item');
+    Route::get('/penjualan/rencanapenjualan/edit_rencana/{id}', 'rencana_penjualan@edit_rencana');
+    Route::get('/penjualan/rencanapenjualan/hapus_rencana/{id}', 'rencana_penjualan@hapus_rencana');
 	// 
 Route::get('/penjualan/manajemenreturn/r_penjualan', 'PenjualanController@r_penjualan');
 Route::get('/penjualan/monitorprogress/progress', 'PenjualanController@progress');

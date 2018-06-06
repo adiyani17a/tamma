@@ -47,6 +47,9 @@
     <!--CORE JAVASCRIPT-->
     <script src="{{ asset ('assets/script/main.js') }}"></script>
     <script src="{{ asset ('assets/script/timepicker.min.js') }}"></script>
+    <script src="{{asset('assets/script/jquery.maskMoney.js')}}"></script>
+    <script src="{{asset('assets/script/accounting.min.js')}}"></script>
+
     <script type="text/javascript">
         var baseUrl = '{{url('/')}}';
 
