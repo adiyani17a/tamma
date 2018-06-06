@@ -76,6 +76,20 @@
                       <div class="col-md-12 col-xs-12 col-sm-12">  
                         <div class="col-md-12 col-sm-12 col-xs-12 tamma-bg" style="padding-bottom: : 10px;padding-top: 10px;margin-bottom: 10px;">      
                               <div class="col-md-3 col-md-offset-2 col-sm-6 col-xs-12">
+                                <label class="form-label">Id Rencana</label>
+                              </div>
+
+                              <div class="col-md-4 col-sm-6 col-xs-12">
+                                <div class="form-group">
+                                  <input type="text" id="id" name="id" readonly="" value="{{$id}}" class="form-control input-sm id">
+                                </div>
+                              </div>
+
+                              <div class="col-md-3 col-sm-0 col-xs-0" style="height: 45px;">
+                                <!-- Empty -->
+                              </div>
+
+                              <div class="col-md-3 col-md-offset-2 col-sm-6 col-xs-12">
                                 <label class="form-label">Bulan</label>
                               </div>
 
@@ -109,17 +123,11 @@
 
                               <div class="col-md-4 col-sm-6 col-xs-12">
                                 <div class="form-group">
-                                  <input type="text" name="" disabled="" class="form-control input-sm">
+                                  <input type="text" name="" disabled="" class="form-control input-sm value">
                                 </div>
                               </div>
                         </div>
                       </div>       
-                              <div class="col-md-12 col-sm-12 col-xs-12" align="right">
-                                <div class="form-group">
-                                  <button class="btn btn-warning">Simpan data</button>
-                                </div>
-                              </div>
-                            
                         <div class="col-md-12 col-xs-12 col-sm-12">  
                           <div class="table-responsive" style="margin-top: 10px;">
                             <table width="100%" class="table-hover table tabelan" cellspacing="0" id="data">
@@ -129,6 +137,7 @@
                                 <th width="10%">Stock Gudang</th>
                                 <th width="5%">Satuan</th>
                                 <th>Target Penjualan</th>
+                                <th>Target Pendapatan</th>
                               </thead>
                               <tbody>
                                 
@@ -142,6 +151,7 @@
                 </div>
 @endsection
 @section("extra_scripts")
+{{-- <script src="{{ asset ('assets/script/icheck.min.js') }}"></script> --}}
 <script type="text/javascript">
    
 $('.datepicker').datepicker({
@@ -152,5 +162,78 @@ $('.datepicker').datepicker({
 
 
 $('.datepicker2').datepicker();
+
+
+$(document).ready(function(){
+
+  $('#data').DataTable({
+    processing: true,
+    serverSide: true,
+    ajax: {
+        url:'{{ route('datatable_rencana1') }}',
+    },
+    columnDefs: [
+
+            {
+               targets: 0 ,
+               className: 'center'
+            },
+            {
+               targets: 2,
+               className: 'center'
+            },
+    //         {
+    //            targets: 4,
+    //            className: 'center'
+    //         },
+          ],
+    columns: [
+      {data: 'DT_Row_Index', name: 'DT_Row_Index'},
+      {data: 'i_name', name: 'i_name'},
+      {data: 's_qty', name: 's_qty'},
+      {data: 'i_sat1', name: 'i_sat1'},
+      {data: 'target_penjualan', name: 'target_penjualan'},
+      {data: 'target_pendapatan', name: 'target_pendapatan'},
+    ],
+
+
+  });
+
+  var temp = 0
+  var x = document.getElementsByClassName("target_qty");
+  console.log(x)
+  for (var i = 0; i < x.length; i++) {
+    temp += x[$i].value;
+  }
+
+  $('.value').val(temp);
+
+})
+
+
+
+
+function target_qty(a) {
+  var par         = $(a).parents('td');
+  var i_id        = $(par).find('.i_id').val();
+  var qty         = $(par).find('.target_qty').val();
+  var id          = $('.id').val();
+  var datepicker  = $('.datepicker').val();
+  var datepicker2 = $('.datepicker2').val();
+  var value       = $('.value').val();
+  $.ajax({
+    url:'{{url('penjualan/rencanapenjualan/save_item')}}',
+    data:{id,i_id,datepicker,datepicker2,value,qty},
+    dataType:'json',
+    success:function(){
+
+    },
+    error:function(){
+
+    }
+  })
+}
+
+
 </script>
 @endsection()

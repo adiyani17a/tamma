@@ -15,7 +15,7 @@
     <script src="{{ asset ('assets/script/jquery.metisMenu.js') }}"></script>
     <script src="{{ asset ('assets/script/jquery.slimscroll.js') }}"></script>
     <script src="{{ asset ('assets/script/jquery.cookie.js') }}"></script>
-{{--     <script src="{{ asset ('assets/script/icheck.min.js') }}"></script> --}}
+    <script src="{{ asset ('assets/script/icheck.min.js') }}"></script>
     <script src="{{ asset ('assets/script/custom.min.js') }}"></script>
     <script src="{{ asset ('assets/script/jquery.news-ticker.js') }}"></script>
     <script src="{{ asset ('assets/script/jquery.menu.js') }}"></script>
@@ -49,4 +49,5 @@
     <script src="{{ asset ('assets/script/timepicker.min.js') }}"></script>
     <script type="text/javascript">
         var baseUrl = '{{url('/')}}';
+     
     </script>

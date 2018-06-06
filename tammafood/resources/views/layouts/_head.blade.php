@@ -34,4 +34,8 @@
     <link type="text/css" rel="stylesheet" href="{{ asset ('assets/styles/css/ladda-themeless.min.css') }}">
 {{--     <link type="text/css" rel="stylesheet" href="{{ asset ('assets/styles/css/prism.css') }}"> --}}
 
-    
+    <style type="text/css">
+        .center{
+            text-align: center
+        }
+    </style>
