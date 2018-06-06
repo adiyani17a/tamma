@@ -49,5 +49,56 @@
     <script src="{{ asset ('assets/script/timepicker.min.js') }}"></script>
     <script type="text/javascript">
         var baseUrl = '{{url('/')}}';
-     
+
+        toastr.options = {
+          "closeButton": true,
+          "debug": false,
+          "newestOnTop": false,
+          "progressBar": true,
+          "positionClass": "toast-top-right",
+          "preventDuplicates": false,
+          "onclick": null,
+          "showDuration": "300",
+          "hideDuration": "1000",
+          "timeOut": "5000",
+          "extendedTimeOut": "1000",
+          "showEasing": "swing",
+          "hideEasing": "linear",
+          "showMethod": "fadeIn",
+          "hideMethod": "fadeOut"
+        };
+
+    </script>
+    <script>
+         $(document).ready(function() {
+            var extensions = {
+                 "sFilterInput": "form-control input-sm",
+                "sLengthSelect": "form-control input-sm"
+            }
+            // Used when bJQueryUI is false
+            $.extend($.fn.dataTableExt.oStdClasses, extensions);
+            // Used when bJQueryUI is true
+            $.extend($.fn.dataTableExt.oJUIClasses, extensions);
+
+            
+            $('.data-table').dataTable({
+                  "responsive":true,
+
+                  "pageLength": 10,
+                "lengthMenu": [[10, 20, 50, - 1], [10, 20, 50, "All"]],
+                "language": {
+                    "searchPlaceholder": "Cari Data",
+                    "emptyTable": "Tidak ada data",
+                    "sInfo": "Menampilkan _START_ - _END_ Dari _TOTAL_ Data",
+                    "sSearch": '<i class="fa fa-search"></i>',
+                    "sLengthMenu": "Menampilkan &nbsp; _MENU_ &nbsp; Data",
+                    "infoEmpty": "",
+                    "paginate": {
+                            "previous": "Sebelumnya",
+                            "next": "Selanjutnya",
+                         }
+                  }
+
+                });
+            });
     </script>

@@ -39,84 +39,32 @@
 
   <div class="col-md-12 col-sm-12 col-xs-12" align="right" style="margin-bottom: 10px;">
     
-    <a href="{{ url('master/datasuplier/tambah_suplier') }}"><button type="button" class="btn btn-box-tool" title="Tambahkan Data Item">
-                               <i class="fa fa-plus" aria-hidden="true">
-                                   &nbsp;
-                               </i>Tambah Data
-                            </button></a>
+    <a href="{{ url('master/datasuplier/tambah_suplier') }}"><button type="button" class="btn btn-box-tool" title="Tambahkan Data Item"><i class="fa fa-plus" aria-hidden="true">&nbsp;</i>Tambah Data</button></a>
     
   </div>
-<div class="col-md-12 col-sm-12 col-xs-12">  
-  <div class="table-responsive">
-      <table class="table tabelan table-hover table-bordered" width="100%" cellspacing="0" id="data">
-                          <thead>
-                            <tr>
-                              <th class="wd-15p">No.</th>
-                              <th class="wd-15p">Perusahaan</th>
-                              <th class="wd-15p">Nama Suplier</th>
-                              <th class="wd-15p">Alamat</th>
-                              <th class="wd-15p">No Hp</th>
-                              <th class="wd-15p">Fax</th>
-                              <th class="wd-15p">Keterangan</th>
-                              <th class="wd-15p">Limit</th>
-                              <th class="wd-15p">Aksi</th>
-                            </tr>
-                          </thead>
+  <div class="col-md-12 col-sm-12 col-xs-12">  
+    <div class="table-responsive">
+        <table class="table tabelan table-hover table-bordered" width="100%" cellspacing="0" id="t90">
+          <thead>
+            <tr>
+              <th>No.</th>
+              <th>Perusahaan</th>
+              <th>Nama Suplier</th>
+              <th>Alamat</th>
+              <th>No Hp</th>
+              <th>Fax</th>
+              <th>Keterangan</th>
+              <th>Limit</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
 
-                          <tbody>
-                            <tr>
-                              <td>1</td>
-                              <td>PT. Alpha</td>
-                              <td>Alpha Bravo</td>
-                              <td>Jl. Alpha</td>
-                              <td>085123585865</td>
-                              <td></td>
-                              <td></td>
-                              <td>10.000.000,00</td>                              
-                             <td class="text-center">
-                               <div class="">    
-                               <a href="#" class="btn btn-warning btn-sm" title="Edit"><i class="glyphicon glyphicon-pencil"></i></a>
-                               <a href="#" class="btn btn-danger btn-sm" title="Hapus"><i class="glyphicon glyphicon-trash"></i></a>
-                              </div>                         
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>2</td>
-                              <td>PT. Charlie</td>
-                              <td>Charlie Delta</td>
-                              <td>Jl. Charlie</td>
-                              <td>085123585865</td>
-                              <td></td>
-                              <td></td>
-                              <td>5.000.000,00</td>                              
-                             <td class="text-center">
-                               <div class="">    
-                               <a href="#" class="btn btn-warning btn-sm" title="Edit"><i class="glyphicon glyphicon-pencil"></i></a>
-                               <a href="#" class="btn btn-danger btn-sm" title="Hapus"><i class="glyphicon glyphicon-trash"></i></a>
-                              </div>                                 
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>3</td>
-                              <td>PT. Delta</td>
-                              <td>Delta Echo</td>
-                              <td>Jl. Delta</td>
-                              <td>085684586866</td>
-                              <td></td>
-                              <td></td>
-                              <td>6.000.000,00</td>                              
-                             <td class="text-center">
-                               <div class="">    
-                               <a href="#" class="btn btn-warning btn-sm" title="Edit"><i class="glyphicon glyphicon-pencil"></i></a>
-                               <a href="#" class="btn btn-danger btn-sm" title="Hapus"><i class="glyphicon glyphicon-trash"></i></a>
-                              </div>                                  
-                              </td>
-                            </tr>                     
-                          </tbody>
+          <tbody>
+          </tbody>
 
-      </table> 
+        </table> 
+    </div>
   </div>
-</div>
                     
                       
                                 
@@ -127,75 +75,57 @@
 
 @endsection
 @section("extra_scripts")
-    <script type="text/javascript">
-      $(document).ready(function() {
-    var extensions = {
-         "sFilterInput": "form-control input-sm",
-        "sLengthSelect": "form-control input-sm"
-    }
-    // Used when bJQueryUI is false
-    $.extend($.fn.dataTableExt.oStdClasses, extensions);
-    // Used when bJQueryUI is true
-    $.extend($.fn.dataTableExt.oJUIClasses, extensions);
+    <script>
+    $(document).ready(function(){
+      $('#t90').DataTable({
+              processing: true,
+              // responsive:true,
+              serverSide: true,
+              ajax: {
+                  url:'{{ route("datatable_suplier") }}',
+              },
+              columnDefs: [
 
+                    {
+                       targets: 0 ,
+                       className: 'center s_id'
+                    }
+                  ],
+              "columns": [
+              { "data": "s_id" },
+              { "data": "s_company"},
+              { "data": "s_name" },
+              { "data": "s_address" },
+              { "data": "s_phone" },
+              { "data": "s_fax" },
+              { "data": "s_note" },
+              { "data": "s_limit" },
+              { "data": "aksi" },
+              
+              ]
+        });
+    });
+
+    function hapus(a) {
+    var par   = $(a).parents('tr');
+    var id    = $(par).find('.s_id').text();
     
-    $('#data').dataTable({
-          "responsive":true,
-
-          "pageLength": 10,
-        "lengthMenu": [[10, 20, 50, - 1], [10, 20, 50, "All"]],
-        "language": {
-            "searchPlaceholder": "Cari Data",
-            "emptyTable": "Tidak ada data",
-            "sInfo": "Menampilkan _START_ - _END_ Dari _TOTAL_ Data",
-            "sSearch": '<i class="fa fa-search"></i>',
-            "sLengthMenu": "Menampilkan &nbsp; _MENU_ &nbsp; Data",
-            "infoEmpty": "",
-            "paginate": {
-                    "previous": "Sebelumnya",
-                    "next": "Selanjutnya",
-                 }
-          }
-
-        });
-    $('#data2').dataTable({
-          "responsive":true,
-
-          "pageLength": 10,
-        "lengthMenu": [[10, 20, 50, - 1], [10, 20, 50, "All"]],
-        "language": {
-            "searchPlaceholder": "Cari Data",
-            "emptyTable": "Tidak ada data",
-            "sInfo": "Menampilkan _START_ - _END_ Dari _TOTAL_ Data",
-            "sSearch": '<i class="fa fa-search"></i>',
-            "sLengthMenu": "Menampilkan &nbsp; _MENU_ &nbsp; Data",
-            "infoEmpty": "",
-            "paginate": {
-                    "previous": "Sebelumnya",
-                    "next": "Selanjutnya",
-                 }
-          }
-
-        });
-    $('#data3').dataTable({
-          "responsive":true,
-
-          "pageLength": 10,
-        "lengthMenu": [[10, 20, 50, - 1], [10, 20, 50, "All"]],
-        "language": {
-            "searchPlaceholder": "Cari Data",
-            "emptyTable": "Tidak ada data",
-            "sInfo": "Menampilkan _START_ - _END_ Dari _TOTAL_ Data",
-            "sSearch": '<i class="fa fa-search"></i>',
-            "sLengthMenu": "Menampilkan &nbsp; _MENU_ &nbsp; Data",
-            "infoEmpty": "",
-            "paginate": {
-                    "previous": "Sebelumnya",
-                    "next": "Selanjutnya",
-                 }
-          }
-
-        });
-});    
-      </script>
+    $.ajax({
+      url: baseUrl +'/master/datasuplier/suplier_hapus',
+      type:'get',
+      data: {id},
+      dataType:'json',
+      success:function(data){        
+        var table = $('#t90').DataTable();
+        table.ajax.reload();
+        console.log(data);
+        toastr["success"]("Suplier Berhasil dihapus", "Sukses");
+        
+      },
+      error:function(){
+        toastr["error"]("Terjadi Kesalahan", "Error");
+      }
+    });
+  }
+    </script>
 @endsection

@@ -30,7 +30,7 @@ Route::get('not-allowed', 'mMemberController@notAllowed');
 Route::get('/home', 'HomeController@home');
 
 /*Master*/
-Route::get('/master/datasuplier/suplier', 'MasterController@suplier');
+Route::get('/master/datasuplier/suplier', 'MasterController@suplier')->name('suplier');
 /* ari */
 Route::get('/master/datacust/cust', 'MasterController@cust');
 Route::get('/master/datacust/getdata', 'MasterController@getdata');
@@ -331,3 +331,11 @@ Route::get('/produksi/spk/data-produc-plan', 'Produksi\spkProductionController@p
 Route::get('/produksi/spk/simpan-spk', 'Produksi\spkProductionController@simpanSpk');
 Route::get('/produksi/spk/cari-data-plan', 'Produksi\spkProductionController@cariDataSpk');
 // spk Production Selesai
+
+//Master Data Suplier
+
+Route::get('master/datasuplier/suplier_proses', 'Master\SuplierController@suplier_proses');
+Route::get('master/datasuplier/datatable_suplier', 'Master\SuplierController@datatable_suplier')->name('datatable_suplier');
+Route::get('master/datasuplier/suplier_edit/{s_id}', 'Master\SuplierController@suplier_edit');
+Route::get('master/datasuplier/suplier_edit_proses/{s_id}', 'Master\SuplierController@suplier_edit_proses');
+Route::get('master/datasuplier/suplier_hapus', 'Master\SuplierController@suplier_hapus');
