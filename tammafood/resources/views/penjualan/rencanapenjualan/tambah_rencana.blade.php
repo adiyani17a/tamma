@@ -131,34 +131,7 @@
                                 <th>Target Penjualan</th>
                               </thead>
                               <tbody>
-                                <tr>
-                                  <td>1</td>
-                                  <td>Tepung Kanji</td>
-                                  <td>50</td>
-                                  <td>Kg</td>
-                                  <td><input type="text" name="jumlah" class="form-control input-sm"></td>
-                                </tr>
-                                <tr>
-                                  <td>2</td>
-                                  <td>Tepung Terigu</td>
-                                  <td>150</td>
-                                  <td>Kg</td>
-                                  <td><input type="text" name="jumlah" class="form-control input-sm"></td>
-                                </tr>
-                                <tr>
-                                  <td>3</td>
-                                  <td>Tepung Jagung</td>
-                                  <td>50</td>
-                                  <td>Kg</td>
-                                  <td><input type="text" name="jumlah" class="form-control input-sm"></td>
-                                </tr>
-                                <tr>
-                                  <td>4</td>
-                                  <td>Tepung Beras</td>
-                                  <td>40</td>
-                                  <td>Kg</td>
-                                  <td><input type="text" name="jumlah" class="form-control input-sm"></td>
-                                </tr>
+                                
                               </tbody>
                             </table>
                           </div>
@@ -169,63 +142,15 @@
                 </div>
 @endsection
 @section("extra_scripts")
-    <script type="text/javascript">
-      $(document).ready(function() {
-        $('#data').dataTable({
-          "pageLength": 10,
-        "lengthMenu": [[10, 20, 50, - 1], [10, 20, 50, "All"]],
-        "language": {
-            "emptyTable": "Tidak ada data",
-            "sInfo": "Menampilkan _START_ - _END_ Dari _TOTAL_ Data",
-            "sSearch": '<i class="fa fa-search"></i>',
-            "sLengthMenu": "Menampilkan &nbsp; _MENU_ &nbsp; Data",
-            "infoEmpty": "",
-            "paginate": {
-                    "previous": "Sebelumnya",
-                    "next": "Selanjutnya",
-                 }
-          }
+<script type="text/javascript">
+   
+$('.datepicker').datepicker({
+  format: "mm-yyyy",
+  viewMode: "months",
+  minViewMode: "months"
+});
 
-        });
-        $('#data2').dataTable({
-          "pageLength": 10,
-        "lengthMenu": [[10, 20, 50, - 1], [10, 20, 50, "All"]],
-        "language": {
-            "emptyTable": "Tidak ada data",
-            "sInfo": "Menampilkan _START_ - _END_ Dari _TOTAL_ Data",
-            "sSearch": '<i class="fa fa-search"></i>',
-            "sLengthMenu": "Menampilkan &nbsp; _MENU_ &nbsp; Data",
-            "infoEmpty": "",
-            "paginate": {
-                    "previous": "Sebelumnya",
-                    "next": "Selanjutnya",
-                 }
-          }
 
-        });
-        $('#data3').dataTable({
-          "pageLength": 10,
-        "lengthMenu": [[10, 20, 50, - 1], [10, 20, 50, "All"]],
-        "language": {
-            "emptyTable": "Tidak ada data",
-            "sInfo": "Menampilkan _START_ - _END_ Dari _TOTAL_ Data",
-            "sSearch": '<i class="fa fa-search"></i>',
-            "sLengthMenu": "Menampilkan &nbsp; _MENU_ &nbsp; Data",
-            "infoEmpty": "",
-            "paginate": {
-                    "previous": "Sebelumnya",
-                    "next": "Selanjutnya",
-                 }
-          }
-
-        });
-            });
-      $('.datepicker').datepicker({
-        format: "mm-yyyy",
-        viewMode: "months",
-        minViewMode: "months"
-      });
-      $('.datepicker2').datepicker({
-      });
-      </script>
+$('.datepicker2').datepicker();
+</script>
 @endsection()

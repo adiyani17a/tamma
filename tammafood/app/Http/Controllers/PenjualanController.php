@@ -109,11 +109,7 @@ class PenjualanController extends Controller
     {
         return view('/penjualan/monitorprogress/progress');
     }
-    public function tambah_rencana()
-    {
-        return view('/penjualan/rencanapenjualan/tambah_rencana');
-    }
-    public function mutasi()
+      public function mutasi()
     {
       return view('/penjualan/mutasistok/mutasi');
     }
