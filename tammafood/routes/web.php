@@ -27,6 +27,8 @@ Route::get('not-allowed', 'mMemberController@notAllowed');
     Route::get('logout', 'mMemberController@logout');
 
 
+Route::group(['middleware' => 'auth'], function () {
+
 Route::get('/home', 'HomeController@home');
 
 /*Master*/
@@ -346,3 +348,5 @@ Route::get('master/datasuplier/datatable_suplier', 'Master\SuplierController@dat
 Route::get('master/datasuplier/suplier_edit/{s_id}', 'Master\SuplierController@suplier_edit');
 Route::get('master/datasuplier/suplier_edit_proses/{s_id}', 'Master\SuplierController@suplier_edit_proses');
 Route::get('master/datasuplier/suplier_hapus', 'Master\SuplierController@suplier_hapus');
+
+}); // End Route Groub middleware auth

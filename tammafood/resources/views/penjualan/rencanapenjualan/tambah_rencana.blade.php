@@ -208,7 +208,7 @@ $(document).ready(function(){
 
             {
                targets: 0 ,
-               className: 'center'
+               className: 'center '
             },
             {
                targets: 2,
