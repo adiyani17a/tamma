@@ -25,6 +25,7 @@ class monitoring_penjualan extends Controller
     									ON sd_sales = s_id 
     									WHERE MONTH(s_date) = '$bulan[0]'
     									AND YEAR(s_date) = '$bulan[1]'
+    									AND s_status = 'FN'
     									GROUP BY sd_item) as r1
     						ON i_id = r1.sd_item
     						LEFT JOIN (SELECT sd_item, sum(sd_total) as sd_price 
@@ -33,6 +34,7 @@ class monitoring_penjualan extends Controller
     									ON sd_sales = s_id 
     									WHERE MONTH(s_date) = '$bulan[0]'
     									AND YEAR(s_date) = '$bulan[1]'
+    									AND s_status = 'FN'
     									GROUP BY sd_item) as r2
     						ON i_id = r2.sd_item
     						ORDER BY r1.sd_qty DESC
@@ -57,6 +59,7 @@ class monitoring_penjualan extends Controller
     									ON sd_sales = s_id 
     									WHERE MONTH(s_date) = '$bulan[0]'
     									AND YEAR(s_date) = '$bulan[1]'
+    									AND s_status = 'FN'
     									GROUP BY sd_item) as r1
     						ON r1.sd_item = rpd_item
     						LEFT JOIN (SELECT sd_item, sum(sd_total) as sd_price 
@@ -65,6 +68,7 @@ class monitoring_penjualan extends Controller
     									ON sd_sales = s_id 
     									WHERE MONTH(s_date) = '$bulan[0]'
     									AND YEAR(s_date) = '$bulan[1]'
+    									AND s_status = 'FN'
     									GROUP BY sd_item) as r2
     						ON r2.sd_item = rpd_item
     						INNER JOIN m_item

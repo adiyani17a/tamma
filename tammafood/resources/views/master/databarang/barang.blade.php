@@ -5,12 +5,12 @@
                 <!--BEGIN TITLE & BREADCRUMB PAGE-->
                 <div id="title-breadcrumb-option-demo" class="page-title-breadcrumb">
                     <div class="page-header pull-left" style="font-family: 'Raleway', sans-serif;">
-                        <div class="page-title">Master Data Barang</div>
+                        <div class="page-title">Master Data Barang Jual</div>
                     </div>
                     <ol class="breadcrumb page-breadcrumb pull-right" style="font-family: 'Raleway', sans-serif;">
                         <li><i class="fa fa-home"></i>&nbsp;<a href="{{ url('/home') }}">Home</a>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
                         <li><i></i>&nbsp;Master&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
-                        <li class="active">Master Data Barang</li>
+                        <li class="active">Master Data Barang Jual</li>
                     </ol>
                     <div class="clearfix">
                     </div>
@@ -27,7 +27,7 @@
                   
                                 
                               <ul id="generalTab" class="nav nav-tabs">
-                                <li class="active"><a href="#alert-tab" data-toggle="tab">Master Data Barang</a></li>
+                                <li class="active"><a href="#alert-tab" data-toggle="tab">Master Data Barang Jual</a></li>
                                 <!-- <li><a href="#note-tab" data-toggle="tab">2</a></li>
                                 <li><a href="#label-badge-tab" data-toggle="tab">3</a></li> -->
                               </ul>
