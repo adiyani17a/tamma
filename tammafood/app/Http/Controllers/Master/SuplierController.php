@@ -71,11 +71,11 @@ class SuplierController extends Controller
     }
     public function suplier_edit($s_id)
     {
-        
+          // return 'a';
         // $edit_suplier = Suplier::find(20)
         $edit_suplier = DB::table("d_supplier")->where("s_id", $s_id)->first();
         // return json_encode($edit_suplier); 
-
+        json_encode($edit_suplier);
         return view('/master/datasuplier/edit_suplier', ['edit_suplier' => $edit_suplier] , compact('edit_suplier', 's_id'));       
     }
     public function suplier_edit_proses(Request $request)
