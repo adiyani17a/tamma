@@ -130,7 +130,7 @@
                                 <li class="{{ Request::is('master/databarang/barang') ? 'active' : '' || Request::is('master/databarang/*') ? 'active' : '' }}"><a href="{{ url('/master/databarang/barang') }}"><span class="submenu-title">Data Barang Jual</span><span class="hidden">Master</span></a>
                                 </li>
                                 @endif
-
+                                {{-- 
                                 @if(Auth::user()->punyaAkses('Data Bahan Baku','ma_read'))
                                 <li class="{{ Request::is('master/databaku/baku') ? 'active' : '' || Request::is('master/databaku/*') ? 'active' : '' }}"><a href="{{ url('/master/databaku/baku') }}"><span class="submenu-title">Data Bahan Baku</span><span class="hidden">Master</span></a>
                                 </li>
@@ -139,7 +139,7 @@
                                  @if(Auth::user()->punyaAkses('Data Jenis Produksi','ma_read'))
                                 <li class="{{ Request::is('master/datajenis/jenis') ? 'active' : '' || Request::is('master/datajenis/*') ? 'active' : '' }}"><a href="{{ url('/master/datajenis/jenis') }}"><span class="submenu-title">Data Jenis Produksi</span><span class="hidden">Master</span></a>
                                 </li>
-                                @endif
+                                @endif --}}
 
                             </ul>   
                         </li>           

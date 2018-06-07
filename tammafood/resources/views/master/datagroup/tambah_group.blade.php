@@ -51,7 +51,7 @@
                                 </div>
                                 <div class="col-md-4 col-sm-9 col-xs-12">
                                   <div class="form-group">
-                                      <input type="text" class="form-control input-sm" value="" id="id" readonly="true" name="id">
+                                      <input type="text" class="form-control input-sm" value="{{ $nota }}" id="id" readonly="true" name="id">
                                       <input type="hidden" name="id_cus_ut">
                                   </div>
                                 </div>
@@ -79,6 +79,22 @@
                                         @foreach ($item as $e)
                                           <option value="{{ $e->i_code }}">{{ $e->i_code }} - {{ $e->i_name }}</option>
                                         @endforeach
+                                      </select>
+                                  </div>
+                                </div>
+                                <div class="col-md-12">
+                                  
+                                </div>
+                                <div class="col-md-2 col-sm-3 col-xs-12">
+                                      <label class="tebal">Type Item</label>
+                                </div>
+                                <div class="col-md-4 col-sm-9 col-xs-12">
+                                  <div class="form-group">
+                                      <select name="type" class="form-control" id="type">
+                                        <option selected="">- Pilih -</option>
+                                        <option value="BB">BAHAN BAKU</option>
+                                        <option value="BJ">BAHAN JUAL</option>
+                                        <option value="BP">BAHAN PRODUKSI</option>
                                       </select>
                                   </div>
                                 </div>

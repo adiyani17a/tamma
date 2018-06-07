@@ -106,17 +106,16 @@ tr.details td.details-control {
             // responsive:true,
             serverSide: true,
             ajax: {
-                url:'{{ route('getdata_customer') }}',
+                url:'{{ route('datatable_cust') }}',
             },
              columnDefs: [
-
                   {
-                     targets: 1 ,
+                     targets: 0 ,
                      className: 'center d_id'
                   }, 
                 ],
             "columns": [
-             { "data": "c_code" },
+            { "data": "c_code" },
             { "data": "c_name" },
             { "data": "c_birthday" },
             { "data": "c_type" },
@@ -124,6 +123,50 @@ tr.details td.details-control {
             ]
       });
 
+        function hapus(a) {
+          var parent = $(a).parents('tr');
+          var id = $(parent).find('.d_id').text();
+          console.log(id);
+          $.ajax({
+               type: "get",
+               url: '{{ route('hapus_cust') }}',
+               data: {id},
+               success: function(data){
+                  if (data.status == 1) {
+                      location.reload();
+                  }
+                  
+               },
+               error: function(){
+                iziToast.warning({
+                  icon: 'fa fa-times',
+                  message: 'Terjadi Kesalahan!',
+                });
+               },
+               async: false
+             });  
+        }
+
+
+         function edit(a) {
+          var parent = $(a).parents('tr');
+          var id = $(parent).find('.d_id').text();
+          console.log(id);
+          $.ajax({
+               type: "get",
+               url: '{{ route('edit_cust') }}',
+               data: {id},
+               success: function(data){
+               },
+               complete:function (argument) {
+                window.location=(this.url)
+               },
+               error: function(){
+               
+               },
+               async: false
+             });  
+        }
     
 </script>
 @endsection

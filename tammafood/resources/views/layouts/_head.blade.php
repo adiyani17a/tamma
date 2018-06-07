@@ -41,4 +41,8 @@
         .right{
             text-align: right;
         }
+        .disabled_select{
+            pointer-events: none;
+            background-color: #eee;
+        }
     </style>

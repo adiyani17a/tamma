@@ -22,7 +22,7 @@ class barangController extends Controller
 
     public function datatable_barang()
     {
-        $list = DB::select("SELECT * from m_item  join m_price on m_price.m_pitem = m_item.i_id where i_type = 'BJ' ");
+        $list = DB::select("SELECT * from m_item  join m_price on m_price.m_pitem = m_item.i_id ");
         // return $list;
         $data = collect($list);
         
@@ -83,7 +83,7 @@ class barangController extends Controller
                 ->insert([
                     'i_id' => $kode,
                     'i_name'=>$request->nama,
-                    'i_type' => 'BJ',
+                    'i_type' => $request->type,
                     'i_code'=> $request->kode_barang,
                     'i_group'=> $request->code_group,
                     'i_code_group'=> $request->code_group,
@@ -151,7 +151,7 @@ class barangController extends Controller
                 ->where('i_id','=',$request->kode_old)
                 ->update([
                     'i_name'=>$request->nama,
-                    'i_type' => 'BJ',
+                    'i_type' => $request->type,
                     'i_code'=> $request->kode_barang,
                     'i_group'=> $request->code_group,
                     'i_code_group'=> $request->code_group,
@@ -182,6 +182,13 @@ class barangController extends Controller
                     'm_pupdated'=>$tanggal,
                 ]);
     return response()->json(['status'=>1]);
+    }
+
+    public function cari_group_barang(Request $request)
+    {
+      $data = DB::table('m_group')->where('m_gtype','=',$request->id)->get();
+    
+      return response()->json($data);
     }
 
 }

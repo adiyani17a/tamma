@@ -340,6 +340,21 @@ Route::get('master/datasuplier/suplier_hapus', 'Master\SuplierController@suplier
 
 
 //-deny
+//cust
+// Route::get('/master/datacust/cust_edit/cust_edit_proses/{id_cus_ut}', 'MasterController@cust_edit_proses');
+// Route::get('/master/datacust/cust_delete/{id_cus_ut}', 'MasterController@cust_delete');
+// Route::get('/master/datacust/tambah_cust', 'MasterController@tambah_cust');
+
+
+//customer
+Route::get('/master/datacust/cust', 'master\custController@cust')->name('cust');
+Route::get('/master/datacust/tambah_cust', 'master\custController@tambah_cust')->name('tambah_cust');
+Route::get('/master/datacust/simpan_cust', 'master\custController@simpan_cust')->name('simpan_cust');
+Route::get('/master/datacust/hapus_cust', 'master\custController@hapus_cust')->name('hapus_cust');
+Route::get('/master/datacust/edit_cust', 'master\custController@edit_cust')->name('edit_cust');
+Route::get('/master/datacust/update_cust', 'master\custController@update_cust')->name('update_cust');
+Route::get('/master/datacust/datatable_cust', 'master\custController@datatable_cust')->name('datatable_cust');
+
 //barang
 Route::get('/master/databarang/barang', 'master\barangController@barang')->name('barang');
 Route::get('/master/databarang/tambah_barang', 'master\barangController@tambah_barang');
@@ -349,6 +364,7 @@ Route::get('/master/databarang/edit_barang', 'master\barangController@edit_baran
 Route::get('/master/databarang/update_barang', 'master\barangController@update_barang')->name('update_barang');
 Route::get('/master/databarang/datatable_barang', 'master\barangController@datatable_barang')->name('datatable_barang');
 Route::get('/master/databarang/kode_barang', 'master\barangController@kode_barang')->name('kode_barang');
+Route::get('/master/databarang/cari_group_barang', 'master\barangController@cari_group_barang')->name('cari_group_barang');
 
 //bahan baku
 Route::get('/master/databaku/baku', 'master\bahan_bakuController@baku')->name('baku');

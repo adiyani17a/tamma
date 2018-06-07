@@ -85,6 +85,23 @@
                                       </select>
                                   </div>
                                 </div>
+                                <div class="col-md-12">
+                                  
+                                </div>
+                                <div class="col-md-2 col-sm-3 col-xs-12">
+                                      <label class="tebal">Type Item</label>
+                                </div>
+                                <div class="col-md-4 col-sm-9 col-xs-12">
+                                  <div class="form-group">
+                                      <select name="type" class="form-control" id="type">
+                                        <option selected="">- Pilih -</option>
+
+                                        <option @if ( $data->m_gtype =='BB') selected="" @endif value="BB">BAHAN BAKU</option>
+                                        <option @if ( $data->m_gtype =='BJ') selected="" @endif value="BJ">BAHAN JUAL</option>
+                                        <option @if ( $data->m_gtype =='BP') selected="" @endif value="BP">BAHAN PRODUKSI</option>
+                                      </select>
+                                  </div>
+                                </div>
 
                               </div>
 

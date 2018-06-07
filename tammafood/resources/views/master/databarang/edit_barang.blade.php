@@ -70,7 +70,22 @@
                                   </div>
                                 </div>
 
-                               
+                                <div class="col-md-3 col-sm-12 col-xs-12">
+                                 
+                                      <label class="tebal">Type Barang</label>
+                                 
+                                </div>
+                                <div class="col-md-9 col-sm-12 col-xs-12">
+                                  <div class="form-group">
+                                     <select class="form-control disabled_select" name="type" id="type" >
+                                       <option selected="">- Pilih Dahulu -</option>
+                                       <option @if ($data_item->i_type == 'BB') selected="" @endif value="BB">BAHAN BAKU</option>
+                                       <option @if ($data_item->i_type == 'BJ') selected="" @endif value="BJ">BAHAN JUAL</option>
+                                       <option @if ($data_item->i_type == 'BP') selected="" @endif value="BP">BAHAN PRODUKSI</option>
+                                     </select>                               
+                                  </div>
+                                </div>
+
 
                                 <div class="col-md-3 col-sm-4 col-xs-12">
                                  
@@ -80,7 +95,7 @@
 
                                 <div class="col-md-3 col-sm-8 col-xs-12">
                                   <div class="form-group">
-                                      <select class="input-sm form-control" name="code_group"> 
+                                      <select class="input-sm form-control disabled_select" name="code_group"> 
                                         @foreach ($group as $g)
                                           @if ($g->m_gcode == $data_item->i_code_group)
                                             <option readonly   value="{{ $g->m_gcode }}" data-name="{{ $g->m_gname }}" selected="">{{ $g->m_gcode }} - {{ $g->m_gname }}</option>
