@@ -100,7 +100,15 @@ tr.details td.details-control {
 
 @section("extra_scripts")
   <script type="text/javascript">
-
+    var extensions = {
+           "sFilterInput": "form-control input-sm",
+          "sLengthSelect": "form-control input-sm"
+      }
+      // Used when bJQueryUI is false
+      $.extend($.fn.dataTableExt.oStdClasses, extensions);
+      // Used when bJQueryUI is true
+      $.extend($.fn.dataTableExt.oJUIClasses, extensions);
+      
   $('#tbl_customer').DataTable({
             processing: true,
             // responsive:true,
@@ -120,7 +128,23 @@ tr.details td.details-control {
             { "data": "c_birthday" },
             { "data": "c_type" },
             { "data": "action" },
-            ]
+            ],
+            "responsive":true,
+
+                  "pageLength": 10,
+                "lengthMenu": [[10, 20, 50, - 1], [10, 20, 50, "All"]],
+                "language": {
+                    "searchPlaceholder": "Cari Data",
+                    "emptyTable": "Tidak ada data",
+                    "sInfo": "Menampilkan _START_ - _END_ Dari _TOTAL_ Data",
+                    "sSearch": '<i class="fa fa-search"></i>',
+                    "sLengthMenu": "Menampilkan &nbsp; _MENU_ &nbsp; Data",
+                    "infoEmpty": "",
+                    "paginate": {
+                            "previous": "Sebelumnya",
+                            "next": "Selanjutnya",
+                         }
+                  }
       });
 
         function hapus(a) {
