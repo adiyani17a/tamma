@@ -196,6 +196,14 @@
 
 @section("extra_scripts")
 <script type="text/javascript">     
+
+  $(document).ready(function(){
+    $('input[name="limit"]').maskMoney({
+      precision : 0,
+      thousands:',',
+    });
+  });
+
       $("#perusahaan").load("/master/datasuplier/tambah_suplier", function(){
       $("#perusahaan").focus();
       });
