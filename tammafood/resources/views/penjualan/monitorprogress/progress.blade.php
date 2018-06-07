@@ -54,7 +54,7 @@
                                       <div>
                                         <div class="col-md-3 col-sm-8 col-xs-12">
                                           <div class="form-group">
-                                            <input value="{{ carbon\carbon::now()->format('m-Y') }}" type="text" name="bulan" class="form-control input-sm datepicker">
+                                            <input value="{{ carbon\carbon::now()->format('m-Y') }}" type="text" name="bulan" class="form-control input-sm datepicker bulan">
                                           </div>
                                         </div>
                                       </div>
@@ -203,7 +203,7 @@ $(document).ready(function(){
     "ordering": false,
     ajax: {
         url:'{{ route('datatable_progress') }}',
-        data:{bulan: function() { return $('.datepicker').val() }}
+        data:{bulan: function() { return $('.bulan').val() }}
     },
     columnDefs: [
 
