@@ -27,6 +27,8 @@ Route::get('not-allowed', 'mMemberController@notAllowed');
     Route::get('logout', 'mMemberController@logout');
 
 
+Route::group(['middleware' => 'auth'], function () {
+
 Route::get('/home', 'HomeController@home');
 
 /*Master*/
@@ -396,3 +398,6 @@ Route::get('/master/datapegawai/hapus_pegawai', 'master\pegawaiController@hapus_
 Route::get('/master/datapegawai/edit_pegawai', 'master\pegawaiController@edit_pegawai')->name('edit_pegawai');
 Route::get('/master/datapegawai/update_pegawai', 'master\pegawaiController@update_pegawai')->name('update_pegawai');
 //end
+
+}); // End Route Groub middleware auth
+
