@@ -97,7 +97,7 @@
 
                               <div class="col-md-4 col-sm-6 col-xs-12">
                                 <div class="form-group">
-                                  <input value="{{ $data->rp_bulan }}" type="text" id="bulan" name="bulan" class="form-control input-sm datepicker">
+                                  <input value="{{ $data->rp_bulan }}" type="text" id="bulan" name="bulan" class="form-control input-sm datepicker bulan">
                                 </div>
                               </div>
 
@@ -184,7 +184,7 @@
 {{-- <script src="{{ asset ('assets/script/icheck.min.js') }}"></script> --}}
 <script type="text/javascript">
    
-$('.datepicker').datepicker({
+$('.bulan').datepicker({
   format: "mm-yyyy",
   viewMode: "months",
   minViewMode: "months"
@@ -278,7 +278,7 @@ function target_qty(a) {
 
 $('.simpan').click(function(){
   var table = $('#data').DataTable();
-  var datepicker = $('.datepicker').val();
+  var datepicker = $('.bulan').val();
   var datepicker2 = $('.datepicker2').val();
 
   if (datepicker == '') {
