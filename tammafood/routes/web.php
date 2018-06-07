@@ -340,11 +340,6 @@ Route::get('master/datasuplier/suplier_hapus', 'Master\SuplierController@suplier
 
 
 //-deny
-//cust
-// Route::get('/master/datacust/cust_edit/cust_edit_proses/{id_cus_ut}', 'MasterController@cust_edit_proses');
-// Route::get('/master/datacust/cust_delete/{id_cus_ut}', 'MasterController@cust_delete');
-// Route::get('/master/datacust/tambah_cust', 'MasterController@tambah_cust');
-
 
 //customer
 Route::get('/master/datacust/cust', 'master\custController@cust')->name('cust');
