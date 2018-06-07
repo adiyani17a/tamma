@@ -47,7 +47,7 @@
         <table class="table tabelan table-hover table-bordered" width="100%" cellspacing="0" id="t90">
           <thead>
             <tr>
-              <th>No.</th>
+              <th>ID Suplier</th>
               <th>Perusahaan</th>
               <th>Nama Suplier</th>
               <th>Alamat</th>
