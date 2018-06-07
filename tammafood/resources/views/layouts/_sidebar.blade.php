@@ -20,7 +20,7 @@
                     <li class="dropdown"><a data-hover="dropdown" href="#" class="dropdown-toggle"><i class="fa fa-tasks fa-fw"></i><span class="badge badge-blue">8</span></a>
 
                     </li>
-                    <li class="dropdown topbar-user"><a data-hover="dropdown" href="#" class="dropdown-toggle"><img src="{{ asset('assets/images/avatar/48.jpg')}}" alt="" class="img-responsive img-circle">&nbsp;<span class="hidden-xs">{{ Auth::user()->name }}</span>&nbsp;<span class="caret"></span></a>
+                    <li class="dropdown topbar-user"><a data-hover="dropdown" href="#" class="dropdown-toggle"><img src="{{ asset('assets/images/avatar/48.jpg')}}" alt="" class="img-responsive img-circle">&nbsp;<span class="hidden-xs">{{ Auth::user()->m_name }}</span>&nbsp;<span class="caret"></span></a>
                         <ul class="dropdown-menu dropdown-user pull-right">
                             <li><a href="#"><i class="fa fa-user"></i>My Profile</a></li>
                             <li><a href="#"><i class="fa fa-calendar"></i>My Calendar</a></li>
@@ -104,6 +104,10 @@
                                  @if(Auth::user()->punyaAkses('Data Bahan Baku','ma_read'))
                                 <li class="{{ Request::is('master/databaku/baku') ? 'active' : '' || Request::is('master/databaku/*') ? 'active' : '' }}"><a href="{{ url('/master/databaku/baku') }}"><span class="submenu-title">Data Bahan Baku</span><span class="hidden">Master</span></a>
                                 </li>
+                                @endif
+
+                                @if(Auth::user()->punyaAkses('Data Satuan','ma_read'))
+                                <li class="{{ Request::is('master/datasatuan/satuan') ? 'active' : '' || Request::is('master/datasatuan/*') ? 'active' : '' }}"><a href="{{ url('/master/datasatuan/satuan') }}"><span class="submenu-title">Data Satuan</span><span class="hidden">Master</span></a>
                                 @endif
 
                                  @if(Auth::user()->punyaAkses('Data Jenis Produksi','ma_read'))
