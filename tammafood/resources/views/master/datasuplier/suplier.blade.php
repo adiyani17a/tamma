@@ -47,7 +47,7 @@
         <table class="table tabelan table-hover table-bordered" width="100%" cellspacing="0" id="t90">
           <thead>
             <tr>
-              <th>No.</th>
+              <th>ID Suplier</th>
               <th>Perusahaan</th>
               <th>Nama Suplier</th>
               <th>Alamat</th>
@@ -99,10 +99,27 @@
               { "data": "s_phone" },
               { "data": "s_fax" },
               { "data": "s_note" },
-              { "data": "s_limit" },
+              { "data": "limit" },
               { "data": "aksi" },
               
-              ]
+              ],
+              // Setting
+              "responsive":true,
+
+                  "pageLength": 10,
+                "lengthMenu": [[10, 20, 50, - 1], [10, 20, 50, "All"]],
+                "language": {
+                    "searchPlaceholder": "Cari Data",
+                    "emptyTable": "Tidak ada data",
+                    "sInfo": "Menampilkan _START_ - _END_ Dari _TOTAL_ Data",
+                    "sSearch": '<i class="fa fa-search"></i>',
+                    "sLengthMenu": "Menampilkan &nbsp; _MENU_ &nbsp; Data",
+                    "infoEmpty": "",
+                    "paginate": {
+                            "previous": "Sebelumnya",
+                            "next": "Selanjutnya",
+                         }
+                  }
         });
     });
 

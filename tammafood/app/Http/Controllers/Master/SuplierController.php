@@ -19,6 +19,9 @@ class SuplierController extends Controller
 
     public function suplier_proses(Request $request)
     {
+        $get_limit  = $request->get('limit');
+
+        $limit      = str_replace(',', '', $get_limit);
 
         $m1 = DB::table('d_supplier')->max('s_id');
     	
@@ -35,7 +38,7 @@ class SuplierController extends Controller
       		        's_npwp'=>$request->get('npwp'),
       		        's_email'=>$request->get('email'),
       		        's_note'=>$request->get('keterangan'),
-      		        's_limit'=>$request->get('limit')
+      		        's_limit'=>$limit
           			]);
         return response()->json(['status'=>'sukses_bos']);
     }
@@ -56,8 +59,14 @@ class SuplierController extends Controller
                                    '<label class="fa fa-trash-o"></label></a>'.
                                   '</div>';
                         })
+                        ->addColumn('limit', function ($xyzab) {
+                          return  '<div style="float:left;">'.
+                                  'Rp. '.
+                                  '</div>'.
+                                  '<div style="float:right;">'.number_format($xyzab->s_limit,0,'','.').'</div>';
+                        })
 
-                      ->rawColumns(['aksi'])
+                      ->rawColumns(['aksi', 'limit'])
                         ->make(true);
     }
     public function suplier_edit($s_id)
@@ -71,7 +80,10 @@ class SuplierController extends Controller
     }
     public function suplier_edit_proses(Request $request)
     {
-    	
+    	$get_limit  = $request->get('limit');
+
+        $limit      = str_replace(',', '', $get_limit);
+
       // dd($request->all());
       $data = DB::table('d_supplier')
           ->where('s_id',$request->get('s_idx'))
@@ -84,7 +96,7 @@ class SuplierController extends Controller
       		        's_npwp'=>$request->get('npwp'),
       		        's_email'=>$request->get('email'),
       		        's_note'=>$request->get('keterangan'),
-      		        's_limit'=>$request->get('limit')
+      		        's_limit'=>$limit
           ]);
 
     return response()->json(['status'=>1]);

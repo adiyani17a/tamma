@@ -91,23 +91,23 @@
                             </i>
                             <span class="menu-title">Master</span><span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
-                                 @if(Auth::user()->punyaAkses('Data Supplier','ma_read'))
+                                   @if(Auth::user()->punyaAkses('Data Supplier','ma_read'))
                                 <li class="{{ Request::is('master/datasuplier/suplier') ? 'active' : '' || Request::is('master/datasuplier/*') ? 'active' : '' }}"><a href="{{ url('/master/datasuplier/suplier') }}"><span class="submenu-title">Data Suplier</span><span class="hidden">Master</span></a>
+                                </li>
+                                @endif
+
+                                @if(Auth::user()->punyaAkses('Data Barang','ma_read'))
+                                <li class="{{ Request::is('master/datasatuan/satuan') ? 'active' : '' || Request::is('master/datasatuan/*') ? 'active' : '' }}"><a href="{{ url('/master/datasatuan/satuan') }}"><span class="submenu-title">Data Satuan</span><span class="hidden">Master</span></a>
+                                </li>
+                                @endif
+
+                                @if(Auth::user()->punyaAkses('Data Barang','ma_read'))
+                                <li class="{{ Request::is('master/datagroup/group') ? 'active' : '' || Request::is('master/datagroup/*') ? 'active' : '' }}"><a href="{{ url('/master/datagroup/group') }}"><span class="submenu-title">Data Group</span><span class="hidden">Master</span></a>
                                 </li>
                                 @endif
 
                                  @if(Auth::user()->punyaAkses('Data Customer','ma_read'))
                                 <li class="{{ Request::is('master/datacust/cust') ? 'active' : '' || Request::is('master/datacust/*') ? 'active' : '' }}"><a href="{{ url('/master/datacust/cust') }}"><span class="submenu-title">Data Customer</span><span class="hidden">Master</span></a>
-                                </li>
-                                @endif
-
-                                 @if(Auth::user()->punyaAkses('Data Bahan Baku','ma_read'))
-                                <li class="{{ Request::is('master/databaku/baku') ? 'active' : '' || Request::is('master/databaku/*') ? 'active' : '' }}"><a href="{{ url('/master/databaku/baku') }}"><span class="submenu-title">Data Bahan Baku</span><span class="hidden">Master</span></a>
-                                </li>
-                                @endif
-
-                                 @if(Auth::user()->punyaAkses('Data Jenis Produksi','ma_read'))
-                                <li class="{{ Request::is('master/datajenis/jenis') ? 'active' : '' || Request::is('master/datajenis/*') ? 'active' : '' }}"><a href="{{ url('/master/datajenis/jenis') }}"><span class="submenu-title">Data Jenis Produksi</span><span class="hidden">Master</span></a>
                                 </li>
                                 @endif
 
@@ -127,7 +127,17 @@
                                 @endif
 
                                  @if(Auth::user()->punyaAkses('Data Barang','ma_read'))
-                                <li class="{{ Request::is('master/databarang/barang') ? 'active' : '' || Request::is('master/databarang/*') ? 'active' : '' }}"><a href="{{ url('/master/databarang/barang') }}"><span class="submenu-title">Data Barang</span><span class="hidden">Master</span></a>
+                                <li class="{{ Request::is('master/databarang/barang') ? 'active' : '' || Request::is('master/databarang/*') ? 'active' : '' }}"><a href="{{ url('/master/databarang/barang') }}"><span class="submenu-title">Data Barang Jual</span><span class="hidden">Master</span></a>
+                                </li>
+                                @endif
+
+                                @if(Auth::user()->punyaAkses('Data Bahan Baku','ma_read'))
+                                <li class="{{ Request::is('master/databaku/baku') ? 'active' : '' || Request::is('master/databaku/*') ? 'active' : '' }}"><a href="{{ url('/master/databaku/baku') }}"><span class="submenu-title">Data Bahan Baku</span><span class="hidden">Master</span></a>
+                                </li>
+                                @endif
+
+                                 @if(Auth::user()->punyaAkses('Data Jenis Produksi','ma_read'))
+                                <li class="{{ Request::is('master/datajenis/jenis') ? 'active' : '' || Request::is('master/datajenis/*') ? 'active' : '' }}"><a href="{{ url('/master/datajenis/jenis') }}"><span class="submenu-title">Data Jenis Produksi</span><span class="hidden">Master</span></a>
                                 </li>
                                 @endif
 

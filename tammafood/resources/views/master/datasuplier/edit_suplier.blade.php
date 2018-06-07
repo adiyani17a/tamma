@@ -194,6 +194,13 @@
 @endsection
 @section('extra_scripts')
 <script>
+  $(document).ready(function(){
+    $('input[name="limit"]').maskMoney({
+       precision : 0,
+      thousands:',',
+    });
+
+  });
   
   function edit()
   {
@@ -256,6 +263,7 @@
            url: baseUrl + '/master/datasuplier/suplier_edit_proses/{{$edit_suplier->s_id}}',
            data: form,
           success: function(a){
+            toastr["success"]("Suplier Berhasil diupdate", "Sukses");
           if(a.status==1)
           {
             window.location = ('{{route("suplier")}}');
