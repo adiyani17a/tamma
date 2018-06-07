@@ -46,7 +46,7 @@
                           
 
                          <div class="col-md-12 col-sm-12 col-xs-12 " style="margin-top:15px;">
-                            <form method="post">
+                            <form id="form-save">
                               <div class="col-md-12 col-sm-12 col-xs-12 tamma-bg" style="margin-bottom: 20px; padding-bottom:5px;padding-top:15px;padding-left:-10px;padding-right: -10px; ">
                                 
                                 <div class="col-md-3 col-sm-4 col-xs-12">
@@ -56,7 +56,7 @@
                                 </div>
                                 <div class="col-md-3 col-sm-8 col-xs-12">
                                   <div class="form-group">
-                                      <input type="text" id="kode_barang" name="kode_barang" class="form-control input-sm">                                  
+                                      <input type="text" id="kode_barang" name="kode_barang" placeholder="PILIH GROUP UNTUK GENERATE KODE" readonly="" class="form-control input-sm">                                  
                                   </div>
                                 </div>
 
@@ -83,42 +83,29 @@
 
                                 <div class="col-md-3 col-sm-8 col-xs-12">
                                   <div class="form-group">
-                                      <select class="input-sm form-control">
-                                        <option value=""></option>
-                                        <option value=""></option>
+                                      <select class="input-sm form-control" name="code_group" id="code_group"> 
+                                        <option selected value="">- Pilih -</option>
+                                        @foreach ($group as $g)
+                                          <option value="{{ $g->m_gcode }}" data-name="{{ $g->m_gname }}">{{ $g->m_gcode }} - {{ $g->m_gname }}</option>
+                                        @endforeach
                                       </select>
                                   </div>
                                 </div>
+                                <input type="hidden" name="group" id="group">
+
 
                                 <div class="col-md-3 col-sm-4 col-xs-12">
-                                 
-                                    <label class="tebal">Jenis</label>
+                                  
+                                      <label class="tebal">Min Stock</label>
                                  
                                 </div>
-
                                 <div class="col-md-3 col-sm-8 col-xs-12">
                                   <div class="form-group">
-                                      <select class="input-sm form-control">
-                                        <option value=""></option>
-                                        <option value=""></option>
-                                      </select>
+                                      <input type="text" id="min_stock" name="min_stock" class="form-control input-sm">                               
                                   </div>
                                 </div>
 
-                                <div class="col-md-3 col-sm-4 col-xs-12">
-                                 
-                                    <label class="tebal">Satuan</label>
-                                 
-                                </div>
-
-                                <div class="col-md-3 col-sm-8 col-xs-12">
-                                  <div class="form-group">
-                                      <select class="input-sm form-control">
-                                        <option value=""></option>
-                                        <option value=""></option>
-                                      </select>
-                                  </div>
-                                </div>
+                                
                               
                                <div class="col-md-3 col-sm-4 col-xs-12">
                                   
@@ -143,15 +130,99 @@
                                 </div>
 
                                 <div class="col-md-3 col-sm-4 col-xs-12">
+                                 
+                                    <label class="tebal">Satuan</label>
+                                 
+                                </div>
+
+                                <div class="col-md-3 col-sm-8 col-xs-12">
+                                  <div class="form-group">
+                                      <select class="input-sm form-control" name="satuan1">
+                                        <option value="">- Pilih -</option>
+                                        @foreach ($satuan as $element)
+                                          <option value="{{ $element->m_scode }}">{{ $element->m_scode }} - {{ $element->m_sname }}</option>
+                                        @endforeach
+                           
+                                      </select>
+                                  </div>
+                                </div>
+                                
+                                <div class="col-md-3 col-sm-4 col-xs-12">
                                   
-                                      <label class="tebal">Min Stock</label>
+                                      <label class="tebal">Isi Sat</label>
                                  
                                 </div>
                                 <div class="col-md-3 col-sm-8 col-xs-12">
                                   <div class="form-group">
-                                      <input type="text" id="min_stock" name="min_stock" class="form-control input-sm">                               
+                                      <input type="text" id="isi_sat1" name="isi_sat1" class="form-control input-sm">                               
                                   </div>
                                 </div>
+                                {{-- satuan 1 --}}
+
+                                <div class="col-md-3 col-sm-4 col-xs-12">
+                                 
+                                    <label class="tebal">Satuan</label>
+                                 
+                                </div>
+
+                                <div class="col-md-3 col-sm-8 col-xs-12">
+                                  <div class="form-group">
+                                      <select class="input-sm form-control" name="satuan2">
+                                        <option value="">- Pilih -</option>
+                                        @foreach ($satuan as $element)
+                                          <option value="{{ $element->m_scode }}">{{ $element->m_scode }} - {{ $element->m_sname }}</option>
+                                        @endforeach
+                                 
+                                      </select>
+                                  </div>
+                                </div>
+                                
+                                <div class="col-md-3 col-sm-4 col-xs-12">
+                                  
+                                      <label class="tebal">Isi Sat</label>
+                                 
+                                </div>
+                                <div class="col-md-3 col-sm-8 col-xs-12">
+                                  <div class="form-group">
+                                      <input type="text" id="isi_sat2" name="isi_sat2" class="form-control input-sm">                               
+                                  </div>
+                                </div>
+
+                                {{-- satuan 2 --}}
+                                <div class="col-md-3 col-sm-4 col-xs-12">
+                                 
+                                    <label class="tebal">Satuan</label>
+                                 
+                                </div>
+
+                                <div class="col-md-3 col-sm-8 col-xs-12">
+                                  <div class="form-group">
+                                      <select class="input-sm form-control" name="satuan3">
+                                        <option value="">- Pilih -</option>
+                                        @foreach ($satuan as $element)
+                                          <option value="{{ $element->m_scode }}">{{ $element->m_scode }} - {{ $element->m_sname }}</option>
+                                        @endforeach
+                                
+                                      </select>
+                                  </div>
+                                </div>
+                                
+                                <div class="col-md-3 col-sm-4 col-xs-12">
+                                  
+                                      <label class="tebal">Isi Sat</label>
+                                 
+                                </div>
+                                <div class="col-md-3 col-sm-8 col-xs-12">
+                                  <div class="form-group">
+                                      <input type="text" id="isi_sat3" name="isi_sat3" class="form-control input-sm">                               
+                                  </div>
+                                </div>
+                                <div class="col-xs-12">
+                                  
+                                      <label class="tebal"></label>
+                                 
+                                </div>
+                                
                         
                                 <div class="col-md-3 col-sm-4 col-xs-12">
                                   
@@ -160,14 +231,14 @@
                                 </div>
                                 <div class="col-md-9 col-sm-8 col-xs-12">
                                   <div class="form-group">
-                                      <textarea class="form-control input-sm"></textarea>                               
+                                      <textarea class="form-control input-sm" name="detail"></textarea>                               
                                   </div>
                                 </div>
 
                         </div> 
                         
-                          <div align="right">
-                            <input type="submit" name="tambah_data" value="Simpan Data" class="btn btn-primary">
+                          <div align="right" id="change_function">
+                            <input type="button" name="tambah_data" value="Simpan Data" id="save_data" class="btn btn-primary">
                           </div>
                                   
                       </form>
@@ -181,11 +252,44 @@
 @section("extra_scripts")
 <script type="text/javascript">     
       $("#nama").load("/master/databarang/tambah_barang", function(){
-      $("#nama").focus();
+          $("#nama").focus();
       });
-      $('#tgl_lahir').datepicker({
-          autoclose: true,
-          format: 'dd-mm-yyyy'
-        });
+
+
+      $('#change_function').on("click", "#save_data",function(){
+      $.ajax({
+           type: "get",
+           url: '{{ route('simpan_barang') }}',
+           data: $('#form-save').serialize(),
+           success: function(data){
+             
+            toastr.success('Data Telah Tersimpan!','Pemberitahuan')
+
+              window.location=('{{ route('barang') }}')
+           },
+           error: function(){
+            toastr.error('Data Tidak Tersimpan!','Pemberitahuan')
+            
+           },
+           async: false
+         });
+      })
+
+      $('#code_group').change(function(){
+        var id = $(this).val();
+        $.ajax({
+           type: "get",
+           url: '{{ route('kode_barang') }}',
+           data: {id},
+           success: function(data){
+            $('#kode_barang').val(data);
+           
+           },
+           error: function(){
+          
+           },
+           async: false
+         });
+      })
 </script>
 @endsection                            

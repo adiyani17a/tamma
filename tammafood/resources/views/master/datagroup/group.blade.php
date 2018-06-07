@@ -52,7 +52,7 @@ tr.details td.details-control {
               <div id="alert-tab" class="tab-pane fade in active">
                 <div class="row" style="margin-top:-20px;">
                   <div align="right" class="col-md-12 col-sm-12 col-xs-12" style="margin-bottom:10px;">
-                    <a href="{{ url('master/datacust/tambah_cust') }}">
+                    <a href="{{ url('master/datagroup/tambah_group') }}">
                       <button type="button" class="btn btn-box-tool" title="Tambahkan Data Item">
                         <i class="fa fa-plus" aria-hidden="true">
                          &nbsp;
@@ -68,10 +68,8 @@ tr.details td.details-control {
                         <thead>
                           <tr>
                             {{-- <th class="sorting_disabled"></th> --}}
-                            <th class="wd-15p">ID</th>
-                            <th class="wd-15p">Nama Customer</th>
-                            <th class="wd-15p">Tanggal Lahir</th>
-                            <th class="wd-15p">Tipe Cust</th>
+                            <th class="wd-15p">Kode</th>
+                            <th class="wd-15p">Nama</th>
                             <th class="wd-15p">Aksi</th>
                           </tr>
                         </thead>
@@ -106,23 +104,65 @@ tr.details td.details-control {
             // responsive:true,
             serverSide: true,
             ajax: {
-                url:'{{ route('getdata_customer') }}',
+                url:'{{ route('datatable_group') }}',
             },
              columnDefs: [
 
                   {
-                     targets: 1 ,
+                     targets: 0 ,
                      className: 'center d_id'
                   }, 
                 ],
             "columns": [
-             { "data": "c_code" },
-            { "data": "c_name" },
-            { "data": "c_birthday" },
-            { "data": "c_type" },
-            { "data": "action" },
+            { "data": "m_gcode" },
+            { "data": "m_gname" },
+            { "data": "aksi" },
             ]
       });
+   function hapus(a) {
+          var parent = $(a).parents('tr');
+          var id = $(parent).find('.d_id').text();
+          console.log(id);
+          $.ajax({
+               type: "get",
+               url: '{{ route('hapus_group') }}',
+               data: {id},
+               success: function(data){
+                  if (data.status == 1) {
+                      location.reload();
+                  }
+                  
+               },
+               error: function(){
+                iziToast.warning({
+                  icon: 'fa fa-times',
+                  message: 'Terjadi Kesalahan!',
+                });
+               },
+               async: false
+             });  
+        }
+
+
+         function edit(a) {
+          var parent = $(a).parents('tr');
+          var id = $(parent).find('.d_id').text();
+          console.log(id);
+          $.ajax({
+               type: "get",
+               url: '{{ route('edit_group') }}',
+               data: {id},
+               success: function(data){
+               },
+               complete:function (argument) {
+                window.location=(this.url)
+               },
+               error: function(){
+               
+               },
+               async: false
+             });  
+        }
 
     
 </script>

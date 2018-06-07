@@ -46,59 +46,121 @@
                           
 
                          <div class="col-md-12 col-sm-12 col-xs-12 " style="margin-top:15px;">
-                            <form method="post">
+                            <form id="form-save">
                               <div class="col-md-12 col-sm-12 col-xs-12 tamma-bg" style="margin-bottom: 20px; padding-bottom:5px;padding-top:15px;padding-left:-10px;padding-right: -10px; ">
                                 
+                                <div class="col-md-3 col-sm-4 col-xs-12">
+                                 
+                                      <label class="tebal">Kode Barang</label>
+                                 
+                                </div>
+                                <div class="col-md-3 col-sm-8 col-xs-12">
+                                  <div class="form-group">
+                                      <input type="text" id="kode_barang" name="kode_barang" value="" readonly="" class="form-control input-sm">                                  
+                                  </div>
+                                </div>
 
                                 
-                                  <div class="col-md-3 col-sm-4 col-xs-12">
-                                   
-                                        <label class="tebal">ID Jenis Produksi</label>
-                                   
-                                  </div>
-                                  <div class="col-md-4 col-sm-8 col-xs-12">
-                                    <div class="form-group">
-                                        <input type="text" id="id_jp" name="id_jp" class="form-control input-sm">                                  
-                                    </div>
-                                  </div>
-                                  <div class="col-md-5 col-sm-0 col-xs-0" style="height: 45px;">
-                                    <!-- empty -->
-                                  </div>
 
-                                  <div class="col-md-3 col-sm-4 col-xs-12">
-                                    
-                                        <label class="tebal">Nama Produk</label>
-                                   
+                                <div class="col-md-3 col-sm-4 col-xs-12">
+                                  
+                                      <label class="tebal">Nama</label>
+                                 
+                                </div>
+                                <div class="col-md-3 col-sm-8 col-xs-12">
+                                  <div class="form-group">
+                                      <input type="text" id="nama" name="nama" class="form-control input-sm">                               
                                   </div>
-                                  <div class="col-md-4 col-sm-8 col-xs-12">
-                                    <div class="form-group">
-                                        <input type="text" id="nama" name="nama" class="form-control input-sm">                               
-                                    </div>
+                                </div>
+
+                               
+
+                                <div class="col-md-3 col-sm-4 col-xs-12">
+                                 
+                                    <label class="tebal">Kelompok</label>
+                                 
+                                </div>
+
+                                <div class="col-md-3 col-sm-8 col-xs-12">
+                                  <div class="form-group">
+                                      <select class="input-sm form-control" name="code_group" id="code_group"> 
+                                        <option selected value="">- Pilih -</option>
+                                        @foreach ($group as $g)
+                                          <option value="{{ $g->m_gcode }}" data-name="{{ $g->m_gname }}">{{ $g->m_gcode }} - {{ $g->m_gname }}</option>
+                                        @endforeach
+                                      </select>
                                   </div>
+                                </div>
+                                <input type="text" name="group" id="group">
 
-                                  <div class="col-md-5 col-sm-0 col-xs-0" style="height: 45px;">
-                                    <!-- empty -->
+                                <div class="col-md-3 col-sm-4 col-xs-12">
+                                 
+                                    <label class="tebal">Satuan</label>
+                                 
+                                </div>
+
+                                <div class="col-md-3 col-sm-8 col-xs-12">
+                                  <div class="form-group">
+                                      <select class="input-sm form-control" name="satuan">
+                                        <option value="">- Pilih -</option>
+                                        @foreach ($satuan as $element)
+                                          <option value="{{ $element->m_scode }}">{{ $element->m_scode }} - {{ $element->m_sname }}</option>
+                                        @endforeach
+                            
+                                      </select>
                                   </div>
-
-
-                                  <div class="col-md-3 col-sm-4 col-xs-12">
-                                   
-                                      <label class="tebal">Jenis Produksi</label>
-                                   
+                                </div>
+                              
+                               <div class="col-md-3 col-sm-4 col-xs-12">
+                                  
+                                      <label class="tebal">Harga</label>
+                                 
+                                </div>
+                                <div class="col-md-3 col-sm-8 col-xs-12">
+                                  <div class="form-group">
+                                      <input type="text" id="harga" name="harga" class="form-control input-sm">                               
                                   </div>
+                                </div>
 
-                                  <div class="col-md-4 col-sm-8 col-xs-12">
-                                    <div class="form-group">
-                                        <input type="text" name="jenis" id="jenis" class="form-control input-sm">
-                                    </div>
+                                <div class="col-md-3 col-sm-4 col-xs-12">
+                                  
+                                      <label class="tebal">Berat</label>
+                                 
+                                </div>
+                                <div class="col-md-3 col-sm-8 col-xs-12">
+                                  <div class="form-group">
+                                      <input type="text" id="berat" name="berat" class="form-control input-sm">                               
                                   </div>
+                                </div>
 
-                                  <div class="col-md-5 col-sm-0 col-xs-0" style="height: 45px;">
-                                    <!-- empty -->
+                                <div class="col-md-3 col-sm-4 col-xs-12">
+                                  
+                                      <label class="tebal">Min Stock</label>
+                                 
+                                </div>
+                                <div class="col-md-3 col-sm-8 col-xs-12">
+                                  <div class="form-group">
+                                      <input type="text" id="min_stock" name="min_stock" class="form-control input-sm">                               
                                   </div>
-
+                                </div>
+                                <div class="col-xs-12">
+                                  
+                                      <label class="tebal"></label>
+                                 
+                                </div>
                                 
-                              </div>
+                        
+                                <div class="col-md-3 col-sm-4 col-xs-12">
+                                  
+                                      <label class="tebal">Detail</label>
+                                 
+                                </div>
+                                <div class="col-md-9 col-sm-8 col-xs-12">
+                                  <div class="form-group">
+                                      <textarea class="form-control input-sm"></textarea>                               
+                                  </div>
+                                </div>
+
                             </form>
                         
 
@@ -106,7 +168,7 @@
                         
                                 <div class="col-md-12 col-sm-12 col-xs-12">
                                   <div align="right">
-                                    <input type="submit" name="tambah_data" value="Simpan Data" class="btn btn-primary">
+                                    <input type="button" name="tambah_data" id="save_data" value="Simpan Data" class="btn btn-primary">
                                   </div>
                                 </div>
                                           
@@ -122,9 +184,30 @@
       $("#nama").load("/master/databaku/tambah_baku", function(){
       $("#nama").focus();
       });
-      $('#tgl_lahir').datepicker({
-          autoclose: true,
-          format: 'dd-mm-yyyy'
-        });
+
+        $('#save_data').click(function(){
+        $.ajax({
+           type: "get",
+           url: '{{ route('simpan_jenis') }}',
+           data: $('#form-save').serialize(),
+           success: function(data){
+            console.log(data);
+            if (data.status == 1) {
+              window.location=('{{ route('jenis') }}')
+            }
+           },
+           complete:function(data){
+           },
+           error: function(){
+            
+           },
+           async: false
+         });
+      }) 
+
+      $('#code_group').change(function(){
+        var this_val = $(this).data('name');
+        $('#group').val(this_val);
+      })
 </script>
 @endsection                            

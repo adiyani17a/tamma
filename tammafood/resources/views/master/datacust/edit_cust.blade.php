@@ -53,9 +53,9 @@
                                 </div>
                                 <div class="col-md-4 col-sm-9 col-xs-12">
                                   <div class="form-group">
-                                      <input type="text" class="form-control input-sm" readonly="true" name="id_cus_ut" value="{{$edit_cust->id_cus}}">
-                                      <input type="hidden" name="id_cus_ut" value="{{$edit_cust->id_cus_ut}}">
-                                      <input type="hidden" name="id_cus" value="{{$edit_cust->id_cus}}">
+                                      <input type="text" class="form-control input-sm" readonly="true" name="id_cus_ut" value="{{ $edit_cust->c_id }}">
+                                      <input type="hidden" name="id_cus_ut" value="{{$edit_cust->c_id}}">
+                                      <input type="hidden" name="id_cus" value="{{$edit_cust->c_id}}">
                                   </div>
                                 </div>
                                 <div class="col-md-2 col-sm-3 col-xs-12">
@@ -68,7 +68,7 @@
                                   <div class="form-group">
                                     <div class="input-icon right">
                                       <i class="glyphicon glyphicon-user"></i>
-                                      <input type="text" id="nama_cus" name="nama_cus" class="form-control input-sm" value="{{ $edit_cust->nama_cus }}"> 
+                                      <input type="text" id="nama_cus" name="nama_cus" class="form-control input-sm" value="{{ $edit_cust->c_name }}"> 
                                       @if ($errors->has('nama_cus'))
                                         <span class="help-block">
                                             <strong>{{ $errors->first('nama_cus') }}</strong>
@@ -86,7 +86,7 @@
                                   <div class="form-group">
                                     <div class="input-icon right">
                                       <i class="glyphicon glyphicon-calendar"></i>
-                                      <input maxlength="10" type="text" id="tgl_lahir" name="tgl_lahir" class="form-control input-sm datepicker2" value="{{ $edit_cust->tgl_lahir}}"> 
+                                      <input maxlength="10" type="text" id="tgl_lahir" name="tgl_lahir" class="form-control input-sm datepicker2" value="{{ $edit_cust->c_birthday}}"> 
                                       @if ($errors->has('tgl_lahir'))
                                         <span class="help-block">
                                             <strong>{{ $errors->first('tgl_lahir') }}</strong>
@@ -104,7 +104,7 @@
                                   <div class="form-group">
                                     <div class="input-icon right">
                                       <i class="glyphicon glyphicon-envelope"></i>
-                                      <input type="email" id="email" name="email" class="form-control input-sm"  value="{{ $edit_cust->email }}">
+                                      <input type="email" id="email" name="email" class="form-control input-sm"  value="{{ $edit_cust->c_email }}">
                                       @if ($errors->has('email'))
                                         <span class="help-block">
                                             <strong>{{ $errors->first('email') }}</strong>
@@ -123,10 +123,10 @@
                                   <div class="form-group">
                                     
                                       <select name="tipe_cust" id="tipe_cust" class="form-control input-sm">
-                                        @if($edit_cust->tipe_cust=="retail")
+                                        @if($edit_cust->c_type=="retail")
                                              <option value="retail" selected="true">Retail</option>
                                              <option value="online">Online</option>
-                                        @elseif($edit_cust->tipe_cust=="online")
+                                        @elseif($edit_cust->c_type=="online")
                                              <option value="retail">Retail</option>
                                              <option value="online" selected="true" >Online</option>
                                         @else
@@ -157,7 +157,7 @@
                                   <div class="form-group">
                                     <div class="input-icon right">
                                       <i class="glyphicon glyphicon-earphone"></i>
-                                      <input type="text" id="no_hp" name="no_hp" class="form-control input-sm"  value="{{ $edit_cust->no_hp }}">
+                                      <input type="text" id="no_hp" name="no_hp" class="form-control input-sm"  value="{{ $edit_cust->c_hp }}">
                                       @if ($errors->has('no_hp'))
                                         <span class="help-block">
                                             <strong>{{ $errors->first('no_hp') }}</strong>
@@ -176,7 +176,7 @@
                                   <div class="form-group">
                                     <div class="input-icon right">
                                       <i class="glyphicon glyphicon-home"></i>
-                                      <textarea id="alamat" name="alamat" class="form-control input-sm">{{ $edit_cust->alamat}}</textarea>
+                                      <textarea id="alamat" name="alamat" class="form-control input-sm">{{ $edit_cust->c_address}}</textarea>
                                       @if ($errors->has('alamat'))
                                         <span class="help-block">
                                             <strong>{{ $errors->first('alamat') }}</strong>

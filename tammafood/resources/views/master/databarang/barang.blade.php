@@ -54,50 +54,16 @@
                           <table class="table tabelan table-hover table-bordered" width="100%" cellspacing="0" id="data">
                             <thead>
                                 <tr>
+                                  <th class="wd-15p" width="5%">id Barang</th>
                                   <th class="wd-15p" width="5%">Kode Barang</th>
                                   <th class="wd-15p">Nama Barang</th>
-                                  <th class="wd-15p" width="5%">Satuan</th>
                                   <th class="wd-15p">Kelompok Barang</th>
+                                  <th class="wd-15p">Harga Barang</th>
                                   <th class="wd-15p" width="10%">Aksi</th>
                                 </tr>
                               </thead>
                               <tbody>
-                                <tr>
-                                  <td>BRG0218/001</td>
-                                  <td>Tepung Beras</td>
-                                  <td>Kg</td>
-                                  <td></td>
-                                  <td>
-                                    <div class="">    
-                                      <a href="#" class="btn btn-warning btn-sm" title="Edit"><i class="glyphicon glyphicon-pencil"></i></a>
-                                      <a href="#" class="btn btn-danger btn-sm" title="Hapus"><i class="glyphicon glyphicon-trash"></i></a>
-                                    </div>  
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td>BRG0218/002</td>
-                                  <td>Tepung Kanji</td>
-                                  <td>Kg</td>
-                                  <td></td>
-                                  <td>
-                                    <div class="">    
-                                      <a href="#" class="btn btn-warning btn-sm" title="Edit"><i class="glyphicon glyphicon-pencil"></i></a>
-                                      <a href="#" class="btn btn-danger btn-sm" title="Hapus"><i class="glyphicon glyphicon-trash"></i></a>
-                                    </div>  
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td>BRG0218/003</td>
-                                  <td>Tepung Terigu</td>
-                                  <td>Kg</td>
-                                  <td></td>
-                                  <td>
-                                    <div class="">    
-                                      <a href="#" class="btn btn-warning btn-sm" title="Edit"><i class="glyphicon glyphicon-pencil"></i></a>
-                                      <a href="#" class="btn btn-danger btn-sm" title="Hapus"><i class="glyphicon glyphicon-trash"></i></a>
-                                    </div>  
-                                  </td>
-                                </tr>
+                               
                               </tbody>
                           
                             </table> 
@@ -105,24 +71,7 @@
                         </div>
                   </div>
                                   
-                  </div><!-- /div alert-tab -->
-                 <!-- div note-tab -->
-                  <div id="note-tab" class="tab-pane fade">
-                    <div class="row">
-                      <div class="panel-body">
-                        <!-- Isi Content -->we we we
-                      </div>
-                    </div>
-                  </div><!--/div note-tab -->
-                  <!-- div label-badge-tab -->
-                  <div id="label-badge-tab" class="tab-pane fade">
-                    <div class="row">
-                      <div class="panel-body">
-                        <!-- Isi content -->we
-                      </div>
-                    </div>
-                  </div><!-- /div label-badge-tab -->
-                            </div>
+                </div>
                     
             </div>
           </div>
@@ -134,80 +83,77 @@
 @endsection
 @section("extra_scripts")
     <script type="text/javascript">
-     $(document).ready(function() {
-    var extensions = {
-         "sFilterInput": "form-control input-sm",
-        "sLengthSelect": "form-control input-sm"
-    }
-    // Used when bJQueryUI is false
-    $.extend($.fn.dataTableExt.oStdClasses, extensions);
-    // Used when bJQueryUI is true
-    $.extend($.fn.dataTableExt.oJUIClasses, extensions);
-    $('#data').dataTable({
-          "responsive":true,
+    $('#data').DataTable({
+            processing: true,
+            // responsive:true,
+            serverSide: true,
+            ajax: {
+                url:'{{ route('datatable_barang') }}',
+            },
+             columnDefs: [
 
-          "pageLength": 10,
-        "lengthMenu": [[10, 20, 50, - 1], [10, 20, 50, "All"]],
-        "language": {
-            "searchPlaceholder": "Cari Data",
-            "emptyTable": "Tidak ada data",
-            "sInfo": "Menampilkan _START_ - _END_ Dari _TOTAL_ Data",
-            "sSearch": '<i class="fa fa-search"></i>',
-            "sLengthMenu": "Menampilkan &nbsp; _MENU_ &nbsp; Data",
-            "infoEmpty": "",
-            "paginate": {
-                    "previous": "Sebelumnya",
-                    "next": "Selanjutnya",
-                 }
-          }
-
-        });
-    $('#data2').dataTable({
-          "responsive":true,
-
-          "pageLength": 10,
-        "lengthMenu": [[10, 20, 50, - 1], [10, 20, 50, "All"]],
-        "language": {
-            "searchPlaceholder": "Cari Data",
-            "emptyTable": "Tidak ada data",
-            "sInfo": "Menampilkan _START_ - _END_ Dari _TOTAL_ Data",
-            "sSearch": '<i class="fa fa-search"></i>',
-            "sLengthMenu": "Menampilkan &nbsp; _MENU_ &nbsp; Data",
-            "infoEmpty": "",
-            "paginate": {
-                    "previous": "Sebelumnya",
-                    "next": "Selanjutnya",
-                 }
-          }
-
-        });
-    $('#data3').dataTable({
-          "responsive":true,
-
-          "pageLength": 10,
-        "lengthMenu": [[10, 20, 50, - 1], [10, 20, 50, "All"]],
-        "language": {
-            "searchPlaceholder": "Cari Data",
-            "emptyTable": "Tidak ada data",
-            "sInfo": "Menampilkan _START_ - _END_ Dari _TOTAL_ Data",
-            "sSearch": '<i class="fa fa-search"></i>',
-            "sLengthMenu": "Menampilkan &nbsp; _MENU_ &nbsp; Data",
-            "infoEmpty": "",
-            "paginate": {
-                    "previous": "Sebelumnya",
-                    "next": "Selanjutnya",
-                 }
-          }
-
-        });
-});
-      $('.datepicker').datepicker({
-        format: "mm",
-        viewMode: "months",
-        minViewMode: "months"
+                  {
+                     targets: 0 ,
+                     className: 'd_id center'
+                  }, 
+                  {
+                     targets: 2 ,
+                     className: 'right format_money'
+                  },
+                ],
+            "columns": [
+            { "data": "i_id" },
+            { "data": "i_code" },
+            { "data": "i_name" },
+            { "data": "i_group" },
+            { "data": "m_pbuy" ,render: $.fn.dataTable.render.number( '.', '.', 0, '' )},
+            { "data": "aksi" },
+            ]
       });
-      $('.datepicker2').datepicker({
-        format:"dd/mm/yyyy"
-      });    
+      
+       function hapus(a) {
+          var parent = $(a).parents('tr');
+          var id = $(parent).find('.d_id').text();
+          console.log(id);
+          $.ajax({
+               type: "get",
+               url: '{{ route('hapus_barang') }}',
+               data: {id},
+               success: function(data){
+                  if (data.status == 1) {
+                      location.reload();
+                  }
+                  
+               },
+               error: function(){
+                iziToast.warning({
+                  icon: 'fa fa-times',
+                  message: 'Terjadi Kesalahan!',
+                });
+               },
+               async: false
+             });  
+        }
+
+
+         function edit(a) {
+          var parent = $(a).parents('tr');
+          var id = $(parent).find('.d_id').text();
+          console.log(id);
+          $.ajax({
+               type: "get",
+               url: '{{ route('edit_barang') }}',
+               data: {id},
+               success: function(data){
+               },
+               complete:function (argument) {
+                window.location=(this.url)
+               },
+               error: function(){
+               
+               },
+               async: false
+             });  
+        }
       </script>
 @endsection()

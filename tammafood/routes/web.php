@@ -32,27 +32,16 @@ Route::get('/home', 'HomeController@home');
 /*Master*/
 Route::get('/master/datasuplier/suplier', 'MasterController@suplier')->name('suplier');
 /* ari */
-Route::get('/master/datacust/cust', 'MasterController@cust');
-Route::get('/master/datacust/getdata', 'MasterController@getdata');
-Route::get('/master/datacust/simpan_cust', 'MasterController@simpan_cust');
 
-Route::get('/master/datacust/cust_edit/{id_cus_ut}', 'MasterController@cust_edit');
-Route::get('/master/datacust/cust_edit/cust_edit_proses/{id_cus_ut}', 'MasterController@cust_edit_proses');
-Route::get('/master/datacust/cust_delete/{id_cus_ut}', 'MasterController@cust_delete');
+
 /*---------*/
-Route::get('/master/databaku/baku', 'MasterController@baku');
-Route::get('/master/databaku/tambah_baku', 'MasterController@tambah_baku');
-Route::get('/master/datajenis/jenis', 'MasterController@jenis');
-Route::get('/master/datajenis/tambah_jenis', 'MasterController@tambah_jenis');
+
 Route::get('/master/datapegawai/pegawai', 'MasterController@pegawai');
 Route::get('/master/datakeuangan/keuangan', 'MasterController@keuangan');
 Route::get('/master/datatransaksi/transaksi', 'MasterController@transaksi');
 Route::get('/master/datasuplier/tambah_suplier', 'MasterController@tambah_suplier');
-Route::get('/master/datacust/tambah_cust', 'MasterController@tambah_cust');
 Route::get('/master/datatransaksi/tambah_transaksi', 'MasterController@tambah_transaksi');
 Route::get('/master/datapegawai/tambah_pegawai', 'MasterController@tambah_pegawai');
-Route::get('/master/databarang/barang', 'MasterController@barang');
-Route::get('/master/databarang/tambah_barang', 'MasterController@tambah_barang');
 //purchesing
 //rizky
 //order pembelian
@@ -346,3 +335,64 @@ Route::get('master/datasuplier/datatable_suplier', 'Master\SuplierController@dat
 Route::get('master/datasuplier/suplier_edit/{s_id}', 'Master\SuplierController@suplier_edit');
 Route::get('master/datasuplier/suplier_edit_proses/{s_id}', 'Master\SuplierController@suplier_edit_proses');
 Route::get('master/datasuplier/suplier_hapus', 'Master\SuplierController@suplier_hapus');
+
+
+//-deny
+//barang
+Route::get('/master/databarang/barang', 'master\barangController@barang')->name('barang');
+Route::get('/master/databarang/tambah_barang', 'master\barangController@tambah_barang');
+Route::get('/master/databarang/simpan_barang', 'master\barangController@simpan_barang')->name('simpan_barang');
+Route::get('/master/databarang/hapus_barang', 'master\barangController@hapus_barang')->name('hapus_barang');
+Route::get('/master/databarang/edit_barang', 'master\barangController@edit_barang')->name('edit_barang');
+Route::get('/master/databarang/update_barang', 'master\barangController@update_barang')->name('update_barang');
+Route::get('/master/databarang/datatable_barang', 'master\barangController@datatable_barang')->name('datatable_barang');
+Route::get('/master/databarang/kode_barang', 'master\barangController@kode_barang')->name('kode_barang');
+
+//bahan baku
+Route::get('/master/databaku/baku', 'master\bahan_bakuController@baku')->name('baku');
+Route::get('/master/databaku/tambah_baku', 'master\bahan_bakuController@tambah_baku')->name('tambah_baku');
+Route::get('/master/databaku/simpan_baku', 'master\bahan_bakuController@simpan_baku')->name('simpan_baku');
+Route::get('/master/databaku/hapus_baku', 'master\bahan_bakuController@hapus_baku')->name('hapus_baku');
+Route::get('/master/databaku/edit_baku', 'master\bahan_bakuController@edit_baku')->name('edit_baku');
+Route::get('/master/databaku/update_baku', 'master\bahan_bakuController@update_baku')->name('update_baku');
+Route::get('/master/databaku/datatable_baku', 'master\bahan_bakuController@datatable_baku')->name('datatable_baku');
+
+//jenis produksi 
+Route::get('/master/datajenis/jenis', 'master\jenis_produksiController@jenis')->name('jenis');
+Route::get('/master/datajenis/tambah_jenis', 'master\jenis_produksiController@tambah_jenis')->name('tambah_jenis');
+Route::get('/master/datajenis/simpan_jenis', 'master\jenis_produksiController@simpan_jenis')->name('simpan_jenis');
+Route::get('/master/datajenis/hapus_jenis', 'master\jenis_produksiController@hapus_jenis')->name('hapus_jenis');
+Route::get('/master/datajenis/edit_jenis', 'master\jenis_produksiController@edit_jenis')->name('edit_jenis');
+Route::get('/master/datajenis/update_jenis', 'master\jenis_produksiController@update_jenis')->name('update_jenis');
+Route::get('/master/datajenis/datatable_jenis', 'master\jenis_produksiController@datatable_jenis')->name('datatable_jenis');
+
+//satuan
+Route::get('/master/datasatuan/satuan', 'master\satuanController@satuan')->name('satuan');
+Route::get('/master/datasatuan/tambah_satuan', 'master\satuanController@tambah_satuan')->name('tambah_satuan');
+Route::get('/master/datasatuan/simpan_satuan', 'master\satuanController@simpan_satuan')->name('simpan_satuan');
+Route::get('/master/datasatuan/hapus_satuan', 'master\satuanController@hapus_satuan')->name('hapus_satuan');
+Route::get('/master/datasatuan/edit_satuan', 'master\satuanController@edit_satuan')->name('edit_satuan');
+Route::get('/master/datasatuan/update_satuan', 'master\satuanController@update_satuan')->name('update_satuan');
+Route::get('/master/datasatuan/datatable_satuan', 'master\satuanController@datatable_satuan')->name('datatable_satuan');
+
+
+
+//group
+Route::get('/master/datagroup/group', 'master\groupController@group')->name('group');
+Route::get('/master/datagroup/tambah_group', 'master\groupController@tambah_group')->name('tambah_group');
+Route::get('/master/datagroup/simpan_group', 'master\groupController@simpan_group')->name('simpan_group');
+Route::get('/master/datagroup/hapus_group', 'master\groupController@hapus_group')->name('hapus_group');
+Route::get('/master/datagroup/edit_group', 'master\groupController@edit_group')->name('edit_group');
+Route::get('/master/datagroup/update_group', 'master\groupController@update_group')->name('update_group');
+Route::get('/master/datagroup/datatable_group', 'master\groupController@datatable_group')->name('datatable_group');
+
+//-[]-belum-[]-//
+
+//pegawai
+Route::get('/master/datapegawai/pegawai', 'master\pegawaiController@pegawai')->name('pegawai');
+Route::get('/master/datapegawai/tambah_pegawai', 'master\pegawaiController@tambah_pegawai')->name('tambah_pegawai');
+Route::get('/master/datapegawai/simpan_pegawai', 'master\pegawaiController@simpan_pegawai')->name('simpan_pegawai');
+Route::get('/master/datapegawai/hapus_pegawai', 'master\pegawaiController@hapus_pegawai')->name('hapus_pegawai');
+Route::get('/master/datapegawai/edit_pegawai', 'master\pegawaiController@edit_pegawai')->name('edit_pegawai');
+Route::get('/master/datapegawai/update_pegawai', 'master\pegawaiController@update_pegawai')->name('update_pegawai');
+//end
