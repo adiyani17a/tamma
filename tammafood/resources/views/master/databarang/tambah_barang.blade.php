@@ -6,12 +6,12 @@
                 <!--BEGIN TITLE & BREADCRUMB PAGE-->
                 <div id="title-breadcrumb-option-demo" class="page-title-breadcrumb">
                     <div class="page-header pull-left" style="font-family: 'Raleway', sans-serif;">
-                        <div class="page-title">Form Master Data Barang</div>
+                        <div class="page-title">Form Master Data Barang Jual</div>
                     </div>
                     <ol class="breadcrumb page-breadcrumb pull-right" style="font-family: 'Raleway', sans-serif;">
                         <li><i class="fa fa-home"></i>&nbsp;<a href="{{ url('/home') }}">Home</a>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
                         <li><i></i>&nbsp;Master&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
-                        <li class="active">Master Data Barang</li><li><i class="fa fa-angle-right"></i>&nbsp;Form Master Data Barang&nbsp;&nbsp;</i>&nbsp;&nbsp;</li>
+                        <li class="active">Master Data Barang Jual</li><li><i class="fa fa-angle-right"></i>&nbsp;Form Master Data Barang Jual&nbsp;&nbsp;</i>&nbsp;&nbsp;</li>
                     </ol>
                     <div class="clearfix">
                     </div>
@@ -27,7 +27,7 @@
                                             </div>
                                 
                             <ul id="generalTab" class="nav nav-tabs">
-                              <li class="active"><a href="#alert-tab" data-toggle="tab">Form Master Data Barang</a></li>
+                              <li class="active"><a href="#alert-tab" data-toggle="tab">Form Master Data Barang Jual</a></li>
                             <!-- <li><a href="#note-tab" data-toggle="tab">2</a></li>
                             <li><a href="#label-badge-tab-tab" data-toggle="tab">3</a></li> -->
                         </ul>
@@ -37,7 +37,7 @@
 
                               <div class="col-md-12 col-sm-12 col-xs-12" style="margin-top:-10px;margin-bottom: 15px;">
                                  <div class="col-md-5 col-sm-6 col-xs-8">
-                                   <h4>Form Master Data Barang</h4>
+                                   <h4>Form Master Data Barang Jual</h4>
                                  </div>
                                  <div class="col-md-7 col-sm-6 col-xs-4" align="right" style="margin-top:5px;margin-right: -25px;">
                                    <a href="{{ url('master/databarang/barang') }}" class="btn"><i class="fa fa-arrow-left"></i></a>
