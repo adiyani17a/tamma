@@ -247,8 +247,12 @@ Route::get('/penjualan/POSretail/stock/table-stock', 'Penjualan\stockController@
 /*HRD*/
 Route::get('/hrd/manajemenkpipegawai/kpi', 'HrdController@kpi');
 Route::get('/hrd/payroll/payroll', 'HrdController@payroll');
+Route::get('/hrd/payroll/tambah_payroll', 'HrdController@tambah_payroll');
+Route::get('/hrd/payroll/table', 'HrdController@table');
 Route::get('/hrd/recruitment/rekrut', 'HrdController@rekrut');
-Route::get('/hrd/datakaryawan/karyawan', 'HrdController@karyawan');
+Route::get('/hrd/datajabatan/datajabatan', 'HrdController@datajabatan');
+Route::get('/hrd/datajabatan/tambah_jabatan', 'HrdController@tambah_jabatan');
+Route::get('/hrd/datajabatan/edit_jabatan', 'HrdController@edit_jabatan');
 Route::get('/hrd/dataadministrasi/admin', 'HrdController@admin');
 Route::get('/hrd/datalembur/lembur', 'HrdController@lembur');
 Route::get('/hrd/scoreboard/score', 'HrdController@score');

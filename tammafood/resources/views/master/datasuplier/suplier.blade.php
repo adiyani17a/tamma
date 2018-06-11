@@ -77,6 +77,15 @@
 @section("extra_scripts")
     <script>
     $(document).ready(function(){
+      var extensions = {
+           "sFilterInput": "form-control input-sm",
+          "sLengthSelect": "form-control input-sm"
+      }
+      // Used when bJQueryUI is false
+      $.extend($.fn.dataTableExt.oStdClasses, extensions);
+      // Used when bJQueryUI is true
+      $.extend($.fn.dataTableExt.oJUIClasses, extensions);
+      
       $('#t90').DataTable({
               processing: true,
               // responsive:true,

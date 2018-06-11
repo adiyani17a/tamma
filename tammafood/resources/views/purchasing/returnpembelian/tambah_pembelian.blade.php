@@ -58,7 +58,7 @@
                                 <div class="col-md-4 col-sm-9 col-xs-12">
                                   <div class="form-group">
                                     
-                                        <input type="text" readonly="" id="nama_sup" name="nama_supa" class="form-control input-sm" >
+                                        <input type="text" id="nama_sup" name="nama_supa" readonly="" class="form-control input-sm" >
                                     
                                   </div>
                                 </div>
@@ -72,8 +72,7 @@
                                 <div class="col-md-4 col-sm-9 col-xs-12">
                                   <div class="form-group">
                                     
-                                        <input type="text" readonly="" value="{{ date('d/m/Y') }}" class="form-control input-sm">
-                                        <input type="hidden" name="tgl_return" value="{{ date('d/m/Y') }}">
+                                        <input type="text" readonly="" value="{{ date('d-m-Y') }}" class="form-control input-sm">
                                     
                                   </div>
                                 </div>
@@ -87,15 +86,14 @@
                                 <div class="col-md-4 col-sm-9 col-xs-12">
                                   <div class="form-group">
                                     
-                                        <input type="text" readonly=""  class="form-control input-sm">
-                                        <input type="hidden" name="no_nota" >
+                                        <input type="text" readonly="" class="form-control input-sm">
                                     
                                   </div>
                                 </div>
 
                                 <div class="col-md-2 col-sm-3 col-xs-12">
                                   
-                                    <label class="tebal">Kode IMEI</label>
+                                    <label class="tebal">No Purchase Order</label>
                                   
                                 </div>
 
@@ -137,8 +135,8 @@
                                 <table class="table tabelan table-bordered">
                                   <thead>
                                     <tr>
+                                      <th>No Purchase Order</th>
                                       <th>Nama Barang</th>
-                                      <th>IMEI</th>
                                       <th>Jumlah</th>
                                       <th>Keterangan</th>
                                       <th>Aksi</th>
