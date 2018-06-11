@@ -101,10 +101,10 @@
                                 </li>
                                 @endif
 
-                                 @if(Auth::user()->punyaAkses('Data Bahan Baku','ma_read'))
+                                {{--  @if(Auth::user()->punyaAkses('Data Bahan Baku','ma_read'))
                                 <li class="{{ Request::is('master/databaku/baku') ? 'active' : '' || Request::is('master/databaku/*') ? 'active' : '' }}"><a href="{{ url('/master/databaku/baku') }}"><span class="submenu-title">Data Bahan Baku</span><span class="hidden">Master</span></a>
                                 </li>
-                                @endif
+                                @endif --}}
 
                                 @if(Auth::user()->punyaAkses('Data Satuan','ma_read'))
                                 <li class="{{ Request::is('master/datasatuan/satuan') ? 'active' : '' || Request::is('master/datasatuan/*') ? 'active' : '' }}"><a href="{{ url('/master/datasatuan/satuan') }}"><span class="submenu-title">Data Satuan</span><span class="hidden">Master</span></a>
