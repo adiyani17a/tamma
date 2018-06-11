@@ -77,7 +77,6 @@ Route::get('/purchasing/belanjapasar/pasar', 'Pembelian\PurchasingController@pas
 /*Inventory*/
 Route::get('/inventory/POSretail/transfer', 'transferItemController@index');
 Route::get('/inventory/POSgrosir/transfer', 'transferItemGrosirController@indexGrosir');
-Route::get('/inventory/p_suplier/suplier', 'Inventory\PenerimaanBrgSupController@suplier');
 Route::get('/inventory/p_hasilproduksi/produksi', 'Inventory\PenerimaanBrgProdController@produksi');
 
 Route::get('/inventory/b_digunakan/barang', 'Inventory\PemakaianBrgGdgController@barang');
@@ -87,7 +86,6 @@ Route::get('/inventory/stockopname/opname', 'Inventory\OpnameGdgController@opnam
 Route::get('/inventory/stockopname/tambah_opname', 'Inventory\OpnameGdgController@tambah_opname');
 
 Route::get('/inventory/p_returncustomer/cust', 'Inventory\InventoryController@cust');
-Route::get('/inventory/p_suplier/cari_nota', 'Inventory\InventoryController@cari_nota_sup');
 Route::get('/inventory/p_hasilproduksi/cari_nota', 'Inventory\InventoryController@cari_nota_produksi'); 
 Route::get('/inventory/p_returncustomer/cari_nota', 'Inventory\InventoryController@cari_nota_cust');
 /*End Inventory*/
@@ -425,5 +423,14 @@ Route::get('/master/datapegawai/update_pegawai', 'master\pegawaiController@updat
 Route::get('/inventory/datagudang/gudang', 'inventory\stock_gudangController@gudang')->name('gudang');
 Route::get('/inventory/datagudang/datatable_gudang', 'inventory\stock_gudangController@datatable_gudang')->name('datatable_gudang');
 Route::get('/inventory/datagudang/cari_gudang', 'inventory\stock_gudangController@cari_gudang')->name('cari_gudang');
+
+
+
+// Route::get('/inventory/p_suplier/suplier', 'Inventory\PenerimaanBrgSupController@suplier');
+
+Route::get('/inventory/p_suplier/suplier', 'Inventory\penerimaanbarang_supController@suplier');
+Route::get('/inventory/p_suplier/create_suplier', 'Inventory\penerimaanbarang_supController@create_suplier');
+
+Route::get('/inventory/p_suplier/cari_nota', 'Inventory\penerimaanbarang_supController@cari_nota_sup');
 
 //end
