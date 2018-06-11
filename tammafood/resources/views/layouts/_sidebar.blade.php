@@ -139,9 +139,10 @@
                                 @if(Auth::user()->punyaAkses('Data Bahan Baku','ma_read'))
                                 <li class="{{ Request::is('master/databaku/baku') ? 'active' : '' || Request::is('master/databaku/*') ? 'active' : '' }}"><a href="{{ url('/master/databaku/baku') }}"><span class="submenu-title">Data Bahan Baku</span><span class="hidden">Master</span></a>
 
-                                <li class="{{ Request::is('master/databarang/barang') ? 'active' : '' || Request::is('master/databarang/*') ? 'active' : '' }}"><a href="{{ url('/master/databarang/barang') }}"><span class="submenu-title">Data Barang</span><span class="hidden">Master</span></a> --}}
+                                <li class="{{ Request::is('master/databarang/barang') ? 'active' : '' || Request::is('master/databarang/*') ? 'active' : '' }}"><a href="{{ url('/master/databarang/barang') }}"><span class="submenu-title">Data Barang</span><span class="hidden">Master</span></a> 
+                                    @endif--}}
                                 </li>
-                                @endif
+                                
 
                             </ul>
                         </li>
