@@ -127,7 +127,7 @@
                                 @endif
 
                                  @if(Auth::user()->punyaAkses('Data Barang','ma_read'))
-                                <li class="{{ Request::is('master/databarang/barang') ? 'active' : '' || Request::is('master/databarang/*') ? 'active' : '' }}"><a href="{{ url('/master/databarang/barang') }}"><span class="submenu-title">Data Barang Jual</span><span class="hidden">Master</span></a>
+                                <li class="{{ Request::is('master/databarang/barang') ? 'active' : '' || Request::is('master/databarang/*') ? 'active' : '' }}"><a href="{{ url('/master/databarang/barang') }}"><span class="submenu-title">Data Barang </span><span class="hidden">Master</span></a>
                                 </li>
                                 @endif
                                 {{-- 
@@ -210,6 +210,11 @@
 
                                 @if(Auth::user()->punyaAkses('Stock Opname','ma_read'))
                                 <li class="{{ Request::is('inventory/stockopname/opname') ? 'active' : '' || Request::is('inventory/stockopname/*') ? 'active' : '' }}"><a href="{{ url('/inventory/stockopname/opname') }}"><span class="submenu-title">Stock Opname</span></a>
+                                </li>
+                                @endif
+
+                                @if(Auth::user()->punyaAkses('Penerimaan Barang Suplier','ma_read'))
+                                <li class="{{ Request::is('inventory/datagudang/gudang') ? 'active' : '' || Request::is('inventory/datagudang/*') ? 'active' : '' }}"><a href="{{ url('/inventory/datagudang/gudang') }}"><span class="submenu-title"> Stock Gudang</span></a>
                                 </li>
                                 @endif
 

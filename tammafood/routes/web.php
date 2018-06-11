@@ -390,6 +390,8 @@ Route::get('/master/datasatuan/datatable_satuan', 'master\satuanController@datat
 
 
 
+
+
 //group
 Route::get('/master/datagroup/group', 'master\groupController@group')->name('group');
 Route::get('/master/datagroup/tambah_group', 'master\groupController@tambah_group')->name('tambah_group');
@@ -412,3 +414,12 @@ Route::get('/master/datapegawai/update_pegawai', 'master\pegawaiController@updat
 
 }); // End Route Groub middleware auth
 
+
+//inven
+
+//gudang
+Route::get('/inventory/datagudang/gudang', 'inventory\stock_gudangController@gudang')->name('gudang');
+Route::get('/inventory/datagudang/datatable_gudang', 'inventory\stock_gudangController@datatable_gudang')->name('datatable_gudang');
+Route::get('/inventory/datagudang/cari_gudang', 'inventory\stock_gudangController@cari_gudang')->name('cari_gudang');
+
+//end
