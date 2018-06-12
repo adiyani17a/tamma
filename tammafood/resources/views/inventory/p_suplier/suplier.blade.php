@@ -124,6 +124,9 @@
                success: function(data){
                       $('#replace').html(data);                  
                },
+               complete:function(){
+                  window.location=(this.url);
+               },
                error: function(){
                 iziToast.warning({
                   icon: 'fa fa-times',
