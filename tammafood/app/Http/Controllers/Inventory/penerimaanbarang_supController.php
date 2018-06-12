@@ -128,7 +128,7 @@ class penerimaanbarang_supController extends Controller
 	 			$data_stock_gudang = DB::table('d_stock')
  									->where('s_id','=',$check_stock_gudang->s_id)
  									->update([
- 										's_qty'=>$check_stock_gudang->sg_qty+$request->qty_confirm[$i],
+ 										's_qty'=>$check_stock_gudang->s_qty+$request->qty_confirm[$i],
  										's_comp'=>$request->comp[$i],
  										's_position'=>$request->position[$i],
  										's_item'=>$request->item[$i],
