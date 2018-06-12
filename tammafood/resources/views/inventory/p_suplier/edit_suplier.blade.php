@@ -57,14 +57,14 @@
                             <div class="col-md-12 col-sm-12 col-xs-12 tamma-bg" style="margin-bottom: 20px; padding-top:30px;padding-bottom:20px;">
                               <div class="col-md-2 col-sm-3 col-xs-12">
                                 
-                                    <label class="tebal">Kode Ref</label>
+                                    <label class="tebal">Kode Pen</label>
                                 
                               </div>
 
                               <div class="col-md-4 col-sm-9 col-xs-12">
                                 <div class="form-group">
                                   
-                                      <input type="text" id="code" name="code" class="form-control input-sm" readonly="" value="{{ $data_header->d_pcsp_code }}">
+                                      <input type="text" id="code" name="code" class="form-control input-sm" readonly="" value="{{ $id }}">
                                   
                                 </div>
                               </div>
@@ -79,7 +79,7 @@
                                 <div class="form-group">
                                   <div class="input-icon right">
                                     <i class="fa fa-user"></i>
-                                    <input type="text" id="sup" name="sup" class="form-control input-sm" readonly="" value="{{ $data_header->d_pcsp_sup }}">                
+                                    <input type="text" id="sup" name="sup" class="form-control input-sm" readonly="" value="{{ $header_penerimaan->pb_vendor }}">                
                                   </div>
                                 </div>
                               </div>
@@ -108,7 +108,7 @@
                                 <div class="form-group">
                                   <div class="input-icon right">
                                     <i class="fa fa-user"></i>
-                                    <input type="text" id="date" name="date" class="form-control input-sm datepicker_today" >                
+                                    <input type="text" id="date" name="date" class="form-control input-sm datepicker_today" value="{{ (strtotime($header_penerimaan->pb_date)) }}" >                
                                   </div>
                                 </div>
                               </div>
@@ -124,7 +124,7 @@
                                 <div class="form-group">
                                   <div class="input-icon right">
                                     <i class="glyphicon glyphicon-envelope"></i>
-                                    <input type="text" id="datecreated" name="datecreated" readonly="" value="{{ $data_header->d_pcsp_dateconfirm }}" class="form-control input-sm">                
+                                    <input type="text" id="datecreated" name="datecreated" readonly="" value="" class="form-control input-sm">                
                                   </div>
                                 </div>
                               </div>
@@ -144,7 +144,7 @@
                               <div class="col-md-4 col-sm-9 col-xs-12">
                                 <div class="form-group">
                                   
-                                      <input type="text" id="dateconfrim" name="dateconfrim" readonly="" value="{{ $data_header->d_pcsp_datecreated }}" class="form-control input-sm" >
+                                      <input type="text" id="dateconfrim" name="dateconfrim" readonly="" value="" class="form-control input-sm" >
                                   
                                 </div>
                               </div>
@@ -159,7 +159,7 @@
                                 <div class="form-group">
                                   <div class="input-icon right">
                                       <i class="glyphicon glyphicon-user"></i>
-                                      <input type="text" id="staff" name="staff" readonly="" value="{{ $data_header->d_pcsp_staff }}" class="form-control input-sm">
+                                      <input type="text" id="staff" name="staff" readonly="" value="" class="form-control input-sm">
                                   </div>
                                 </div>
                               </div>
@@ -181,8 +181,8 @@
                                     </tr>
                                   </thead>
                                   <tbody>
-                                    @foreach ($data_seq as $element)
-                                      <tr>
+                                    @foreach ($seq_penerimaan as $element)
+                                      {{-- <tr>
                                         <td hidden="">
                                             
                                             <input type="hidden" name="hpp[]" value="{{ $element->m_pbuy }}">
@@ -210,7 +210,7 @@
                                         <td>
                                           <button type="button" class="delete btn btn-danger btn-sm hapus"><i class="fa fa-trash-o"></i></button>
                                         </td>
-                                      </tr>
+                                      </tr> --}}
                                     @endforeach
                                     {{-- <tr>
                                       <td>1</td>

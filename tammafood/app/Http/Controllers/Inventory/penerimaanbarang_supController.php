@@ -26,6 +26,39 @@ class penerimaanbarang_supController extends Controller
 		$comp = DB::table('d_gudangcabang')->get();
 		return view('inventory/p_suplier/create_suplier',compact('data_header','data_seq','comp'));
 	}
+
+	public function datatable_pensuplier(Request $request)
+	{
+	  $list = DB::select("SELECT * from d_penerimaan_barang left join d_supplier on d_supplier.s_id = d_penerimaan_barang.pb_vendor");
+          // return $list;
+      $data = collect($list);
+
+      for ($i=0; $i <count($data) ; $i++) { 
+      	$check_data_seq = DB::table('d_penerimaan_barang_dt')->where('pbdt_code','=',$data[$i]->pb_code)->get();
+      }
+      
+      // return $check_data_seq;
+      // return $data;
+
+      return Datatables::of($data)
+        
+              ->addColumn('aksi', function ($data) {
+                        return  '<div class="btn-group">'.
+                                 '<button type="button" onclick="edit(this)" class="btn btn-info btn-sm" title="edit">'.
+                                 '<label class="fa fa-arrow-alt-circle-right"></label></button>'.
+                                '</div>';
+              })
+              ->addColumn('detail', function ($data) {
+                            
+                  return '<button data-toggle="modal" onclick="detail(this)"  class="btn btn-outline-primary btn-sm">Detail</button>';
+              })
+              ->addColumn('status', function ($data) {
+                            
+                  return '<span class="badge badge-warning badge-pill">In Process</span>';
+              })
+              ->rawColumns(['aksi','detail','confirmed','status'])
+          ->make(true);
+	}
 	public function save_pensuplier(Request $request)
 	{
 		
@@ -195,6 +228,18 @@ class penerimaanbarang_supController extends Controller
 	 });
 	 }
 	
+
+
+
+	public function edit_pensuplier(Request $request)
+	{
+		$header_penerimaan = DB::table('d_penerimaan_barang')->leftjoin('d_supplier','d_penerimaan_barang.pb_vendor','=','d_supplier.s_id')->where('pb_code','=',$request->id)->first();
+	 	json_encode($header_penerimaan);
+	 	$id = $request->id;
+	 	$seq_penerimaan = DB::table('d_penerimaan_barang_dt')->leftjoin('m_item','m_item.i_code','=','d_penerimaan_barang_dt.pbdt_item')->where('pbdt_qty_remains','!=','0')->where('pbdt_code','=',$request->id)->get();
+
+	 	return view('inventory/p_suplier/edit_suplier',compact("header_penerimaan",'seq_penerimaan','id'));
+	}
 
 
 }

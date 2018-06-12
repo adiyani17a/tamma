@@ -62,11 +62,11 @@
                                             <table class="table tabelan table-hover table-bordered" id="data">
                                               <thead>
                                                 <tr>
-                                                  <th width="5%">No</th>
-                                                  <th>No PO</th>
+                                                  {{-- <th width="5%">No</th> --}}
+                                                  <th width="10%">No Pen</th>
                                                   <th>Suplier</th>
-                                                  <th width="5%">Status</th>
-                                                  <th width="10%">Aksi</th>
+                                                  {{-- <th width="5%">Status</th> --}}
+                                                  <th width="5%">Aksi</th>
                                                 </tr>
                                               </thead>
                                               <tbody>
@@ -114,7 +114,36 @@
 @endsection
 @section("extra_scripts")
     <script type="text/javascript">
-      
+       $('#data').DataTable({
+            processing: true,
+            // responsive:true,
+            serverSide: true,
+            ajax: {
+                url:'{{ route('datatable_pensuplier') }}',
+            },
+             columnDefs: [
+
+                  {
+                     targets: 0 ,
+                     className: 'd_id center'
+                  },
+                  {
+                     targets: 1 ,
+                     className: 'center'
+                  }, 
+                  {
+                     targets: 2 ,
+                     className: 'center format_money'
+                  },
+                ],
+            "columns": [
+            { "data": "pb_code" },
+            { "data": "s_company" },
+            { "data": "aksi" },
+            ]
+      });
+
+
       function cari() {
         var cariId = $('#cariId').val();
           $.ajax({
@@ -122,16 +151,29 @@
                url: baseUrl + '/inventory/p_suplier/create_suplier',
                data: {cariId},
                success: function(data){
-                      $('#replace').html(data);                  
                },
                complete:function(){
                   window.location=(this.url);
                },
                error: function(){
-                iziToast.warning({
-                  icon: 'fa fa-times',
-                  message: 'Terjadi Kesalahan!',
-                });
+               },
+               async: false
+             });  
+      }
+      function edit(g) {
+        var parent = $(g).parents('tr'); 
+        var id = $(parent).find('.d_id').text();
+          $.ajax({
+               type: "get",
+               url: baseUrl + '/inventory/p_suplier/edit_pensuplier',
+               data: {id},
+               success: function(data){
+               },
+               complete:function(){
+                  window.location=(this.url);
+               },
+               error: function(){
+                
                },
                async: false
              });  
