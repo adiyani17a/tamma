@@ -1,6 +1,14 @@
 @extends('main')
 @section('content')
 <!--BEGIN PAGE WRAPPER-->
+
+<style type="text/css">
+    
+    .dis{
+      pointer-events :none;
+    }
+</style>
+
 <div id="page-wrapper">
     <!--BEGIN TITLE & BREADCRUMB PAGE-->
     <div id="title-breadcrumb-option-demo" class="page-title-breadcrumb">
@@ -49,7 +57,7 @@
                             <div class="col-md-12 col-sm-12 col-xs-12 tamma-bg" style="margin-bottom: 20px; padding-top:30px;padding-bottom:20px;">
                               <div class="col-md-2 col-sm-3 col-xs-12">
                                 
-                                    <label class="tebal">Kode</label>
+                                    <label class="tebal">Kode Ref</label>
                                 
                               </div>
 
@@ -76,6 +84,36 @@
                                 </div>
                               </div>
                              
+                              <div class="col-md-2 col-sm-3 col-xs-12">
+                                
+                                    <label class="tebal">Delivery Order</label>
+                                
+                              </div>
+
+                              <div class="col-md-4 col-sm-9 col-xs-12">
+                                <div class="form-group">
+                                  
+                                      <input type="text" id="do" name="do" class="form-control input-sm">
+                                  
+                                </div>
+                              </div>
+
+                              <div class="col-md-2 col-sm-3 col-xs-12">
+                                
+                                    <label class="tebal">Date</label>
+                                
+                              </div>
+
+                              <div class="col-md-4 col-sm-9 col-xs-12">
+                                <div class="form-group">
+                                  <div class="input-icon right">
+                                    <i class="fa fa-user"></i>
+                                    <input type="text" id="date" name="date" class="form-control input-sm datepicker_today" >                
+                                  </div>
+                                </div>
+                              </div>
+
+
                               <div class="col-md-2 col-sm-3 col-xs-12">
                                 
                                     <label class="tebal">Date Confrom</label>
@@ -134,20 +172,44 @@
                                   <thead>
                                     <tr>
                                       <th>Item</th>
-                                      <th>Qty</th>
-                                      <th width="5%">Confrim</th>
+                                      <th width="15%">Qty</th>
+                                      <th width="15%">Confrim</th>
+                                      <th width="15%">Remain</th>
+                                      <th width="15%">comp</th>
+                                      <th width="15%">Position</th>
                                       <th width="10%">Aksi</th>
                                     </tr>
                                   </thead>
                                   <tbody>
                                     @foreach ($data_seq as $element)
                                       <tr>
-                                        <td>{{ $element->i_name }}</td>
-                                        <td><input type="text" name="" value="{{ $element->d_pcspdt_qty }}"></td>
-                                        <td><input type="text" name="" value="{{ $element->d_pcspdt_qtyconfirm }}"></td>
+                                        <td hidden="">
+                                            
+                                            <input type="hidden" name="hpp[]" value="{{ $element->m_pbuy }}">
+                                            <input type="hidden" name="sell[]" value="{{ $element->m_pbuy }}">
+
+                                        </td>
+                                        <td><input type="hidden" name="item[]" value="{{ $element->i_id }}">{{ $element->i_name }}</td>
+                                        <td><input type="text" name="qty_acc[]" class="dis form-control" readonly="" value="{{ $element->d_pcspdt_qty }}"></td>
+                                        <td><input type="text" name="qty_confirm[]" class="form-control"  value="{{ $element->d_pcspdt_qtyconfirm }}"></td>
+                                        <td><input type="text" name="qty_remain[]" class="dis form-control" readonly=""  value="{{ $element->d_pcspdt_qty }}"></td>
                                         <td>
-                                        <button class="btn btn-danger btn-sm" title="Hapus"><i class="fa fa-trash-o"></i></button>
-                                      </td>
+                                            <select class="form-control" name="comp[]">
+                                              @foreach ($comp as $comps)
+                                                  <option value="{{ $comps->cg_id }}">{{ $comps->cg_id }} - {{ $comps->cg_cabang }}</option>
+                                              @endforeach
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <select class="form-control" name="position[]">
+                                              @foreach ($comp as $pos)
+                                                  <option value="{{ $pos->cg_id }}">{{ $pos->cg_id }} - {{ $pos->cg_gudang }}</option>
+                                              @endforeach
+                                            </select>
+                                        </td>
+                                        <td>
+                                          <button type="button" class="delete btn btn-danger btn-sm hapus"><i class="fa fa-trash-o"></i></button>
+                                        </td>
                                       </tr>
                                     @endforeach
                                     {{-- <tr>
@@ -188,69 +250,18 @@
 
 @section("extra_scripts")
 <script type="text/javascript">     
-
   $(document).ready(function(){
-    $('#data').DataTable({});
+    
+  var table = $('#data').DataTable({});
+});
 
   function simpan()
   {
-    var perusahaan  = $('input[name="perusahaan"]');
-    var nama = $('input[name="nama"]');
-    var no_hp = $('input[name="no_hp"]');
-    var fax = $('input[name="fax"]');
-    var limit = $('input[name="limit"]');
-    var keterangan = $('input[name="keterangan"]');
-    var alamat = $('input[name="alamat"]');
-    var npwp = $('input[name="npwp"]');
-
-
-    if(perusahaan.val()=='' || nama.val()=='' || no_hp.val()=='' || fax.val()=='' || limit.val()=='' || alamat.val()=='' || npwp.val()=='')
-    {
-      if(perusahaan.val()==''){
-        toastr["error"]("Perusahan tidak boleh kosong", "Error");
-        perusahaan.addClass('state-error');
-      } else {
-        perusahaan.removeClass('state-error');
-      }
-
-      if(nama.val()==''){
-        toastr["error"]("Nama Suplier tidak boleh kosong", "Error");
-        nama.addClass('state-error');
-      } else {
-        nama.removeClass('state-error');
-      }
-
-      if(no_hp.val()==''){
-        toastr["error"]("Nomor HP tidak boleh kosong", "Error");
-        no_hp.addClass('state-error');
-      } else {
-        no_hp.removeClass('state-error');
-      }
-
-      if(fax.val()==''){
-        toastr["error"]("Fax tidak boleh kosong", "Error");
-        fax.addClass('state-error');
-      } else {
-        fax.removeClass('state-error');
-      }
-      if(limit.val()==''){
-        toastr["error"]("Limit tidak boleh kosong", "Error");
-        limit.addClass('state-error');
-      } else {
-        limit.removeClass('state-error');
-      }
-      if(npwp.val()==''){
-        toastr["error"]("NPWP tidak boleh kosong", "Error");
-        npwp.addClass('state-error');
-      } else {
-        npwp.removeClass('state-error');
-      }
-      return false;
-    }
+   
     var form = $('#form_suplier').serialize();
     $.ajax({
            type: "get",
-           url: baseUrl + '/master/datasuplier/suplier_proses',
+           url: '{{ route('save_pensuplier') }}',
            data: form,
            success: function(sembarang){
             toastr["success"]("Suplier Berhasil ditambahkan", "Sukses");
@@ -265,6 +276,16 @@
            // async: false
          });
   }
+
+  $('#data tbody').on( 'click', '.delete', function () {
+    var parents = $(this).parents('tr');    
+    table
+        .row(parents)
+        .remove()
+        .draw();
+
+    });
+
 
 </script>
 @endsection                            

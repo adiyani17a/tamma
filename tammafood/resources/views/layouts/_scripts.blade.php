@@ -71,6 +71,9 @@
           "hideMethod": "fadeOut"
         };
 
+        // var readonly = $('.readonly').attr('readonly','true')
+        var readonly = $('.readonly').css('pointer','none')
+
     </script>
     <script>
          $(document).ready(function() {

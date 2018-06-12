@@ -430,6 +430,7 @@ Route::get('/inventory/datagudang/cari_gudang', 'inventory\stock_gudangControlle
 
 Route::get('/inventory/p_suplier/suplier', 'Inventory\penerimaanbarang_supController@suplier');
 Route::get('/inventory/p_suplier/create_suplier', 'Inventory\penerimaanbarang_supController@create_suplier');
+Route::get('/inventory/p_suplier/save_pensuplier', 'Inventory\penerimaanbarang_supController@save_pensuplier')->name('save_pensuplier');
 
 Route::get('/inventory/p_suplier/cari_nota', 'Inventory\penerimaanbarang_supController@cari_nota_sup');
 
