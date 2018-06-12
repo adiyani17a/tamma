@@ -373,13 +373,13 @@ Route::get('/master/databaku/update_baku', 'master\bahan_bakuController@update_b
 Route::get('/master/databaku/datatable_baku', 'master\bahan_bakuController@datatable_baku')->name('datatable_baku');
 
 //jenis produksi 
-Route::get('/master/datajenis/jenis', 'master\jenis_produksiController@jenis')->name('jenis');
-Route::get('/master/datajenis/tambah_jenis', 'master\jenis_produksiController@tambah_jenis')->name('tambah_jenis');
-Route::get('/master/datajenis/simpan_jenis', 'master\jenis_produksiController@simpan_jenis')->name('simpan_jenis');
-Route::get('/master/datajenis/hapus_jenis', 'master\jenis_produksiController@hapus_jenis')->name('hapus_jenis');
-Route::get('/master/datajenis/edit_jenis', 'master\jenis_produksiController@edit_jenis')->name('edit_jenis');
-Route::get('/master/datajenis/update_jenis', 'master\jenis_produksiController@update_jenis')->name('update_jenis');
-Route::get('/master/datajenis/datatable_jenis', 'master\jenis_produksiController@datatable_jenis')->name('datatable_jenis');
+Route::get('/master/datajenis/jenis', 'Master\jenis_produksiController@jenis')->name('jenis');
+Route::get('/master/datajenis/tambah_jenis', 'Master\jenis_produksiController@tambah_jenis')->name('tambah_jenis');
+Route::get('/master/datajenis/simpan_jenis', 'Master\jenis_produksiController@simpan_jenis')->name('simpan_jenis');
+Route::get('/master/datajenis/hapus_jenis', 'Master\jenis_produksiController@hapus_jenis')->name('hapus_jenis');
+Route::get('/master/datajenis/edit_jenis', 'Master\jenis_produksiController@edit_jenis')->name('edit_jenis');
+Route::get('/master/datajenis/update_jenis', 'Master\jenis_produksiController@update_jenis')->name('update_jenis');
+Route::get('/master/datajenis/datatable_jenis', 'Master\jenis_produksiController@datatable_jenis')->name('datatable_jenis');
 
 //satuan
 Route::get('/master/datasatuan/satuan', 'master\satuanController@satuan')->name('satuan');
