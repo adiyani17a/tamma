@@ -301,6 +301,13 @@ Route::get('/keuangan/spk/get-data-tabel-index', 'Keuangan\spkFinancialControlle
 Route::get('/keuangan/spk/get-data-tabel-spk/{tgl1}/{tgl2}/{tampil}', 'Keuangan\spkFinancialController@getDataTabelSpk');
 Route::get('/keuangan/spk/ubah-status-spk/{id}', 'Keuangan\spkFinancialController@ubahStatusSpk');
 Route::get('/keuangan/spk/get-data-spk-byid/{id}', 'Keuangan\spkFinancialController@getDataSpkById');
+Route::get('/keuangan/konfirmasipembelian/konfirmasi-purchase', 'Keuangan\ConfrimBeliController@confirmPurchasePlanIndex');
+Route::get('/keuangan/konfirmasipembelian/get-data-tabel-daftar', 'Keuangan\ConfrimBeliController@getDataRencanaPembelian');
+Route::get('/keuangan/konfirmasipembelian/confirm-plan/{id}/{type}', 'Keuangan\ConfrimBeliController@confirmRencanaPembelian');
+Route::post('/keuangan/konfirmasipembelian/confirm-plan-submit', 'Keuangan\ConfrimBeliController@submitRencanaPembelian');
+Route::get('/keuangan/konfirmasipembelian/get-data-tabel-order', 'Keuangan\ConfrimBeliController@getDataOrderPembelian');
+Route::get('/keuangan/konfirmasipembelian/confirm-order/{id}/{type}', 'Keuangan\ConfrimBeliController@confirmOrderPembelian');
+Route::post('/keuangan/konfirmasipembelian/confirm-order-submit', 'Keuangan\ConfrimBeliController@submitOrderPembelian');
 // end rizky
 //mahmud
 Route::get('/produksi/lihatadonan/tabel/{id}/{qty}', 'Keuangan\spkFinancialController@tabelFormula');
