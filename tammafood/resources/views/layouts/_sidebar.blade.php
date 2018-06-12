@@ -110,6 +110,10 @@
                                 <li class="{{ Request::is('master/datasatuan/satuan') ? 'active' : '' || Request::is('master/datasatuan/*') ? 'active' : '' }}"><a href="{{ url('/master/datasatuan/satuan') }}"><span class="submenu-title">Data Satuan</span><span class="hidden">Master</span></a>
                                 @endif
 
+                                @if(Auth::user()->punyaAkses('Data Group','ma_read'))
+                                <li class="{{ Request::is('master/datagroup/group') ? 'active' : '' || Request::is('master/datagroup/*') ? 'active' : '' }}"><a href="{{ url('/master/datagroup/group') }}"><span class="submenu-title">Data Group</span><span class="hidden">Master</span></a>
+                                @endif
+
                                  @if(Auth::user()->punyaAkses('Data Jenis Produksi','ma_read'))
                                 <li class="{{ Request::is('master/datajenis/jenis') ? 'active' : '' || Request::is('master/datajenis/*') ? 'active' : '' }}"><a href="{{ url('/master/datajenis/jenis') }}"><span class="submenu-title">Data Jenis Produksi</span><span class="hidden">Master</span></a>
                                 </li>
