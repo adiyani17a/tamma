@@ -377,7 +377,7 @@
                             </i><span class="menu-title">Keuangan</span><span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 @if(Auth::user()->punyaAkses('Manajemen SPK','ma_read'))
-                                <li class="{{ Request::is('financial/spk/spk') ? 'active' : '' || Request::is('financial/spk/spk/*') ? 'active' : '' }}"><a href="{{ url('financial/spk/spk') }}"><span class="submenu-title">Manajemen SPK</span></a>
+                                <li class="{{ Request::is('keuangan/spk/spk') ? 'active' : '' || Request::is('keuangan/spk/spk/*') ? 'active' : '' }}"><a href="{{ url('keuangan/spk/spk') }}"><span class="submenu-title">Manajemen SPK</span></a>
                                 </li>
                                 @endif
                                 @if(Auth::user()->punyaAkses('Proses Input Transaksi','ma_read'))
@@ -424,7 +424,15 @@
                                 <li class="{{ Request::is('keuangan/analisaroe/analisa8') ? 'active' : '' || Request::is('keuangan/analisaroe/*') ? 'active' : '' }}"><a href="{{ url('/keuangan/analisaroe/analisa8') }}"><span class="submenu-title">Analisa ROE</span></a>
                                 </li>
                                 @endif
-
+                                @if(Auth::user()->punyaAkses('Konfirmasi Rencana Pembelian','ma_read'))
+                                <li class="{{ Request::is('keuangan/konfirmasipembelian/konfirmasi-purchase') ? 'active' : '' || Request::is('keuangan/konfirmasipembelian/*') ? 'active' : '' }}"><a href="{{ url('/keuangan/konfirmasipembelian/konfirmasi-purchase') }}"><span class="submenu-title">Konfirmasi Data Pembelian</span></a>
+                                </li>
+                                @endif
+                                @if(Auth::user()->punyaAkses('Penerimaan Barang Hasil Produksi','ma_read'))
+                                <li class="{{ Request::is('keuangan/p_hasilproduksi/pembatalanPenerimaan') ? 'active' : '' || Request::is('keuangan/p_hasilproduksi/*') ? 'active' : '' }}"><a href="{{ url('/keuangan/p_hasilproduksi/pembatalanPenerimaan') }}"><span class="submenu-title">Penerimaan Barang Hasil Produksi</span></a>
+                                </li>
+                                @endif
+                                
                             </ul>
                         </li>
                     @endif

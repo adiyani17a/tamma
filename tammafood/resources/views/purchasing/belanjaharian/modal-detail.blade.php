@@ -6,7 +6,7 @@
       <div class="modal-content">
         <div class="modal-header" style="background-color: #e77c38;">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title" style="color: white;">Detail Order Pembelian</h4>
+          <h4 class="modal-title" style="color: white;">Detail Pembelian Harian</h4>
         </div>
 
         <div class="modal-body">
@@ -14,32 +14,32 @@
           <span class="" id="txt_span_status_detail"></span>
           <div class="col-md-12 col-sm-12 col-xs-12 tamma-bg" style="margin-top:10px;padding-bottom: 10px;padding-top: 20px;margin-bottom: 15px;">                          
             <div class="col-md-3 col-sm-12 col-xs-12">
-              <label class="tebal">No Order Pembelian</label>
+              <label class="tebal">Tanggal Beli</label>
             </div>
 
             <div class="col-md-3 col-sm-12 col-xs-12">
               <div class="form-group">
-                <label id="lblNoOrder"></label>
+                <label id="lblTglBeli"></label>
               </div>  
             </div>
 
             <div class="col-md-3 col-sm-12 col-xs-12">
-              <label class="tebal">Cara Pembayaran</label>
+              <label class="tebal">No Nota</label>
             </div>
 
             <div class="col-md-3 col-sm-12 col-xs-12">
               <div class="form-group">
-                <label id="lblCaraBayar"></label>
+                <label id="lblNoNota"></label>
               </div>  
             </div>
             
             <div class="col-md-3 col-sm-12 col-xs-12">
-              <label class="tebal">Tanggal Order Pembelian</label>
+              <label class="tebal">Total Biaya</label>
             </div>
 
             <div class="col-md-3 col-sm-12 col-xs-12">
               <div class="form-group">
-                <label id="lblTglOrder"></label>
+                <label id="lblTotalBiaya"></label>
               </div>
             </div>
 
@@ -54,17 +54,27 @@
             </div>
 
             <div class="col-md-3 col-sm-12 col-xs-12">
-              <label class="tebal">Tanggal Pengiriman</label>
+              <label class="tebal">No Reff</label>
             </div>
 
             <div class="col-md-3 col-sm-12 col-xs-12">
               <div class="form-group">
-                <label id="lblTglKirim"></label>
+                <label id="lblNoReff"></label>
               </div>
             </div>
 
             <div class="col-md-3 col-sm-12 col-xs-12">
-              <label class="tebal">Suplier</label>
+              <label class="tebal">Jumlah Yang Dibayarkan</label>
+            </div>
+
+            <div class="col-md-3 col-sm-12 col-xs-12">
+              <div class="form-group">
+                <label id="lblTotalBayar"></label>
+              </div>
+            </div>
+
+            <div class="col-md-3 col-sm-12 col-xs-12">
+              <label class="tebal">Supplier</label>
             </div>
 
             <div class="col-md-3 col-sm-12 col-xs-12">
@@ -73,62 +83,17 @@
               </div>
             </div>
           </div>
-
-          <div class="col-md-12 col-sm-12 col-xs-12 tamma-bg" style="margin-bottom: 20px; padding-bottom:5px;padding-top: 10px;">
-
-            <div class="col-md-3 col-sm-12 col-xs-12">
-              <label class="tebal">Total Harga</label>
-            </div>
-
-            <div class="col-md-3 col-sm-12 col-xs-12">
-              <div class="form-group">
-                <input type="text" readonly="" class="input-sm form-control" name="totalHarga">
-              </div>
-            </div>
-
-            <div class="col-md-3 col-sm-12 col-xs-12">
-              <label class="tebal">Total Diskon</label>
-            </div>
-
-            <div class="col-md-3 col-sm-12 col-xs-12">
-              <div class="form-group">
-                <input type="text" readonly="" class="input-sm form-control" name="diskonHarga">
-              </div>
-            </div>
-
-            <div class="col-md-3 col-sm-12 col-xs-12">
-              <label class="tebal">PPN</label>
-            </div>
-
-            <div class="col-md-3 col-sm-12 col-xs-12">
-              <div class="form-group">
-                <input type="text" readonly="" class="input-sm form-control" name="ppnHarga">
-              </div>
-            </div>
-
-            <div class="col-md-3 col-sm-12 col-xs-12">
-              <label class="tebal">Total</label>
-            </div>
-
-            <div class="col-md-3 col-sm-12 col-xs-12">
-              <div class="form-group">
-                <input type="text" readonly="" class="input-sm form-control" name="totalHargaFinal">
-              </div>
-            </div>
-          </div>
-          
+         
           <div class="table-responsive">
-            <table id="tabel-order" class="table tabelan table-bordered table-striped">
+            <table id="tabel-detail-beli" class="table tabelan table-bordered table-striped">
               <thead>
                 <tr>
                   <th width="5%">No</th>
-                  <th width="20%">Nama Item</th>
-                  <th width="10%">Satuan</th>
+                  <th width="20%">Nama Barang</th>
                   <th width="10%">Qty</th>
-                  <th width="10%">Stok Gudang</th>
-                  <th width="15%">Harga Prev</th>
-                  <th width="15%">Harga</th>
-                  <th width="15%">Total</th>
+                  <th width="10%">Satuan</th>
+                  <th width="10%">Harga Satuan</th>
+                  <th width="15%">Harga Total</th>
                 </tr>
               </thead>
               <tbody id="div_item">

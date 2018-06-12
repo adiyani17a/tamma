@@ -44,13 +44,20 @@ Route::get('/master/datatransaksi/transaksi', 'MasterController@transaksi');
 Route::get('/master/datasuplier/tambah_suplier', 'MasterController@tambah_suplier');
 Route::get('/master/datatransaksi/tambah_transaksi', 'MasterController@tambah_transaksi');
 Route::get('/master/datapegawai/tambah_pegawai', 'MasterController@tambah_pegawai');
-//purchesing
+/*Purchasing*/
 //rizky
 //order pembelian
 Route::get('/purchasing/orderpembelian/order', 'Pembelian\OrderPembelianController@order');
 Route::get('/purchasing/orderpembelian/tambah_order', 'Pembelian\OrderPembelianController@tambah_order');
 Route::get('/purchasing/orderpembelian/get-data-tabel-index', 'Pembelian\OrderPembelianController@getDataTabelIndex');
+Route::get('/purchasing/orderpembelian/get-supplier', 'Pembelian\OrderPembelianController@getSupplier');
+Route::get('/purchasing/orderpembelian/get-data-rencana-beli', 'Pembelian\OrderPembelianController@getDataRencanaBeli');
 Route::get('/purchasing/orderpembelian/get-data-detail/{id}', 'Pembelian\OrderPembelianController@getDataDetail');
+Route::get('/purchasing/orderpembelian/get-data-form/{id}', 'Pembelian\OrderPembelianController@getDataForm');
+Route::post('/purchasing/orderpembelian/simpan-po', 'Pembelian\OrderPembelianController@simpanPo');
+Route::get('/purchasing/orderpembelian/get-edit-order/{id}', 'Pembelian\OrderPembelianController@getEditOrder');
+Route::post('/purchasing/orderpembelian/update-data-order', 'Pembelian\OrderPembelianController@updateDataOrder');
+Route::post('/purchasing/orderpembelian/delete-data-order', 'Pembelian\OrderPembelianController@deleteDataOrder');
 //rencana pembelian
 Route::get('/purchasing/rencanapembelian/rencana', 'Pembelian\RencanaPembelianController@rencana');
 Route::get('/purchasing/rencanapembelian/create', 'Pembelian\RencanaPembelianController@create');
@@ -58,20 +65,34 @@ Route::get('/purchasing/rencanapembelian/get-data-tabel-daftar', 'Pembelian\Renc
 Route::get('/purchasing/rencanapembelian/get-supplier', 'Pembelian\RencanaPembelianController@getDataSupplier');
 Route::get('/purchasing/rencanapembelian/autocomplete-barang', 'Pembelian\RencanaPembelianController@autocompleteBarang');
 Route::post('/purchasing/rencanapembelian/simpan-plan', 'Pembelian\RencanaPembelianController@simpanPlan');
-Route::get('/purchasing/rencanapembelian/get-detail-plan/{id}', 'Pembelian\RencanaPembelianController@getDetailPlan');
-Route::get('/purchasing/rencanapembelian/confirm-plan/{id}', 'Pembelian\RencanaPembelianController@confirmPlan');
-Route::post('/purchasing/rencanapembelian/confirm-plan-submit', 'Pembelian\RencanaPembelianController@submitConfirm');
+Route::get('/purchasing/rencanapembelian/get-detail-plan/{id}/{type}', 'Pembelian\RencanaPembelianController@getDetailPlan');
+Route::get('/purchasing/rencanapembelian/get-edit-plan/{id}/{type}', 'Pembelian\RencanaPembelianController@getEditPlan');
+Route::post('/purchasing/rencanapembelian/update-data-plan', 'Pembelian\RencanaPembelianController@updateDataPlan');
+Route::post('/purchasing/rencanapembelian/delete-data-plan', 'Pembelian\RencanaPembelianController@deleteDataPlan');
+Route::get('/purchasing/rencanapembelian/get-data-tabel-history/{tgl1}/{tgl2}/{tampil}', 'Pembelian\RencanaPembelianController@getDataTabelHistory');
+//belanja harian
+Route::get('/purchasing/belanjaharian/belanja', 'Pembelian\BelanjaHarianController@belanja');
+Route::get('/purchasing/belanjaharian/tambah_belanja', 'Pembelian\BelanjaHarianController@tambah_belanja');
+Route::get('/purchasing/belanjaharian/get-data-tabel-index', 'Pembelian\BelanjaHarianController@getDataTabelIndex');
+Route::post('/purchasing/belanjaharian/buat-master-supplier', 'Pembelian\BelanjaHarianController@tambahMasterSupplier');
+Route::get('/purchasing/belanjaharian/autocomplete-supplier', 'Pembelian\BelanjaHarianController@autocompleteSupplier');
+Route::get('/purchasing/belanjaharian/autocomplete-barang', 'Pembelian\BelanjaHarianController@autocompleteBarang');
+Route::post('/purchasing/belanjaharian/simpan-data-belanja', 'Pembelian\BelanjaHarianController@simpanDataBelanja');
+Route::get('/purchasing/belanjaharian/get-detail-belanja/{id}', 'Pembelian\BelanjaHarianController@getDetailBelanja');
+Route::get('/purchasing/belanjaharian/get-edit-belanja/{id}', 'Pembelian\BelanjaHarianController@getEditBelanja');
+Route::post('/purchasing/belanjaharian/update-data-belanja', 'Pembelian\BelanjaHarianController@updateDataBelanja');
+Route::post('/purchasing/belanjaharian/delete-data-belanja', 'Pembelian\BelanjaHarianController@deleteDataBelanja');
+//return pembelian
+Route::get('/purchasing/returnpembelian/pembelian', 'Pembelian\ReturnPembelianController@index');
+Route::get('/purchasing/returnpembelian/tambah-return', 'Pembelian\ReturnPembelianController@tambahReturn');
+Route::get('/purchasing/returnpembelian/lookup-data-pembelian', 'Pembelian\ReturnPembelianController@lookupDataPembelian');
 //rizky
-
-Route::get('/purchasing/returnpembelian/pembelian', 'Pembelian\PurchasingController@pembelian');
 Route::get('/purchasing/belanjasuplier/suplier', 'Pembelian\PurchasingController@suplier');
 Route::get('/purchasing/belanjalangsung/langsung', 'Pembelian\PurchasingController@langsung');
 Route::get('/purchasing/belanjaproduk/produk', 'Pembelian\PurchasingController@produk');
-Route::get('/purchasing/belanjaharian/belanja', 'Pembelian\PurchasingController@belanja');
-Route::get('/purchasing/belanjaharian/tambah_belanja', 'Pembelian\PurchasingController@tambah_belanja');
-Route::get('/purchasing/returnpembelian/tambah_pembelian', 'Pembelian\PurchasingController@tambah_pembelian');
 Route::get('/purchasing/rencanabahanbaku/bahan', 'Pembelian\PurchasingController@bahan');
 Route::get('/purchasing/belanjapasar/pasar', 'Pembelian\PurchasingController@pasar');
+//end purchasing
 
 
 /*Inventory*/
