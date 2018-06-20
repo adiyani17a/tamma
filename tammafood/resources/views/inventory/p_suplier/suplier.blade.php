@@ -46,9 +46,12 @@
                                               <div class="input-group">
                                                 <select class="form-control input-sm" id="cariId" name="CariId">
                                                   <option> - Pilih Nomor Nota</option>
+                                                  @foreach ($nota as $element)
+                                                    <option value="{{ $element->d_pcsp_code }}">{{ $element->d_pcsp_code }}</option>
+                                                  @endforeach
                                                 </select>
                                                 <span class="input-group-btn">
-                                                  <a href="#" class="btn btn-info btn-sm"><i class="fa fa-search" alt="search"></i></a>
+                                                  <button class="btn btn-primary btn-sm" onclick="cari()"><i class="fa fa-search"></i> Search</button>
                                                 </span>
                                               </div>
                                             </div>
@@ -56,18 +59,18 @@
                                           </div>
 
                                           <div class="table-responsive">
-                                            <table class="table tabelan table-hover table-bordered" id="data2">
+                                            <table class="table tabelan table-hover table-bordered" id="data">
                                               <thead>
                                                 <tr>
-                                                  <th width="5%">No</th>
-                                                  <th>No PO</th>
+                                                  {{-- <th width="5%">No</th> --}}
+                                                  <th width="10%">No Pen</th>
                                                   <th>Suplier</th>
-                                                  <th width="5%">Status</th>
-                                                  <th width="10%">Aksi</th>
+                                                  {{-- <th width="5%">Status</th> --}}
+                                                  <th width="5%">Aksi</th>
                                                 </tr>
                                               </thead>
                                               <tbody>
-                                                <tr>
+                                                {{-- <tr>
                                                   <td>1</td>
                                                   <td>06022018/PO/001</td>
                                                   <td>Alpha</td>
@@ -77,29 +80,7 @@
                                                     <button class="btn btn-danger btn-sm" title="Hapus"><i class="fa fa-trash-o"></i></button>
                                                     <button class="btn-link" data-toggle="modal" data-target="#detail">Detail</button>
                                                   </td>
-                                                </tr>
-                                                <tr>
-                                                  <td>2</td>
-                                                  <td>06022018/PO/002</td>
-                                                  <td>Bravo</td>
-                                                  <td><span class="label label-info">Tidak Lengkap</span></td>
-                                                  <td>
-                                                    <button class="btn btn-warning btn-sm" title="Edit"><i class="fa fa-pencil"></i></button>
-                                                    <button class="btn btn-danger btn-sm" title="Hapus"><i class="fa fa-trash-o"></i></button>
-                                                    <button class="btn-link" data-toggle="modal" data-target="#detail">Detail</button>
-                                                  </td>
-                                                </tr>
-                                                <tr>
-                                                  <td>3</td>
-                                                  <td>06022018/PO/003</td>
-                                                  <td>Charlie</td>
-                                                  <td><span class="label label-info">Tidak Lengkap</span></td>
-                                                  <td>
-                                                    <button class="btn btn-warning btn-sm" title="Edit"><i class="fa fa-pencil"></i></button>
-                                                    <button class="btn btn-danger btn-sm" title="Hapus"><i class="fa fa-trash-o"></i></button>
-                                                    <button class="btn-link" data-toggle="modal" data-target="#detail">Detail</button>
-                                                  </td>
-                                                </tr>
+                                                </tr> --}}
                                               </tbody>
                                             </table>
                                           </div>
@@ -111,70 +92,13 @@
                                      <!-- End div #alert-tab  -->
 
                                     <!-- div note-tab -->
-                                    <div id="note-tab" class="tab-pane fade">
-                                      <div class="row">
-                                        <div class="col-md-12 col-sm-12 col-xs-12">
-
-                                           <div class="col-md-6 col-sm-12 col-xs-12" style="margin-bottom: 20px;">
-                                            <div class="col-md-6 col-sm-12 col-xs-12">
-                                              <label class="tebal">Gudang :</label>
-                                            </div>
-                                            <div class="col-md-6 col-sm-12 col-xs-12">
-                                              <select class="form-control input-sm">
-                                                <option>-- Pilih Gudang --</option>
-                                                <option>Pusat</option>
-                                                <option>Pinggiran</option>
-                                              </select>
-                                            </div>
-                                          </div>
-
-                                          <div class="table-responsive">
-                                            <table class="table tabelan table-hover table-bordered" id="data">
-                                              <thead>
-                                                <tr>
-                                                  <th>No</th>
-
-                                                  <th>No PO</th>
-                                                  <th>Suplier</th>
-                                                  <th>Status</th>
-                                                  <th>Aksi</th>
-                                                </tr>
-                                              </thead>
-                                              <tbody>
-                                                <tr>
-                                                  <td>1</td>
-                                                  <td>06022018/PO/001</td>
-                                                  <td>Alpha</td>
-                                                  <td><span class="label label-success">Lengkap</span></td>
-                                                  <td><button data-toggle="modal" data-target="#detail" class="btn btn-primary btn-sm"><i class="fa fa-arrow-right"></i></button></td>
-                                                </tr>
-                                                <tr>
-                                                  <td>2</td>
-                                                  <td>06022018/PO/002</td>
-                                                  <td>Bravo</td>
-                                                  <td><span class="label label-success">Lengkap</span></td>
-                                                  <td><button data-toggle="modal" data-target="#detail" class="btn btn-primary btn-sm"><i class="fa fa-arrow-right"></i></button></td>
-                                                </tr>
-                                                <tr>
-                                                  <td>3</td>
-                                                  <td>06022018/PO/003</td>
-                                                  <td>Charlie</td>
-                                                  <td><span class="label label-success">Lengkap</span></td>
-                                                  <td><button data-toggle="modal" data-target="#detail" class="btn btn-primary btn-sm"><i class="fa fa-arrow-right"></i></button></td>
-                                                </tr>
-                                              </tbody>
-                                            </table>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
                                     <!--/div note-tab -->
 
                                     <!-- div label-badge-tab -->
                                     <div id="label-badge-tab" class="tab-pane fade">
                                       <div class="row">
                                         <div class="col-md-12 col-sm-12 col-xs-12">
-                                          <!-- Isi content -->we
+                                          <!-- Isi content -->
                                         </div>
                                       </div>
                                     </div>
@@ -190,82 +114,70 @@
 @endsection
 @section("extra_scripts")
     <script type="text/javascript">
-     $(document).ready(function() {
-    var extensions = {
-         "sFilterInput": "form-control input-sm",
-        "sLengthSelect": "form-control input-sm"
-    }
-    // Used when bJQueryUI is false
-    $.extend($.fn.dataTableExt.oStdClasses, extensions);
-    // Used when bJQueryUI is true
-    $.extend($.fn.dataTableExt.oJUIClasses, extensions);
-    $('#data').dataTable({
-          "responsive":true,
+       $('#data').DataTable({
+            processing: true,
+            // responsive:true,
+            serverSide: true,
+            ajax: {
+                url:'{{ route('datatable_pensuplier') }}',
+            },
+             columnDefs: [
 
-          "pageLength": 10,
-        "lengthMenu": [[10, 20, 50, - 1], [10, 20, 50, "All"]],
-        "language": {
-            "searchPlaceholder": "Cari Data",
-            "emptyTable": "Tidak ada data",
-            "sInfo": "Menampilkan _START_ - _END_ Dari _TOTAL_ Data",
-            "sSearch": '<i class="fa fa-search"></i>',
-            "sLengthMenu": "Menampilkan &nbsp; _MENU_ &nbsp; Data",
-            "infoEmpty": "",
-            "paginate": {
-                    "previous": "Sebelumnya",
-                    "next": "Selanjutnya",
-                 }
-          }
-
-        });
-    $('#data2').dataTable({
-          "responsive":true,
-
-          "pageLength": 10,
-        "lengthMenu": [[10, 20, 50, - 1], [10, 20, 50, "All"]],
-        "language": {
-            "searchPlaceholder": "Cari Data",
-            "emptyTable": "Tidak ada data",
-            "sInfo": "Menampilkan _START_ - _END_ Dari _TOTAL_ Data",
-            "sSearch": '<i class="fa fa-search"></i>',
-            "sLengthMenu": "Menampilkan &nbsp; _MENU_ &nbsp; Data",
-            "infoEmpty": "",
-            "paginate": {
-                    "previous": "Sebelumnya",
-                    "next": "Selanjutnya",
-                 }
-          }
-
-        });
-    $('#data3').dataTable({
-          "responsive":true,
-
-          "pageLength": 10,
-        "lengthMenu": [[10, 20, 50, - 1], [10, 20, 50, "All"]],
-        "language": {
-            "searchPlaceholder": "Cari Data",
-            "emptyTable": "Tidak ada data",
-            "sInfo": "Menampilkan _START_ - _END_ Dari _TOTAL_ Data",
-            "sSearch": '<i class="fa fa-search"></i>',
-            "sLengthMenu": "Menampilkan &nbsp; _MENU_ &nbsp; Data",
-            "infoEmpty": "",
-            "paginate": {
-                    "previous": "Sebelumnya",
-                    "next": "Selanjutnya",
-                 }
-          }
-
-        });
-});
-      $('.datepicker').datepicker({
-        format: "mm",
-        viewMode: "months",
-        minViewMode: "months"
+                  {
+                     targets: 0 ,
+                     className: 'd_id center'
+                  },
+                  {
+                     targets: 1 ,
+                     className: 'center'
+                  }, 
+                  {
+                     targets: 2 ,
+                     className: 'center format_money'
+                  },
+                ],
+            "columns": [
+            { "data": "pb_code" },
+            { "data": "s_company" },
+            { "data": "aksi" },
+            ]
       });
-      $('.datepicker2').datepicker({
-        format:"dd-mm-yyyy",
-        autoclose:true,
-        endDate:"today"
-      });    
-      </script>
+
+
+      function cari() {
+        var cariId = $('#cariId').val();
+          $.ajax({
+               type: "get",
+               url: baseUrl + '/inventory/p_suplier/create_suplier',
+               data: {cariId},
+               success: function(data){
+               },
+               complete:function(){
+                  window.location=(this.url);
+               },
+               error: function(){
+               },
+               async: false
+             });  
+      }
+      function edit(g) {
+        var parent = $(g).parents('tr'); 
+        var id = $(parent).find('.d_id').text();
+          $.ajax({
+               type: "get",
+               url: baseUrl + '/inventory/p_suplier/edit_pensuplier',
+               data: {id},
+               success: function(data){
+               },
+               complete:function(){
+                  window.location=(this.url);
+               },
+               error: function(){
+                
+               },
+               async: false
+             });  
+      }
+
+    </script>
 @endsection

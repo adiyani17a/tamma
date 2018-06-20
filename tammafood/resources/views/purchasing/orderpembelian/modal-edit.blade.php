@@ -1,7 +1,8 @@
-<div class="modal fade" id="modal-detail" role="dialog">
+<div class="modal fade" id="modal-edit" role="dialog">
   <div class="modal-dialog" style="width: 90%;margin: auto;">
       
-    <form method="get" action="#">
+    <form method="post" id="form-edit-order">
+      {{ csrf_field() }}
       <!-- Modal content-->
       <div class="modal-content">
         <div class="modal-header" style="background-color: #e77c38;">
@@ -10,15 +11,16 @@
         </div>
 
         <div class="modal-body">
-          <label class="tebal">Status : </label>&nbsp;&nbsp;<span class="label label-success">Di setujui</span>
-          <div class="col-md-12 col-sm-12 col-xs-12 tamma-bg" style="margin-top:10px;padding-bottom: 10px;padding-top: 20px;margin-bottom: 15px;">                          
+          <label class="tebal">Status : </label>&nbsp;&nbsp;
+          <span class="" id="txt_span_status_edit"></span>
+          <div class="col-md-12 col-sm-12 col-xs-12 tamma-bg" style="margin-top:10px;padding-bottom: 10px;padding-top: 20px;margin-bottom: 15px;">
             <div class="col-md-3 col-sm-12 col-xs-12">
               <label class="tebal">No Order Pembelian</label>
             </div>
 
             <div class="col-md-3 col-sm-12 col-xs-12">
               <div class="form-group">
-                <label id="lblNoOrder"></label>
+                <label id="lblNoOrderEdit"></label>
               </div>  
             </div>
 
@@ -28,7 +30,7 @@
 
             <div class="col-md-3 col-sm-12 col-xs-12">
               <div class="form-group">
-                <label id="lblCaraBayar"></label>
+                <label id="lblCaraBayarEdit"></label>
               </div>  
             </div>
             
@@ -38,7 +40,17 @@
 
             <div class="col-md-3 col-sm-12 col-xs-12">
               <div class="form-group">
-                <label id="lblTglOrder"></label>
+                <label id="lblTglOrderEdit"></label>
+              </div>
+            </div>
+
+            <div class="col-md-3 col-sm-12 col-xs-12">
+              <label class="tebal">Nama Staff</label>
+            </div>
+
+            <div class="col-md-3 col-sm-12 col-xs-12">
+              <div class="form-group">
+                <label id="lblStaffEdit"></label>
               </div>
             </div>
 
@@ -48,7 +60,7 @@
 
             <div class="col-md-3 col-sm-12 col-xs-12">
               <div class="form-group">
-                <label id="lblTglKirim"></label>
+                <label id="lblTglKirimEdit"></label>
               </div>
             </div>
 
@@ -58,97 +70,102 @@
 
             <div class="col-md-3 col-sm-12 col-xs-12">
               <div class="form-group">
-                <label id="lblSupplier"></label>
+                <label id="lblSupplierEdit"></label>
               </div>
             </div>
           </div>
 
-          <div class="col-md-12 col-sm-12 col-xs-12 tamma-bg" style="margin-bottom: 20px; padding-bottom:5px;padding-top: 10px;">
+          <input type="hidden" id="id_purchase_edit" name="idPurchaseEdit">  
 
-            <div class="col-md-3 col-sm-12 col-xs-12">
-              <label class="tebal">Total Harga</label>
-            </div>
-
-            <div class="col-md-3 col-sm-12 col-xs-12">
-              <div class="form-group">
-                <input type="text" readonly="" class="input-sm form-control" name="totalHarga">
-              </div>
-            </div>
-
-            <div class="col-md-3 col-sm-12 col-xs-12">
-              <label class="tebal">Diskon</label>
-            </div>
-
-            <div class="col-md-3 col-sm-12 col-xs-12">
-              <div class="form-group">
-                <input type="text" readonly="" class="input-sm form-control" name="diskonHarga">
-              </div>
-            </div>
-
-            <div class="col-md-3 col-sm-12 col-xs-12">
-              <label class="tebal">PPN</label>
-            </div>
-
-            <div class="col-md-3 col-sm-12 col-xs-12">
-              <div class="form-group">
-                <input type="text" readonly="" class="input-sm form-control" name="ppnHarga">
-              </div>
-            </div>
-
-            <div class="col-md-3 col-sm-12 col-xs-12">
-              <label class="tebal">Total</label>
-            </div>
-
-            <div class="col-md-3 col-sm-12 col-xs-12">
-              <div class="form-group">
-                <input type="text" readonly="" class="input-sm form-control" name="totalHargaFinal">
-              </div>
-            </div>
-          </div>
-          
           <div class="table-responsive">
-            <table id="tabel-order" class="table tabelan table-bordered table-striped">
+            <table id="tabel-edit" class="table tabelan table-bordered table-striped">
               <thead>
                 <tr>
-                  <th width="50%">Nama Item</th>
-                  <th width="10%">Qty</th>
-                  <th>Stok Gudang</th>
-                  <th width="20%">Harga</th>
-                  <th width="25%">Total</th>
-                  <th>Aksi</th>
+                  <th style="text-align: center;" width="5%">No</th>
+                  <th width="25%">Kode | Barang</th>
+                  <th width="7%">Qty</th>
+                  <th width="10%">Satuan</th>
+                  <th width="13%">Harga Prev</th>
+                  <th width="15%">Harga</th>
+                  <th width="15%">Total</th>
+                  <th width="5%">Stok Gudang</th>
+                  <th style="text-align: center;" width="5%">Aksi</th>
                 </tr>
               </thead>
               <tbody id="div_item">
-                <tr>
-                  <!-- <td width="50%;">
-                    <input type="text" id="barang" class="form-control input-sm" placeholder="Masukkan nama Item" value="Tortila" readonly="">
-                  </td>
-                  <td width="7%;">
-                    <input type="text" id="ip_qtyreq" class="form-control input-sm" value="2" readonly="">
-                  </td>
-                  <td><input type="text" readonly="" value="25" class="form-control input-sm" name=""></td>
-                  <td><input type="text" readonly="" value="10000" class="form-control input-sm" name=""></td>
-                  <td><input type="text" readonly="" value="20000" class="form-control input-sm" name=""></td>
-                  <td align="center">...</td> -->
-                </tr>
+                
               </tbody>
             </table>
           </div>
 
-          <div class="col-md-12 col-sm-12 col-xs-12 tamma-bg" style="padding-top:15px;margin-bottom: 25px;">
+          <div class="col-md-3 col-md-offset-9 col-sm-6 col-sm-offset-6 col-xs-12 tamma-bg" style="margin-bottom: 20px; padding-bottom:5px;padding-top: 10px;">
+
+            <div class="col-md-12 col-sm-12 col-xs-12">
+              <label class="tebal">Total Harga</label>
+            </div>
+
+            <div class="col-md-12 col-sm-12 col-xs-12">
+              <div class="form-group">
+                <input type="text" readonly="" id="total_gross" class="input-sm form-control" name="totalGrossEdit">
+              </div>
+            </div>
+
+            <div class="col-md-12 col-sm-12 col-xs-12">
+              <label class="tebal">Potongan Harga</label>
+            </div>
+
+            <div class="col-md-12 col-sm-12 col-xs-12">
+              <div class="form-group">
+                <input type="text" class="input-sm form-control numberinput" id="potongan_harga" name="potonganHargaEdit">
+              </div>
+            </div>
+
+            <div class="col-md-12 col-sm-12 col-xs-12">
+              <label class="tebal">Diskon</label>
+            </div>
+
+            <div class="col-md-12 col-sm-12 col-xs-12">
+              <div class="form-group">
+                <input type="text" class="input-sm form-control numberinput" id="diskon_harga" name="diskonHargaEdit">
+              </div>
+            </div>
+
+            <div class="col-md-12 col-sm-12 col-xs-12">
+              <label class="tebal">PPN</label>
+            </div>
+
+            <div class="col-md-12 col-sm-12 col-xs-12">
+              <div class="form-group">
+                <input type="text" class="input-sm form-control numberinput" id="ppn_harga" name="ppnHargaEdit">
+              </div>
+            </div>
+
+            <div class="col-md-12 col-sm-12 col-xs-12">
+              <label class="tebal">Total</label>
+            </div>
+
+            <div class="col-md-12 col-sm-12 col-xs-12">
+              <div class="form-group">
+                <input type="text" readonly="" class="input-sm form-control" id="total_nett" name="totalNettEdit">
+              </div>
+            </div>
+
+          </div>
+
+          <!-- <div class="col-md-12 col-sm-12 col-xs-12 tamma-bg" style="padding-top:15px;margin-bottom: 25px;">
             <input type="checkbox" name="">&nbsp;Di tolak&nbsp;<input type="checkbox" name="">&nbsp;Di Setujui&nbsp;<input type="checkbox" name="">&nbsp;Di revisi<br>
             <div class="col-md-8 col-sm-8 col-xs-12" style="margin-top: 10px;">
               <div class="form-group">  
                 <textarea class="form-control"></textarea>
               </div>
             </div>
-          </div>
+          </div> -->
           
         </div>
     
         <div class="modal-footer" style="border-top: none;">
           <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-primary">Simpan Data</button>
+          <button type="button" class="btn btn-primary" onclick="submitEdit()" id="button_save">Simpan Data</button>
         </div>
 
       </div>

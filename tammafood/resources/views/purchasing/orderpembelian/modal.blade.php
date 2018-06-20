@@ -10,7 +10,8 @@
         </div>
 
         <div class="modal-body">
-          <label class="tebal">Status : </label>&nbsp;&nbsp;<span class="label label-success">Di setujui</span>
+          <label class="tebal">Status : </label>&nbsp;&nbsp;
+          <span class="" id="txt_span_status_detail"></span>
           <div class="col-md-12 col-sm-12 col-xs-12 tamma-bg" style="margin-top:10px;padding-bottom: 10px;padding-top: 20px;margin-bottom: 15px;">                          
             <div class="col-md-3 col-sm-12 col-xs-12">
               <label class="tebal">No Order Pembelian</label>
@@ -86,7 +87,7 @@
             </div>
 
             <div class="col-md-3 col-sm-12 col-xs-12">
-              <label class="tebal">Diskon</label>
+              <label class="tebal">Total Diskon</label>
             </div>
 
             <div class="col-md-3 col-sm-12 col-xs-12">
@@ -120,38 +121,29 @@
             <table id="tabel-order" class="table tabelan table-bordered table-striped">
               <thead>
                 <tr>
-                  <th width="40%">Nama Item</th>
+                  <th width="5%">No</th>
+                  <th width="20%">Nama Item</th>
+                  <th width="10%">Satuan</th>
                   <th width="10%">Qty</th>
                   <th width="10%">Stok Gudang</th>
-                  <th width="20%">Harga</th>
-                  <th width="20%">Total</th>
+                  <th width="15%">Harga Prev</th>
+                  <th width="15%">Harga</th>
+                  <th width="15%">Total</th>
                 </tr>
               </thead>
               <tbody id="div_item">
-                <tr>
-                  <!-- <td width="50%;">
-                    <input type="text" id="barang" class="form-control input-sm" placeholder="Masukkan nama Item" value="Tortila" readonly="">
-                  </td>
-                  <td width="7%;">
-                    <input type="text" id="ip_qtyreq" class="form-control input-sm" value="2" readonly="">
-                  </td>
-                  <td><input type="text" readonly="" value="25" class="form-control input-sm" name=""></td>
-                  <td><input type="text" readonly="" value="10000" class="form-control input-sm" name=""></td>
-                  <td><input type="text" readonly="" value="20000" class="form-control input-sm" name=""></td>
-                  <td align="center">...</td> -->
-                </tr>
               </tbody>
             </table>
           </div>
 
-          <div class="col-md-12 col-sm-12 col-xs-12 tamma-bg" style="padding-top:15px;margin-bottom: 25px;">
+          <!-- <div class="col-md-12 col-sm-12 col-xs-12 tamma-bg" style="padding-top:15px;margin-bottom: 25px;">
             <input type="checkbox" name="">&nbsp;Di tolak&nbsp;<input type="checkbox" name="">&nbsp;Di Setujui&nbsp;<input type="checkbox" name="">&nbsp;Di revisi<br>
             <div class="col-md-8 col-sm-8 col-xs-12" style="margin-top: 10px;">
               <div class="form-group">  
                 <textarea class="form-control"></textarea>
               </div>
             </div>
-          </div>
+          </div> -->
           
         </div>
     

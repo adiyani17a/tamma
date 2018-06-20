@@ -100,30 +100,97 @@ tr.details td.details-control {
 
 @section("extra_scripts")
   <script type="text/javascript">
-
+    var extensions = {
+           "sFilterInput": "form-control input-sm",
+          "sLengthSelect": "form-control input-sm"
+      }
+      // Used when bJQueryUI is false
+      $.extend($.fn.dataTableExt.oStdClasses, extensions);
+      // Used when bJQueryUI is true
+      $.extend($.fn.dataTableExt.oJUIClasses, extensions);
+      
   $('#tbl_customer').DataTable({
             processing: true,
             // responsive:true,
             serverSide: true,
             ajax: {
-                url:'{{ route('getdata_customer') }}',
+                url:'{{ route('datatable_cust') }}',
             },
              columnDefs: [
-
                   {
-                     targets: 1 ,
+                     targets: 0 ,
                      className: 'center d_id'
                   }, 
                 ],
             "columns": [
-             { "data": "c_code" },
+            { "data": "c_code" },
             { "data": "c_name" },
             { "data": "c_birthday" },
             { "data": "c_type" },
             { "data": "action" },
-            ]
+            ],
+            "responsive":true,
+
+                  "pageLength": 10,
+                "lengthMenu": [[10, 20, 50, - 1], [10, 20, 50, "All"]],
+                "language": {
+                    "searchPlaceholder": "Cari Data",
+                    "emptyTable": "Tidak ada data",
+                    "sInfo": "Menampilkan _START_ - _END_ Dari _TOTAL_ Data",
+                    "sSearch": '<i class="fa fa-search"></i>',
+                    "sLengthMenu": "Menampilkan &nbsp; _MENU_ &nbsp; Data",
+                    "infoEmpty": "",
+                    "paginate": {
+                            "previous": "Sebelumnya",
+                            "next": "Selanjutnya",
+                         }
+                  }
       });
 
+        function hapus(a) {
+          var parent = $(a).parents('tr');
+          var id = $(parent).find('.d_id').text();
+          console.log(id);
+          $.ajax({
+               type: "get",
+               url: '{{ route('hapus_cust') }}',
+               data: {id},
+               success: function(data){
+                  if (data.status == 1) {
+                      location.reload();
+                  }
+                  
+               },
+               error: function(){
+                iziToast.warning({
+                  icon: 'fa fa-times',
+                  message: 'Terjadi Kesalahan!',
+                });
+               },
+               async: false
+             });  
+        }
+
+
+         function edit(a) {
+          var parent = $(a).parents('tr');
+          var id = $(parent).find('.d_id').text();
+          console.log(id);
+          $.ajax({
+               type: "get",
+               url: '{{ route('edit_cust') }}',
+               data: {id},
+               success: function(data){
+               },
+               complete:function (argument) {
+                window.location=(this.url)
+               },
+               error: function(){
+               
+               },
+               async: false
+             });  
+        }
     
 </script>
 @endsection

@@ -33,12 +33,23 @@ class HrdController extends Controller
         return view('hrd/manajemenkpipegawai/kpi');
 
     }
-
+    
     public function payroll()
     {
         return view('hrd/payroll/payroll');
 
     }
+    public function tambah_payroll()
+    {
+        return view('hrd/payroll/tambah_payroll');
+
+    }
+    public function table()
+    {
+        return view('hrd/payroll/table');
+
+    }
+
     public function karyawan()
     {
         return view('hrd/datakaryawan/karyawan');
@@ -62,6 +73,22 @@ class HrdController extends Controller
     public function training()
     {
         return view('hrd/training/training');
+
+    }
+	
+        public function datajabatan()
+    {
+        return view('hrd/datajabatan/datajabatan');
+
+    }
+    public function tambah_jabatan()
+    {
+        return view('hrd/datajabatan/tambah_jabatan');
+
+    }
+    public function edit_jabatan()
+    {
+        return view('hrd/datajabatan/edit_jabatan');
 
     }
 }

@@ -8,14 +8,14 @@
         <!--BEGIN TITLE & BREADCRUMB PAGE-->
         <div id="title-breadcrumb-option-demo" class="page-title-breadcrumb">
             <div class="page-header pull-left" style="font-family: 'Raleway', sans-serif;">
-                <div class="page-title">Form Rencana Penjualan</div>
+                <div class="page-title">Form Rencana Pembelian</div>
             </div>
 
             <ol class="breadcrumb page-breadcrumb pull-right" style="font-family: 'Raleway', sans-serif;">
                 <li><i class="fa fa-home"></i>&nbsp;<a href="{{ url('/home') }}">Home</a>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
                 <li><i></i>&nbsp;Purchasing&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
                 <li>Rencana Pembelian&nbsp;&nbsp;</li><i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
-                <li class="active">Form Rencana Penjualan</li>
+                <li class="active">Form Rencana Pembelian</li>
             </ol>
 
             <div class="clearfix">
@@ -88,7 +88,7 @@
                                                 </div>
 
                                                 <div class="col-md-3 col-sm-12 col-xs-12">
-                                                    <label class="tebal">Suplier</label>
+                                                    <label class="tebal">Supplier</label>
                                                 </div>
 
                                                 <div class="col-md-3 col-sm-12 col-xs-12">
@@ -108,6 +108,8 @@
                                                             <th style="text-align: center;">No</th>
                                                             <th>Kode | Barang</th>
                                                             <th>Qty</th>
+                                                            <th>Satuan</th>
+                                                            <th>Harga Prev / satuan</th>
                                                             <th>Stok Gudang</th>
                                                             <th style="text-align: center;">Aksi</th>
                                                         </tr>
@@ -115,13 +117,20 @@
                                                     <tbody id="div_item">
                                                         <tr>
                                                             <td width="5%;" style="text-align: center;"><strong>#</strong></td>
-                                                            <td width="85%;">
+                                                            <td width="50%;">
                                                                 {{ csrf_field() }}
                                                                 <input type="hidden" id="ip_item" class="form-control" value="" name="ipItem">
                                                                 <input type="text" id="ip_barang" class="form-control ui-autocomplete-input input-sm" placeholder="Masukkan nama barang" autocomplete="off" name="ipBarang">
                                                             </td>
-                                                            <td width="25%;">
+                                                            <td width="10%;">
                                                                 <input type="text" id="ip_qtyreq" class="form-control input-sm numberinput" value="" name="ipQtyReq">
+                                                            </td>
+                                                            <td width="10%;">
+                                                                <select class="form-control input-sm" id="ip_sat" name="ipSat" style="width: 100%;">
+                                                                </select>
+                                                            </td>
+                                                            <td width="15%;">
+                                                                <input type="text" id="ip_hargaPrev" class="form-control input-sm" value="" name="ipHargaPrev" readonly>
                                                             </td>
                                                             <td>
                                                                 <input type="text" id="ip_qtyStok" class="form-control input-sm" value="" name="ipQtyStok" readonly>
@@ -159,177 +168,215 @@
 <script src="{{ asset ('assets/script/icheck.min.js') }}"></script>
 <script type="text/javascript">
     $(document).ready(function() {
-    //fix to issue select2 on modal when opening in firefox
-    $.fn.modal.Constructor.prototype.enforceFocus = function() {};
+        //fix to issue select2 on modal when opening in firefox
+        $.fn.modal.Constructor.prototype.enforceFocus = function() {};
 
-    var extensions = {
-        "sFilterInput": "form-control input-sm",
-        "sLengthSelect": "form-control input-sm"
-    }
-    // Used when bJQueryUI is false
-    $.extend($.fn.dataTableExt.oStdClasses, extensions);
-    // Used when bJQueryUI is true
-    $.extend($.fn.dataTableExt.oJUIClasses, extensions);
-
-    $('#data').dataTable({
-        "pageLength": 10,
-        "lengthMenu": [[10, 20, 50, - 1], [10, 20, 50, "All"]],
-        "language": {
-        "emptyTable": "Tidak ada data",
-        "sInfo": "Menampilkan _START_ - _END_ Dari _TOTAL_ Data",
-        "sSearch": '<i class="fa fa-search"></i>',
-        "sLengthMenu": "Menampilkan &nbsp; _MENU_ &nbsp; Data",
-        "infoEmpty": "",
-        "paginate": {
-                "previous": "Sebelumnya",
-                "next": "Selanjutnya",
-             }
-      }
-    });
-
-    $('#data2').dataTable({
-        "pageLength": 10,
-        "lengthMenu": [[10, 20, 50, - 1], [10, 20, 50, "All"]],
-        "language": {
-        "emptyTable": "Tidak ada data",
-        "sInfo": "Menampilkan _START_ - _END_ Dari _TOTAL_ Data",
-        "sSearch": '<i class="fa fa-search"></i>',
-        "sLengthMenu": "Menampilkan &nbsp; _MENU_ &nbsp; Data",
-        "infoEmpty": "",
-        "paginate": {
-                "previous": "Sebelumnya",
-                "next": "Selanjutnya",
-             }
+        var extensions = {
+            "sFilterInput": "form-control input-sm",
+            "sLengthSelect": "form-control input-sm"
         }
-    });
+        // Used when bJQueryUI is false
+        $.extend($.fn.dataTableExt.oStdClasses, extensions);
+        // Used when bJQueryUI is true
+        $.extend($.fn.dataTableExt.oJUIClasses, extensions);
 
-    $('.datepicker').datepicker({
-        format: "mm-yyyy",
-        viewMode: "months",
-        minViewMode: "months"
-    });
+        $('#data').dataTable({
+            "pageLength": 10,
+            "lengthMenu": [[10, 20, 50, - 1], [10, 20, 50, "All"]],
+            "language": {
+            "emptyTable": "Tidak ada data",
+            "sInfo": "Menampilkan _START_ - _END_ Dari _TOTAL_ Data",
+            "sSearch": '<i class="fa fa-search"></i>',
+            "sLengthMenu": "Menampilkan &nbsp; _MENU_ &nbsp; Data",
+            "infoEmpty": "",
+            "paginate": {
+                    "previous": "Sebelumnya",
+                    "next": "Selanjutnya",
+                 }
+          }
+        });
 
-    $('.datepicker2').datepicker({
-        format:"dd-mm-yyyy"
-    });
+        $('#data2').dataTable({
+            "pageLength": 10,
+            "lengthMenu": [[10, 20, 50, - 1], [10, 20, 50, "All"]],
+            "language": {
+            "emptyTable": "Tidak ada data",
+            "sInfo": "Menampilkan _START_ - _END_ Dari _TOTAL_ Data",
+            "sSearch": '<i class="fa fa-search"></i>',
+            "sLengthMenu": "Menampilkan &nbsp; _MENU_ &nbsp; Data",
+            "infoEmpty": "",
+            "paginate": {
+                    "previous": "Sebelumnya",
+                    "next": "Selanjutnya",
+                 }
+            }
+        });
 
-    //select2
-    $( "#cari_sup" ).select2({
-      placeholder: "Pilih Supplier...",
-      ajax: {
-          url: baseUrl + '/purchasing/rencanapembelian/get-supplier',
-          dataType: 'json',
-          data: function (params) {
-            return {
-                q: $.trim(params.term)
-            };
-          },
-          processResults: function (data) {
-              return {
-                  results: data
-              };
-          },
-          cache: true
-      }, 
-    });
+        $('.datepicker').datepicker({
+            format: "mm-yyyy",
+            viewMode: "months",
+            minViewMode: "months"
+        });
 
-    //autocomplete
-    $( "#ip_barang" ).autocomplete({
-        source: baseUrl+'/purchasing/rencanapembelian/autocomplete-barang',
-        minLength: 1,
-        select: function(event, ui) {
-            $('#ip_item').val(ui.item.id);
-            $('#ip_barang').val(ui.item.label);
-            $('#ip_qtyStok').val(ui.item.stok);
-            $("input[name='ipQtyReq']").focus();
-        }
-    });
+        $('.datepicker2').datepicker({
+            format:"dd-mm-yyyy",
+            autoclose: true
+        });
 
-    var i = randString(5);
-    var no = 1;
-    $('#add_item').click(function() {
-        var ambilIdBarang = $('#ip_item').val();
-        var ambilBarang = $('#ip_barang').val();
-        var ambilQtyReq = $('#ip_qtyreq').val();
-        var ambilQtyStok = $('#ip_qtyStok').val();
-        if (ambilIdBarang == "" || ambilBarang == "" || ambilQtyReq == "" || ambilQtyStok == "" ) 
-        {
-            alert('Terdapat kolom yang kosong, dimohon cek lagi!!');
-        }
-        else
-        {
-            $('#barang_table').append('<tr class="tbl_form_row" id="row'+i+'">'
-                                    +'<td style="text-align:center">'+no+'</td>'
-                                    +'<td><input type="text" name="fieldIpBarang[]" value="'+ambilBarang+'" id="field_ip_barang" class="form-control" required readonly>'
-                                    +'<input type="hidden" name="fieldIpItem[]" value="'+ambilIdBarang+'" id="field_ip_item" class="form-control"></td>'
-                                    +'<td><input type="text" name="fieldIpQtyReq[]" value="'+ambilQtyReq+'" id="field_ip_qty_req" class="form-control" required readonly></td>'
-                                    +'<td><input type="text" name="fieldIpQtyStok[]" value="'+ambilQtyStok+'" id="field_ip_qty_stok" class="form-control" required readonly></td>'
-                                    +'<td><button name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button></td>'
-                                    +'</tr>');
-            i = randString(5);
-            no++;
-            //kosongkan field setelah append row
-            $('#ip_item').val("");
+        //select2
+        $( "#cari_sup" ).select2({
+          placeholder: "Pilih Supplier...",
+          ajax: {
+              url: baseUrl + '/purchasing/rencanapembelian/get-supplier',
+              dataType: 'json',
+              data: function (params) {
+                return {
+                    q: $.trim(params.term)
+                };
+              },
+              processResults: function (data) {
+                  return {
+                      results: data
+                  };
+              },
+              cache: true
+          }, 
+        });
+
+        //autocomplete
+        $( "#ip_barang" ).focus(function() {
+          var key = 1;
+            $( "#ip_barang" ).autocomplete({
+                source: baseUrl+'/purchasing/rencanapembelian/autocomplete-barang',
+                minLength: 1,
+                select: function(event, ui) {
+                    $('#ip_item').val(ui.item.id);
+                    $('#ip_barang').val(ui.item.label);
+                    $('#ip_qtyStok').val(ui.item.stok);
+                    $('#ip_hargaPrev').val(ui.item.prevCost);
+                    Object.keys(ui.item.sat).forEach(function(){
+                        $('#ip_sat').append($('<option>', { 
+                            value: ui.item.sat[key-1],
+                            text : ui.item.sat[key-1]
+                        }));
+                        key++;
+                    });
+                    $("input[name='ipQtyReq']").focus();
+                }
+            });
+            $('#ip_sat').empty();
             $('#ip_barang').val("");
             $('#ip_qtyreq').val("");
+            $('#ip_hargaPrev').val("");
             $('#ip_qtyStok').val("");
-        } 
-    });
+        });
 
-    $(document).on('click', '.btn_remove', function(){
-        no--;
-        var button_id = $(this).attr('id');
-        $('#row'+button_id+'').remove();
-    });
-
-    //force integer input in textfield
-    $('input.numberinput').bind('keypress', function (e) {
-        return (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57) && e.which != 46) ? false : true;
-    });
-
-
-});
-
-function randString(angka) 
-{
-  var text = "";
-  var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-
-  for (var i = 0; i < angka; i++)
-    text += possible.charAt(Math.floor(Math.random() * possible.length));
-
-  return text;
-}
-
-function simpanPlan()
-  {
-    if(confirm('Simpan Data ?'))
-    {
-      $.ajax({
-          url : baseUrl + "/purchasing/rencanapembelian/simpan-plan",
-          type: "post",
-          dataType: "JSON",
-          data: $('#form_order_plan').serialize(),
-          success: function(response)
-          {
-            if(response.status == "sukses")
+        var i = randString(5);
+        var no = 1;
+        $('#add_item').click(function() {
+            var ambilSatuan = $("#ip_sat option:selected").val();
+            $('#ip_sat').empty();
+            var ambilIdBarang = $('#ip_item').val();
+            var ambilBarang = $('#ip_barang').val();
+            var ambilQtyReq = $('#ip_qtyreq').val();
+            var ambilQtyStok = $('#ip_qtyStok').val();
+            var ambilHargaPrev = $('#ip_hargaPrev').val();
+            if (ambilIdBarang == "" || ambilBarang == "" || ambilQtyReq == "" || ambilQtyStok == "" ) 
             {
-                alert(response.pesan);
-                window.location.href = baseUrl+"/purchasing/rencanapembelian/rencana";
+                alert('Terdapat kolom yang kosong, dimohon cek lagi!!');
             }
             else
             {
-                alert(response.pesan);
-                window.location.href = baseUrl+"/purchasing/rencanapembelian/rencana";
-            }
-          },
-          error: function (jqXHR, textStatus, errorThrown)
-          {
-            alert('Error updating data');
-          }
-      });
-    }
-  }
+                $('#barang_table').append('<tr class="tbl_form_row" id="row'+i+'">'
+                                        +'<td style="text-align:center">'+no+'</td>'
+                                        +'<td><input type="text" name="fieldIpBarang[]" value="'+ambilBarang+'" id="field_ip_barang" class="form-control" required readonly>'
+                                        +'<input type="hidden" name="fieldIpItem[]" value="'+ambilIdBarang+'" id="field_ip_item" class="form-control"></td>'
+                                        +'<td><input type="text" name="fieldIpQtyReq[]" value="'+ambilQtyReq+'" id="field_ip_qty_req" class="form-control" required readonly></td>'
+                                        +'<td><input type="text" name="fieldIpQtySat[]" value="'+ambilSatuan+'" id="field_ip_qty_stok" class="form-control" required readonly></td>'
+                                        +'<td><input type="text" name="fieldHargaPrev[]" value="'+ambilHargaPrev+'" id="field_ip_qty_stok" class="form-control" required readonly></td>'
+                                        +'<td><input type="text" name="fieldIpQtyStok[]" value="'+ambilQtyStok+'" id="field_ip_qty_stok" class="form-control" required readonly></td>'
+                                        +'<td><button name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button></td>'
+                                        +'</tr>');
+                i = randString(5);
+                no++;
+                //kosongkan field setelah append row
+                $('#ip_item').val("");
+                $('#ip_barang').val("");
+                $('#ip_qtyreq').val("");
+                $('#ip_qtyStok').val("");
+                $('#ip_hargaPrev').val("");
+            } 
+        });
 
+        $(document).on('click', '.btn_remove', function(){
+            no--;
+            var button_id = $(this).attr('id');
+            $('#row'+button_id+'').remove();
+        });
+
+        //force integer input in textfield
+        $('input.numberinput').bind('keypress', function (e) {
+            return (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57) && e.which != 46) ? false : true;
+        });
+
+
+    });
+
+    function randString(angka) 
+    {
+      var text = "";
+      var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+      for (var i = 0; i < angka; i++)
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+      return text;
+    }
+
+    function simpanPlan()
+      {
+        if(confirm('Simpan Data ?'))
+        {
+            $('#button_save').text('Menyimpan...'); //change button text
+            $('#button_save').attr('disabled',true); //set button disable 
+            $.ajax({
+                url : baseUrl + "/purchasing/rencanapembelian/simpan-plan",
+                type: "post",
+                dataType: "JSON",
+                data: $('#form_order_plan').serialize(),
+                success: function(response)
+                {
+                    if(response.status == "sukses")
+                    {
+                        alert(response.pesan);
+                        $('#button_save').text('Simpan Data'); //change button text
+                        $('#button_save').attr('disabled',false); //set button enable 
+                        window.location.href = baseUrl+"/purchasing/rencanapembelian/rencana";
+                    }
+                    else
+                    {
+                        alert(response.pesan);
+                        $('#button_save').text('Simpan Data'); //change button text
+                        $('#button_save').attr('disabled',false); //set button enable 
+                        window.location.href = baseUrl+"/purchasing/rencanapembelian/rencana";
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown)
+                {
+                    alert('Error updating data');
+                }
+            });
+        }
+    }
+
+    function convertDecimalToRupiah(decimal) 
+    {
+        var angka = parseInt(decimal);
+        var rupiah = '';        
+        var angkarev = angka.toString().split('').reverse().join('');
+        for(var i = 0; i < angkarev.length; i++) if(i%3 == 0) rupiah += angkarev.substr(i,3)+'.';
+        var hasil = 'Rp. '+rupiah.split('',rupiah.length-1).reverse().join('');
+        return hasil+',00';
+    }
 </script>
 @endsection()

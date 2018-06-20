@@ -4,7 +4,7 @@
                 <button type="button" data-toggle="collapse" data-target=".sidebar-collapse" class="navbar-toggle"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
                 <a id="logo" href="{{ url('/home') }}" class="navbar-brand"><span class="fa fa-rocket"></span><span class="logo-text">TammaFood</span><span style="display: none;" class="logo-text-icon">µ</span></a></div>
             <div class="topbar-main"><a id="menu-toggle" href="#" class="hidden-xs"><i class="fa fa-bars"></i></a>
-                
+
                 <form id="topbar-search" action="" method="" class="hidden-sm hidden-xs">
                     <div class="input-icon right text-white"><a href="#"><i class="fa fa-search"></i></a><input type="text" placeholder="Search here..." class="form-control text-white"/></div>
                 </form>
@@ -12,13 +12,13 @@
                 </div>
                 <ul class="nav navbar navbar-top-links navbar-right mbn">
                     <li class="dropdown"><a data-hover="dropdown" href="#" class="dropdown-toggle"><i class="fa fa-bell fa-fw"></i><span class="badge badge-green">3</span></a>
-                        
+
                     </li>
                     <li class="dropdown"><a data-hover="dropdown" href="#" class="dropdown-toggle"><i class="fa fa-envelope fa-fw"></i><span class="badge badge-orange">7</span></a>
-                        
+
                     </li>
                     <li class="dropdown"><a data-hover="dropdown" href="#" class="dropdown-toggle"><i class="fa fa-tasks fa-fw"></i><span class="badge badge-blue">8</span></a>
-               
+
                     </li>
                     <li class="dropdown topbar-user"><a data-hover="dropdown" href="#" class="dropdown-toggle"><img src="{{ asset('assets/images/avatar/48.jpg')}}" alt="" class="img-responsive img-circle">&nbsp;<span class="hidden-xs">{{ Auth::user()->m_name }}</span>&nbsp;<span class="caret"></span></a>
                         <ul class="dropdown-menu dropdown-user pull-right">
@@ -91,23 +91,31 @@
                             </i>
                             <span class="menu-title">Master</span><span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
-                                   @if(Auth::user()->punyaAkses('Data Supplier','ma_read'))
+                                 @if(Auth::user()->punyaAkses('Data Supplier','ma_read'))
                                 <li class="{{ Request::is('master/datasuplier/suplier') ? 'active' : '' || Request::is('master/datasuplier/*') ? 'active' : '' }}"><a href="{{ url('/master/datasuplier/suplier') }}"><span class="submenu-title">Data Suplier</span><span class="hidden">Master</span></a>
-                                </li>
-                                @endif
-
-                                @if(Auth::user()->punyaAkses('Data Barang','ma_read'))
-                                <li class="{{ Request::is('master/datasatuan/satuan') ? 'active' : '' || Request::is('master/datasatuan/*') ? 'active' : '' }}"><a href="{{ url('/master/datasatuan/satuan') }}"><span class="submenu-title">Data Satuan</span><span class="hidden">Master</span></a>
-                                </li>
-                                @endif
-
-                                @if(Auth::user()->punyaAkses('Data Barang','ma_read'))
-                                <li class="{{ Request::is('master/datagroup/group') ? 'active' : '' || Request::is('master/datagroup/*') ? 'active' : '' }}"><a href="{{ url('/master/datagroup/group') }}"><span class="submenu-title">Data Group</span><span class="hidden">Master</span></a>
                                 </li>
                                 @endif
 
                                  @if(Auth::user()->punyaAkses('Data Customer','ma_read'))
                                 <li class="{{ Request::is('master/datacust/cust') ? 'active' : '' || Request::is('master/datacust/*') ? 'active' : '' }}"><a href="{{ url('/master/datacust/cust') }}"><span class="submenu-title">Data Customer</span><span class="hidden">Master</span></a>
+                                </li>
+                                @endif
+
+                                {{--  @if(Auth::user()->punyaAkses('Data Bahan Baku','ma_read'))
+                                <li class="{{ Request::is('master/databaku/baku') ? 'active' : '' || Request::is('master/databaku/*') ? 'active' : '' }}"><a href="{{ url('/master/databaku/baku') }}"><span class="submenu-title">Data Bahan Baku</span><span class="hidden">Master</span></a>
+                                </li>
+                                @endif --}}
+
+                                @if(Auth::user()->punyaAkses('Data Satuan','ma_read'))
+                                <li class="{{ Request::is('master/datasatuan/satuan') ? 'active' : '' || Request::is('master/datasatuan/*') ? 'active' : '' }}"><a href="{{ url('/master/datasatuan/satuan') }}"><span class="submenu-title">Data Satuan</span><span class="hidden">Master</span></a>
+                                @endif
+
+                                @if(Auth::user()->punyaAkses('Data Group','ma_read'))
+                                <li class="{{ Request::is('master/datagroup/group') ? 'active' : '' || Request::is('master/datagroup/*') ? 'active' : '' }}"><a href="{{ url('/master/datagroup/group') }}"><span class="submenu-title">Data Group</span><span class="hidden">Master</span></a>
+                                @endif
+
+                                 @if(Auth::user()->punyaAkses('Data Jenis Produksi','ma_read'))
+                                <li class="{{ Request::is('master/datajenis/jenis') ? 'active' : '' || Request::is('master/datajenis/*') ? 'active' : '' }}"><a href="{{ url('/master/datajenis/jenis') }}"><span class="submenu-title">Data Jenis Produksi</span><span class="hidden">Master</span></a>
                                 </li>
                                 @endif
 
@@ -127,22 +135,21 @@
                                 @endif
 
                                  @if(Auth::user()->punyaAkses('Data Barang','ma_read'))
-                                <li class="{{ Request::is('master/databarang/barang') ? 'active' : '' || Request::is('master/databarang/*') ? 'active' : '' }}"><a href="{{ url('/master/databarang/barang') }}"><span class="submenu-title">Data Barang Jual</span><span class="hidden">Master</span></a>
+
+                                <li class="{{ Request::is('master/databarang/barang') ? 'active' : '' || Request::is('master/databarang/*') ? 'active' : '' }}"><a href="{{ url('/master/databarang/barang') }}"><span class="submenu-title">Data Barang </span><span class="hidden">Master</span></a>
                                 </li>
                                 @endif
-
+                                {{-- 
                                 @if(Auth::user()->punyaAkses('Data Bahan Baku','ma_read'))
                                 <li class="{{ Request::is('master/databaku/baku') ? 'active' : '' || Request::is('master/databaku/*') ? 'active' : '' }}"><a href="{{ url('/master/databaku/baku') }}"><span class="submenu-title">Data Bahan Baku</span><span class="hidden">Master</span></a>
-                                </li>
-                                @endif
 
-                                 @if(Auth::user()->punyaAkses('Data Jenis Produksi','ma_read'))
-                                <li class="{{ Request::is('master/datajenis/jenis') ? 'active' : '' || Request::is('master/datajenis/*') ? 'active' : '' }}"><a href="{{ url('/master/datajenis/jenis') }}"><span class="submenu-title">Data Jenis Produksi</span><span class="hidden">Master</span></a>
+                                <li class="{{ Request::is('master/databarang/barang') ? 'active' : '' || Request::is('master/databarang/*') ? 'active' : '' }}"><a href="{{ url('/master/databarang/barang') }}"><span class="submenu-title">Data Barang</span><span class="hidden">Master</span></a> 
+                                    @endif--}}
                                 </li>
-                                @endif
+                                
 
-                            </ul>   
-                        </li>           
+                            </ul>
+                        </li>
                     @endif
                     @if(Auth::user()->punyaAkses('Purchasing','ma_read'))
                         <div class="clearfix"></div>
@@ -213,6 +220,11 @@
                                 </li>
                                 @endif
 
+                                @if(Auth::user()->punyaAkses('Penerimaan Barang Suplier','ma_read'))
+                                <li class="{{ Request::is('inventory/datagudang/gudang') ? 'active' : '' || Request::is('inventory/datagudang/*') ? 'active' : '' }}"><a href="{{ url('/inventory/datagudang/gudang') }}"><span class="submenu-title"> Stock Gudang</span></a>
+                                </li>
+                                @endif
+
                                 @if(Auth::user()->punyaAkses('Ritail Transfer','ma_read'))
                                 <li class="{{ Request::is('inventory/POSretail/transfer') ? 'active' : '' || Request::is('inventory/POSretail/transfer/*') ? 'active' : '' }}"><a href="{{ url('inventory/POSretail/transfer') }}"><span class="submenu-title">Ritail Transfer</span></a>
                                 </li>
@@ -221,10 +233,11 @@
                                 <li class="{{ Request::is('inventory/POSgrosir/transfer') ? 'active' : '' || Request::is('inventory/POSgrosir/transfer/*') ? 'active' : '' }}"><a href="{{ url('inventory/POSgrosir/transfer') }}"><span class="submenu-title">Grosir Transfer</span></a>
                                 </li>
                                 @endif
-                                
+
                             </ul>
                         </li>
                     @endif
+
                     @if(Auth::user()->punyaAkses('Produksi','ma_read'))
                         <div class="clearfix"></div>
                         <li  class="{{Request::is('produksi') ? 'active' : '' || Request::is('produksi/*') ? 'active' : '' }}"><a href="#"><i class="fa fa-bar-chart-o fa-fw">
@@ -244,24 +257,23 @@
                                 <li class="{{ Request::is('produksi/spk/spk') ? 'active' : '' || Request::is('produksi/spk/*') ? 'active' : '' }}"><a href="{{ url('/produksi/spk/spk') }}"><span class="submenu-title">Manajemen SPK</span></a>
                                 </li>
                                 @endif
-                                
+
+                                <!-- <li class="{{ Request::is('produksi/produksi/produksi2') ? 'active' : '' || Request::is('produksi/produksi/*') ? 'active' : '' }}"><a href="{{ url('/produksi/produksi/produksi2') }}"><span class="submenu-title">Manajemen Produksi</span></a>
+                                </li> -->
                                 @if(Auth::user()->punyaAkses('Manajemen Output Produksi','ma_read'))
-                                
+
                                 <li class="{{ Request::is('produksi/o_produksi/index') ? 'active' : '' || Request::is('produksi/o_produksi/*') ? 'active' : '' }}"><a href="{{ url('/produksi/o_produksi/index') }}"><span class="submenu-title">Manajemen Output Produksi</span></a>
-                                </li>
-                                @endif
-                                @if(Auth::user()->punyaAkses('Manajemen Output Produksi','ma_read'))
-                                <li class="{{ Request::is('produksi/suratjalan/index') ? 'active' : '' || Request::is('produksi/suratjalan/*') ? 'active' : '' }}"><a href="{{ url('/produksi/suratjalan/index') }}"><span class="submenu-title">Pembuatan Pengambilan Item</span></a>
                                 </li>
                                 @endif
                                 @if(Auth::user()->punyaAkses('Manajemen Sampah (Waste)','ma_read'))
                                 <li class="{{ Request::is('produksi/waste/waste') ? 'active' : '' || Request::is('produksi/waste/*') ? 'active' : '' }}"><a href="{{ url('/produksi/waste/waste') }}"><span class="submenu-title">Manajemen Sampah (Waste)</span></a>
                                 </li>
                                 @endif
-                                
+
                             </ul>
                         </li>
                     @endif
+
                     @if(Auth::user()->punyaAkses('Penjualan','ma_read'))
                         <div class="clearfix"></div>
                         <li  class="{{Request::is('penjualan') ? 'active' : '' || Request::is('penjualan/*') ? 'active' : '' }}"><a href="#"><i class="fa fa-truck fa-fw">
@@ -289,12 +301,12 @@
                                 <li class="{{ Request::is('penjualan/POSretail/index') ? 'active' : ''}}"><a href="{{ url('/penjualan/POSretail/index') }}"><span class="submenu-title">POS Penjualan Retail</span></a>
                                 </li>
                                 @endif
-                               
+
                                 @if(Auth::user()->punyaAkses('POS Penjualan Grosir / Online','ma_read'))
                                 <li class="{{ Request::is('penjualan/POSgrosir/grosir') ? 'active' : ''}}"><a href="{{ url('/penjualan/POSgrosir/index') }}"><span class="submenu-title">POS Penjualan Grosir / Online</span></a>
                                 </li>
                                 @endif
-                             
+
                                 @if(Auth::user()->punyaAkses('Monitoring Order & Stock','ma_read'))
                                 <li class="{{ Request::is('penjualan/monitoringorder/monitoring') ? 'active' : '' || Request::is('penjualan/monitoringorder/*') ? 'active' : '' }}"><a href="{{ url('/penjualan/monitoringorder/monitoring') }}"><span class="submenu-title">Monitoring Order & Stock</span></a>
                                 </li>
@@ -311,7 +323,7 @@
                                 <li class="{{ Request::is('penjualan/mutasistok/mutasi') ? 'active' : '' || Request::is('penjualan/mutasistok/*') ? 'active' : '' }}"><a href="{{ url('/penjualan/mutasistok/mutasi') }}"><span class="submenu-title">Mutasi Stock & Retail</span></a>
                                 </li>
                                 @endif
-                                
+
                             </ul>
                         </li>
                     @endif
@@ -323,7 +335,7 @@
                             <ul class="nav nav-second-level">
 
                                 @if(Auth::user()->punyaAkses('Data Karyawan','ma_read'))
-                                <li class="{{ Request::is('hrd/datakaryawan/karyawan') ? 'active' : '' || Request::is('hrd/datakaryawan/*') ? 'active' : '' }}"><a href="{{ url('/hrd/datakaryawan/karyawan')}}"><span class="submenu-title">Data Karyawan</span></a>
+                                <li class="{{ Request::is('hrd/datajabatan/datajabatan') ? 'active' : '' || Request::is('hrd/datajabatan/*') ? 'active' : '' }}"><a href="{{ url('/hrd/datajabatan/datajabatan')}}"><span class="submenu-title">Data Jabatan</span></a>
                                 </li>
                                 @endif
                                 @if(Auth::user()->punyaAkses('Data Administrasi Pegawai','ma_read'))
@@ -354,7 +366,7 @@
                                 <li class="{{ Request::is('hrd/recruitment/rekrut') ? 'active' : '' || Request::is('hrd/recruitment/*') ? 'active' : '' }}"><a href="{{ url('/hrd/recruitment/rekrut') }}"><span class="submenu-title">Recruitment</span></a>
                                 </li>
                                 @endif
-                                
+
                             </ul>
                         </li>
                     @endif
@@ -412,6 +424,10 @@
                                 <li class="{{ Request::is('keuangan/analisaroe/analisa8') ? 'active' : '' || Request::is('keuangan/analisaroe/*') ? 'active' : '' }}"><a href="{{ url('/keuangan/analisaroe/analisa8') }}"><span class="submenu-title">Analisa ROE</span></a>
                                 </li>
                                 @endif
+                                @if(Auth::user()->punyaAkses('Konfirmasi Rencana Pembelian','ma_read'))
+                                <li class="{{ Request::is('keuangan/konfirmasipembelian/konfirmasi-purchase') ? 'active' : '' || Request::is('keuangan/konfirmasipembelian/*') ? 'active' : '' }}"><a href="{{ url('/keuangan/konfirmasipembelian/konfirmasi-purchase') }}"><span class="submenu-title">Konfirmasi Data Pembelian</span></a>
+                                </li>
+                                @endif
                                 @if(Auth::user()->punyaAkses('Penerimaan Barang Hasil Produksi','ma_read'))
                                 <li class="{{ Request::is('keuangan/p_hasilproduksi/pembatalanPenerimaan') ? 'active' : '' || Request::is('keuangan/p_hasilproduksi/*') ? 'active' : '' }}"><a href="{{ url('/keuangan/p_hasilproduksi/pembatalanPenerimaan') }}"><span class="submenu-title">Penerimaan Barang Hasil Produksi</span></a>
                                 </li>
@@ -425,8 +441,8 @@
                         <li  class="{{Request::is('system') ? 'active' : '' || Request::is('system/*') ? 'active' : '' }}"><a href="#"><i class="fa fa-cog fa-fw fa-spin">
                             <div class="icon-bg bg-green"></div>
                             </i><span class="menu-title">System</span><span class="fa arrow"></span></a>
-                           
-                        
+
+
                             <ul class="nav nav-second-level">
 
                                 @if(Auth::user()->punyaAkses('Manajemen User','ma_read'))
@@ -445,11 +461,11 @@
                                 <li class="{{ Request::is('system/thnfinansial/finansial') ? 'active' : '' || Request::is('system/thnfinansial/*') ? 'active' : '' }}"><a href="{{ url('/system/thnfinansial/finansial') }}"><span class="submenu-title">Tahun Finansial</span></a>
                                 </li>
                                 @endif
-                                
+
                             </ul>
                         </li>
                     @endif
-                        
+
                 </ul>
             </div>
             </div>
@@ -462,7 +478,7 @@
             <!--BEGIN CHAT FORM-->
             <div id="chat-form" class="fixed">
                 <div class="chat-inner">
-                    <h2 class="chat-header">    
+                    <h2 class="chat-header">
                         <a href="javascript:;" class="chat-form-close pull-right"><i class="glyphicon glyphicon-remove">
                         </i></a><i class="fa fa-users"></i>&nbsp; Message &nbsp;<span class="badge badge-info">3</span></h2>
                     <div id="group-1" class="chat-group">

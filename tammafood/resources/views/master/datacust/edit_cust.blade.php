@@ -53,7 +53,7 @@
                                 </div>
                                 <div class="col-md-4 col-sm-9 col-xs-12">
                                   <div class="form-group">
-                                      <input type="text" class="form-control input-sm" readonly="true" name="id_cus_ut" value="{{ $edit_cust->c_id }}">
+                                      <input type="text" class="form-control input-sm" readonly="true" name="id_cus_ut" value="{{ $edit_cust->c_code }}">
                                       <input type="hidden" name="id_cus_ut" value="{{$edit_cust->c_id}}">
                                       <input type="hidden" name="id_cus" value="{{$edit_cust->c_id}}">
                                   </div>
@@ -69,11 +69,7 @@
                                     <div class="input-icon right">
                                       <i class="glyphicon glyphicon-user"></i>
                                       <input type="text" id="nama_cus" name="nama_cus" class="form-control input-sm" value="{{ $edit_cust->c_name }}"> 
-                                      @if ($errors->has('nama_cus'))
-                                        <span class="help-block">
-                                            <strong>{{ $errors->first('nama_cus') }}</strong>
-                                        </span>
-                                      @endif      
+                                     
                                     </div>                           
                                   </div>
                                 </div>
@@ -86,12 +82,8 @@
                                   <div class="form-group">
                                     <div class="input-icon right">
                                       <i class="glyphicon glyphicon-calendar"></i>
-                                      <input maxlength="10" type="text" id="tgl_lahir" name="tgl_lahir" class="form-control input-sm datepicker2" value="{{ $edit_cust->c_birthday}}"> 
-                                      @if ($errors->has('tgl_lahir'))
-                                        <span class="help-block">
-                                            <strong>{{ $errors->first('tgl_lahir') }}</strong>
-                                        </span>
-                                      @endif     
+                                      <input  type="text" id="tgl_lahir" name="tgl_lahir" class="form-control input-sm datepicker_strip" value="{{ $edit_cust->c_birthday}}"> 
+                                    
                                     </div>                            
                                   </div>
                                 </div>
@@ -105,11 +97,7 @@
                                     <div class="input-icon right">
                                       <i class="glyphicon glyphicon-envelope"></i>
                                       <input type="email" id="email" name="email" class="form-control input-sm"  value="{{ $edit_cust->c_email }}">
-                                      @if ($errors->has('email'))
-                                        <span class="help-block">
-                                            <strong>{{ $errors->first('email') }}</strong>
-                                        </span>
-                                      @endif  
+                                     
                                     </div>                                
                                   </div>
                                 </div>
@@ -123,24 +111,12 @@
                                   <div class="form-group">
                                     
                                       <select name="tipe_cust" id="tipe_cust" class="form-control input-sm">
-                                        @if($edit_cust->c_type=="retail")
-                                             <option value="retail" selected="true">Retail</option>
-                                             <option value="online">Online</option>
-                                        @elseif($edit_cust->c_type=="online")
-                                             <option value="retail">Retail</option>
-                                             <option value="online" selected="true" >Online</option>
-                                        @else
+                                      
                                             <option value="retail">Retail</option>
                                             <option value="online">Online</option>
-                                        @endif
 
                                       </select>
-                                      @if ($errors->has('tipe_cust'))
-                                        <span class="help-block">
-                                            <strong>{{ $errors->first('tipe_cust') }}</strong>
-                                        </span>
-                                      @endif  
-                                                                  
+                                                 
                                   </div>
                                 </div>
                                 <div class="col-md-6 col-sm-0 col-xs-0" style="height: 45px;">
@@ -158,11 +134,7 @@
                                     <div class="input-icon right">
                                       <i class="glyphicon glyphicon-earphone"></i>
                                       <input type="text" id="no_hp" name="no_hp" class="form-control input-sm"  value="{{ $edit_cust->c_hp }}">
-                                      @if ($errors->has('no_hp'))
-                                        <span class="help-block">
-                                            <strong>{{ $errors->first('no_hp') }}</strong>
-                                        </span>
-                                      @endif   
+                                  
                                     </div>                               
                                   </div>
                                 </div>
@@ -177,11 +149,7 @@
                                     <div class="input-icon right">
                                       <i class="glyphicon glyphicon-home"></i>
                                       <textarea id="alamat" name="alamat" class="form-control input-sm">{{ $edit_cust->c_address}}</textarea>
-                                      @if ($errors->has('alamat'))
-                                        <span class="help-block">
-                                            <strong>{{ $errors->first('alamat') }}</strong>
-                                        </span>
-                                    @endif                              
+                                                           
                                     </div>    
                                   </div>
                                 </div>
@@ -212,138 +180,46 @@
   function update (){
       var a = $('#form_cust').serialize();
 
-       var nama = $("#nama_cus").val();
+      var nama = $("#nama_cus").val();
       var tgl_lahir = $("#tgl_lahir").val();
       var email = $("#email").val();
       var no_hp = $("#no_hp").val();
       var alamat = $("#alamat").val();
-
       if(nama == '' || nama == null ){
 
-      Command: toastr["error"]('Kolom "Nama Customer" tidak boleh kosong ', "Peringatan !")
-
-      toastr.options = {
-        "closeButton": true,
-        "debug": false,
-        "newestOnTop": true,
-        "progressBar": false,
-        "positionClass": "toast-top-right",
-        "preventDuplicates": false,
-        "onclick": null,
-        "showDuration": "300",
-        "hideDuration": "1000",
-        "timeOut": "5000",
-        "extendedTimeOut": "1000",
-        "showEasing": "swing",
-        "hideEasing": "linear",
-        "showMethod": "fadeIn",
-        "hideMethod": "fadeOut"
-        }
+       toastr.warning('Data Harus nama Diisi!','Peringatan')
         return false;
       }
 
       if(tgl_lahir == '' || tgl_lahir == null ){
 
-      Command: toastr["error"]('Kolom "Tanggal Lahir" tidak boleh kosong ', "Peringatan !")
-
-      toastr.options = {
-        "closeButton": true,
-        "debug": false,
-        "newestOnTop": true,
-        "progressBar": false,
-        "positionClass": "toast-top-right",
-        "preventDuplicates": false,
-        "onclick": null,
-        "showDuration": "300",
-        "hideDuration": "1000",
-        "timeOut": "5000",
-        "extendedTimeOut": "1000",
-        "showEasing": "swing",
-        "hideEasing": "linear",
-        "showMethod": "fadeIn",
-        "hideMethod": "fadeOut"
-        }
+       toastr.warning('Data Harus tgl lahir Diisi!','Peringatan')
         return false;
       }
 
       if(email == '' || email == null ){
 
-      Command: toastr["error"]('Kolom "E-mail" tidak boleh kosong ', "Peringatan !")
-
-      toastr.options = {
-        "closeButton": true,
-        "debug": false,
-        "newestOnTop": true,
-        "progressBar": false,
-        "positionClass": "toast-top-right",
-        "preventDuplicates": false,
-        "onclick": null,
-        "showDuration": "300",
-        "hideDuration": "1000",
-        "timeOut": "5000",
-        "extendedTimeOut": "1000",
-        "showEasing": "swing",
-        "hideEasing": "linear",
-        "showMethod": "fadeIn",
-        "hideMethod": "fadeOut"
-        }
+       toastr.warning('Data Harus email Diisi!','Peringatan')
         return false;
       }
 
       if(no_hp == '' || no_hp == null ){
 
-      Command: toastr["error"]('Kolom "Nomor HP" tidak boleh kosong ', "Peringatan !")
-
-      toastr.options = {
-        "closeButton": true,
-        "debug": false,
-        "newestOnTop": true,
-        "progressBar": false,
-        "positionClass": "toast-top-right",
-        "preventDuplicates": false,
-        "onclick": null,
-        "showDuration": "300",
-        "hideDuration": "1000",
-        "timeOut": "5000",
-        "extendedTimeOut": "1000",
-        "showEasing": "swing",
-        "hideEasing": "linear",
-        "showMethod": "fadeIn",
-        "hideMethod": "fadeOut"
-        }
+       toastr.warning('Data Harus no hp Diisi!','Peringatan')
         return false;
       }
 
       if(alamat == '' || alamat == null ){
-
-      Command: toastr["error"]('Kolom "Alamat" tidak boleh kosong ', "Peringatan !")
-
-      toastr.options = {
-        "closeButton": true,
-        "debug": false,
-        "newestOnTop": true,
-        "progressBar": false,
-        "positionClass": "toast-top-right",
-        "preventDuplicates": false,
-        "onclick": null,
-        "showDuration": "300",
-        "hideDuration": "1000",
-        "timeOut": "5000",
-        "extendedTimeOut": "1000",
-        "showEasing": "swing",
-        "hideEasing": "linear",
-        "showMethod": "fadeIn",
-        "hideMethod": "fadeOut"
-        }
+        toastr.warning('Data Harus alamat Diisi!','Peringatan')
         return false;
       }
 
       $.ajax({
-        url : baseUrl + "/master/datacust/cust_edit/cust_edit_proses/{{$id_cus_ut}}",
+        url : '{{ route('update_cust') }}',
         type:'get',
         data: a,
         success:function(response){
-          window.location = (baseUrl+'/master/datacust/cust')
+          // window.location = (baseUrl+'/master/datacust/cust')
         }
       })
 

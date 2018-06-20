@@ -36,20 +36,20 @@ class PurchasingController extends Controller
         return view('/purchasing/rencanapembelian/rencana');
     }*/
     
-    public function belanja()
+    /*public function belanja()
     {
         return view('/purchasing/belanjaharian/belanja');
-    }
+    }*/
 
-    public function tambah_belanja()
+    /*public function tambah_belanja()
     {
         return view('/purchasing/belanjaharian/tambah_belanja');
-    }
+    }*/
 
-    public function pembelian()
+    /*public function pembelian()
     {
         return view('/purchasing/returnpembelian/pembelian');
-    }
+    }*/
 
     public function suplier()
     {
@@ -73,10 +73,10 @@ class PurchasingController extends Controller
     {
         return view('/purchasing/rencanapembelian/create');
     }*/
-    public function tambah_pembelian()
+    /*public function tambah_pembelian()
     {
         return view('/purchasing/returnpembelian/tambah_pembelian');
-    }
+    }*/
     public function tambah_order()
     {
         return view ('/purchasing/orderpembelian/tambah_order');

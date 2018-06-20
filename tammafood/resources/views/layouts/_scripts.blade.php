@@ -71,9 +71,24 @@
           "hideMethod": "fadeOut"
         };
 
+        // var readonly = $('.readonly').attr('readonly','true')
+        var readonly = $('.readonly').css('pointer','none')
+
     </script>
     <script>
          $(document).ready(function() {
+
+           var datepicker_today = $('.datepicker_today').datepicker({
+              format:"dd-mm-yyyy",
+              autoclose:true
+            }).datepicker("setDate", "0");
+
+           var datepicker_strip = $('.datepicker_strip').datepicker({
+              format:"dd-mm-yyyy",
+              autoclose:true
+            });
+
+
             var extensions = {
                  "sFilterInput": "form-control input-sm",
                 "sLengthSelect": "form-control input-sm"

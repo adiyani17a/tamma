@@ -1,78 +1,65 @@
 <div id="note-tab" class="tab-pane fade">
+  <div class="panel-body">
     <div class="row">
-      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 10px;">
-        
-        <div align="right">
-          <a href="{{ url('/purchasing/rencanapembelian/create') }}"><button type="button" class="btn btn-box-tool create" style="background-color: white; color:#888; font-size:12pt; font-family:'Open Sans', sans-serif;" title="Tambahkan Data Item">
-            <i class="fa fa-plus" aria-hidden="true">
-              &nbsp;
-            </i>Tambah Data
-            </button>
-          </a>
+
+      <div class="col-md-2 col-sm-3 col-xs-12">
+        <label class="tebal">Tanggal Rencana</label>
+      </div>
+
+      <div class="col-md-4 col-sm-6 col-xs-12">
+        <div class="form-group">
+          <div class="input-daterange input-group">
+            <input id="tanggal1" class="form-control input-sm datepicker1" name="iTanggal1" type="text">
+            <span class="input-group-addon">-</span>
+            <input id="tanggal2" class="input-sm form-control datepicker2" name="iTanggal2" type="text" value="{{ date('d-m-Y') }}">
+          </div>
         </div>
+      </div>
+
+      <div class="col-md-3 col-sm-3 col-xs-12" align="center">
+        <button class="btn btn-primary btn-sm btn-flat autoCari" type="button"  onclick="lihatHistorybyTgl()">
+          <strong>
+            <i class="fa fa-search" aria-hidden="true"></i>
+          </strong>
+        </button>
+        <button class="btn btn-info btn-sm btn-flat refresh-data-history" type="button">
+          <strong>
+            <i class="fa fa-undo" aria-hidden="true"></i>
+          </strong>
+        </button>
+      </div>
+
+      <div class="col-md-3 col-sm-3 col-xs-12" align="right">
+        <select name="tampilData" id="tampil_data" class="form-control input-sm">
+          <option value="wait" class="form-control">Tampilkan Data : Waiting</option>
+          <option value="edit" class="form-control">Tampilkan Data : Dapat diedit</option>
+          <option value="confirm" class="form-control">Tampilkan Data : Disetujui</option>
+        </select>
       </div>
 
       <div class="col-md-12 col-sm-12 col-xs-12">
         <div class="table-responsive">
-          <table class="table tabelan table-hover table-bordered" width="100%" cellspacing="0" id="data2">
+          <table class="table tabelan table-hover table-bordered" width="100%" cellspacing="0" id="tbl-history">
             <thead>
               <tr>
-                <th class="wd-15p">No</th>
+                <th class="wd-5p">No</th>
+                <th class="wd-15p">Id Rencana</th>
                 <th class="wd-15p">Nama Barang</th>
-                <th class="wd-20p">Suplier</th>
-                <th class="wd-15p">Permintaan Kuantitas</th>
-                <th class="wd-10p">Kuantitas Disetujui</th>
-                <th class="wd-15p">Status</th>
-                <th class="wd-15p">Aksi</th>
+                <th class="wd-15p">Supplier</th>
+                <th class="wd-10p">Tgl Pemintaan</th>
+                <th class="wd-10p">Qty</th>
+                <th class="wd-10p">Tgl Disetujui</th>
+                <th class="wd-10p">Qty Disetujui</th>
+                <th class="wd-10p">Status</th>
               </tr>
             </thead>
 
             <tbody>
-              <tr>
-                  <td>1</td>
-                  <td>Tepung Terigu</td>
-                  <td><i class="fa fa-check"></i></td>
-                  <td>10</td>
-                  <td></td>
-                  <td>
-                    <span class="badge badge-success">Disetujui</span>
-                  </td>
-                  <td align="center">
-                   .. 
-                  </td>
-                </tr>
-                <tr>
-                  <td>2</td>
-                  <td>Tepung Beras</td>
-                  <td><i class="fa fa-times"></i></td>
-                  <td>10</td>
-                  <td></td>
-                  <td>
-                    <span class="badge badge-success">Disetujui</span>
-                  </td>
-                  <td align="center">
-                    ..
-                  </td>
-                </tr>
-                <tr>
-                  <td>3</td>
-                  <td>Tepung Jagung</td>
-                  <td><i class="fa fa-check"></i></td>
-                  <td>10</td>
-                  <td></td>
-                  <td>
-                    <span class="badge badge-success">Disetujui</span>
-                  </td>
-                  <td align="center">
-                    ..
-                  </td>
-                </tr>
-
             </tbody>
-                
         </table> 
         </div>
       </div>
                 
     </div>
+  </div>
 </div>

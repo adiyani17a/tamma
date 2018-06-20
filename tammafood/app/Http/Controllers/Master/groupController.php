@@ -50,9 +50,9 @@ class groupController extends Controller
         }
         $tanggal = date("ym");
 
-        $kode = str_pad($kode, 5, '0', STR_PAD_LEFT);
+        $kode = str_pad($kode, 3, '0', STR_PAD_LEFT);
 
-        $nota = 'MG-'.$kode.'/'.$tanggal;
+        $nota = $kode;
         $item = DB::table('m_item')->get();
         return view('/master/datagroup/tambah_group',compact('nota','item'));
     }
@@ -70,6 +70,7 @@ class groupController extends Controller
                       'm_gcode'=>$request->id,
                       'm_gname'=>$request->nama,
                       'm_gitem'=>$request->item,
+                      'm_gtype'=>$request->type,
                     ]);
     }
     public function hapus_group(Request $request)
@@ -94,6 +95,7 @@ class groupController extends Controller
                       'm_gname'=>$request->nama,
                       'm_gitem'=>$request->item,
                       'm_gupdate'=>$tanggal,
+                      'm_gtype'=>$request->type,
                     ]);
       return response()->json(['status'=>1]);
     }
