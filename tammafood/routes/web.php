@@ -39,7 +39,6 @@ Route::get('/master/datasuplier/suplier', 'MasterController@suplier')->name('sup
 /*---------*/
 
 Route::get('/master/datapegawai/pegawai', 'MasterController@pegawai');
-Route::get('/master/datakeuangan/keuangan', 'MasterController@keuangan');
 Route::get('/master/datatransaksi/transaksi', 'MasterController@transaksi');
 Route::get('/master/datasuplier/tambah_suplier', 'MasterController@tambah_suplier');
 Route::get('/master/datatransaksi/tambah_transaksi', 'MasterController@tambah_transaksi');
@@ -465,3 +464,21 @@ Route::get('/inventory/p_suplier/edit_pensuplier', 'Inventory\penerimaanbarang_s
 Route::get('/inventory/p_suplier/cari_nota', 'Inventory\penerimaanbarang_supController@cari_nota_sup');
 
 //end
+
+
+
+// route Keuangan (Dirga)
+    
+    // akun keuangan route
+ 
+        Route::get('/master/datakeuangan/keuangan', 'Keuangan\akunController@index');
+        Route::get('/master/datakeuangan/datatable_akun', 'Keuangan\akunController@datatable_akun')->name('datatable_akun');
+        Route::get('/master/datakeuangan/tambah_akun', 'Keuangan\akunController@tambah_akun')->name('tambah_akun');
+        Route::post('/master/datakeuangan/simpan', 'Keuangan\akunController@save_akun')->name('simpan_akun');
+        Route::get('/master/datakeuangan/edit_akun', 'keuangan\akunController@edit_akun')->name('edit_akun');
+        Route::post('/master/datakeuangan/update', 'Keuangan\akunController@update_akun')->name('update_akun');
+        Route::get('/master/datakeuangan/hapus_akun', 'keuangan\akunController@hapus_akun')->name('hapus_akun');
+
+    // akun keuangan route end
+
+// Route Keuangan End
