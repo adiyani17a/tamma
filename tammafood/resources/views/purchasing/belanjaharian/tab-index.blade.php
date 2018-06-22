@@ -21,12 +21,12 @@
         </div>
 
         <div class="col-md-3 col-sm-3 col-xs-12" align="center">
-          <button class="btn btn-primary btn-sm btn-flat" type="button">
+          <button class="btn btn-primary btn-sm btn-flat" type="button" onclick="lihatBelanjaByTanggal()">
             <strong>
               <i class="fa fa-search" aria-hidden="true"></i>
             </strong>
           </button>
-          <button class="btn btn-info btn-sm btn-flat" type="button">
+          <button class="btn btn-info btn-sm btn-flat" type="button" onclick="refreshTabelBelanja()"> 
             <strong>
               <i class="fa fa-undo" aria-hidden="true"></i>
             </strong>

@@ -41,13 +41,19 @@
                                             <label class="tebal">Laporan Keuangan</label>
                                           </div>
                                           <div class="col-md-6 col-sm-12 col-xs-12">
-                                            <select class="form-control input-sm">
-                                              <option data-toggle="tab" data-target="#laba-rugi">Laba Rugi</option>
-                                              <option data-toggle="tab" data-target="#label-badge-tab">Neraca</option>
-                                              <option data-toggle="tab" data-target="#arus-kas">Arus Kas</option>
-                                              <option data-toggle="tab" data-target="#alert-tab">Jurnal</option>
-                                              <option data-toggle="tab" data-target="#note-tab">Buku Besar</option>
-                                            </select>
+                                            <div class="btn-group">
+                                              <button type="button" class="btn btn-primary dropdown-toggle btn-sm" data-toggle="dropdown">
+                                              <span id="text">Pilih</span> <span class="caret"></span></button>
+                                              <ul class="dropdown-menu" role="menu">
+                                                <li class="m1a2"><a class="t90" onclick="rmvClass(this)" data-toggle="tab" href="#laba-rugi">Laba Rugi</a></li>
+                                                <li class="m1a2"><a class="t90" onclick="rmvClass(this)" data-toggle="tab" href="#label-badge-tab">Neraca</a></li>
+                                                <li class="m1a2"><a class="t90" onclick="rmvClass(this)" data-toggle="tab" href="#arus-kas">Arus Kas</a></li>
+                                                <li class="m1a2"><a class="t90" onclick="rmvClass(this)" data-toggle="tab" href="#alert-tab">Jurnal</a></li>
+                                                <li class="m1a2"><a class="t90" onclick="rmvClass(this)" data-toggle="tab" href="#note-tab">Buku Besar</a></li>
+
+                                              </ul>
+                                            </div>
+                                            
                                           </div>
                                         </div>
                                       </div>
@@ -96,6 +102,18 @@
 @endsection
 @section("extra_scripts")
     <script type="text/javascript">
+
+      function rmvClass(m1a2)
+      {
+        var li = $('.m1a2');
+        li.removeClass('active');
+
+      var par   = $(m1a2).parents('li');
+      var text    = $(par).find('.t90').text();
+
+        $('#text').html(text);
+
+      }
      
       $('.datepicker').datepicker({
         format: "mm",
@@ -105,6 +123,5 @@
       $('.datepicker2').datepicker({
         format:"dd/mm/yyyy"
       });  
-      alert('a')  ;
       </script>
 @endsection

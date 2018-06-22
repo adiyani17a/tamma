@@ -2,6 +2,7 @@
 @section('content')
 <style type="text/css">
   .ui-autocomplete { z-index:2147483647; }
+  .select2-container { margin: 0; }
 </style>
   <!--BEGIN PAGE WRAPPER-->
   <div id="page-wrapper">
@@ -71,7 +72,7 @@
                   <div class="col-md-12 col-sm-12 col-xs-12" style="margin-top:15px;" id="header_form">
                     <form method="post">
                       {{ csrf_field() }}
-                      <div class="col-md-12 col-sm-12 col-xs-12 tamma-bg" style="margin-bottom: 20px; padding-top:30px;padding-bottom:20px;" id="appending-form">
+                      <div class="col-md-12 col-sm-12 col-xs-12 tamma-bg" style="margin-bottom: 10px; padding-top:10px;padding-bottom:20px;" id="appending-form">
                       </div>
                     </form>
                   </div>
@@ -153,7 +154,7 @@
                                     +'</div>'
                                     +'<div class="col-md-4 col-sm-9 col-xs-12">'
                                       +'<div class="form-group">'
-                                        +'<input type="text" name="namaStaff" readonly="" class="form-control input-sm" id="nama_staff">'
+                                        +'<input type="text" name="namaStaff" readonly="" class="form-control input-sm" id="nama_staff" value="{{ $namaStaff }}">'
                                       +'</div>'
                                     +'</div>'
                                     +'<div class="col-md-2 col-sm-3 col-xs-12">'
@@ -161,7 +162,7 @@
                                     +'</div>'
                                     +'<div class="col-md-4 col-sm-9 col-xs-12">'
                                       +'<div class="form-group">'
-                                        +'<select class="form-control input-sm" id="cari_nota_purchase" name="cariNotaPurchase" style="width: 100%;">'
+                                        +'<select class="form-control input-sm select2" id="cari_nota_purchase" name="cariNotaPurchase" style="width: 100% !important;">'
                                           +'<option> - Pilih Nota Pembelian</option>'
                                         +'</select>'
                                       +'</div>'
@@ -187,22 +188,52 @@
                                     +'</div>'
                                     +'<div class="col-md-4 col-sm-9 col-xs-12">'
                                       +'<div class="form-group">'
-                                        +'<input type="text" name="nilaiTotalPurchase" readonly="" class="form-control input-sm" id="nilai_total_purchase">'
+                                        +'<input type="text" name="nilaiTotalGross" readonly="" class="form-control input-sm" id="nilai_total_gross">'
+                                      +'</div>'
+                                    +'</div>'
+                                    +'<div class="col-md-2 col-sm-3 col-xs-12">'
+                                      +'<label class="tebal">Nilai Total Diskon</label>'
+                                    +'</div>'
+                                    +'<div class="col-md-4 col-sm-9 col-xs-12">'
+                                      +'<div class="form-group">'
+                                        +'<input type="text" name="nilaiTotalDisc" readonly="" class="form-control input-sm" id="nilai_total_disc">'
+                                      +'</div>'
+                                    +'</div>'
+                                    +'<div class="col-md-2 col-sm-3 col-xs-12">'
+                                      +'<label class="tebal">Nilai Pajak</label>'
+                                    +'</div>'
+                                    +'<div class="col-md-4 col-sm-9 col-xs-12">'
+                                      +'<div class="form-group">'
+                                        +'<input type="text" name="nilaiTotalTax" readonly="" class="form-control input-sm" id="nilai_total_tax">'
+                                      +'</div>'
+                                    +'</div>'
+                                    +'<div class="col-md-2 col-sm-3 col-xs-12">'
+                                      +'<label class="tebal">Nilai Total Pembelian (Nett)</label>'
+                                    +'</div>'
+                                    +'<div class="col-md-4 col-sm-9 col-xs-12">'
+                                      +'<div class="form-group">'
+                                        +'<input type="text" name="nilaiTotalNett" readonly="" class="form-control input-sm" id="nilai_total_nett">'
                                       +'</div>'
                                     +'</div>'
                                     +'<div class="table-responsive">'
-                                      +'<table class="table tabelan table-bordered">'
-                                        +'<thead>'
-                                          +'<tr>'
-                                            +'<th>Nama Barang</th>'
-                                            +'<th>IMEI</th>'
-                                            +'<th>Jumlah</th>'
-                                            +'<th>Keterangan</th>'
-                                            +'<th>Aksi</th>'
-                                          +'</tr>'
-                                        +'</thead>'
-                                        +'<tbody>'
-                                        +'</tbody>'
+                                      +'<table class="table tabelan table-bordered" id="tabel-form-return">'
+                                        +'<form method="POST" id="form_create_po">'
+                                          +'{{ csrf_field() }}'
+                                          +'<thead>'
+                                            +'<tr>'
+                                              +'<th width="5%">No</th>'
+                                              +'<th width="30%">Kode | Barang</th>'
+                                              +'<th width="10%">Qty</th>'
+                                              +'<th width="10%">Satuan</th>'
+                                              +'<th width="15%">Harga</th>'
+                                              +'<th width="15%">Total</th>'
+                                              +'<th width="10%">Stok</th>'
+                                              +'<th width="5%">Aksi</th>'
+                                            +'</tr>'
+                                          +'</thead>'
+                                          +'<tbody>'
+                                          +'</tbody>'
+                                        +'</form>'
                                       +'</table>'
                                     +'</div>'
                                       +'<div align="right">'
@@ -237,7 +268,7 @@
                                     +'</div>'
                                     +'<div class="col-md-4 col-sm-9 col-xs-12">'
                                       +'<div class="form-group">'
-                                        +'<input type="text" name="namaStaff" readonly="" class="form-control input-sm" id="nama_staff">'
+                                        +'<input type="text" name="namaStaff" readonly="" class="form-control input-sm" id="nama_staff" value="{{ $namaStaff }}">'
                                       +'</div>'
                                     +'</div>'
                                     +'<div class="col-md-2 col-sm-3 col-xs-12">'
@@ -245,7 +276,7 @@
                                     +'</div>'
                                     +'<div class="col-md-4 col-sm-9 col-xs-12">'
                                       +'<div class="form-group">'
-                                        +'<select class="form-control input-sm" id="cari_nota_purchase" name="cariNotaPurchase" style="width: 100%;">'
+                                        +'<select class="form-control input-sm select2" id="cari_nota_purchase" name="cariNotaPurchase" style="width: 100% !important;">'
                                           +'<option> - Pilih Nota Pembelian</option>'
                                         +'</select>'
                                       +'</div>'
@@ -271,7 +302,31 @@
                                     +'</div>'
                                     +'<div class="col-md-4 col-sm-9 col-xs-12">'
                                       +'<div class="form-group">'
-                                        +'<input type="text" name="nilaiTotalPurchase" readonly="" class="form-control input-sm" id="nilai_total_purchase">'
+                                        +'<input type="text" name="nilaiTotalGross" readonly="" class="form-control input-sm" id="nilai_total_gross">'
+                                      +'</div>'
+                                    +'</div>'
+                                    +'<div class="col-md-2 col-sm-3 col-xs-12">'
+                                      +'<label class="tebal">Nilai Total Diskon</label>'
+                                    +'</div>'
+                                    +'<div class="col-md-4 col-sm-9 col-xs-12">'
+                                      +'<div class="form-group">'
+                                        +'<input type="text" name="nilaiTotalDisc" readonly="" class="form-control input-sm" id="nilai_total_disc">'
+                                      +'</div>'
+                                    +'</div>'
+                                    +'<div class="col-md-2 col-sm-3 col-xs-12">'
+                                      +'<label class="tebal">Nilai Pajak</label>'
+                                    +'</div>'
+                                    +'<div class="col-md-4 col-sm-9 col-xs-12">'
+                                      +'<div class="form-group">'
+                                        +'<input type="text" name="nilaiTotalTax" readonly="" class="form-control input-sm" id="nilai_total_tax">'
+                                      +'</div>'
+                                    +'</div>'
+                                    +'<div class="col-md-2 col-sm-3 col-xs-12">'
+                                      +'<label class="tebal">Nilai Total Pembelian (Nett)</label>'
+                                    +'</div>'
+                                    +'<div class="col-md-4 col-sm-9 col-xs-12">'
+                                      +'<div class="form-group">'
+                                        +'<input type="text" name="nilaiTotalNett" readonly="" class="form-control input-sm" id="nilai_total_nett">'
                                       +'</div>'
                                     +'</div>'
                                     +'<div class="col-md-2 col-sm-3 col-xs-12">'
@@ -283,18 +338,24 @@
                                       +'</div>'
                                     +'</div>'
                                     +'<div class="table-responsive">'
-                                      +'<table class="table tabelan table-bordered">'
-                                        +'<thead>'
-                                          +'<tr>'
-                                            +'<th>Nama Barang</th>'
-                                            +'<th>IMEI</th>'
-                                            +'<th>Jumlah</th>'
-                                            +'<th>Keterangan</th>'
-                                            +'<th>Aksi</th>'
-                                          +'</tr>'
-                                        +'</thead>'
-                                        +'<tbody>'
-                                        +'</tbody>'
+                                      +'<table class="table tabelan table-bordered" id="tabel-form-return">'
+                                        +'<form method="POST" id="form_create_po">'
+                                          +'{{ csrf_field() }}'
+                                          +'<thead>'
+                                            +'<tr>'
+                                              +'<th width="5%">No</th>'
+                                              +'<th width="30%">Kode | Barang</th>'
+                                              +'<th width="10%">Qty</th>'
+                                              +'<th width="10%">Satuan</th>'
+                                              +'<th width="15%">Harga</th>'
+                                              +'<th width="15%">Total</th>'
+                                              +'<th width="10%">Stok</th>'
+                                              +'<th width="5%">Aksi</th>'
+                                            +'</tr>'
+                                          +'</thead>'
+                                          +'<tbody>'
+                                          +'</tbody>'
+                                        +'</form>'
                                       +'</table>'
                                     +'</div>'
                                       +'<div align="right">'
@@ -321,6 +382,61 @@
           },
           cache: true
         }, 
+      });
+
+      //event onchange select option
+      $('#cari_nota_purchase').change(function() {
+        //remove existing appending row
+        $('tr').remove('.tbl_form_row');
+        var idPo = $('#cari_nota_purchase').val();
+        $.ajax({
+          url : baseUrl + "/purchasing/returnpembelian/get-data-form/"+idPo,
+          type: "GET",
+          dataType: "JSON",
+          success: function(data)
+          {
+            //total diskon didapat dari value diskon + percentase diskon
+            var discTotalVal = parseInt(data.data_header[0].d_pcs_discount)+parseInt(data.data_header[0].d_pcs_disc_value)
+            //data header
+            $('#nama_sup').val(data.data_header[0].s_company);
+            $('#method_bayar').val(data.data_header[0].d_pcs_method);
+            $('#nilai_total_gross').val(convertDecimalToRupiah(data.data_header[0].d_pcs_total_gross));
+            $('#nilai_total_disc').val(convertDecimalToRupiah(discTotalVal));
+            $('#nilai_total_tax').val(convertDecimalToRupiah(data.data_header[0].d_pcs_tax_value));
+            $('#nilai_total_nett').val(convertDecimalToRupiah(data.data_header[0].d_pcs_total_net));
+            var totalHarga = 0;
+            var key = 1;
+            i = randString(5);
+            //loop data
+            Object.keys(data.data_isi).forEach(function(){
+              var qtyCost = data.data_isi[key-1].d_pcsdt_qtyconfirm;
+              $('#tabel-form-return').append('<tr class="tbl_form_row" id="row'+i+'">'
+                              +'<td style="text-align:center">'+key+'</td>'
+                              +'<td><input type="text" value="'+data.data_isi[key-1].i_code+' | '+data.data_isi[key-1].i_name+'" name="fieldNamaItem[]" class="form-control input-sm" readonly/>'
+                              +'<input type="hidden" value="'+data.data_isi[key-1].i_id+'" name="fieldItemId[]" class="form-control input-sm"/>'
+                              +'<input type="hidden" value="'+data.data_isi[key-1].d_pcspdt_id+'" name="fieldidPlanDt[]" class="form-control input-sm"/></td>'
+                              +'<td><input type="text" value="'+qtyCost+'" name="fieldQty[]" class="form-control numberinput input-sm" id="qty_'+i+'"/></td>'
+                              +'<td><input type="text" value="'+data.data_isi[key-1].i_sat1+'" name="fieldSatuan[]" class="form-control input-sm" readonly/></td>'
+                              +'<td><input type="text" value="'+convertDecimalToRupiah(data.data_isi[key-1].d_pcsdt_price)+'" name="fieldHarga[]" id="'+i+'" class="form-control input-sm field_harga numberinput readonly"/></td>'
+                              +'<td><input type="text" value="'+convertDecimalToRupiah(data.data_isi[key-1].d_pcsdt_price * qtyCost)+'" name="fieldHargaTotal[]" class="form-control input-sm hargaTotalItem" id="total_'+i+'" readonly/></td>'
+                              +'<td><input type="text" value="'+data.data_stok[key-1].qtyStok+'" name="fieldStok[]" class="form-control input-sm" readonly/></td>'
+                              +'<td><button name="remove" id="'+i+'" class="btn btn-danger btn_remove btn-sm">X</button></td>'
+                              +'</tr>');
+              i = randString(5);
+              key++;
+            });
+            //set readonly to enabled
+            /*$('#potongan_harga').attr('readonly',false);
+            $('#diskon_harga').attr('readonly',false);
+            $('#ppn_harga').attr('readonly',false);
+            totalPembelianGross();
+            totalPembelianNett();*/
+          },
+          error: function (jqXHR, textStatus, errorThrown)
+          {
+              alert('Error get data from ajax');
+          }
+        });
       });
     });
 
@@ -449,7 +565,7 @@
     }
   }*/
 
-  /*function convertDecimalToRupiah(decimal) 
+  function convertDecimalToRupiah(decimal) 
   {
       var angka = parseInt(decimal);
       var rupiah = '';        
@@ -457,6 +573,6 @@
       for(var i = 0; i < angkarev.length; i++) if(i%3 == 0) rupiah += angkarev.substr(i,3)+'.';
       var hasil = 'Rp. '+rupiah.split('',rupiah.length-1).reverse().join('');
       return hasil+',00';
-  }*/
+  }
 </script>
 @endsection                            

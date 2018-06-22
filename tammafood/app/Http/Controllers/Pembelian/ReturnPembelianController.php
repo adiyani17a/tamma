@@ -14,39 +14,110 @@ use App\d_purchasingreturn_dt;
 
 class ReturnPembelianController extends Controller
 {
-    public function __construct()
+  public function __construct()
+  {
+    $this->middleware('auth');
+  }
+
+  public function index()
+  {
+    return view('/purchasing/returnpembelian/index');
+  }
+
+  public function tambahReturn()
+  {
+    //code order
+    $query = DB::select(DB::raw("SELECT MAX(RIGHT(d_pcsr_id,4)) as kode_max from d_purchasingreturn WHERE DATE_FORMAT(d_pcsr_datecreated, '%Y-%m') = DATE_FORMAT(CURRENT_DATE(), '%Y-%m')"));
+    $kd = "";
+
+    if(count($query)>0)
     {
-        $this->middleware('auth');
+      foreach($query as $k)
+      {
+        $tmp = ((int)$k->kode_max)+1;
+        $kd = sprintf("%04s", $tmp);
+      }
+    }
+    else
+    {
+      $kd = "0001";
     }
 
-    public function index()
+    $codeRP = "RTN-".date('myd')."-".$kd;
+    $namaStaff = 'Jamilah';
+    return view ('/purchasing/returnpembelian/tambah-return',compact('codeRP', 'namaStaff'));
+  }
+
+  public function lookupDataPembelian(Request $request)
+  {
+    $formatted_tags = array();
+    $term = trim($request->q);
+    if (empty($term)) {
+      $sup = DB::table('d_purchasing')->where('d_pcs_status','=','CF')->orderBy('d_pcs_code', 'DESC')->limit(5)->get();
+      foreach ($sup as $val) {
+          $formatted_tags[] = ['id' => $val->d_pcs_id, 'text' => $val->d_pcs_code];
+      }
+      return Response::json($formatted_tags);
+    }
+    else
     {
-        return view('/purchasing/returnpembelian/index');
+      $sup = DB::table('d_purchasing')->where('d_pcs_status','=','CF')->orderBy('d_pcs_code', 'DESC')->where('d_pcs_code', 'LIKE', '%'.$term.'%')->limit(5)->get();
+      foreach ($sup as $val) {
+          $formatted_tags[] = ['id' => $val->d_pcs_id, 'text' => $val->d_pcs_code];
+      }
+
+      return Response::json($formatted_tags);  
+    }
+  }
+
+  public function getDataForm($id)
+  {
+    $dataHeader = DB::table('d_purchasing')
+                ->select('d_purchasing.*', 'd_supplier.s_company', 'd_supplier.s_name', 'd_supplier.s_id')
+                ->join('d_supplier','d_purchasing.s_id','=','d_supplier.s_id')
+                ->where('d_pcs_id', '=', $id)
+                ->get();
+
+    $dataIsi = DB::table('d_purchasing_dt')
+          ->select('d_purchasing_dt.*', 'm_item.i_name', 'm_item.i_code', 'm_item.i_sat1', 'm_item.i_id')
+          ->leftJoin('m_item','d_purchasing_dt.i_id','=','m_item.i_id')
+          ->where('d_purchasing_dt.d_pcs_id', '=', $id)
+          // ->where('d_purchasing_dt.d_pcsdt_isconfirm', '=', "TRUE")
+          ->get();
+
+    foreach ($dataIsi as $val) 
+    {
+      //cek item type
+      $itemType[] = DB::table('m_item')->select('i_type', 'i_id')->where('i_id','=', $val->i_id)->first();
     }
 
-    public function tambahReturn()
+    //ambil value stok by item type
+    foreach ($itemType as $val) 
     { 
-      //code order
-      $query = DB::select(DB::raw("SELECT MAX(RIGHT(d_pcsr_id,4)) as kode_max from d_purchasingreturn WHERE DATE_FORMAT(d_pcsr_datecreated, '%Y-%m') = DATE_FORMAT(CURRENT_DATE(), '%Y-%m')"));
-      $kd = "";
-
-      if(count($query)>0)
+      if ($val->i_type == "BP") //brg produksi
       {
-        foreach($query as $k)
-        {
-          $tmp = ((int)$k->kode_max)+1;
-          $kd = sprintf("%04s", $tmp);
-        }
+          $query = DB::select(DB::raw("SELECT IFNULL( (SELECT s_qty FROM d_stock where s_item = '$val->i_id' AND s_comp = '6' AND s_position = '6' limit 1) ,'0') as qtyStok"));
+          $stok[] = $query[0];
       }
-      else
+      elseif ($val->i_type == "BJ") //brg jual
       {
-        $kd = "0001";
+          $query = DB::select(DB::raw("SELECT IFNULL( (SELECT s_qty FROM d_stock where s_item = '$val->i_id' AND s_comp = '7' AND s_position = '7' limit 1) ,'0') as qtyStok"));
+          $stok[] = $query[0];
       }
-
-      $codeRP = "RTN-".date('myd')."-".$kd;
-      $namaStaff = 'Jamilah';
-      return view ('/purchasing/returnpembelian/tambah-return',compact('codeRP', 'namaStaff'));
+      elseif ($val->i_type == "BB") //bahan baku
+      {
+          $query = DB::select(DB::raw("SELECT IFNULL( (SELECT s_qty FROM d_stock where s_item = '$val->i_id' AND s_comp = '3' AND s_position = '3' limit 1) ,'0') as qtyStok"));
+          $stok[] = $query[0];
+      }
     }
+
+    return response()->json([
+        'status' => 'sukses',
+        'data_header' => $dataHeader,
+        'data_isi' => $dataIsi,
+        'data_stok' => $stok,
+    ]);
+  }
 
 
 
