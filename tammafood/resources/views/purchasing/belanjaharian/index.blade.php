@@ -91,7 +91,7 @@
       endDate: 'today'
     });//datepicker("setDate", "0");
 
-    $('#data').dataTable({
+    /*$('#data').dataTable({
         "destroy": true,
         "processing" : true,
         "serverside" : true,
@@ -122,7 +122,7 @@
                 "next": "Selanjutnya",
              }
         }
-    });
+    });*/
 
     //event focus on input harga
     $(document).on('focus', '.field_harga',  function(e){
@@ -172,7 +172,10 @@
       $("#txt_span_status_detail").removeClass();
       $('#txt_span_status_edit').removeClass();
     });
-  //end jquery    
+
+    //load fungsi
+    lihatBelanjaByTanggal();
+  //end jquery
   });
 
   function detailBeliHarian(id) 
@@ -391,6 +394,49 @@
 
     total = convertToRupiah(total);
     $('#total_biaya_edit').val(total);
+  }
+
+  function lihatBelanjaByTanggal()
+  {
+    var tgl1 = $('#tanggal1').val();
+    var tgl2 = $('#tanggal2').val();
+    $('#data').dataTable({
+      "destroy": true,
+      "processing" : true,
+      "serverside" : true,
+      "ajax" : {
+        url: baseUrl + "/purchasing/belanjaharian/get-belanja-by-tgl/"+tgl1+"/"+tgl2,
+        type: 'GET'
+      },
+      "columns" : [
+        {"data" : "DT_Row_Index", orderable: true, searchable: false, "width" : "5%"}, //memanggil column row
+        {"data" : "tglBeli", "width" : "10%"},
+        {"data" : "d_pcsh_staff", "width" : "10%"},
+        {"data" : "d_pcsh_code", "width" : "10%"},
+        {"data" : "d_pcsh_noreff", "width" : "8%"},
+        {"data" : "s_company", "width" : "10%"},
+        {"data" : "hargaTotal", "width" : "10%"},
+        {"data" : "status", "width" : "7%"},
+        {"data" : "action", orderable: false, searchable: false, "width" : "13%"}
+      ],
+      "language": {
+        "searchPlaceholder": "Cari Data",
+        "emptyTable": "Tidak ada data",
+        "sInfo": "Menampilkan _START_ - _END_ Dari _TOTAL_ Data",
+        "sSearch": '<i class="fa fa-search"></i>',
+        "sLengthMenu": "Menampilkan &nbsp; _MENU_ &nbsp; Data",
+        "infoEmpty": "",
+        "paginate": {
+              "previous": "Sebelumnya",
+              "next": "Selanjutnya",
+        }
+      }
+    });
+  }
+
+  function refreshTabelBelanja() 
+  {
+    $('#data').DataTable().ajax.reload();
   }
 </script>
 @endsection()

@@ -2,6 +2,7 @@
 @section('content')
 <style type="text/css">
   .ui-autocomplete { z-index:2147483647; }
+  .select2-container { margin: 0; }
 </style>
 <!--BEGIN PAGE WRAPPER-->
 <div id="page-wrapper">

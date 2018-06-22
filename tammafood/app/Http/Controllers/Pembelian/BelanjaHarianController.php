@@ -439,6 +439,106 @@ class BelanjaHarianController extends Controller
       }
     }
 
+    public function getBelanjaByTgl($tgl1, $tgl2)
+    {
+      $y = substr($tgl1, -4);
+      $m = substr($tgl1, -7,-5);
+      $d = substr($tgl1,0,2);
+       $tanggal1 = $y.'-'.$m.'-'.$d;
+
+      $y2 = substr($tgl2, -4);
+      $m2 = substr($tgl2, -7,-5);
+      $d2 = substr($tgl2,0,2);
+      $tanggal2 = $y2.'-'.$m2.'-'.$d2;
+      
+      $data = d_purchasingharian::join('d_supplier','d_purchasingharian.d_pcsh_supid','=','d_supplier.s_id')
+            ->select('d_purchasingharian.*', 'd_supplier.s_id', 'd_supplier.s_company')
+            ->whereBetween('d_purchasingharian.d_pcsh_date', [$tanggal1, $tanggal2])
+            ->orderBy('d_pcsh_created', 'DESC')
+            ->get();
+
+      return DataTables::of($data)
+      ->addIndexColumn()
+      ->editColumn('status', function ($data)
+      {
+        if ($data->d_pcsh_status == "WT") 
+        {
+          return '<span class="label label-info">Waiting</span>';
+        }
+        elseif ($data->d_pcsh_status == "CF") 
+        {
+          return '<span class="label label-success">Disetujui</span>';
+        }
+        elseif ($data->d_pcsh_status == "DE") 
+        {
+          return '<span class="label label-warning">Dapat Diedit</span>';
+        }
+      })
+      ->editColumn('tglBeli', function ($data) 
+      {
+          if ($data->d_pcsh_date == null) 
+          {
+              return '-';
+          }
+          else 
+          {
+              return $data->d_pcsh_date ? with(new Carbon($data->d_pcsh_date))->format('d M Y') : '';
+          }
+      })
+      ->editColumn('hargaTotal', function ($data) 
+      {
+        return 'Rp. '.number_format($data->d_pcsh_totalprice,2,",",".");
+      })
+      ->addColumn('action', function($data)
+      {
+        if ($data->d_pcsh_status == "WT") 
+        {
+          return '<div class="text-center">
+                      <button class="btn btn-sm btn-success" title="Detail"
+                          onclick=detailBeliHarian("'.$data->d_pcsh_id.'")><i class="fa fa-eye"></i> 
+                      </button>
+                      <button class="btn btn-sm btn-warning" title="Edit"
+                          onclick=editBeliHarian("'.$data->d_pcsh_id.'")><i class="glyphicon glyphicon-edit"></i>
+                      </button>
+                      <button class="btn btn-sm btn-danger" title="Delete"
+                          onclick=deleteBeliHarian("'.$data->d_pcsh_id.'")><i class="glyphicon glyphicon-trash"></i>
+                      </button>
+                  </div>'; 
+        }
+        elseif ($data->d_pcs_status == "DE") 
+        {
+          return '<div class="text-center">
+                      <button class="btn btn-sm btn-success" title="Detail"
+                          onclick=detailBeliHarian("'.$data->d_pcsh_id.'")><i class="fa fa-eye"></i> 
+                      </button>
+                      <button class="btn btn-sm btn-warning" title="Edit"
+                          onclick=editBeliHarian("'.$data->d_pcsh_id.'")><i class="glyphicon glyphicon-edit"></i>
+                      </button>
+                      <button class="btn btn-sm btn-danger" title="Delete"
+                          onclick=deleteBeliHarian("'.$data->d_pcsh_id.'") disabled><i class="glyphicon glyphicon-trash"></i>
+                      </button>
+                  </div>'; 
+        }
+        else
+        {
+          return '<div class="text-center">
+                      <button class="btn btn-sm btn-success" title="Detail"
+                          onclick=detailBeliHarian("'.$data->d_pcsh_id.'")><i class="fa fa-eye"></i> 
+                      </button>
+                      <button class="btn btn-sm btn-warning" title="Edit"
+                          onclick=editBeliHarian("'.$data->d_pcsh_id.'") disabled><i class="glyphicon glyphicon-edit"></i>
+                      </button>
+                      <button class="btn btn-sm btn-danger" title="Delete"
+                          onclick=deleteBeliHarian("'.$data->d_pcsh_id.'") disabled><i class="glyphicon glyphicon-trash"></i>
+                      </button>
+                  </div>'; 
+        }
+        
+      })
+      ->rawColumns(['status', 'action'])
+      ->make(true);
+    }
+
     public function konvertRp($value)
     {
       $value = str_replace(['Rp', '\\', '.', ' '], '', $value);
