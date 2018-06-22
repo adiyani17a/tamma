@@ -47,7 +47,7 @@
                             </button></a>
     </div>
           <div class="table-responsive">
-            <table class="table tabelan table-hover table-bordered" width="100%" cellspacing="0" id="data">
+            <table class="table tabelan table-hover table-bordered data-table" width="100%" cellspacing="0" id="data">
                           <thead>
                             <tr>
                               <th>Tanggal Pengajian</th>
@@ -59,13 +59,6 @@
                           </thead>
 
                           <tbody>
-                            <tr>
-                              <td></td>
-                              <td></td>
-                              <td></td>
-                              <td></td>
-                              <td></td>
-                            </tr>
                           </tbody>
 
 
