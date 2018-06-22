@@ -417,10 +417,14 @@
     var disc = convertDiscToAngka($('#diskon_harga').val());
     var tax = convertDiscToAngka($('#ppn_harga').val());
     var discValue = totalGross * disc / 100;
-    var taxValue = totalGross * tax / 100;
+    //var taxValue = totalGross * tax / 100;
     //hitung total pembelian nett
-    var hasilNett = (parseInt(totalGross) - (parseInt(potongan + discValue)) + taxValue);
-    $('[name="totalNettEdit"]').val(convertToRupiah(hasilNett));
+    var hasilNett = (parseInt(totalGross) - parseInt(potongan + discValue));
+    var taxValue = hasilNett * tax / 100;
+    var finalValue = parseInt(hasilNett + taxValue);
+    // $('#total_nett').val(convertToRupiah(finalValue));
+    // var hasilNett = (parseInt(totalGross) - (parseInt(potongan + discValue)) + taxValue);
+    $('[name="totalNettEdit"]').val(convertToRupiah(finalValue));
   }
 
   function convertToRupiah(angka) 
