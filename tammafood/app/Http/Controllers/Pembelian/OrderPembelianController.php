@@ -412,10 +412,11 @@ class OrderPembelianController extends Controller
     public function simpanPo(Request $request)
     {
       //dd($request->all());
+      $totalGross = $this->konvertRp($request->totalGross);
       $replaceCharDisc = (int)str_replace("%","",$request->diskonHarga);
       $replaceCharPPN = (int)str_replace("%","",$request->ppnHarga);
-      /*$mbokneAnton = $this->konvertRp($request->totalGross) * $replaceCharDisc / 100;
-      dd($mbokneAnton);*/
+      $diskonPotHarga = $this->konvertRp($request->potonganHarga);
+      $discValue = $totalGross * $replaceCharDisc / 100;
       DB::beginTransaction();
       try {
         //insert to table d_purchasing
@@ -425,12 +426,12 @@ class OrderPembelianController extends Controller
         $dataHeader->d_pcs_code = $request->kodePo;
         $dataHeader->d_pcs_staff = $request->namaStaff;
         $dataHeader->d_pcs_method = $request->methodBayar;
-        $dataHeader->d_pcs_total_gross = $this->konvertRp($request->totalGross);
-        $dataHeader->d_pcs_discount = $this->konvertRp($request->potonganHarga);
+        $dataHeader->d_pcs_total_gross = $totalGross;
+        $dataHeader->d_pcs_discount = $diskonPotHarga;
         $dataHeader->d_pcs_disc_percent = $replaceCharDisc;
-        $dataHeader->d_pcs_disc_value = $this->konvertRp($request->totalGross) * $replaceCharDisc / 100;
+        $dataHeader->d_pcs_disc_value = $discValue;
         $dataHeader->d_pcs_tax_percent = $replaceCharPPN;
-        $dataHeader->d_pcs_tax_value = $this->konvertRp($request->totalGross) * $replaceCharPPN / 100;
+        $dataHeader->d_pcs_tax_value = ($totalGross - $diskonPotHarga - $discValue) * $replaceCharPPN / 100;
         $dataHeader->d_pcs_total_net = $this->konvertRp($request->totalNett);
         $dataHeader->d_pcs_date_created = date('Y-m-d',strtotime($request->tanggal));
         $dataHeader->save();
@@ -480,7 +481,7 @@ class OrderPembelianController extends Controller
         DB::rollback();
         return response()->json([
             'status' => 'gagal',
-            'pesan' => $e
+            'pesan' => $e->getMessage()."\n at file: ".$e->getFile()."\n line: ".$e->getLine()
         ]);
       }
     }
@@ -488,18 +489,21 @@ class OrderPembelianController extends Controller
     public function updateDataOrder(Request $request)
     {
       //dd($request->all());
+      $totalGross = $this->konvertRp($request->totalGrossEdit);
       $replaceCharDisc = (int)str_replace("%","",$request->diskonHargaEdit);
       $replaceCharPPN = (int)str_replace("%","",$request->ppnHargaEdit);
+      $diskonPotHarga = $this->konvertRp($request->potonganHargaEdit);
+      $discValue = $totalGross * $replaceCharDisc / 100;
       DB::beginTransaction();
       try {
         //update to table d_purchasing
         $purchasing = d_purchasing::find($request->idPurchaseEdit);
-        $purchasing->d_pcs_total_gross = $this->konvertRp($request->totalGrossEdit);
-        $purchasing->d_pcs_discount = $this->konvertRp($request->potonganHargaEdit);
+        $purchasing->d_pcs_total_gross = $totalGross;
+        $purchasing->d_pcs_discount = $diskonPotHarga;
         $purchasing->d_pcs_disc_percent = $replaceCharDisc;
-        $purchasing->d_pcs_disc_value = $this->konvertRp($request->totalGrossEdit) * $replaceCharDisc / 100;
+        $purchasing->d_pcs_disc_value = $discValue;
         $purchasing->d_pcs_tax_percent = $replaceCharPPN;
-        $purchasing->d_pcs_tax_value = $this->konvertRp($request->totalGrossEdit) * $replaceCharPPN / 100;
+        $purchasing->d_pcs_tax_value = ($totalGross - $diskonPotHarga - $discValue) * $replaceCharPPN / 100;
         $purchasing->d_pcs_total_net = $this->konvertRp($request->totalNettEdit);
         $purchasing->d_pcs_updated = Carbon::now();
         $purchasing->save();
@@ -526,7 +530,7 @@ class OrderPembelianController extends Controller
         DB::rollback();
         return response()->json([
             'status' => 'gagal',
-            'pesan' => $e
+            'pesan' => $e->getMessage()."\n at file: ".$e->getFile()."\n line: ".$e->getLine()
         ]);
       }
     }
@@ -558,7 +562,7 @@ class OrderPembelianController extends Controller
         DB::rollback();
         return response()->json([
             'status' => 'gagal',
-            'pesan' => $e
+            'pesan' => $e->getMessage()."\n at file: ".$e->getFile()."\n line: ".$e->getLine()
         ]);
       }
     }
