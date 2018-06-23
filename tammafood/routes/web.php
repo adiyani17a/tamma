@@ -39,7 +39,6 @@ Route::get('/master/datasuplier/suplier', 'MasterController@suplier')->name('sup
 /*---------*/
 
 Route::get('/master/datapegawai/pegawai', 'MasterController@pegawai');
-Route::get('/master/datatransaksi/transaksi', 'MasterController@transaksi');
 Route::get('/master/datasuplier/tambah_suplier', 'MasterController@tambah_suplier');
 Route::get('/master/datatransaksi/tambah_transaksi', 'MasterController@tambah_transaksi');
 Route::get('/master/datapegawai/tambah_pegawai', 'MasterController@tambah_pegawai');
@@ -482,5 +481,11 @@ Route::get('/inventory/p_suplier/cari_nota', 'Inventory\penerimaanbarang_supCont
         Route::get('/master/datakeuangan/hapus_akun', 'keuangan\akunController@hapus_akun')->name('hapus_akun');
 
     // akun keuangan route end
+
+    // transaksi keuangan
+
+        Route::get('/master/datatransaksi/transaksi', 'Keuangan\transaksiController@index');
+
+    // transaksi keuangan end
 
 // Route Keuangan End
