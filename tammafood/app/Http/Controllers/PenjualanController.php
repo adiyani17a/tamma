@@ -27,7 +27,7 @@ class PenjualanController extends Controller
      */
     public function harga()
     {
-        return view('/penjualan/manajemenharga/harga');
+        return view('/penjualan/manajemenharga/index');
     }
 
     public function promosi()
