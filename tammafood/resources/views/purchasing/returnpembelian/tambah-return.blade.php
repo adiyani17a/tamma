@@ -70,7 +70,7 @@
 
                   <!-- START div#header_form -->
                   <div class="col-md-12 col-sm-12 col-xs-12" style="margin-top:15px;" id="header_form">
-                    <form method="post">
+                    <form method="post" id="form_return_pembelian">
                       {{ csrf_field() }}
                       <div class="col-md-12 col-sm-12 col-xs-12 tamma-bg" style="margin-bottom: 10px; padding-top:10px;padding-bottom:20px;" id="appending-form">
                       </div>
@@ -168,6 +168,7 @@
                                     +'<div class="col-md-4 col-sm-9 col-xs-12">'
                                       +'<div class="form-group">'
                                         +'<input type="text" name="namaSup" readonly="" class="form-control input-sm" id="nama_sup">'
+                                        +'<input type="hidden" name="idSup" readonly="" class="form-control input-sm" id="id_sup">'
                                       +'</div>'
                                     +'</div>'
                                     +'<div class="col-md-2 col-sm-3 col-xs-12">'
@@ -282,6 +283,7 @@
                                     +'<div class="col-md-4 col-sm-9 col-xs-12">'
                                       +'<div class="form-group">'
                                         +'<input type="text" name="namaSup" readonly="" class="form-control input-sm" id="nama_sup">'
+                                        +'<input type="hidden" name="idSup" readonly="" class="form-control input-sm" id="id_sup">'
                                       +'</div>'
                                     +'</div>'
                                     +'<div class="col-md-2 col-sm-3 col-xs-12">'
@@ -408,7 +410,9 @@
             var totalNett = data.data_header[0].d_pcs_total_net;
             //data header
             $('#nama_sup').val(data.data_header[0].s_company);
+            $('#id_sup').val(data.data_header[0].s_id);
             $('#method_bayar').val(data.data_header[0].d_pcs_method);
+            $('[name="metodeReturn"]').val($('#pilih_metode_return').val());
             $('#nilai_total_gross').val(convertDecimalToRupiah(totalGross));
             $('#nilai_total_disc').val(convertDecimalToRupiah(discTotalVal));
             $('#nilai_total_tax').val(convertDecimalToRupiah(totalTax));
@@ -430,7 +434,7 @@
                               +'<td style="text-align:center">'+key+'</td>'
                               +'<td><input type="text" value="'+data.data_isi[key-1].i_code+' | '+data.data_isi[key-1].i_name+'" name="fieldNamaItem[]" class="form-control input-sm" readonly/>'
                               +'<input type="hidden" value="'+data.data_isi[key-1].i_id+'" name="fieldItemId[]" class="form-control input-sm"/>'
-                              +'<input type="hidden" value="'+data.data_isi[key-1].d_pcspdt_id+'" name="fieldidPlanDt[]" class="form-control input-sm"/></td>'
+                              +'<input type="hidden" value="'+data.data_isi[key-1].d_pcsrdt_id+'" name="fieldIdPcsRtrDet[]" class="form-control input-sm"/></td>'
                               +'<td><input type="text" value="'+qtyCost+'" name="fieldQty[]" class="form-control numberinput input-sm field_qty" id="'+i+'"/></td>'
                               +'<td><input type="text" value="'+data.data_isi[key-1].i_sat1+'" name="fieldSatuan[]" class="form-control input-sm" readonly/></td>'
                               +'<td><input type="text" value="'+convertDecimalToRupiah(hargaSatuanItemNet)+'" name="fieldHarga[]" id="cost_'+i+'" class="form-control input-sm field_harga numberinput" readonly/></td>'
@@ -452,48 +456,10 @@
       });
     });
 
-    /*var i = randString(5);
-    var no = 1;
-    $('#add_item').click(function() {
-        var ambilSatuan = $("#ip_sat option:selected").val();
-        $('#ip_sat').empty();
-        var ambilIdBarang = $('#ip_item').val();
-        var ambilBarang = $('#ip_barang').val();
-        var ambilQtyReq = $('#ip_qtyreq').val();
-        var ambilQtyStok = $('#ip_qtyStok').val();
-        var ambilHargaPrev = $('#ip_hargaPrev').val();
-        if (ambilIdBarang == "" || ambilBarang == "" || ambilQtyReq == "" || ambilQtyStok == "" ) 
-        {
-            alert('Terdapat kolom yang kosong, dimohon cek lagi!!');
-        }
-        else
-        {
-            $('#barang_table').append('<tr class="tbl_form_row" id="row'+i+'">'
-                                    +'<td style="text-align:center">'+no+'</td>'
-                                    +'<td><input type="text" name="fieldIpBarang[]" value="'+ambilBarang+'" id="field_ip_barang" class="form-control" required readonly>'
-                                    +'<input type="hidden" name="fieldIpItem[]" value="'+ambilIdBarang+'" id="field_ip_item" class="form-control"></td>'
-                                    +'<td><input type="text" name="fieldIpQtyReq[]" value="'+ambilQtyReq+'" id="field_ip_qty_req" class="form-control" required readonly></td>'
-                                    +'<td><input type="text" name="fieldIpQtySat[]" value="'+ambilSatuan+'" id="field_ip_qty_stok" class="form-control" required readonly></td>'
-                                    +'<td><input type="text" name="fieldHargaPrev[]" value="'+ambilHargaPrev+'" id="field_ip_qty_stok" class="form-control" required readonly></td>'
-                                    +'<td><input type="text" name="fieldIpQtyStok[]" value="'+ambilQtyStok+'" id="field_ip_qty_stok" class="form-control" required readonly></td>'
-                                    +'<td><button name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button></td>'
-                                    +'</tr>');
-            i = randString(5);
-            no++;
-            //kosongkan field setelah append row
-            $('#ip_item').val("");
-            $('#ip_barang').val("");
-            $('#ip_qtyreq').val("");
-            $('#ip_qtyStok').val("");
-            $('#ip_hargaPrev').val("");
-        } 
-    });*/
-
     $(document).on('click', '.btn_remove', function(){
-        // no--;
-        var button_id = $(this).attr('id');
-        $('#row'+button_id+'').remove();
-        totalNilaiReturn();
+      var button_id = $(this).attr('id');
+      $('#row'+button_id+'').remove();
+      totalNilaiReturn();
     });
 
     //event focus on input qty
@@ -537,46 +503,46 @@
   {
     if(confirm('Simpan Data ?'))
     {
-        $('#button_save').text('Menyimpan...'); //change button text
-        $('#button_save').attr('disabled',true); //set button disable 
-        $.ajax({
-            url : baseUrl + "/purchasing/rencanapembelian/simpan-plan",
-            type: "POST",
-            dataType: "JSON",
-            data: $('#form_order_plan').serialize(),
-            success: function(response)
-            {
-                if(response.status == "sukses")
-                {
-                    alert(response.pesan);
-                    $('#button_save').text('Simpan Data'); //change button text
-                    $('#button_save').attr('disabled',false); //set button enable 
-                    window.location.href = baseUrl+"/purchasing/rencanapembelian/rencana";
-                }
-                else
-                {
-                    alert(response.pesan);
-                    $('#button_save').text('Simpan Data'); //change button text
-                    $('#button_save').attr('disabled',false); //set button enable 
-                    window.location.href = baseUrl+"/purchasing/rencanapembelian/rencana";
-                }
-            },
-            error: function (jqXHR, textStatus, errorThrown)
-            {
-                alert('Error updating data');
-            }
-        });
+      $('#button_save').text('Menyimpan...'); //change button text
+      $('#button_save').attr('disabled',true); //set button disable 
+      $.ajax({
+        url : baseUrl + "/purchasing/returnpembelian/simpan-data-return",
+        type: "POST",
+        dataType: "JSON",
+        data: $('#form_return_pembelian').serialize(),
+        success: function(response)
+        {
+          if(response.status == "sukses")
+          {
+            alert(response.pesan);
+            $('#button_save').text('Simpan Data'); //change button text
+            $('#button_save').attr('disabled',false); //set button enable 
+            window.location.href = baseUrl+"/purchasing/returnpembelian/pembelian";
+          }
+          else
+          {
+            alert(response.pesan);
+            $('#button_save').text('Simpan Data'); //change button text
+            $('#button_save').attr('disabled',false); //set button enable 
+            window.location.href = baseUrl+"/purchasing/returnpembelian/pembelian";
+          }
+        },
+        error: function (jqXHR, textStatus, errorThrown)
+        {
+          alert('Error updating data');
+        }
+      });
     }
   }
 
   function convertDecimalToRupiah(decimal) 
   {
-      var angka = parseInt(decimal);
-      var rupiah = '';        
-      var angkarev = angka.toString().split('').reverse().join('');
-      for(var i = 0; i < angkarev.length; i++) if(i%3 == 0) rupiah += angkarev.substr(i,3)+'.';
-      var hasil = 'Rp. '+rupiah.split('',rupiah.length-1).reverse().join('');
-      return hasil+',00';
+    var angka = parseInt(decimal);
+    var rupiah = '';        
+    var angkarev = angka.toString().split('').reverse().join('');
+    for(var i = 0; i < angkarev.length; i++) if(i%3 == 0) rupiah += angkarev.substr(i,3)+'.';
+    var hasil = 'Rp. '+rupiah.split('',rupiah.length-1).reverse().join('');
+    return hasil+',00';
   }
 
   function convertToAngka(rupiah)
@@ -596,9 +562,10 @@
   function totalNilaiReturn()
   {
     var inputs = document.getElementsByClassName( 'hargaTotalItem' ),
-    hasil  = [].map.call(inputs, function( input ) {
-        if(input.value == '') input.value = 0;
-        return input.value;
+    hasil  = [].map.call(inputs, function( input ) 
+    {
+      if(input.value == '') input.value = 0;
+      return input.value;
     });
     console.log(hasil);
     var total = 0;

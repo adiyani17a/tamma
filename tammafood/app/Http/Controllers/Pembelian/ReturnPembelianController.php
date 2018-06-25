@@ -119,7 +119,85 @@ class ReturnPembelianController extends Controller
     ]);
   }
 
+  public function simpanDataReturn(Request $request)
+  {
+    //dd($request->all());
+    DB::beginTransaction();
+    try {
+      //cek method return
+      if ($request->metodeReturn == "PN") 
+      {
+        //insert to table d_purchasingreturn
+        $dataHeader = new d_purchasingreturn;
+        $dataHeader->d_pcsr_pcsid = $request->cariNotaPurchase;
+        $dataHeader->d_pcsr_supid = $request->idSup;
+        $dataHeader->d_pcsr_code = $request->kodeReturn;
+        $dataHeader->d_pcsr_method = $request->metodeReturn;
+        $dataHeader->d_pcs_staff = $request->namaStaff;
+        $dataHeader->d_pcsr_datecreated = date('Y-m-d',strtotime($request->tanggal));
+        $dataHeader->d_pcsr_pricetotal = $this->konvertRp($request->nilaiTotalReturn);
+        $dataHeader->d_pcsr_priceresult = $this->konvertRp($request->nilaiTotalNett) - $this->konvertRp($request->nilaiTotalReturn);
+        $dataHeader->save();
+      }
+      else
+      {
+        //insert to table d_purchasingreturn
+        $dataHeader = new d_purchasingreturn;
+        $dataHeader->d_pcsr_pcsid = $request->cariNotaPurchase;
+        $dataHeader->d_pcsr_supid = $request->idSup;
+        $dataHeader->d_pcsr_code = $request->kodeReturn;
+        $dataHeader->d_pcsr_method = $request->metodeReturn;
+        $dataHeader->d_pcs_staff = $request->namaStaff;
+        $dataHeader->d_pcsr_datecreated = date('Y-m-d',strtotime($request->tanggal));
+        $dataHeader->d_pcsr_pricetotal = $this->konvertRp($request->nilaiTotalReturn);
+        $dataHeader->d_pcsr_priceresult = $this->konvertRp($request->nilaiTotalNett);
+        $dataHeader->save();
+      }
+      
+      //get last lastId then insert id to d_purchasingreturn_dt
+      $lastId = d_purchasingreturn::select('d_pcsr_id')->max('d_pcsr_id');
+      if ($lastId == 0 || $lastId == '') 
+      {
+        $lastId  = 1;
+      }  
 
+      //variabel untuk hitung array field
+      $hitung_field = count($request->fieldItemId);
+
+      //insert data isi
+      for ($i=0; $i < $hitung_field; $i++) 
+      {
+        $dataIsi = new d_purchasingreturn_dt;
+        $dataIsi->d_pcsrdt_idpcsr = $lastId;
+        $dataIsi->d_pcsrdt_item = $request->fieldItemId[$i];
+        $dataIsi->d_pcsrdt_qty = $request->fieldQty[$i];
+        $dataIsi->d_pcsrdt_price = $this->konvertRp($request->fieldHarga[$i]);
+        $dataIsi->d_pcsrdt_pricetotal = $this->konvertRp($request->fieldHargaTotal[$i]);
+        $dataIsi->d_pcsrdt_created = Carbon::now();
+        $dataIsi->save();
+      } 
+      
+    DB::commit();
+    return response()->json([
+          'status' => 'sukses',
+          'pesan' => 'Data Return Pembelian Berhasil Disimpan'
+      ]);
+    } 
+    catch (\Exception $e) 
+    {
+      DB::rollback();
+      return response()->json([
+          'status' => 'gagal',
+          'pesan' => $e->getMessage()."\n at file: ".$e->getFile()."\n line: ".$e->getLine()
+      ]);
+    }
+  }
+
+  public function konvertRp($value)
+  {
+    $value = str_replace(['Rp', '\\', '.', ' '], '', $value);
+    return (int)str_replace(',', '.', $value);
+  }
 
     // =======================================================================================================
 
@@ -320,62 +398,6 @@ class ReturnPembelianController extends Controller
       return Response::json($results);
     }
 
-    public function simpanDataBelanja(Request $request)
-    {
-      //dd($request->all());
-      DB::beginTransaction();
-      try {
-        //insert to table d_purchasingharian
-        $dataHeader = new d_purchasingharian;
-        $dataHeader->d_pcsh_code = $request->kodeNota;
-        $dataHeader->d_pcsh_date = date('Y-m-d',strtotime($request->tanggalBeli));
-        $dataHeader->d_pcsh_noreff = $request->noReff;
-        $dataHeader->d_pcsh_totalprice = $this->konvertRp($request->totalBiaya);
-        $dataHeader->d_pcsh_totalpaid = $this->konvertRp($request->totalBayar);
-        $dataHeader->d_pcsh_staff = $request->namaStaff;
-        $dataHeader->d_pcsh_supid = $request->idSupplier;
-        $dataHeader->d_pcsh_updated = Carbon::now();
-        $dataHeader->save();
-        
-        //get last lastId then insert id to d_purchasingharian_dt
-        $lastId = d_purchasingharian::select('d_pcsh_id')->max('d_pcsh_id');
-        if ($lastId == 0 || $lastId == '') 
-        {
-          $lastId  = 1;
-        }  
-
-        //variabel untuk hitung array field
-        $hitung_field = count($request->fieldIpItem);
-
-        //insert data isi
-        for ($i=0; $i < $hitung_field; $i++) 
-        {
-          $dataIsi = new d_purchasingharian_dt;
-          $dataIsi->d_pcshdt_pcshid = $lastId;
-          $dataIsi->d_pcshdt_item = $request->fieldIpItem[$i];
-          $dataIsi->d_pcshdt_qty = $request->fieldIpQty[$i];
-          $dataIsi->d_pcshdt_price = $this->konvertRp($request->fieldIpHarga[$i]);
-          $dataIsi->d_pcshdt_pricetotal = $this->konvertRp($request->fieldIpHargaTot[$i]);
-          $dataIsi->d_pcshdt_created = Carbon::now();
-          $dataIsi->save();
-        } 
-        
-      DB::commit();
-      return response()->json([
-            'status' => 'sukses',
-            'pesan' => 'Data Belanja Berhasil Disimpan'
-        ]);
-      } 
-      catch (\Exception $e) 
-      {
-        DB::rollback();
-        return response()->json([
-            'status' => 'gagal',
-            'pesan' => $e
-        ]);
-      }
-    }
-
     public function getDetailBelanja($id)
     {
         $dataHeader = d_purchasingharian::join('d_supplier','d_purchasingharian.d_pcsh_supid','=','d_supplier.s_id')
@@ -541,12 +563,6 @@ class ReturnPembelianController extends Controller
             'pesan' => $e->getMessage()."\n at file: ".$e->getFile()."\n line: ".$e->getLine()
         ]);
       }
-    }
-
-    public function konvertRp($value)
-    {
-      $value = str_replace(['Rp', '\\', '.', ' '], '', $value);
-      return (int)str_replace(',', '.', $value);
     }
 
 }
