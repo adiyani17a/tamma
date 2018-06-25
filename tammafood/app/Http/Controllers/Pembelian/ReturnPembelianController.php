@@ -24,6 +24,170 @@ class ReturnPembelianController extends Controller
     return view('/purchasing/returnpembelian/index');
   }
 
+  public function getDataReturnPembelian()
+  {
+    $data = d_purchasingreturn::join('d_purchasing','d_purchasingreturn.d_pcsr_pcsid','=','d_purchasing.d_pcs_id')
+            ->join('d_supplier','d_purchasingreturn.d_pcsr_supid','=','d_supplier.s_id')
+            ->select('d_purchasingreturn.*', 'd_supplier.s_id', 'd_supplier.s_company', 'd_purchasing.d_pcs_id', 'd_purchasing.d_pcs_code')
+            ->orderBy('d_pcsr_created', 'DESC')
+            ->get();
+    //dd($data);    
+    return DataTables::of($data)
+    ->addIndexColumn()
+    ->editColumn('status', function ($data)
+    {
+      if ($data->d_pcsr_status == "WT") 
+      {
+        return '<span class="label label-info">Waiting</span>';
+      }
+      elseif ($data->d_pcsr_status == "CF") 
+      {
+        return '<span class="label label-success">Disetujui</span>';
+      }
+      elseif ($data->d_pcsr_status == "DE") 
+      {
+        return '<span class="label label-warning">Dapat Diedit</span>';
+      }
+    })
+    ->editColumn('metode', function ($data)
+    {
+      if ($data->d_pcsr_method == "TK") 
+      {
+        return 'Tukar Barang';
+      }
+      elseif ($data->d_pcsr_method == "PN") 
+      {
+        return 'Potong Nota';
+      }
+    })
+    ->editColumn('tglBuat', function ($data) 
+    {
+        if ($data->d_pcsr_datecreated == null) 
+        {
+            return '-';
+        }
+        else 
+        {
+            return $data->d_pcsr_datecreated ? with(new Carbon($data->d_pcsr_datecreated))->format('d M Y') : '';
+        }
+    })
+    ->editColumn('hargaTotal', function ($data) 
+    {
+      return 'Rp. '.number_format($data->d_pcsr_pricetotal,2,",",".");
+    })
+    ->addColumn('action', function($data)
+    {
+      if ($data->d_pcsr_status == "WT") 
+      {
+        return '<div class="text-center">
+                    <button class="btn btn-sm btn-success" title="Detail"
+                        onclick=detailReturPembelian("'.$data->d_pcsr_id.'")><i class="fa fa-eye"></i> 
+                    </button>
+                    <button class="btn btn-sm btn-warning" title="Edit"
+                        onclick=editReturPembelian("'.$data->d_pcsr_id.'")><i class="glyphicon glyphicon-edit"></i>
+                    </button>
+                    <button class="btn btn-sm btn-danger" title="Delete"
+                        onclick=deleteReturPembelian("'.$data->d_pcsr_id.'")><i class="glyphicon glyphicon-trash"></i>
+                    </button>
+                </div>'; 
+      }
+      elseif ($data->d_pcsr_status == "DE") 
+      {
+        return '<div class="text-center">
+                    <button class="btn btn-sm btn-success" title="Detail"
+                        onclick=detailReturPembelian("'.$data->d_pcsr_id.'")><i class="fa fa-eye"></i> 
+                    </button>
+                    <button class="btn btn-sm btn-warning" title="Edit"
+                        onclick=editReturPembelian("'.$data->d_pcsr_id.'")><i class="glyphicon glyphicon-edit"></i>
+                    </button>
+                    <button class="btn btn-sm btn-danger" title="Delete"
+                        onclick=deleteReturPembelian("'.$data->d_pcsr_id.'") disabled><i class="glyphicon glyphicon-trash"></i>
+                    </button>
+                </div>'; 
+      }
+      else
+      {
+        return '<div class="text-center">
+                    <button class="btn btn-sm btn-success" title="Detail"
+                        onclick=detailReturPembelian("'.$data->d_pcsr_id.'")><i class="fa fa-eye"></i> 
+                    </button>
+                    <button class="btn btn-sm btn-warning" title="Edit"
+                        onclick=editReturPembelian("'.$data->d_pcsr_id.'") disabled><i class="glyphicon glyphicon-edit"></i>
+                    </button>
+                    <button class="btn btn-sm btn-danger" title="Delete"
+                        onclick=deleteReturPembelian("'.$data->d_pcsr_id.'") disabled><i class="glyphicon glyphicon-trash"></i>
+                    </button>
+                </div>'; 
+      }
+      
+    })
+    ->rawColumns(['status', 'action'])
+    ->make(true);
+  }
+
+  public function getDataDetail($id)
+  {
+    $dataHeader = d_purchasingreturn::join('d_purchasing','d_purchasingreturn.d_pcsr_pcsid','=','d_purchasing.d_pcs_id')
+          ->join('d_supplier','d_purchasingreturn.d_pcsr_supid','=','d_supplier.s_id')
+          ->select('d_purchasingreturn.*', 'd_supplier.s_id', 'd_supplier.s_company', 'd_purchasing.d_pcs_id', 'd_purchasing.d_pcs_code')
+          ->where('d_purchasingreturn.d_pcsr_id', '=', $id)
+          ->orderBy('d_pcsr_created', 'DESC')
+          ->get();
+
+    $statusLabel = $dataHeader[0]->d_pcsr_status;
+    if ($statusLabel == "WT") 
+    {
+      $spanTxt = 'Waiting';
+      $spanClass = 'label-info';
+    }
+    elseif ($statusLabel == "DE")
+    {
+      $spanTxt = 'Dapat Diedit';
+      $spanClass = 'label-warning';
+    }
+    else
+    {
+      $spanTxt = 'Di setujui';
+      $spanClass = 'label-success';
+    }
+
+    $metodeReturn = $dataHeader[0]->d_pcsr_method;
+    if ($metodeReturn == "PN") 
+    {
+      $lblMethod = 'Potong nota';
+    }
+    else
+    {
+      $lblMethod = 'Tukar barang';
+    }
+
+    foreach ($dataHeader as $val) 
+    {
+        $data = array(
+          'hargaTotalReturn' => 'Rp. '.number_format($val->d_pcsr_pricetotal,2,",","."),
+          'hargaTotalResult' => 'Rp. '.number_format($val->d_pcsr_priceresult,2,",","."),
+          'tanggalReturn' => date('Y-m-d',strtotime($val->d_pcsr_datecreated))
+        );
+    }
+
+    $dataIsi = d_purchasingreturn_dt::join('d_purchasingreturn', 'd_purchasingreturn_dt.d_pcsrdt_idpcsr', '=', 'd_purchasingreturn.d_pcsr_id')
+            ->join('m_item', 'd_purchasingreturn_dt.d_pcsrdt_item', '=', 'm_item.i_id')
+            ->select('d_purchasingreturn_dt.*', 'm_item.*', 'd_purchasingreturn.d_pcsr_code')
+            ->where('d_purchasingreturn_dt.d_pcsrdt_idpcsr', '=', $id)
+            ->orderBy('d_purchasingreturn_dt.d_pcsrdt_created', 'DESC')
+            ->get();
+    
+    return response()->json([
+        'status' => 'sukses',
+        'header' => $dataHeader,
+        'header2' => $data,
+        'data_isi' => $dataIsi,
+        'spanTxt' => $spanTxt,
+        'spanClass' => $spanClass,
+        'lblMethod' => $lblMethod
+    ]);
+  }
+
   public function tambahReturn()
   {
     //code order
@@ -230,95 +394,6 @@ class ReturnPembelianController extends Controller
       return view ('/purchasing/belanjaharian/tambah_belanja',compact('codePH', 'namaStaff'));
     }
 
-    public function getDataTabelIndex()
-    {
-      $data = d_purchasingharian::join('d_supplier','d_purchasingharian.d_pcsh_supid','=','d_supplier.s_id')
-              ->select('d_purchasingharian.*', 'd_supplier.s_id', 'd_supplier.s_company')
-              ->orderBy('d_pcsh_created', 'DESC')
-              ->get();
-      //dd($data);    
-      return DataTables::of($data)
-      ->addIndexColumn()
-      ->editColumn('status', function ($data)
-      {
-        if ($data->d_pcsh_status == "WT") 
-        {
-          return '<span class="label label-info">Waiting</span>';
-        }
-        elseif ($data->d_pcsh_status == "CF") 
-        {
-          return '<span class="label label-success">Disetujui</span>';
-        }
-        elseif ($data->d_pcsh_status == "DE") 
-        {
-          return '<span class="label label-warning">Dapat Diedit</span>';
-        }
-      })
-      ->editColumn('tglBeli', function ($data) 
-      {
-          if ($data->d_pcsh_date == null) 
-          {
-              return '-';
-          }
-          else 
-          {
-              return $data->d_pcsh_date ? with(new Carbon($data->d_pcsh_date))->format('d M Y') : '';
-          }
-      })
-      ->editColumn('hargaTotal', function ($data) 
-      {
-        return 'Rp. '.number_format($data->d_pcsh_totalprice,2,",",".");
-      })
-      ->addColumn('action', function($data)
-      {
-        if ($data->d_pcsh_status == "WT") 
-        {
-          return '<div class="text-center">
-                      <button class="btn btn-sm btn-success" title="Detail"
-                          onclick=detailBeliHarian("'.$data->d_pcsh_id.'")><i class="fa fa-eye"></i> 
-                      </button>
-                      <button class="btn btn-sm btn-warning" title="Edit"
-                          onclick=editBeliHarian("'.$data->d_pcsh_id.'")><i class="glyphicon glyphicon-edit"></i>
-                      </button>
-                      <button class="btn btn-sm btn-danger" title="Delete"
-                          onclick=deleteBeliHarian("'.$data->d_pcsh_id.'")><i class="glyphicon glyphicon-trash"></i>
-                      </button>
-                  </div>'; 
-        }
-        elseif ($data->d_pcs_status == "DE") 
-        {
-          return '<div class="text-center">
-                      <button class="btn btn-sm btn-success" title="Detail"
-                          onclick=detailBeliHarian("'.$data->d_pcsh_id.'")><i class="fa fa-eye"></i> 
-                      </button>
-                      <button class="btn btn-sm btn-warning" title="Edit"
-                          onclick=editBeliHarian("'.$data->d_pcsh_id.'")><i class="glyphicon glyphicon-edit"></i>
-                      </button>
-                      <button class="btn btn-sm btn-danger" title="Delete"
-                          onclick=deleteBeliHarian("'.$data->d_pcsh_id.'") disabled><i class="glyphicon glyphicon-trash"></i>
-                      </button>
-                  </div>'; 
-        }
-        else
-        {
-          return '<div class="text-center">
-                      <button class="btn btn-sm btn-success" title="Detail"
-                          onclick=detailBeliHarian("'.$data->d_pcsh_id.'")><i class="fa fa-eye"></i> 
-                      </button>
-                      <button class="btn btn-sm btn-warning" title="Edit"
-                          onclick=editBeliHarian("'.$data->d_pcsh_id.'") disabled><i class="glyphicon glyphicon-edit"></i>
-                      </button>
-                      <button class="btn btn-sm btn-danger" title="Delete"
-                          onclick=deleteBeliHarian("'.$data->d_pcsh_id.'") disabled><i class="glyphicon glyphicon-trash"></i>
-                      </button>
-                  </div>'; 
-        }
-        
-      })
-      ->rawColumns(['status', 'action'])
-      ->make(true);
-    }
-
     public function tambahMasterSupplier(Request $request)
     {
       //dd($request->all());
@@ -396,56 +471,6 @@ class ReturnPembelianController extends Controller
       }
     
       return Response::json($results);
-    }
-
-    public function getDetailBelanja($id)
-    {
-        $dataHeader = d_purchasingharian::join('d_supplier','d_purchasingharian.d_pcsh_supid','=','d_supplier.s_id')
-                ->select('d_purchasingharian.*', 'd_supplier.s_company', 'd_supplier.s_name', 'd_supplier.s_id')
-                ->where('d_pcsh_id', '=', $id)
-                ->orderBy('d_pcsh_created', 'DESC')
-                ->get();
-
-        $statusLabel = $dataHeader[0]->d_pcsh_status;
-        if ($statusLabel == "WT") 
-        {
-          $spanTxt = 'Waiting';
-          $spanClass = 'label-info';
-        }
-        elseif ($statusLabel == "DE")
-        {
-          $spanTxt = 'Dapat Diedit';
-          $spanClass = 'label-warning';
-        }
-        else
-        {
-          $spanTxt = 'Di setujui';
-          $spanClass = 'label-success';
-        }
-
-        foreach ($dataHeader as $val) 
-        {
-            $data = array(
-                'hargaTotalBeli' => 'Rp. '.number_format($val->d_pcsh_totalprice,2,",","."),
-                'hargaTotalBayar' => 'Rp. '.number_format($val->d_pcsh_totalpaid,2,",","."),
-                'tanggalBeli' => date('Y-m-d',strtotime($val->d_pcsh_date))
-            );
-        }
-
-        $dataIsi = d_purchasingharian_dt::join('m_item', 'd_purchasingharian_dt.d_pcshdt_item', '=', 'm_item.i_id')
-                ->select('d_purchasingharian_dt.*', 'm_item.*')
-                ->where('d_purchasingharian_dt.d_pcshdt_pcshid', '=', $id)
-                ->orderBy('d_purchasingharian_dt.d_pcshdt_created', 'DESC')
-                ->get();
-        
-        return response()->json([
-            'status' => 'sukses',
-            'header' => $dataHeader,
-            'header2' => $data,
-            'data_isi' => $dataIsi,
-            'spanTxt' => $spanTxt,
-            'spanClass' => $spanClass,
-        ]);
     }
 
     public function getEditBelanja($id)

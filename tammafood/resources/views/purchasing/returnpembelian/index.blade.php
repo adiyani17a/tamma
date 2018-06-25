@@ -55,55 +55,19 @@
             <table class="table tabelan table-hover table-bordered" width="100%" cellspacing="0" id="tabel-return">
               <thead>
                 <tr>
-                  <th class="wd-15p">No.</th>
-                  <th class="wd-15p">No. Return</th>
-                  <th class="wd-15p">Tanggal Return</th>
-                  <th class="wd-15p">Jumlah Return</th>
+                  <th class="wd-5p">No.</th>
+                  <th class="wd-10p">Tgl Return</th>
+                  <th class="wd-15p">ID Return</th>
+                  <th class="wd-10p">Staff</th>
+                  <th class="wd-10p">Metode</th>
+                  <th class="wd-15p">Supplier</th>
+                  <th class="wd-15p">Total Retur</th>
                   <th class="wd-15p">Status</th>
                   <th class="wd-15p">Aksi</th>
                 </tr>
               </thead>
 
-              <tbody>
-                <tr>
-                  <td>1</td>
-                  <td>1111</td>
-                  <td>31/12/2017</td>
-                  <td>1</td>
-                  <td><span class="badge badge-success">Sampai</span></td>
-                  <td class="text-center">
-                    <div class="">    
-                    <a href="#" class="btn btn-warning btn-sm" title="Edit"><i class="glyphicon glyphicon-pencil"></i></a>
-                    <a href="#" class="btn btn-danger btn-sm" title="Hapus"><i class="glyphicon glyphicon-trash"></i></a>
-                  </div>                                 
-                  </td>
-                </tr>
-                <tr>
-                  <td>2</td>
-                  <td>1112</td>
-                  <td>31/12/2017</td>
-                  <td>21</td>
-                  <td><span class="badge badge-success">Sampai</span></td>
-                  <td class="text-center">
-                    <div class="">    
-                      <a href="#" class="btn btn-warning btn-sm" title="Edit"><i class="glyphicon glyphicon-pencil"></i></a>
-                      <a href="#" class="btn btn-danger btn-sm" title="Hapus"><i class="glyphicon glyphicon-trash"></i></a>
-                    </div>                                 
-                  </td>
-                </tr>
-                <tr>
-                  <td>3</td>
-                  <td>1113</td>
-                  <td>30/12/2018</td>
-                  <td>1</td>
-                  <td><span class="badge badge-danger">Belum Sampai</span></td>
-                  <td class="text-center">
-                    <div class="">    
-                      <a href="#" class="btn btn-warning btn-sm" title="Edit"><i class="glyphicon glyphicon-pencil"></i></a>
-                      <a href="#" class="btn btn-danger btn-sm" title="Hapus"><i class="glyphicon glyphicon-trash"></i></a>
-                      </div>                                 
-                  </td>
-                </tr>                     
+              <tbody>                 
               </tbody>
             </table> 
           </div>
@@ -160,18 +124,19 @@
         "processing" : true,
         "serverside" : true,
         "ajax" : {
-          url: baseUrl + "/purchasing/rencanapembelian/get-data-tabel-daftar",
+          url: baseUrl + "/purchasing/returnpembelian/get-data-return-pembelian",
           type: 'GET'
         },
         "columns" : [
           {"data" : "DT_Row_Index", orderable: true, searchable: false, "width" : "5%"}, //memanggil column row
           {"data" : "tglBuat", "width" : "10%"},
-          {"data" : "d_pcsp_code", "width" : "10%"},
-          {"data" : "d_pcsp_staff", "width" : "10%"},
+          {"data" : "d_pcsr_code", "width" : "10%"},
+          {"data" : "d_pcs_staff", "width" : "10%"},
+          {"data" : "metode", "width" : "10%"},
           {"data" : "s_company", "width" : "15%"},
-          {"data" : "tglConfirm", "width" : "10%"},
+          {"data" : "hargaTotal", "width" : "15%"},
           {"data" : "status", "width" : "10%"},
-          {"data" : "action", orderable: false, searchable: false, "width" : "13%"}
+          {"data" : "action", orderable: false, searchable: false, "width" : "15%"}
         ],
         "language": {
           "searchPlaceholder": "Cari Data",
@@ -212,43 +177,40 @@
   //end jquery
   });
 
-  /*function randString(angka) 
-  {
-    var text = "";
-    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-
-    for (var i = 0; i < angka; i++)
-      text += possible.charAt(Math.floor(Math.random() * possible.length));
-
-    return text;
-  }
-
-  function detailPlan(id) 
+  function detailReturPembelian(id) 
   {
     $.ajax({
-      url : baseUrl + "/purchasing/rencanapembelian/get-detail-plan/"+id+"/confirmed",
+      url : baseUrl + "/purchasing/returnpembelian/get-data-detail/" + id,
       type: "GET",
       dataType: "JSON",
       success: function(data)
       {
+        var i = randString(5);
         var key = 1;
-        //ambil data ke json->modal
-        $('#txt_span_status').text(data.spanTxt);
-        $("#txt_span_status").addClass('label'+' '+data.spanClass);
-        $('#lblCodePlan').text(data.header[0].d_pcsp_code);
-        $('#lblTglPlan').text(data.header[0].d_pcsp_datecreated);
-        $('#lblStaff').text(data.header[0].d_pcsp_staff);
+        $('#txt_span_status_detail').text(data.spanTxt);
+        $("#txt_span_status_detail").addClass('label'+' '+data.spanClass);
+        $('#lblCodeReturn').text(data.header[0].d_pcsr_code);
+        $('#lblTglReturn').text(data.header2.tanggalReturn);
+        $('#lblStaff').text(data.header[0].d_pcs_staff);
         $('#lblSupplier').text(data.header[0].s_company);
+        $('#lblMetode').text(data.lblMethod);
+        $('#lblTotalReturn').text(data.header2.hargaTotalReturn);
+        // $('[name="totalHarga"]').val(data.header2.hargaBruto);
+        // $('[name="diskonHarga"]').val(data.header2.nilaiDiskon);
+        // $('[name="ppnHarga"]').val(data.header2.nilaiPajak);
+        // $('[name="totalHargaFinal"]').val(data.header2.hargaNet);
         //loop data
         Object.keys(data.data_isi).forEach(function(){
-          $('#tabel-detail').append('<tr class="tbl_modal_detail_row">'
+          $('#tabel-detail').append('<tr class="tbl_modal_row" id="row'+i+'">'
                           +'<td>'+key+'</td>'
-                          +'<td>'+data.data_isi[key-1].i_code+' '+data.data_isi[key-1].i_name+'</td>'
-                          +'<td>'+data.data_isi[key-1].d_pcspdt_qty+'</td>'
-                          +'<td>'+data.data_isi[key-1].d_pcspdt_qtyconfirm+'</td>'
-                          +'<td>'+data.data_stok[key-1].qtyStok+'</td>'
+                          +'<td>'+data.data_isi[key-1].i_code+' | '+data.data_isi[key-1].i_name+'</td>'
+                          +'<td>'+data.data_isi[key-1].d_pcsrdt_qty+'</td>'
+                          +'<td>'+data.data_isi[key-1].i_sat1+'</td>'
+                          +'<td>'+convertDecimalToRupiah(data.data_isi[key-1].d_pcsrdt_price)+'</td>'
+                          +'<td>'+convertDecimalToRupiah(data.data_isi[key-1].d_pcsrdt_pricetotal)+'</td>'
                           +'</tr>');
-          key++;
+          key++;  
+          i = randString(5);
         });
         $('#modal-detail').modal('show');
       },
@@ -259,43 +221,7 @@
     });
   }
 
-  function detailPlanAll(id) 
-  {
-    $.ajax({
-      url : baseUrl + "/purchasing/rencanapembelian/get-detail-plan/"+id+"/all",
-      type: "GET",
-      dataType: "JSON",
-      success: function(data)
-      {
-        var key = 1;
-        //ambil data ke json->modal
-        $('#txt_span_status').text(data.spanTxt);
-        $("#txt_span_status").addClass('label'+' '+data.spanClass);
-        $('#lblCodePlan').text(data.header[0].d_pcsp_code);
-        $('#lblTglPlan').text(data.header[0].d_pcsp_datecreated);
-        $('#lblStaff').text(data.header[0].d_pcsp_staff);
-        $('#lblSupplier').text(data.header[0].s_company);
-        //loop data
-        Object.keys(data.data_isi).forEach(function(){
-          $('#tabel-detail').append('<tr class="tbl_modal_detail_row">'
-                          +'<td>'+key+'</td>'
-                          +'<td>'+data.data_isi[key-1].i_code+' '+data.data_isi[key-1].i_name+'</td>'
-                          +'<td>'+data.data_isi[key-1].d_pcspdt_qty+'</td>'
-                          +'<td>'+data.data_isi[key-1].d_pcspdt_qtyconfirm+'</td>'
-                          +'<td>'+data.data_stok[key-1].qtyStok+'</td>'
-                          +'</tr>');
-          key++;
-        });
-        $('#modal-detail').modal('show');
-      },
-      error: function (jqXHR, textStatus, errorThrown)
-      {
-          alert('Error get data from ajax');
-      }
-    });
-  }
-
-  function editPlanAll(id) 
+  /*function editPlanAll(id) 
   {
     $.ajax({
       url : baseUrl + "/purchasing/rencanapembelian/get-edit-plan/"+id+"/all",
@@ -333,9 +259,9 @@
           alert('Error get data from ajax');
       }
     });
-  }
+  }*/
 
-  function editPlan(id) 
+  /*function editPlan(id) 
   {
     $.ajax({
       url : baseUrl + "/purchasing/rencanapembelian/get-edit-plan/"+id+"/confirmed",
@@ -372,9 +298,9 @@
           alert('Error get data from ajax');
       }
     });
-  }
+  }*/
 
-  function submitEdit()
+  /*function submitEdit()
   {
     if(confirm('Update Data ?'))
     {
@@ -410,9 +336,9 @@
             }
         });
     }
-  }
+  }*/
 
-  function deletePlan(idPlan) 
+  /*function deletePlan(idPlan) 
   {
     if(confirm('Yakin hapus data ?'))
     {
@@ -440,9 +366,9 @@
             }
         });
     }
-  }
+  }*/
 
-  function lihatHistorybyTgl(){
+  /*function lihatHistorybyTgl(){
     var tgl1 = $('#tanggal1').val();
     var tgl2 = $('#tanggal2').val();
     var tampil = $('#tampil_data').val();
@@ -478,6 +404,17 @@
            }
       }
     });
+  }*/
+
+  function randString(angka) 
+  {
+    var text = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+    for (var i = 0; i < angka; i++)
+      text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+    return text;
   }
 
   function convertDecimalToRupiah(decimal) 
@@ -488,7 +425,7 @@
     for(var i = 0; i < angkarev.length; i++) if(i%3 == 0) rupiah += angkarev.substr(i,3)+'.';
     var hasil = 'Rp. '+rupiah.split('',rupiah.length-1).reverse().join('');
     return hasil+',00';
-  }*/
+  }
 
 </script>
 @endsection
