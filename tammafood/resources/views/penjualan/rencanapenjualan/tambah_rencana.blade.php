@@ -73,31 +73,15 @@
                         </div>
                       </div>
                       
-                      <form class="col-md-12 col-xs-12 col-sm-12 form_header">  
+                      <div class="col-md-12 col-xs-12 col-sm-12">  
                         <div class="col-md-12 col-sm-12 col-xs-12 tamma-bg" style="padding-bottom: : 10px;padding-top: 10px;margin-bottom: 10px;">      
-                               {{ csrf_field() }}
-
-                              <div class="col-md-3 col-md-offset-2 col-sm-6 col-xs-12">
-                                <label class="form-label">Id Rencana</label>
-                              </div>
-
-                              <div class="col-md-4 col-sm-6 col-xs-12">
-                                <div class="form-group">
-                                  <input type="text" id="id" name="id" readonly="" value="{{$id}}" class="form-control input-sm id">
-                                </div>
-                              </div>
-
-                              <div class="col-md-3 col-sm-0 col-xs-0" style="height: 45px;">
-                                <!-- Empty -->
-                              </div>
-
                               <div class="col-md-3 col-md-offset-2 col-sm-6 col-xs-12">
                                 <label class="form-label">Bulan</label>
                               </div>
 
                               <div class="col-md-4 col-sm-6 col-xs-12">
                                 <div class="form-group">
-                                  <input value="{{ $bulan }}" type="text" id="bulan" name="bulan" class="form-control input-sm datepicker">
+                                  <input type="text" id="bulan" name="bulan" class="form-control input-sm datepicker">
                                 </div>
                               </div>
 
@@ -125,39 +109,17 @@
 
                               <div class="col-md-4 col-sm-6 col-xs-12">
                                 <div class="form-group">
-                                  <input type="text" name="total_qty" readonly="" value="0" class="form-control input-sm value">
+                                  <input type="text" name="" disabled="" class="form-control input-sm">
                                 </div>
                               </div>
-
-                              <div class="col-md-3 col-sm-0 col-xs-0" style="height: 45px;">
-                                <!-- Empty -->
-                              </div>
-
-                              <div class="col-md-3 col-md-offset-2 col-sm-6 col-xs-12">
-                                <label class="col-form-label">Jumlah Target Pendapatan</label>
-                              </div>
-
-                              <div class="col-md-4 col-sm-6 col-xs-12">
-                                <div class="form-group">
-                                  <input type="text" name="total_val" readonly="" value="0" class="form-control input-sm value2">
-                                </div>
-                              </div>
-
-                              <div class="col-md-8 col-sm-0 col-xs-0" style="height: 45px;">
-                                <!-- Empty -->
-                              </div>
-
-
-                              <div class="col-md-4 col-sm-6 col-xs-12">
-                                <div class="form-group">
-                                  <button type="button" name="simpan"   class="btn btn-warning simpan"><i class="fa fa-save"> Simpan</i></button>
-                                </div>
-                              </div>
-
                         </div>
-                      </form>  
-
-
+                      </div>       
+                              <div class="col-md-12 col-sm-12 col-xs-12" align="right">
+                                <div class="form-group">
+                                  <button class="btn btn-warning">Simpan data</button>
+                                </div>
+                              </div>
+                            
                         <div class="col-md-12 col-xs-12 col-sm-12">  
                           <div class="table-responsive" style="margin-top: 10px;">
                             <table width="100%" class="table-hover table tabelan" cellspacing="0" id="data">
@@ -167,10 +129,36 @@
                                 <th width="10%">Stock Gudang</th>
                                 <th width="5%">Satuan</th>
                                 <th>Target Penjualan</th>
-                                <th>Target Pendapatan</th>
                               </thead>
                               <tbody>
-                                
+                                <tr>
+                                  <td>1</td>
+                                  <td>Tepung Kanji</td>
+                                  <td>50</td>
+                                  <td>Kg</td>
+                                  <td><input type="text" name="jumlah" class="form-control input-sm"></td>
+                                </tr>
+                                <tr>
+                                  <td>2</td>
+                                  <td>Tepung Terigu</td>
+                                  <td>150</td>
+                                  <td>Kg</td>
+                                  <td><input type="text" name="jumlah" class="form-control input-sm"></td>
+                                </tr>
+                                <tr>
+                                  <td>3</td>
+                                  <td>Tepung Jagung</td>
+                                  <td>50</td>
+                                  <td>Kg</td>
+                                  <td><input type="text" name="jumlah" class="form-control input-sm"></td>
+                                </tr>
+                                <tr>
+                                  <td>4</td>
+                                  <td>Tepung Beras</td>
+                                  <td>40</td>
+                                  <td>Kg</td>
+                                  <td><input type="text" name="jumlah" class="form-control input-sm"></td>
+                                </tr>
                               </tbody>
                             </table>
                           </div>
@@ -181,170 +169,63 @@
                 </div>
 @endsection
 @section("extra_scripts")
-{{-- <script src="{{ asset ('assets/script/icheck.min.js') }}"></script> --}}
-<script type="text/javascript">
-   
-$('.datepicker').datepicker({
-  format: "mm-yyyy",
-  viewMode: "months",
-  minViewMode: "months"
-});
+    <script type="text/javascript">
+      $(document).ready(function() {
+        $('#data').dataTable({
+          "pageLength": 10,
+        "lengthMenu": [[10, 20, 50, - 1], [10, 20, 50, "All"]],
+        "language": {
+            "emptyTable": "Tidak ada data",
+            "sInfo": "Menampilkan _START_ - _END_ Dari _TOTAL_ Data",
+            "sSearch": '<i class="fa fa-search"></i>',
+            "sLengthMenu": "Menampilkan &nbsp; _MENU_ &nbsp; Data",
+            "infoEmpty": "",
+            "paginate": {
+                    "previous": "Sebelumnya",
+                    "next": "Selanjutnya",
+                 }
+          }
 
+        });
+        $('#data2').dataTable({
+          "pageLength": 10,
+        "lengthMenu": [[10, 20, 50, - 1], [10, 20, 50, "All"]],
+        "language": {
+            "emptyTable": "Tidak ada data",
+            "sInfo": "Menampilkan _START_ - _END_ Dari _TOTAL_ Data",
+            "sSearch": '<i class="fa fa-search"></i>',
+            "sLengthMenu": "Menampilkan &nbsp; _MENU_ &nbsp; Data",
+            "infoEmpty": "",
+            "paginate": {
+                    "previous": "Sebelumnya",
+                    "next": "Selanjutnya",
+                 }
+          }
 
-$('.datepicker2').datepicker({
-  format: "dd-mm-yyyy",
-});
+        });
+        $('#data3').dataTable({
+          "pageLength": 10,
+        "lengthMenu": [[10, 20, 50, - 1], [10, 20, 50, "All"]],
+        "language": {
+            "emptyTable": "Tidak ada data",
+            "sInfo": "Menampilkan _START_ - _END_ Dari _TOTAL_ Data",
+            "sSearch": '<i class="fa fa-search"></i>',
+            "sLengthMenu": "Menampilkan &nbsp; _MENU_ &nbsp; Data",
+            "infoEmpty": "",
+            "paginate": {
+                    "previous": "Sebelumnya",
+                    "next": "Selanjutnya",
+                 }
+          }
 
-
-$(document).ready(function(){
-
-  $('#data').DataTable({
-    processing: false,
-    serverSide: false,
-    ajax: {
-        url:'{{ route('datatable_rencana1') }}',
-    },
-    columnDefs: [
-
-            {
-               targets: 0 ,
-               className: 'center '
-            },
-            {
-               targets: 2,
-               className: 'center'
-            },
-            {
-               targets: 5,
-               className: 'center'
-            },
-          ],
-    columns: [
-      {data: 'DT_Row_Index', name: 'DT_Row_Index'},
-      {data: 'i_name', name: 'i_name'},
-      {data: 's_qty', name: 's_qty'},
-      {data: 'i_sat1', name: 'i_sat1'},
-      {data: 'target_penjualan', name: 'target_penjualan'},
-      {data: 'target_pendapatan', name: 'target_pendapatan'},
-    ],
-
-
-  });
-
-
-
-})
-
-
-function target_qty(a) {
-  var table = $('#data').DataTable();
-  $('.target_qty').maskMoney({
-    decimal:"",
-    precision:0,
-    allowZero:true,
-    defaultZero: true,
-    thousands:""
-  });
-
-  var temp = 0;
-  table.$('.target_qty').each(function(){
-    var val = $(this).val()/1;
-    temp += val;
-  })
-
-  $('.value').val(temp);
-
-
-
-
-  var par         = $(a).parents('td');
-  var par_tr      = $(a).parents('tr');
-  var i_id        = $(par).find('.i_id').val()/1;
-  var qty         = $(par).find('.target_qty').val()/1;
-  var harga       = $(par).find('.harga').val()/1;
-
-  $(par_tr).find('.target_value').val(accounting.formatMoney(qty * harga, "", 0, ".",','));
-
-  var temp1 = 0;
-  table.$('.target_value').each(function(){
-    var val = $(this).val();
-    val     = val.replace(/[^0-9\-]+/g,"")/1;
-    temp1 += val;
-  })
-  $('.value2').val(accounting.formatMoney(temp1, "", 0, ".",','));
-
-}
-
-$('.simpan').click(function(){
-  var table = $('#data').DataTable();
-  var datepicker = $('.datepicker').val();
-  var datepicker2 = $('.datepicker2').val();
-
-  if (datepicker == '') {
-    alert('Bulan Harus Diisi');
-    return false;
-  }
-
-  if (datepicker2 == '') {
-    alert('Periode Harus Diisi');
-    return false;
-  }
-  var stay = confirm("Simpan Data?");
-  if(stay)
-  {
-    var arr1 = [];
-    var arr2 = [];
-    var arr3 = [];
-    table.$('.i_id').each(function(){
-      var par = $(this).parents('tr');
-      var qty = $(par).find('.target_qty').val();
-      if (qty != 0) {
-        var val = $(this).val();
-        arr1.push(val);
-      }
-    })
-
-    table.$('.target_qty').each(function(){
-      var val = $(this).val();
-      if (val != 0) {
-        arr2.push(val);
-      }
-    })
-
-    table.$('.target_value').each(function(){
-      var par = $(this).parents('tr');
-      var qty = $(par).find('.target_qty').val();
-      if (qty != 0) {
-        var val = $(this).val();
-        arr3.push(val);
-      }
-    })
-
-
-    $.ajaxSetup({
-      headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-    });
-
-    $.ajax({
-      url:'{{ url('penjualan/rencanapenjualan/save_item') }}' + '?'+ $('.form_header :input').serialize(),
-      data: {arr1,arr2,arr3},
-      dataType:'json',
-      type: 'get',
-      success:function(data){
-        if (data.status == 1) {
-          alert(data.message);
-          window.location = '{{ url('penjualan/rencanapenjualan/rencana') }}';
-        }else{
-          alert(data.message);
-        }
-      },
-      error:function(){
-
-      }
-    }) 
-  }
-})
-</script>
+        });
+            });
+      $('.datepicker').datepicker({
+        format: "mm-yyyy",
+        viewMode: "months",
+        minViewMode: "months"
+      });
+      $('.datepicker2').datepicker({
+      });
+      </script>
 @endsection()

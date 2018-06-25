@@ -1,3 +1,8 @@
+@section('extra_styles')
+<style type="text/css">
+  
+</style>
+@endsection
 @extends('main')
 @section('content')
             <!--BEGIN PAGE WRAPPER-->
@@ -87,119 +92,57 @@
 
 @endsection
 @section("extra_scripts")
+    <script src="{{ asset ('assets/ckeditor/ckeditor1.js') }}"></script>
+    <link rel="stylesheet" type="text/css" href="{{asset('assets/sliptree-multiselect/css/bootstrap-tokenfield.css')}}">
+    <script type="text/javascript" src="{{asset('assets/sliptree-multiselect/bootstrap-tokenfield.js')}}"></script>
+
+    <script type="text/javascript">
+      $('#tokenfield')
+      .on('tokenfield:createtoken', function (e) {
+        var data = e.attrs.value.split('|')
+        e.attrs.value = data[1] || data[0]
+        e.attrs.label = data[1] ? data[0] + ' (' + data[1] + ')' : data[0]
+      })
+
+      .on('tokenfield:createdtoken', function (e) {
+        // Über-simplistic e-mail validation
+        var re = /\S+@\S+\.\S+/
+        var valid = re.test(e.attrs.value)
+        if (!valid) {
+          $(e.relatedTarget).addClass('invalid')
+        }
+      })
+
+      .on('tokenfield:edittoken', function (e) {
+        if (e.attrs.label !== e.attrs.value) {
+          var label = e.attrs.label.split(' (')
+          e.attrs.value = label[0] + '|' + e.attrs.value
+        }
+      })
+
+      .on('tokenfield:removedtoken', function (e) {
+        alert('Token removed! Token value was: ' + e.attrs.value)
+      })
+      .tokenfield({
+        autocomplete: {
+          source: ['red@gmail.com','blue@gmail.com','green@gmail.com','yellow@gmail.com','violet@gmail.com','brown@gmail.com','purple@gmail.com','black@gmail.com','white@gmail.com'],
+          delay: 100
+        },
+        showAutocompleteOnFocus: true
+      })
+    </script>
+
+    <script>
+        ClassicEditor
+            .create( document.querySelector( '#some-textarea' ) )
+            .catch( error => {
+                console.error( error );
+            } );
+    </script>
+
     <script type="text/javascript">
 
-    
 
-// Start MultiSelect
-    $('#tokenfield')
-
-  .on('tokenfield:createtoken', function (e) {
-    var data = e.attrs.value.split('|')
-    e.attrs.value = data[1] || data[0]
-    e.attrs.label = data[1] ? data[0] + ' (' + data[1] + ')' : data[0]
-  })
-
-  .on('tokenfield:createdtoken', function (e) {
-    // Über-simplistic e-mail validation
-    var re = /\S+@\S+\.\S+/
-    var valid = re.test(e.attrs.value)
-    if (!valid) {
-      $(e.relatedTarget).addClass('invalid')
-    }
-  })
-
-  .on('tokenfield:edittoken', function (e) {
-    if (e.attrs.label !== e.attrs.value) {
-      var label = e.attrs.label.split(' (')
-      e.attrs.value = label[0] + '|' + e.attrs.value
-
-    }
-  })
-
-  // .on('tokenfield:removedtoken', function (e) {
-  //   alert('Token removed! Token value was: ' + e.attrs.value)
-  // })
-
-  .tokenfield({
-     autocomplete: {
-    source: ['red@red.red','blue@blue.blue','green@green.green','yellow@yellow.yellow','violet@violet.violet','brown@brown.brown','purple@purple.purple','black@black.black','white@white.white'],
-    delay: 100
-  },
-  showAutocompleteOnFocus: true
-  })
-  // End Multi Select
-
-    $('#some-textarea').ckeditor();
-
-     $(document).ready(function() {
-     
-    var extensions = {
-         "sFilterInput": "form-control input-sm",
-        "sLengthSelect": "form-control input-sm"
-    }
-    // Used when bJQueryUI is false
-    $.extend($.fn.dataTableExt.oStdClasses, extensions);
-    // Used when bJQueryUI is true
-    $.extend($.fn.dataTableExt.oJUIClasses, extensions);
-    $('#data').dataTable({
-          "responsive":true,
-
-          "pageLength": 10,
-        "lengthMenu": [[10, 20, 50, - 1], [10, 20, 50, "All"]],
-        "language": {
-            "searchPlaceholder": "Cari Data",
-            "emptyTable": "Tidak ada data",
-            "sInfo": "Menampilkan _START_ - _END_ Dari _TOTAL_ Data",
-            "sSearch": '<i class="fa fa-search"></i>',
-            "sLengthMenu": "Menampilkan &nbsp; _MENU_ &nbsp; Data",
-            "infoEmpty": "",
-            "paginate": {
-                    "previous": "Sebelumnya",
-                    "next": "Selanjutnya",
-                 }
-          }
-
-        });
-    $('#data2').dataTable({
-          "responsive":true,
-
-          "pageLength": 10,
-        "lengthMenu": [[10, 20, 50, - 1], [10, 20, 50, "All"]],
-        "language": {
-            "searchPlaceholder": "Cari Data",
-            "emptyTable": "Tidak ada data",
-            "sInfo": "Menampilkan _START_ - _END_ Dari _TOTAL_ Data",
-            "sSearch": '<i class="fa fa-search"></i>',
-            "sLengthMenu": "Menampilkan &nbsp; _MENU_ &nbsp; Data",
-            "infoEmpty": "",
-            "paginate": {
-                    "previous": "Sebelumnya",
-                    "next": "Selanjutnya",
-                 }
-          }
-
-        });
-    $('#data3').dataTable({
-          "responsive":true,
-
-          "pageLength": 10,
-        "lengthMenu": [[10, 20, 50, - 1], [10, 20, 50, "All"]],
-        "language": {
-            "searchPlaceholder": "Cari Data",
-            "emptyTable": "Tidak ada data",
-            "sInfo": "Menampilkan _START_ - _END_ Dari _TOTAL_ Data",
-            "sSearch": '<i class="fa fa-search"></i>',
-            "sLengthMenu": "Menampilkan &nbsp; _MENU_ &nbsp; Data",
-            "infoEmpty": "",
-            "paginate": {
-                    "previous": "Sebelumnya",
-                    "next": "Selanjutnya",
-                 }
-          }
-
-        });
-});
       $('.datepicker').datepicker({
         format: "mm",
         viewMode: "months",

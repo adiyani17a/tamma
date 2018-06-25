@@ -9,19 +9,18 @@ class d_stock_mutation extends Model
 
 	protected $table = 'd_stock_mutation';
     protected $primaryKey = ['sm_stock','sm_detailid'];
-    protected $fillable = ['sm_stock' ,
+    protected $fillable = [	'sm_stock' ,
 							'sm_detailid' ,
 							'sm_date' ,
 							'sm_comp' ,
-							'sm_position',
 							'sm_mutcat' ,
 							'sm_item' ,
 							'sm_qty' ,
 							'sm_qty_used' ,
-							'sm_qty_sisa',
 							'sm_qty_expired' ,
 							'sm_detail' ,
-							'sm_price' ,
+							'sm_hpp' ,
+							'sm_sell' ,
 							'sm_reff' ,
 							'sm_insert' ,
 							'sm_update'];

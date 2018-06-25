@@ -10,6 +10,7 @@ use App\d_spk;
 use App\m_item;
 use App\d_send_product;
 use App\d_formula;
+use App\spk_formula;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 
@@ -114,7 +115,7 @@ class spkProductionController extends Controller
     $m2 = substr($tgl2, -7,-5);
     $d2 = substr($tgl2,0,2);
     $tanggal2 = $y2.'-'.$m2.'-'.$d2;
-    //dd(array($tanggal1, $tanggal2));
+    // dd(array($tanggal1, $tanggal2));
     
     $spk = d_spk::join('m_item','spk_item','=','i_id')
                 ->join('d_productplan','pp_id','=','spk_ref')
@@ -160,11 +161,15 @@ class spkProductionController extends Controller
   }
 
   public function simpanSpk(Request $request){
-    dd($request->all());
+    // dd($request->all());
   DB::beginTransaction();
   try {
-    $request->tgl_spk=date('Y-m-d',strtotime($request->tgl_spk));
-    $spk_id=d_spk::max('spk_id')+1;
+    $formula = $request->id_formula;
+    $value = $request->id_value;
+    $scale = $request->f_scale;
+    $request->tgl_spk = date('Y-m-d',strtotime($request->tgl_spk));
+
+    $spk_id = d_spk::max('spk_id')+1;
       d_spk::create([
             'spk_id' =>$spk_id,
             'spk_ref' =>$request->id_plan,
@@ -174,11 +179,21 @@ class spkProductionController extends Controller
             'spk_qty' =>$request->jumlah,
             'spk_status'=>$request->status,
       ]);
+
     $productplan=DB::table('d_productplan')->where('pp_id',$request->id_plan);
     $productplan->update([
         'pp_isspk'=>'Y'
     ]);
-    //mahmud
+
+    for ($i=0; $i < count($formula) ; $i++) { 
+      spk_formula::insert([
+                    'fr_spk' => $spk_id,
+                    'fr_detailid' => $i+1,
+                    'fr_formula'  => $formula[$i],
+                    'fr_value' => $value[$i],
+                    'fr_scale' => $scale[$i]
+      ]);
+    }
 
     DB::commit();
     return response()->json([

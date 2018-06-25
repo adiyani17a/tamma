@@ -1,4 +1,4 @@
-<div id="retail-grosir" class="tab-pane fade">
+<div id="produksi-grosir" class="tab-pane fade">
   <div class="row">
     <div class="col-md-12 col-sm-12 col-xs-12">
 
@@ -39,39 +39,19 @@
         
           
         <div class="table-responsive" style="margin-top: 50px;">
-          <table class="table tabelan table-hover table-bordered" width="100%" cellspacing="0" id="data2">
+          <table class="table tabelan table-hover table-bordered" width="100%" cellspacing="0" id="ProduksiGrosir">
             <thead>
               <tr>
-                <th>Tanggal</th>
+                <th>Tanggal | Waktu</th>
                 <th>Kode Item</th>
                <th>Nama Item</th>
-               <th>Stok Tersedia</th>
-               <th>Status</th>
+               <th>Jumlah di Terima</th>
+               <th>Nota Reff</th>
               </tr>
             </thead>
 
             <tbody>
-              <tr>
-                <td>28-02-2018 23:59:59</td>
-                <td>111</td>
-                <td>Tortilla</td>
-                <td>30</td>
-                <td><a<i class="fa fa-check"></i></td>
-              </tr>
-              <tr>
-                <td>27-02-2018 23:59:59</td>
-                <td>112</td>
-                <td>Kebab</td>
-                <td>25</td>
-                <td><i class="fa fa-check"></i></td>
-              </tr>
-              <tr>
-                <td>26-02-2018 23:59:59</td>
-                <td>113</td>
-                <td>Burger</td>
-                <td>24</td>
-                <td><i class="fa fa-times"></i></td>
-              </tr>
+
             </tbody>
           </table> 
         </div>  

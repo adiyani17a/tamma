@@ -47,7 +47,6 @@
                               <th class="wd-15p">No</th>
                               <th class="wd-15p">Bulan</th>
                               <th class="wd-15p">Total Target Penjualan</th>
-                              <th class="wd-15p">Total Target Pendapatan</th>
                               <th class="wd-15p">Kelola</th>
                             </thead>
                             <tbody>                              
@@ -63,56 +62,56 @@
         </div>
 @endsection
 @section("extra_scripts")
-<script type="text/javascript">
-  function edit(a) {
-    window.location = '{{ url('penjualan/rencanapenjualan/edit_rencana') }}' + '/' + a;
-  }
+    <script type="text/javascript">
+      $(document).ready(function() {
+        $('#data').dataTable({
+          "pageLength": 10,
+        "lengthMenu": [[10, 20, 50, - 1], [10, 20, 50, "All"]],
+        "language": {
+            "emptyTable": "Tidak ada data",
+            "sInfo": "Menampilkan _START_ - _END_ Dari _TOTAL_ Data",
+            "sSearch": '<i class="fa fa-search"></i>',
+            "sLengthMenu": "Menampilkan &nbsp; _MENU_ &nbsp; Data",
+            "infoEmpty": "",
+            "paginate": {
+                    "previous": "Sebelumnya",
+                    "next": "Selanjutnya",
+                 }
+          }
 
-  function hapus(id) {
-    var stay = confirm("Hapus Data?");
-    if (stay) {
-      window.location = '{{ url('penjualan/rencanapenjualan/hapus_rencana') }}' + '/' + id;
-    }
-    
-  }
+        });
+        $('#data2').dataTable({
+          "pageLength": 10,
+        "lengthMenu": [[10, 20, 50, - 1], [10, 20, 50, "All"]],
+        "language": {
+            "emptyTable": "Tidak ada data",
+            "sInfo": "Menampilkan _START_ - _END_ Dari _TOTAL_ Data",
+            "sSearch": '<i class="fa fa-search"></i>',
+            "sLengthMenu": "Menampilkan &nbsp; _MENU_ &nbsp; Data",
+            "infoEmpty": "",
+            "paginate": {
+                    "previous": "Sebelumnya",
+                    "next": "Selanjutnya",
+                 }
+          }
 
-  $(document).ready(function(){
+        });
+        $('#data3').dataTable({
+          "pageLength": 10,
+        "lengthMenu": [[10, 20, 50, - 1], [10, 20, 50, "All"]],
+        "language": {
+            "emptyTable": "Tidak ada data",
+            "sInfo": "Menampilkan _START_ - _END_ Dari _TOTAL_ Data",
+            "sSearch": '<i class="fa fa-search"></i>',
+            "sLengthMenu": "Menampilkan &nbsp; _MENU_ &nbsp; Data",
+            "infoEmpty": "",
+            "paginate": {
+                    "previous": "Sebelumnya",
+                    "next": "Selanjutnya",
+                 }
+          }
 
-    $('#data').DataTable({
-      processing: true,
-      serverSide: true,
-      ajax: {
-          url:'{{ route('datatable_rencana') }}',
-      },
-      columnDefs: [
-
-              {
-                 targets: 0 ,
-                 className: 'center'
-              },
-              {
-                 targets: 3,
-                 className: 'right'
-              },
-              {
-                 targets: 4,
-                 className: 'center'
-              },
-            ],
-      columns: [
-        {data: 'DT_Row_Index', name: 'DT_Row_Index'},
-        {data: 'rp_bulan', name: 'rp_bulan'},
-        {data: 'rp_target_qty', name: 'rp_target_qty'},
-        {data: 'harga', name: 'harga'},
-        {data: 'aksi', name: 'aksi'},
-        ]
-    });
-
-    @if ($errors->any())
-      alert('Penjualan Untuk Bulan Ini Sudah Berjalan');
-    @endif 
-
-
-  })
-</script>
+        });
+            });
+      </script>
 @endsection()

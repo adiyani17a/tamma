@@ -9,7 +9,7 @@
       <div class="col-md-4 col-sm-6 col-xs-12">
         <div class="form-group">
           <div class="input-daterange input-group">
-            <input id="tanggal1" class="form-control input-sm datepicker" name="tanggal" type="text">
+            <input id="tanggal1" class="form-control input-sm datepicker1" name="tanggal" type="text">
             <span class="input-group-addon">-</span>
             <input id="tanggal2" class="input-sm form-control datepicker2" name="tanggal" type="text" value="{{ date('d-m-Y') }}">
           </div>

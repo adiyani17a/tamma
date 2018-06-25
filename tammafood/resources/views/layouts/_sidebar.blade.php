@@ -101,11 +101,6 @@
                                 </li>
                                 @endif
 
-                                {{--  @if(Auth::user()->punyaAkses('Data Bahan Baku','ma_read'))
-                                <li class="{{ Request::is('master/databaku/baku') ? 'active' : '' || Request::is('master/databaku/*') ? 'active' : '' }}"><a href="{{ url('/master/databaku/baku') }}"><span class="submenu-title">Data Bahan Baku</span><span class="hidden">Master</span></a>
-                                </li>
-                                @endif --}}
-
                                 @if(Auth::user()->punyaAkses('Data Satuan','ma_read'))
                                 <li class="{{ Request::is('master/datasatuan/satuan') ? 'active' : '' || Request::is('master/datasatuan/*') ? 'active' : '' }}"><a href="{{ url('/master/datasatuan/satuan') }}"><span class="submenu-title">Data Satuan</span><span class="hidden">Master</span></a>
                                 @endif
@@ -139,12 +134,9 @@
                                 <li class="{{ Request::is('master/databarang/barang') ? 'active' : '' || Request::is('master/databarang/*') ? 'active' : '' }}"><a href="{{ url('/master/databarang/barang') }}"><span class="submenu-title">Data Barang </span><span class="hidden">Master</span></a>
                                 </li>
                                 @endif
-                                {{-- 
-                                @if(Auth::user()->punyaAkses('Data Bahan Baku','ma_read'))
-                                <li class="{{ Request::is('master/databaku/baku') ? 'active' : '' || Request::is('master/databaku/*') ? 'active' : '' }}"><a href="{{ url('/master/databaku/baku') }}"><span class="submenu-title">Data Bahan Baku</span><span class="hidden">Master</span></a>
+                                </li>
 
-                                <li class="{{ Request::is('master/databarang/barang') ? 'active' : '' || Request::is('master/databarang/*') ? 'active' : '' }}"><a href="{{ url('/master/databarang/barang') }}"><span class="submenu-title">Data Barang</span><span class="hidden">Master</span></a> 
-                                    @endif--}}
+                                <li class="{{ Request::is('master/masterproduksi/index') ? 'active' : '' || Request::is('master/masterproduksi/*') ? 'active' : '' }}"><a href="{{ url('master/masterproduksi/index') }}"><span class="submenu-title">Master Formula</span></a>
                                 </li>
                                 
 
@@ -303,7 +295,7 @@
                                 @endif
 
                                 @if(Auth::user()->punyaAkses('POS Penjualan Grosir / Online','ma_read'))
-                                <li class="{{ Request::is('penjualan/POSgrosir/grosir') ? 'active' : ''}}"><a href="{{ url('/penjualan/POSgrosir/index') }}"><span class="submenu-title">POS Penjualan Grosir / Online</span></a>
+                                <li class="{{ Request::is('penjualan/POSgrosir/index') ? 'active' : ''}}"><a href="{{ url('/penjualan/POSgrosir/index') }}"><span class="submenu-title">POS Penjualan Grosir / Online</span></a>
                                 </li>
                                 @endif
 

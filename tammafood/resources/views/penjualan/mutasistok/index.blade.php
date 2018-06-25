@@ -30,8 +30,18 @@
                   
                                 
                               <ul id="generalTab" class="nav nav-tabs">
-                                <li class="active"><a href="#grosir-retail" data-toggle="tab">Grosir to Retail</a></li>
-                                <li><a href="#retail-grosir" data-toggle="tab">Retail to Grosir</a></li>
+                                <li class="active">
+                                  <a href="#grosir-retail" data-toggle="tab">Grosir ke Retail</a>
+                                </li>
+                                <li>
+                                  <a href="#produksi-grosir" data-toggle="tab">Produksi ke Grosir</a>
+                                </li>
+                                <li>
+                                  <a href="#penjualan-retail" data-toggle="tab">Penjualan Retail</a>
+                                </li>
+                                <li>
+                                  <a href="#penjualan-grosir" data-toggle="tab">Penjualan Grosir</a>
+                                </li>
                                 <!-- <li><a href="#label-badge-tab" data-toggle="tab">3</a></li> -->
                               </ul>
                               <div id="generalTabContent" class="tab-content responsive">
@@ -44,15 +54,19 @@
                                 @include('penjualan.mutasistok.grosir-retail')
                                 <!-- end grosir-retail  -->
 
-                                <!-- div retail-grosir -->
-                                @include('penjualan.mutasistok.retail-grosir')
+                                <!-- div Produksi-grosir -->
+                                @include('penjualan.mutasistok.Produksi-grosir')
+                                <!--/div retail-grosir -->
+
+                                <!-- div Produksi-grosir -->
+                                @include('penjualan.mutasistok.Penjualan-retail')
                                 <!--/div retail-grosir -->
 
                                 <!-- div label-badge-tab -->
                                 <div id="label-badge-tab" class="tab-pane fade">
                                   <div class="row">
                                     <div class="panel-body">
-                                      <!-- Isi content -->we
+                                      <!-- Isi content -->
                                     </div>
                                   </div>
                                 </div>
@@ -85,15 +99,37 @@ $("#namaItem").autocomplete({
     }
   });
 
+    $('#GrosirRetail').DataTable({
+    processing: true,
+    serverSide: true,
+      ajax: {
+          url : baseUrl + "/penjualan/mutasi/stock/grosir-retail",
+      },
+      columns: [
+      {data: 'sm_date', name: 'sm_date', orderable: false, searchable: false},
+      {data: 'i_code', name: 'i_code'},
+      {data: 'i_name', name: 'i_name', orderable: false},
+      {data: 'sm_qty', name: 'sm_qty', orderable: false},
+      {data: 'sm_reff', name: 'sm_reff', orderable: false, searchable: false},
+      ],
+    });
 
-$('#namaItem').on('keypress', function (e) 
-    {
-         if(e.which === 13)
-         {
-          
+    $('#PenjualanRetail').DataTable({
+    processing: true,
+    serverSide: true,
+      ajax: {
+          url : baseUrl + "/penjualan/mutasi/stock/penjualan-retail",
+      },
+      columns: [
+      {data: 'sm_date', name: 'sm_date', orderable: false, searchable: false},
+      {data: 'i_code', name: 'i_code'},
+      {data: 'i_name', name: 'i_name', orderable: false},
+      {data: 'sm_qty', name: 'sm_qty', orderable: false},
+      {data: 'sm_reff', name: 'sm_reff', orderable: false, searchable: false},
+      ],
+    });
 
-         }
-   });
+
 
 
       </script>

@@ -51,6 +51,7 @@
 
 @endsection
 @section("extra_scripts")
+<script src="{{ asset ('assets/script/icheck.min.js') }}"></script>
 <script type="text/javascript">           
 $(document).ready(function() {
   var extensions = {
@@ -61,6 +62,8 @@ $(document).ready(function() {
   $.extend($.fn.dataTableExt.oStdClasses, extensions);
   // Used when bJQueryUI is true
   $.extend($.fn.dataTableExt.oJUIClasses, extensions);
+
+  cariTanggal();
 });
 
   var indexTable = $('#data1').DataTable({
@@ -122,8 +125,7 @@ $(document).ready(function() {
     endDate: 'today'
   });
 
-  function cariTanggal()
-  {
+  function cariTanggal(){
     var tgl1 = $('#tanggal1').val();
     var tgl2 = $('#tanggal2').val();
     var stat = 'FN'; 

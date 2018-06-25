@@ -15,13 +15,7 @@ class d_purchasing_dt extends Model
     	'd_pcsdt_id',
     	'd_pcs_id',
     	'i_id',
-        'd_pcsdt_idpdt',
     	'd_pcsdt_qty',
-        'd_pcsdt_price',
-        'd_pcsdt_prevcost',
-    	'd_pcsdt_total',
-        'd_pcsdt_isconfirm',
-        'd_pcsdt_qtyconfirm',
-        'd_pcsdt_updated'
+    	'd_pcsdt_cost',
     ];
 }

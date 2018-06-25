@@ -147,7 +147,7 @@
       },
       "columns": [
           { "data": "pp_date" ,"className" : "dt-body-center"},
-          { "data": "pp_item" ,"className" : "dt-body-center"},
+          { "data": "i_code" ,"className" : "dt-body-center"},
           { "data": "i_name" },
           { "data": "pp_qty" ,"className" : "dt-body-right"},
           { "data": "button" },
