@@ -37,7 +37,7 @@
                     <li class="active"><a href="#alert-tab" data-toggle="tab">Form Penjualan</a></li>
                     <li><a href="#note-tab" data-toggle="tab" onclick="cariTanggal()">Nota Penjualan</a></li>
                     <li><a href="#label-badge-tab" data-toggle="tab" onclick="cariTanggalJual()">Item Penjualan</a></li>
-                    <li><a href="#nav-stock" data-toggle="tab" onclick="stock()">Stock Grosir</a></li>
+                    <li><a href="#nav-stock" data-toggle="tab">Stock Grosir</a></li>
                   </ul>
             <div id="generalTabContent" class="tab-content responsive">
     <!-- Trigger the modal with a button -->
@@ -372,41 +372,12 @@
 @endsection
 @section("extra_scripts")
 
-    <script src="{{ asset ('assets/script/bootstrap-datepicker.js') }}"></script>
+  <script src="{{ asset ('assets/script/bootstrap-datepicker.js') }}"></script>
 
-    @include('penjualan.POSgrosir.jquery_simpan_sales')
+  @include('penjualan.POSgrosir.jquery_simpan_sales')
 
-    <script type="text/javascript">
-
-  totalPenjualan();
-
-  function totalPenjualan(){
-    var inputs = document.getElementsByClassName( 'totalPenjualan' ),
-    hasil  = [].map.call(inputs, function( input ) {
-        if(input.value == '') input.value = 0;
-        return input.value;
-    });
-    // console.log(hasil);
-    var total = 0;
-    for (var i = hasil.length - 1; i >= 0; i--){
-
-      hasil[i] = convertToAngka(hasil[i]);
-      hasil[i] = parseInt(hasil[i]);
-      total = total + hasil[i];
-    }
-      if (isNaN(total)) {
-          total=0;
-        }
-    total = convertToRupiah(total);
-    // console.log(total);
-    $('#totalMapPenjualan').val(total);
-  }
-  
-  $(document).ready(function(){ 
-      $('.autoCari').trigger('click'); 
-    });
-
-    $(document).ready(function() {
+  <script type="text/javascript">
+  $(document).ready(function() {
   var extensions = {
          "sFilterInput": "form-control input-sm",
         "sLengthSelect": "form-control input-sm"
@@ -417,6 +388,54 @@
 
     $.extend($.fn.dataTableExt.oJUIClasses, extensions);
    
+  });
+
+  tableDetail=$('#detail-penjualan').DataTable();
+
+  function totalPenjualan(){
+  var inputs = document.getElementsByClassName( 'totalPenjualan' ),
+    hasil  = [].map.call(inputs, function( input ) {
+      if(input.value == '') input.value = 0;
+      return input.value;
+    });
+
+  var total = 0;
+  for (var i = hasil.length - 1; i >= 0; i--){
+
+    hasil[i] = convertToAngka(hasil[i]);
+    hasil[i] = parseInt(hasil[i]);
+    total = total + hasil[i];
+    }
+    if (isNaN(total)) {
+        total=0;
+    }
+    total = convertToRupiah(total);
+    $('#totalMapPenjualan').val(total);
+  }
+
+  function totalPenjualanDel(){
+  var inputs = document.getElementsByClassName( 'totalPenjualan' ),
+    hasil  = [].map.call(inputs, function( input ) {
+      if(input.value == '') input.value = 0;
+      return input.value;
+    });
+
+  var total = 0;
+  for (var i = hasil.length - 1; i >= 0; i--){
+
+    hasil[i] = convertToAngka(hasil[i]);
+    hasil[i] = parseInt(hasil[i]);
+    total = total + hasil[i];
+    }
+    if (isNaN(total)) {
+        total=0;
+    }
+    total = convertToRupiah(total);
+    $('#totalMapPenjualan').val(total);
+  }
+  
+  $(document).ready(function(){ 
+      $('.autoCari').trigger('click'); 
     });
 
 var date = new Date();
@@ -443,7 +462,7 @@ $('.datepicker2').datepicker({
 function lihatDetail(idDetail){
    $.ajax({
     url : baseUrl + "/penjualan/POSgrosir/getdata",
-    type: 'get',
+    type: 'GET',
     data: {x:idDetail},
     success:function(response){
       $('#detailNota').html(response);
@@ -452,36 +471,44 @@ function lihatDetail(idDetail){
 }
 
     // customer 
-$( "#nama" ).autocomplete({
-  source: baseUrl+'/penjualan/POSgrosir/grosir/autocomplete',
-  minLength: 1,
-  select: function(event, ui) 
-  {
-  $('#id_cus').val(ui.item.id);
-  // $('#namahidden').val(ui.item.id);
-  $('#nama').val(ui.item.label);
-  $('#alamat2').val(ui.item.alamat);
-  $("input[name='item']").focus();
-  }
-});
+  $( "#nama" ).focus(function(){
+      var key = 1;
+    $( "#nama" ).autocomplete({
+    source: baseUrl+'/penjualan/POSretail/retail/autocomplete',
+    minLength: 1,
+    select: function(event, ui) {
+      $('#id_cus').val(ui.item.id);
+      $('#nama').val(ui.item.label);
+      $('#alamat2').val(ui.item.alamat);
+      $("input[name='item']").focus();
+      }
+    });
+    $("#alamat2").val('');
+    $("#nama" ).val('');
+  });
 
-     //namaitem
-$( "#namaitem" ).autocomplete({
-  source: baseUrl+'/penjualan/POSgrosir/grosir/autocompleteitem',
-  minLength: 1,
-  select: function(event, ui) 
-  {
-  $('#harga').val(ui.item.harga);
-  $('#kode').val(ui.item.kode);
-  $('#detailnama').val(ui.item.nama);
-  $('#namaitem').val(ui.item.label);
-  $('#satuan').val(ui.item.satuan);
-  $('#s_qty').val(ui.item.s_qty);
-  $('#qty').val(ui.item.qty);
-  $('#qty').val('1');
-  $("input[name='qty']").focus();
-  }
-});
+    //namaitem
+  $( "#namaitem" ).focus(function(){
+        var key = 1;
+    $( "#namaitem" ).autocomplete({
+      source: baseUrl+'/penjualan/POSgrosir/grosir/autocompleteitem',
+      minLength: 1,
+      select: function(event, ui){
+        $('#harga').val(ui.item.harga);
+        $('#kode').val(ui.item.kode);
+        $('#detailnama').val(ui.item.nama);
+        $('#namaitem').val(ui.item.label);
+        $('#satuan').val(ui.item.satuan);
+        $('#s_qty').val(ui.item.s_qty);
+        $('#qty').val(ui.item.qty);
+        $('#qty').val('1');
+        $("input[name='qty']").focus();
+        }
+      });
+      $("#s_qty").val('');
+      $("#qty").val('');
+      $("#namaitem" ).val('');
+  });
 
 function UpdateHarga(kode){
   var qty = $('.qty-'+kode).val();
@@ -520,12 +547,14 @@ function tambah() {
       '<input size="30" style="text-align:right" type="text"  name="sd_qty[]" class="sd_qty form-control qty-'+kode+'" value="'+qty+'" onkeyup="UpdateHarga(\''+kode+'\'); qtyInput(\''+stok+'\', \''+kode+'\'); totalPenjualan()" onchange="qtyInput(\''+stok+'\', \''+kode+'\')"> ',
       satuan+'<input type="hidden" name="satuan[]" class="satuan" value="'+satuan+'"> ',
       '<input type="text" size="10" readonly style="text-align:right" name="harga_item[]" class="harga_item form-control harga-'+kode+'" value="'+harga+'"> ',
-      '<div class="input-group"><input type="text" size="11"  style="text-align:right" name="sd_disc_percent[]" class="form-control discpercent hasildiscpercent" value="0" onkeyup="discpercent(this, event);autoJumValPercent()"><span class="input-group-addon">%</span></div> <input name="totalValuePercent[]" type="text" value="0" style="display:none" class="form-control totalValuePercent jumTotValuePercent">',
+      '<div class="input-group"><input type="text" size="11"  style="text-align:right" name="sd_disc_percent[]" class="form-control discpercent discpercent discpercent-'+kode+'-'+kode+'" value="0" onkeyup="discpercent discpercent-'+kode+'(this, event);autoJumValPercent()"><span class="input-group-addon">%</span></div> <input name="totalValuePercent[]" type="text" value="0" style="display:none" class="form-control totalValuePercent jumTotValuePercent">',
       '<input type="text" size="10"  id="discmasmoney" style="text-align:right" name="sd_disc_value[]" class="form-control discvalue hasildiscvalue pricevalue-'+kode+'" value="0" onkeyup="discvalue(this, event);autoJumValValue();rege(event,\''+pricevalue+'\')"  onblur="setRupiah(event,\''+pricevalue+'\')" onclick="setAwal(\''+event+'\',\''+pricevalue+'\')" >',
       '<input type="text" size="200" readonly style="text-align:right" name="hasil[]" id="hasil" class="form-control hasil hasil-'+kode+'" value="'+x+'"><input type="hidden" size="200" readonly style="text-align:right" name="" id="hasil2" class="hasil2 form-control" value="">',          
       Hapus
       ]);
     tableDetail.draw();
+    discpercent();
+    discvalue();
     totalPenjualan();
   index++;
   tamp.push(kode);
@@ -604,12 +633,15 @@ function tambahEdit() {
       '<input size="30" style="text-align:right" type="number"  name="sd_qty[]" class="sd_qty form-control qty-'+kode+'" value="'+qty+'" onkeyup="UpdateHarga(\''+kode+'\'); qtyInput(\''+stok+'\', \''+kode+'\')" onchange="qtyInput(\''+stok+'\', \''+kode+'\')">',
       satuan+'<input type="hidden" name="satuan[]" class="satuan" value="'+satuan+'"> ',
       '<input type="text" size="10" readonly style="text-align:right" name="harga_item[]" class="harga_item form-control harga-'+kode+'" value="'+harga+'">',
-      '<div class="input-group"><input type="text" size="11"  style="text-align:right" name="sd_disc_percent[]" class="form-control discpercent" value="" onkeyup="discpercent(this, event)"><span class="input-group-addon">%</span></div> ',
+      '<div class="input-group"><input type="text" size="11"  style="text-align:right" name="sd_disc_percent[]" class="form-control discpercent discpercent-'+kode+'" value="" onkeyup="discpercent(this, event)"><span class="input-group-addon">%</span></div> ',
       '<input type="text" size="10"  style="text-align:right" name="sd_disc_percent[]" class="form-control discvalue" value="" onkeyup="discvalue(this, event)" >',
       '<input type="text" size="200" readonly style="text-align:right" name="hasil[]" id="hasil" class="form-control hasil hasil-'+kode+'" value="'+x+'"><input type="hidden" size="200" readonly style="text-align:right" name="" id="hasil2" class="hasil2 form-control" value="">',          
       Hapus
       ]);
     tableDetail.draw();
+    discpercent();
+    discvalue();
+    totalPenjualan();
   }else{
   var qtyLawas= parseInt($(".qty-"+kode).val());
   $(".qty-"+kode).val(qtyLawas+qty);
@@ -789,7 +821,6 @@ function UpdateTotal(){
   }
 
    function UpdateSubTotal(){
-
     var x = angkaDesimal($('#Total_Discount').val()); 
     var y = angkaDesimal($('.totalAmount').val());
     x = parseFloat(x);
@@ -797,7 +828,6 @@ function UpdateTotal(){
     var jumlahsub = x + y;
     jumlahsub = convertToRupiah(jumlahsub);
     $('#totalMapPenjualan').val(jumlahsub);
-
   }
 
 function hapus(a){
@@ -815,23 +845,29 @@ function hapus(a){
         return input.value;
     });
     tamp = names;
-
     UpdateTotal();
+    autoJumValValue();
+    totalPenjualanDel();
+    autoJumValPercent();
+    totalPenjualan();
   }
 
-function UpdateHarga(kode){
+  function UpdateHarga(kode){
     var qty = $('.qty-'+kode).val();
     var harga = $('.harga-'+kode).val();
-    console.log(harga);
     var hasil = convertToAngka(harga);
-    // console.log(hasil);
-    hasil = hasil * qty;
+      hasil = hasil * qty;
     var hasilRp = convertToRupiah(hasil);
-    $('.hasil-'+kode).val(hasilRp);
-    console.log(hasilRp);
-    UpdateTotal();
-    // UpdateDiscont();
-  } 
+      $('.hasil-'+kode).val(hasilRp);
+      $('.pricevalue-'+kode).val('0');
+      $('.discpercent-'+kode).val('0');
+      $('.totalValuePercent-'+kode).val('0');
+      autoJumValPercent();
+      UpdateTotal(); 
+      autoJumValValue();
+      totalPercentValue();
+      totalPenjualan();
+    }  
 
 // function qtyInput(stok, kode){
 //   input = $('.qty-'+kode).val();
@@ -1228,9 +1264,9 @@ function uniKeyCode(event) {
         $("input[name='qty']").focus();
         $('#qty').val(1);
         $('#kode').val(response[0].i_code);
-        $('#harga').val(response[0].i_price);
+        $('#harga').val(response[0].m_psell);
         $('#detailnama').val(response[0].i_name);
-        $('#satuan').val(response[0].i_unit);
+        $('#satuan').val(response[0].i_sat1);
         $('#s_qty').val(response[0].s_qty);
       }
     }
@@ -1294,6 +1330,7 @@ function uniKeyCode(event) {
           {"data" : "sGross", "width" : "10%"},
           {"data" : "status", "width" : "5%"},
           {"data" : "action", orderable: false, searchable: false, "width" : "10%"},
+          {"data" : "action2", orderable: false, searchable: false, "width" : "10%"},
         ],
         "language": {
             "searchPlaceholder": "Cari Data",
@@ -1401,7 +1438,7 @@ function ubahStatus(idDetail,status){
     processing: true,
     serverSide: true,
       ajax: {
-          url : baseUrl + "/penjualan/POSretail/stock/table-stock",
+          url : baseUrl + "/penjualan/POSgrosir/stock/table-stock",
       },
       columns: [
       {data: 'DT_Row_Index', name: 'DT_Row_Index', orderable: false},
@@ -1411,5 +1448,16 @@ function ubahStatus(idDetail,status){
       {data: 's_qty', name: 's_qty'},
       ],
     });
+
+  function distroyNota(id){
+  if(!confirm("Apakah anda yakin ingin menghapus?")) return false;
+  $.ajax({
+    type: 'get',
+    url : baseUrl + "/penjualan/POSgrosir/grosir/distroy/"+id,
+    success: function(){
+      cariTanggal();
+    }
+   });
+  }
 </script>
 @endsection()

@@ -170,8 +170,7 @@ class ManOutputProduksiController extends Controller
                           onclick="edit('.$data->prdt_productresult.','.$data->prdt_detail.')"  
                           data-toggle="modal" 
                           data-target="#myModal"
-                          class="btn btn-warning btn-sm" 
-                          href="#">
+                          class="btn btn-warning btn-sm">
                           <i class="fa fa-pencil"></i>
                   </button>
                   <button style="margin-left:5px;" 

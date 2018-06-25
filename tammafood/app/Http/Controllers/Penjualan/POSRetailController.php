@@ -7,6 +7,11 @@ use DB;
 use Response;
 use App\Http\Requests;
 use Illuminate\Http\Request;
+use App\d_stock_mutation;
+use App\d_stock;
+use App\d_sales;
+use App\d_sales_payment;
+use App\d_sales_dt;
 use DataTables;
 use URL;
 
@@ -95,8 +100,7 @@ class POSRetailController extends Controller
     $fatkur = 'XX'  . $year . $month . $date . $idfatkur;
     $idreq = 'REQ'  . $year . $month . $date . $idreq;
 
-    $edit = DB::table('d_sales')
-    ->join('m_customer', 'm_customer.c_id', '=' , 'd_sales.s_customer')
+    $edit = d_sales::join('m_customer', 'm_customer.c_id', '=' , 'd_sales.s_customer')
     ->join('d_sales_dt','d_sales_dt.sd_sales','=','d_sales.s_id')
     ->join('m_item','m_item.i_id','=','d_sales_dt.sd_item')
      ->join('m_price','m_price.m_pitem', '=','d_sales_dt.sd_item')
@@ -206,9 +210,6 @@ class POSRetailController extends Controller
     return Response::json($results); 
   }
 
-
-
-
   public function store(Request $request){
     DB::beginTransaction();
     try {
@@ -254,137 +255,159 @@ class POSRetailController extends Controller
         'data' => $e
       ]);
     }
-}  
+  }  
 
   public function sal_save_final(Request $request){ 
-    DB::beginTransaction();
+  DB::beginTransaction();
     try {
-    $year = carbon::now()->format('y');
-    $month = carbon::now()->format('m');
-    $date = carbon::now()->format('d');
+    $s_id = d_sales::max('s_id') + 1;
 
-    $idfatkur = DB::Table('d_sales')->select('s_id')->max('s_id');
+    $customer = d_sales::insert([
+        's_id' =>$s_id,
+        's_channel' =>'RT',
+        's_date' => date('Y-m-d',strtotime($request->s_date)),
+        's_note' => $request->s_nota,
+        's_staff' => $request->s_staff,
+        's_customer' => $request->id_cus,
+        's_disc_percent' => $request->s_disc_percent,
+        's_disc_value' => ($this->konvertRp($request->totalDiscount)),
+        's_gross' => ($this->konvertRp($request->s_gross)),
+        's_tax' => $request->s_pajak,
+        's_net' => ($this->konvertRp($request->s_gross)),
+        's_status' => 'FN',
+        's_insert' => Carbon::now()      
+      ]);
 
-    if ($idfatkur <= 0 || $idfatkur <= '') {
-      $idfatkur  = 1;
-    }else{
-      $idfatkur += 1;
-    }
-    $fatkur = 'XX'  . $year . $month . $date . $idfatkur;
-    //end nota fatkur
-    $customer = DB::table('d_sales')
-        ->insert([
-          's_id' => $request->s_id,
-          's_channel' => 'RT',
-          's_date' => date('Y-m-d',strtotime($request->s_date)),
-          's_note' => $fatkur,
-          's_staff' => $request->s_staff,
-          's_customer' => $request->id_cus,
-          's_gross' => ($this->konvertRp($request->s_gross)),
-          's_disc_percent' => ($this->konvertRp($request->s_disc_percent)),
-          's_disc_value' => ($this->konvertRp($request->s_disc_value)),
-          's_tax' => $request->s_pajak,
-          's_net' => ($this->konvertRp($request->s_net)),
-          's_status' => 'FN',
-          's_insert' => Carbon::now(),
-          's_update' => $request->s_update
-        ]);
+    $kodeItem = $request->kode_item;
+    $qtyItem = $request->sd_qty;
+    for ($i=0; $i < count($kodeItem); $i++) { 
 
-        $s_id = DB::table('d_sales')->max('s_id');
+        $stokRetail = d_stock::where('s_comp','1')
+              ->where('s_position','1')
+              ->where('s_item',$kodeItem[$i])
+              ->first();
 
-        for ($i=0; $i < count($request->kode_item); $i++) {
-
-        $stokRetail = DB::table('d_stock')
-        ->where('s_comp','1')
-        ->where('s_position','1')
-        ->where('s_item',$request->kode_item[$i])
-        ->first(); 
-
-        $d_sales_dt = DB::table('d_sales_dt')
-            ->insert([
+        $d_sales_dt = d_sales_dt::insert([
               'sd_sales' => $s_id,
-              'sd_detailid' => $i+1,
-              'sd_item' => $request->kode_item[$i],
-              'sd_qty' => $request->sd_qty[$i],
+              'sd_detailid' => $i + 1,
+              'sd_item' => $kodeItem[$i],
+              'sd_qty' => $qtyItem[$i],
               'sd_price' => ($this->konvertRp($request->harga_item[$i])),
               'sd_disc_percent' => $request->sd_disc_percent[$i],
-              'sd_disc_value' => $request->sd_disc_value[$i],
+              'sd_disc_value' => ($this->konvertRp($request->sd_disc_value[$i])),
               'sd_total' => ($this->konvertRp($request->hasil[$i]))
-          ]);
+            ]);
+
+        $getItem = d_stock::join('d_stock_mutation','sm_stock', '=', 's_id')
+            ->select( 's_id',
+                      's_item',
+                      's_qty',
+                      'sm_detailid',
+                      'sm_date',
+                      'sm_comp',
+                      'sm_detail', DB::raw('(sm_qty - sm_qty_used) as sisa'))
+            ->where('s_item',$kodeItem[$i])
+            ->orderBy('sm_date')
+            ->get();
+          
+        $sisa = $qtyItem[$i];
+        for ($j=0; $j < count($getItem); $j++) {
+
+          //mutasi
+          if ($sisa <= $getItem[$j]->sisa && $getItem[$j]->s_item == $kodeItem[$i]) {
+            d_stock_mutation::where('sm_stock', '=', $getItem[$j]->s_id)
+              ->where('sm_detailid', '=', $getItem[$j]->sm_detailid)
+              ->update([
+                'sm_qty_used' => DB::raw('sm_qty_used +' . $sisa),
+              ]);
+            $sisa = 0; 
+          } elseif ($sisa > $getItem[$j]->sisa && $getItem[$j]->s_item == $kodeItem[$i]) {
+            d_stock_mutation::where('sm_stock', '=', $getItem[$j]->s_id)
+              ->where('sm_detailid', '=', $getItem[$j]->sm_detailid)
+              ->update([
+                'sm_qty_used' => DB::raw('sm_qty_used +' . $getItem[$j]->sisa),
+              ]);
+            $sisa = $sisa - $getItem[$j]->sisa;
+          }
+          //end-mutasi
+        }
+
+        $detailId = d_stock_mutation::where('sm_item', '=', $kodeItem[$i])
+              ->where('sm_comp','1')
+              ->max('sm_detailid');
+ 
+        d_stock_mutation::where('sm_stock', '=', $kodeItem[$i])
+              ->where('s_comp','1')
+              ->insert([  'sm_stock' => $getItem[$i]->s_id,
+                          'sm_detailid' => $detailId + 1,
+                          'sm_date' => Carbon::now(),
+                          'sm_comp' => 1,
+                          'sm_mutcat' => 1,
+                          'sm_item' => $kodeItem[$i],
+                          'sm_qty' => $qtyItem[$i],
+                          'sm_qty_used' => 0,
+                          'sm_qty_expired' => 0,
+                          'sm_detail' => 'PENGURANGAN',
+                          'sm_reff' => $request->s_nota,
+                          'sm_insert' => Carbon::now()
+              ]);
 
         $stokBaru = $stokRetail->s_qty - $request->sd_qty[$i];
 
-        DB::table("d_stock")
-        ->where('s_comp','1')
-        ->where('s_position','1')
-        ->where("s_id", $stokRetail->s_id)
-        ->update(['s_qty' => $stokBaru]);
+          d_stock::where('s_comp','1')
+              ->where('s_position','1')
+              ->where("s_id", $stokRetail->s_id)
+              ->update(['s_qty' => $stokBaru]);
+              
+      }
+
+      $sp_method = $request->sp_method;
+      for ($i=0; $i < count($sp_method); $i++) {
+
+        $d_sales_payment = d_sales_payment::insert([
+                'sp_sales' => $s_id + 1,
+                'sp_paymentid' => $i+1,
+                'sp_method' => $sp_method[$i],
+                'sp_nominal' => ($this->konvertRp($request->sp_nominal[$i]))
+            ]);
         }
-
-      for ($i=0; $i < count($request->sp_method); $i++) {
-
-      $d_sales_payment = DB::table('d_sales_payment')
-          ->insert([
-              'sp_sales' => $s_id,
-              'sp_paymentid' => $i+1,
-              'sp_method' => $request->sp_method[$i],
-              'sp_nominal' => ($this->konvertRp($request->sp_nominal[$i]))
-          ]);
-        } 
     DB::commit();
     return response()->json([
-          'status' => 'sukses'
+        'status' => 'sukses'
       ]);
     } catch (\Exception $e) {
     DB::rollback();
     return response()->json([
-        'status' => 'gagal',
-        'data' => $e
+      'status' => 'gagal',
+      'data' => $e
       ]);
     }
   }
 
   public function sal_save_draft(Request $request){
+    // dd($request->all());
     DB::beginTransaction();
     try {
-    $year = carbon::now()->format('y');
-    $month = carbon::now()->format('m');
-    $date = carbon::now()->format('d');
-
-    $idfatkur = DB::Table('d_sales')->select('s_id')->max('s_id');
-
-    if ($idfatkur <= 0 || $idfatkur <= '') {
-      $idfatkur  = 1;
-    }else{
-      $idfatkur += 1;
-    }
-    $fatkur = 'XX'  . $year . $month . $date . $idfatkur;
-    //end nota fatkur
-    $customer = DB::table('d_sales')
-        ->insert([
-          's_id' =>$request->s_id,
+    $s_id = d_sales::max('s_id')+1;
+    d_sales::insert([
+          's_id' =>$s_id,
           's_channel' =>'RT',
           's_date' =>date('Y-m-d',strtotime($request->s_date)),
-          's_note' =>$fatkur,
+          's_note' =>$request->s_nota,
           's_staff' =>$request->s_staff,
           's_customer' => $request->id_cus,
           's_disc_percent' => $request->s_disc_percent,
           's_disc_value' => ($this->konvertRp($request->totalDiscount)),
           's_gross' => ($this->konvertRp($request->s_gross)),
           's_tax' => $request->s_pajak,
-          's_net' => ($this->konvertRp($request->s_gross)),
+          's_net' => ($this->konvertRp($request->s_net)),
           's_status' => 'DR',
-          's_insert' => Carbon::now(),
-          's_update' => $request->s_update
-          
+          's_insert' => Carbon::now()         
         ]);
 
-        $s_id= DB::table('d_sales')->max('s_id');
+      for ($i=0; $i < count($request->kode_item); $i++) { 
 
-        for ($i=0; $i < count($request->kode_item); $i++) { 
-
-        $d_sales_dt = DB::table('d_sales_dt')
-            ->insert([
+        d_sales_dt::insert([
               'sd_sales' => $s_id,
               'sd_detailid' => $i+1,
               'sd_item' => $request->kode_item[$i],
@@ -395,7 +418,7 @@ class POSRetailController extends Controller
               'sd_total' => ($this->konvertRp($request->hasil[$i]))
           ]);
           
-            }
+        }
     DB::commit();
     return response()->json([
           'status' => 'sukses'
@@ -410,18 +433,18 @@ class POSRetailController extends Controller
   }
 
   public function sal_save_finalUpdate(Request $request){
-    // dd($request->all());
-    return DB::transaction(function () use ($request) {
+    DB::beginTransaction();
+    try {
+    $s_id = $request->s_id;
+    $kodeItem = $request->kode_item;
+    $qtyItem = $request->sd_qty;
+    $m = d_sales::where('s_id',$s_id)->first();
 
-     $s_id = $request->s_id;
-      
-     $m = DB::table('d_sales')->where('s_id',$request->s_id)->first();
+     if ($m->s_status == 'DR') {
 
-     // if ($m->s_status == 'DR') {
-
-        DB::table('d_sales')->where('s_id',$request->sd_id)
+        d_sales::where('s_id',$s_id)
           ->update([
-            's_channel' => 'GR',
+            's_channel' => 'RT',
             's_date' => date('Y-m-d',strtotime($request->s_date)),
             's_note' => $request->s_nota,
             's_staff' => $request->s_staff,
@@ -431,59 +454,40 @@ class POSRetailController extends Controller
             's_gross' => ($this->konvertRp($request->s_gross)),
             's_tax' => $request->s_pajak,
             's_net' => ($this->konvertRp($request->s_gross)),
-            's_status' => "TK",
+            's_status' => "FN",
             's_insert' => Carbon::now(),
             's_update' => $request->s_update
           ]);
 
-            for ($i=0; $i < count($request->kode_item); $i++) {
+          d_sales_dt::where('sd_sales',$s_id)->delete();
+
+          for ($i=0; $i < count($kodeItem); $i++) {
 
             $stokRetail = DB::table('d_stock')
               ->where('s_comp','1')
               ->where('s_position','1')
-              ->where('s_item',$request->kode_item[$i])->first(); 
+              ->where('s_item',$kodeItem[$i])->first(); 
 
-          
-          if ($request->sd_sales[$i] == null ){ 
-            $sd_detailid=DB::table('d_sales_dt')->where('sd_sales',$s_id)->max('sd_detailid');
-            $d_sales_dt = DB::table('d_sales_dt')
-              ->where('sd_sales',$s_id)
-                ->insert([
-                  'sd_sales' =>$s_id,
-                  'sd_detailid'=>$sd_detailid+1,
-                  'sd_qty'=>$request->sd_qty[$i],
-                  'sd_price'=>($this->konvertRp($request->harga_item[$i])),
-                  'sd_item'=>$request->kode_item[$i],
-                  'sd_disc_percent'=>$request->sd_disc_percent[$i],
-                  'sd_disc_value'=>$request->sd_disc_value[$i],
-                  'sd_total'=>($this->konvertRp($request->hasil[$i]))
-
-          ]);
-                     
-          }else{
-
-           $d_sales_dt = DB::table('d_sales_dt')
-              ->where('sd_sales',$s_id)
-              ->where('sd_detailid',$request->sd_detailid[$i])
-                ->update([                        
-                  'sd_item'=>$request->kode_item[$i],
-                  'sd_qty'=>$request->sd_qty[$i],
-                  'sd_price'=>($this->konvertRp($request->harga_item[$i])),
-                  'sd_disc_percent'=>$request->sd_disc_percent[$i],
-                  'sd_disc_value'=>$request->sd_disc_value[$i],
-                  'sd_total'=>($this->konvertRp($request->hasil[$i]))
-          ]);
+            $d_sales_dt = d_sales_dt::insert([
+              'sd_sales' => $s_id,
+              'sd_detailid' => $i + 1,
+              'sd_item' => $kodeItem[$i],
+              'sd_qty' => $qtyItem[$i],
+              'sd_price' => ($this->konvertRp($request->harga_item[$i])),
+              'sd_disc_percent' => $request->sd_disc_percent[$i],
+              'sd_disc_value' => ($this->konvertRp($request->sd_disc_value[$i])),
+              'sd_total' => ($this->konvertRp($request->hasil[$i]))
+            ]);
 
           $stokBaru = $stokRetail->s_qty - $request->sd_qty[$i];
 
-          DB::table("d_stock")
-          ->where('s_comp','1')
-          ->where('s_position','1')
-          ->where("s_id", $stokRetail->s_id)
-          ->update(['s_qty' => $stokBaru]);
-          }
+          d_stock::where('s_comp','1')
+              ->where('s_position','1')
+              ->where("s_id", $stokRetail->s_id)
+              ->update(['s_qty' => $stokBaru]);
+        }
 
-          for ($i=0; $i < count($request->sp_method); $i++) {
+        for ($i=0; $i < count($request->sp_method); $i++) {
 
           $d_sales_payment = DB::table('d_sales_payment')
               ->insert([
@@ -493,9 +497,18 @@ class POSRetailController extends Controller
                   'sp_nominal' => ($this->konvertRp($request->sp_nominal[$i]))
               ]);
             }
-          }
-        // }
-    });
+        }
+    DB::commit();
+    return response()->json([
+          'status' => 'sukses'
+      ]);
+    } catch (\Exception $e) {
+    DB::rollback();
+    return response()->json([
+        'status' => 'gagal',
+        'data' => $e
+      ]);
+    }
   }
 
   public function distroy($id){
@@ -576,7 +589,6 @@ class POSRetailController extends Controller
         {
           if ($data->s_status == 'FN') { $attr = 'disabled'; } else { $attr = ''; };
           $linkEdit = URL::to('/penjualan/POSretail/retail/edit_sales/'.$data->s_id);
-          // $linkHapus = URL::to('/penjualan/POSretail/retail/distroy/'.$data->s_id);
           return  '<div class="text-center">
                       <button type="button" 
                           class="btn btn-success fa fa-eye btn-sm" 

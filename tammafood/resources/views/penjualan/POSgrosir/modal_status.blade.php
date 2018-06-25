@@ -14,7 +14,7 @@
         <table class="table">
           <tbody>
             <tr>
-              <td>Proses</td>
+              <td>Total Belanja</td>
               <td>
                 <input type="text" name="" readonly="true" id="totalPayment" 
                 class="form-control total" style="text-align: right;" value="0">

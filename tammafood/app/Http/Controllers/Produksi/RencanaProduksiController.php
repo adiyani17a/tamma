@@ -132,7 +132,7 @@ class RencanaProduksiController extends Controller
     $i=0;
     foreach ($data as $key) {
             // add new button
-      $data[$i]['button'] = ' <div class="btn-group">
+      $data[$i]['button'] = ' <div class="text-center">
                                          <button class="btn btn-warning btn-sm btn-flat fa fa-edit edit"
                                                         data-toggle="modal" 
                                                         data-target="#myModal"

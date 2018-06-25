@@ -25,7 +25,7 @@ class stockController extends Controller
       ->leftjoin('d_stock',function($join){
         $join->on('i_id', '=', 's_item');        
         $join->on('s_comp', '=', 's_position');                
-        $join->on('s_comp', '=',DB::raw("'2'"));           
+        $join->on('s_comp', '=',DB::raw("'1'"));           
       })    
       ->where('i_type', '=',DB::raw("'BJ'"))
       ->orWhere('i_type', '=',DB::raw("'BP'"))   
@@ -78,11 +78,10 @@ class stockController extends Controller
 
     $results = array();
 
-
     $queries=m_item::leftjoin('d_stock',function($join) use ($request){
         $join->on('i_id', '=', 's_item');        
         $join->on('s_comp', '=', 's_position');                
-        $join->on('s_comp', '=',DB::raw("'3'"));                   
+        $join->on('s_comp', '=',DB::raw("'2'"));                   
     })    
     ->where('i_type', '=',DB::raw("'BJ'"))    
     ->where('i_name', 'like',DB::raw('"%'.$request->term.'%"')) 

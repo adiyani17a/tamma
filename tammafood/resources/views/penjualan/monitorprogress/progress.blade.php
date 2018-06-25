@@ -1,11 +1,4 @@
 @extends('main')
-<style type="text/css" media="screen">
-  .ul_progress li:before {
-    content: "\2022";
-    padding-right: 0.5em;
-
-  }
-</style>
 @section('content')
             <!--BEGIN PAGE WRAPPER-->
             <div id="page-wrapper">
@@ -43,9 +36,6 @@
                                 <div id="alert-tab" class="tab-pane fade in active">
                                  
                                   <div class="row">
-
-
-
                                     <div class="col-md-12 col-sm-12 col-xs-12">
                                     
                                       <div class="col-md-2 col-sm-4 col-xs-12">
@@ -54,40 +44,27 @@
                                       <div>
                                         <div class="col-md-3 col-sm-8 col-xs-12">
                                           <div class="form-group">
-                                            <input value="{{ carbon\carbon::now()->format('m-Y') }}" type="text" name="bulan" class="form-control input-sm datepicker bulan">
+                                            <input type="text" name="bulan" class="form-control input-sm datepicker">
                                           </div>
                                         </div>
                                       </div>
 
-
-                                      <div class="col-md-12 col-sm-12 col-xs-12">
-                                        <div class="form-group" style="margin-top: 25px;">
-                                          <h4 style="font-family: 'Raleway', sans-serif;">Analisis Penjualan</h4>
-                                        </div>
-                                      </div>
-                                      
-                                      <div class="progress_div">
-                                        <table class="table tabelan table-hover table-bordered" width="100%" id="tabel_progress" cellspacing="0">
+                                      <div class="table-responsive">
+                                        <table class="table tabelan table-hover table-bordered" width="100%" id="" cellspacing="0">
                                           <thead>
                                             <th class="wd-15p">No</th>
-                                            <th class="wd-15p">Nama Barang</th>
-                                            <th class="wd-15p">Target Penjualan</th>
-                                            <th class="wd-15p">Penjualan Real</th>
-                                            <th class="wd-15p">Sisa Target</th>
-                                            <th class="wd-15p">Target Pendapatan</th>
-                                            <th class="wd-15p">Pendapatan Real</th>
+                                            <th class="wd-15p">Bulan</th>
+                                            <th class="wd-15p">Total Target Penjualan</th>
+                                            <th class="wd-15p">Kelola</th>
                                           </thead>
                                           <tbody>  
+                                            <tr>
+                                              <td colspan="4" align="center">Tidak Ada Data</td>
+
+                                            </tr>                            
                                           </tbody>
-                                          <tfoot>
-                                              <tr>
-                                                  <th colspan="6" style="text-align:right">Total:</th>
-                                                  <th colspan="1"></th>
-                                              </tr>
-                                          </tfoot>
                                         </table>
                                       </div>
-                                      
 
                                       <div class="col-md-12 col-sm-12 col-xs-12">
                                         <div class="form-group" style="margin-top: 25px;">
@@ -98,8 +75,6 @@
                                       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-top: -25px;">
                                         <hr>
                                       </div>
-
-
 
                                       <div class="table-responsive">
                                         <table class="table tabelan table-bordered">
@@ -112,16 +87,25 @@
                                             </tr>
                                           </thead>
                                           <tbody>
-                                            @foreach($high as $i => $val)
                                             <tr>
-                                              <td align="center">{{ $i+1 }}</td>
-                                              <td>{{ $val->i_name }}</td>
-                                              <td>{{ $val->sd_qty }}</td>
-                                              <td align="right">{{ 'Rp. ' . number_format($val->sd_price, 2, ",", ".") }}</td>
+                                              <td>1</td>
+                                              <td>Tepung Terigu</td>
+                                              <td>4096 Kg</td>
+                                              <td>Rp. 4.096.000,-</td>
                                             </tr>
-                                            @endforeach
+                                            <tr>
+                                              <td>2</td>
+                                              <td>Tepung Jagung</td>
+                                              <td>2048 Kg</td>
+                                              <td>Rp. 2.048.000,-</td>
+                                            </tr>
+                                            <tr>
+                                              <td>3</td>
+                                              <td>Tepung Beras</td>
+                                              <td>1024 Kg</td>
+                                              <td>Rp. 1.024.000,-</td>
+                                            </tr>
                                           </tbody>
-
                                         </table>
                                       </div>
 
@@ -148,7 +132,72 @@
                                             </tr>
                                           </thead>
                                           <tbody>
-                                            
+                                            <tr>
+                                              <td>19/02/2018</td>
+                                              <td>PJN/19/02/2018/01</td>
+                                              <td>Alpha Bravo</td>
+                                              <td>085331219757</td>
+                                              <td>
+                                                <ul>
+                                                  <li>Tepung Beras</li>
+                                                  <li>Tepung Jagung</li>
+                                                  <li>Tepung Terigu</li>
+                                                </ul>
+                                              </td>
+                                              <td>
+                                                <ul>
+                                                  <li>1 Kg</li>
+                                                  <li>1 Kg</li>
+                                                  <li>1 Kg</li>
+                                                </ul>
+                                              </td>
+                                              <td>Rp. 30.000,-</td>
+                                              <td>Zulu Yankee</td>
+                                            </tr>
+                                            <tr>
+                                              <td>12/02/2018</td>
+                                              <td>PJN/12/02/2018/02</td>
+                                              <td>Alpha Bravo</td>
+                                              <td>085331219757</td>
+                                              <td>
+                                                <ul>
+                                                  <li>Tepung Beras</li>
+                                                  <li>Tepung Jagung</li>
+                                                  <li>Tepung Terigu</li>
+                                                </ul>
+                                              </td>
+                                              <td>
+                                                <ul>
+                                                  <li>1 Kg</li>
+                                                  <li>1 Kg</li>
+                                                  <li>1 Kg</li>
+                                                </ul>
+                                              </td>
+                                              <td>Rp. 30.000,-</td>
+                                              <td>Zulu Yankee</td>
+                                            </tr>
+                                            <tr>
+                                              <td>23/02/2018</td>
+                                              <td>PJN/23/02/2018/03</td>
+                                              <td>Alpha Bravo</td>
+                                              <td>085331219757</td>
+                                              <td>
+                                                <ul>
+                                                  <li>Tepung Beras</li>
+                                                  <li>Tepung Jagung</li>
+                                                  <li>Tepung Terigu</li>
+                                                </ul>
+                                              </td>
+                                              <td>
+                                                <ul>
+                                                  <li>1 Kg</li>
+                                                  <li>1 Kg</li>
+                                                  <li>1 Kg</li>
+                                                </ul>
+                                              </td>
+                                              <td>Rp. 30.000,-</td>
+                                              <td>Zulu Yankee</td>
+                                            </tr>
                                           </tbody>
                                         </table>
                                       </div>
@@ -184,153 +233,81 @@
 
 @endsection
 @section("extra_scripts")
-<script type="text/javascript">
-
-$('.datepicker').datepicker({
-  format: "mm-yyyy",
-  viewMode: "months",
-  minViewMode: "months"
-});
-$('.datepicker2').datepicker({
-  format:"dd-mm-yyyy"
-});    
-
-
-$(document).ready(function(){
-  $('#tabel_progress').DataTable({
-    processing: false,
-    serverSide: false,
-    "ordering": false,
-    ajax: {
-        url:'{{ route('datatable_progress') }}',
-        data:{bulan: function() { return $('.bulan').val() }}
-    },
-    columnDefs: [
-
-            {
-               targets: 0 ,
-               className: 'center'
-            },
-            {
-               targets: 2,
-               className: 'center'
-            },
-            {
-               targets: 3,
-               className: 'center'
-            },
-            {
-               targets: 4,
-               className: 'center'
-            },
-            {
-               targets: 5,
-               className: 'right'
-            },
-            {
-               targets: 6,
-               className: 'right'
-            },
-          ],
-    columns: [
-      {data: 'DT_Row_Index', name: 'DT_Row_Index'},
-      {data: 'i_name', name: 'i_name'},
-      {data: 'rpd_target_qty', name: 'rpd_target_qty'},
-      {data: 'sd_qty', name: 'sd_qty'},
-      {data: 'sisa_target', name: 'sisa_target'},
-      {data: 'target_pendapatan', name: 'target_pendapatan'},
-      {data: 'pendapatan', name: 'pendapatan'},
-    ],
-  "footerCallback": function ( row, data, start, end, display ) {
-        var api = this.api(), data;
-        // Remove the formatting to get integer data for summation
-        var intVal = function ( i ) {
-            return typeof i === 'string' ?
-                i.replace(/[^0-9\-]+/g,"")/100 :
-                typeof i === 'number' ?
-                    i : 0;
-        };
-
-        // Total over all pages
-        total = api
-            .column( 6 )
-            .data()
-            .reduce( function (a, b) {
-                return intVal(a) + intVal(b);
-            }, 0 );
-
-        // Total over this page
-        pageTotal = api
-            .column( 6, { page: 'current'} )
-            .data()
-            .reduce( function (a, b) {
-                return intVal(a) + intVal(b);
-            }, 0 );
-
-        // Update footer
-        $( api.column( 6 ).footer() ).html(
-            'Rp. '+accounting.formatMoney(pageTotal, "", 2, ".",',') +' ( Rp. '+ accounting.formatMoney(total, "", 2, ".",',') +' total)'
-        );
+    <script type="text/javascript">
+     $(document).ready(function() {
+    var extensions = {
+         "sFilterInput": "form-control input-sm",
+        "sLengthSelect": "form-control input-sm"
     }
-  });
+    // Used when bJQueryUI is false
+    $.extend($.fn.dataTableExt.oStdClasses, extensions);
+    // Used when bJQueryUI is true
+    $.extend($.fn.dataTableExt.oJUIClasses, extensions);
+    $('#data').dataTable({
+          "responsive":true,
 
+          "pageLength": 10,
+        "lengthMenu": [[10, 20, 50, - 1], [10, 20, 50, "All"]],
+        "language": {
+            "searchPlaceholder": "Cari Data",
+            "emptyTable": "Tidak ada data",
+            "sInfo": "Menampilkan _START_ - _END_ Dari _TOTAL_ Data",
+            "sSearch": '<i class="fa fa-search"></i>',
+            "sLengthMenu": "Menampilkan &nbsp; _MENU_ &nbsp; Data",
+            "infoEmpty": "",
+            "paginate": {
+                    "previous": "Sebelumnya",
+                    "next": "Selanjutnya",
+                 }
+          }
 
-  $('#data2').DataTable({
-    processing: false,
-    serverSide: false,
-    ajax: {
-        url:'{{ route('datatable_progress1') }}',
-    },
-    // columnDefs: [
+        });
+    $('#data2').dataTable({
+          "responsive":true,
 
-    //         {
-    //            targets: 0 ,
-    //            className: 'center'
-    //         },
-    //         {
-    //            targets: 2,
-    //            className: 'center'
-    //         },
-    //         {
-    //            targets: 3,
-    //            className: 'center'
-    //         },
-    //         {
-    //            targets: 4,
-    //            className: 'center'
-    //         },
-    //         {
-    //            targets: 5,
-    //            className: 'right'
-    //         },
-    //         {
-    //            targets: 6,
-    //            className: 'right'
-    //         },
-    //       ],
-    columns: [
-      {data: 'tgl', name: 'tgl'},
-      {data: 's_note', name: 's_note'},
-      {data: 'c_name', name: 'c_name'},
-      {data: 'c_hp', name: 'c_hp'},
-      {data: 'barang', name: 'barang'},
-      {data: 'qty', name: 'qty'},
-      {data: 'total_harga', name: 'total_harga'},
-      {data: 's_staff', name: 's_staff'},
-    ],
-    "ordering": false,
-  });
-})
+          "pageLength": 10,
+        "lengthMenu": [[10, 20, 50, - 1], [10, 20, 50, "All"]],
+        "language": {
+            "searchPlaceholder": "Cari Data",
+            "emptyTable": "Tidak ada data",
+            "sInfo": "Menampilkan _START_ - _END_ Dari _TOTAL_ Data",
+            "sSearch": '<i class="fa fa-search"></i>',
+            "sLengthMenu": "Menampilkan &nbsp; _MENU_ &nbsp; Data",
+            "infoEmpty": "",
+            "paginate": {
+                    "previous": "Sebelumnya",
+                    "next": "Selanjutnya",
+                 }
+          }
 
+        });
+    $('#data3').dataTable({
+          "responsive":true,
 
-$('.datepicker').change(function(){
-  var table = $('#tabel_progress').DataTable();
-  table.ajax.reload();
-})
+          "pageLength": 10,
+        "lengthMenu": [[10, 20, 50, - 1], [10, 20, 50, "All"]],
+        "language": {
+            "searchPlaceholder": "Cari Data",
+            "emptyTable": "Tidak ada data",
+            "sInfo": "Menampilkan _START_ - _END_ Dari _TOTAL_ Data",
+            "sSearch": '<i class="fa fa-search"></i>',
+            "sLengthMenu": "Menampilkan &nbsp; _MENU_ &nbsp; Data",
+            "infoEmpty": "",
+            "paginate": {
+                    "previous": "Sebelumnya",
+                    "next": "Selanjutnya",
+                 }
+          }
 
-setInterval(function(){ 
-  var table = $('#data2').DataTable();
-  table.ajax.reload();
-}, 5000);
-</script>
+        });
+});
+      $('.datepicker').datepicker({
+        format: "mm/yyyy",
+        viewMode: "months",
+        minViewMode: "months"
+      });
+      $('.datepicker2').datepicker({
+        format:"dd/mm/yyyy"
+      });    
+      </script>
 @endsection()

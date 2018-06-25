@@ -19,7 +19,7 @@ function simpan(){
         alert('Data Tersimpan');
         }else{
         alert('Mohon melengkapi data!!!');
-       $('.simpanCus').removeAttr('disabled','disabled');;
+       $('.simpanCus').removeAttr('disabled','disabled');
         }
       }
     })
@@ -39,26 +39,26 @@ function sal_save_final(){
 
     success:function(response){
       if (response.status=='sukses') {
-        $('#proses').modal('hide');
-          $("input[name='s_member']").val('');
-          $("input[name='s_net']").val('');
-          $("input[name='s_disc_percent']").val('');
-          $("input[name='s_disc_value']").val('');
-          $("input[name='s_pajak']").val('');
-          $("input[name='s_net']").val('');
-          $("input[name='sd_qty[]']").val('');
-          $("input[name='sd_sell[]']").val('');
-          $("input[name='s_dibayarkan']").val('');
-          $("input[name='s_kembalian']").val('');
-          $("input[name='sd_disc_percent[]']").val('');
-          $("input[name='sd_disc_value[]']").val('');
-          $("input[name='sp_method[]']").val('');
-          $("input[name='sp_nominal[]']").val('');
-          alert('Berhasil');
-          window.location.reload();
+          $('#proses').modal('hide');
+            $("input[name='s_member']").val('');
+            $("input[name='s_net']").val('');
+            $("input[name='s_disc_percent']").val('');
+            $("input[name='s_disc_value']").val('');
+            $("input[name='s_pajak']").val('');
+            $("input[name='s_net']").val('');
+            $("input[name='sd_qty[]']").val('');
+            $("input[name='sd_sell[]']").val('');
+            $("input[name='s_dibayarkan']").val('');
+            $("input[name='s_kembalian']").val('');
+            $("input[name='sd_disc_percent[]']").val('');
+            $("input[name='sd_disc_value[]']").val('');
+            $("input[name='sp_method[]']").val('');
+            $("input[name='sp_nominal[]']").val('');
+            alert('Berhasil');
+            window.location.reload();
           }else{
-          alert('Mohon melengkapi data penjualan!!!');
-         $('.simpanFinal').removeAttr('disabled','disabled');;
+            alert('Mohon melengkapi data penjualan!!!');
+            $('.simpanFinal').removeAttr('disabled','disabled');
           }
         }
       })
@@ -75,20 +75,20 @@ function sal_save_onProgres(){
     data: bb+'&'+cc+'&'+data,
     success:function(response){
       if (response.status=='sukses') {
-        $('#proses').modal('hide');
-        $("input[name='s_member']").val('');
-        $("input[name='s_net']").val('');
-        $("input[name='s_pajak']").val('');
-        $("input[name='s_net']").val('');
-        $("input[name='sd_qty[]']").val('');
-        $("input[name='sd_sell[]']").val('');
-        $("input[name='sd_disc_percent[]']").val('');
-        $("input[name='sd_disc_value[]']").val('');
-        alert('Berhasil Menyimpan On_Progres');
-        window.location.reload();
+          $('#proses').modal('hide');
+          $("input[name='s_member']").val('');
+          $("input[name='s_net']").val('');
+          $("input[name='s_pajak']").val('');
+          $("input[name='s_net']").val('');
+          $("input[name='sd_qty[]']").val('');
+          $("input[name='sd_sell[]']").val('');
+          $("input[name='sd_disc_percent[]']").val('');
+          $("input[name='sd_disc_value[]']").val('');
+          alert('Berhasil Menyimpan On_Progres');
+          window.location.reload();
         }else{
-        alert('Mohon melengkapi data penjualan!!!');
-       $('.simpanProgres').removeAttr('disabled','disabled');;
+          alert('Mohon melengkapi data penjualan!!!');
+          $('.simpanProgres').removeAttr('disabled','disabled');
         }
       }         
     })
@@ -105,31 +105,32 @@ function sal_save_draft(){
     data: bb+'&'+cc+'&'+data,
     success:function(response){
     if (response.status=='sukses') {
-      $("input[name='id_cus']").val('');
-      $("input[name='s_gross']").val('');
-      $("input[name='s_net']").val('');
-      $("input[name='totalDiscount']").val('');
-      $("input[name='s_disc_percent']").val('');
-      $("input[name='s_disc_value']").val('');
-      $("input[name='s_pajak']").val('');
-      $("input[name='sd_qty[]']").val('');
-      $("input[name='sd_sell[]']").val('');
-      $("input[name='s_pembayaran[]']").val('');
-      $("input[name='s_dibayarkan']").val('');
-      $("input[name='s_kembalian']").val('');
-      $("input[name='sd_disc_percent[]']").val('');
-      $("input[name='sd_disc_value[]']").val('');
-      alert('di simpan sebagai draft');
-      window.location.reload();
+        $("input[name='id_cus']").val('');
+        $("input[name='s_gross']").val('');
+        $("input[name='s_net']").val('');
+        $("input[name='totalDiscount']").val('');
+        $("input[name='s_disc_percent']").val('');
+        $("input[name='s_disc_value']").val('');
+        $("input[name='s_pajak']").val('');
+        $("input[name='sd_qty[]']").val('');
+        $("input[name='sd_sell[]']").val('');
+        $("input[name='s_pembayaran[]']").val('');
+        $("input[name='s_dibayarkan']").val('');
+        $("input[name='s_kembalian']").val('');
+        $("input[name='sd_disc_percent[]']").val('');
+        $("input[name='sd_disc_value[]']").val('');
+        alert('di simpan sebagai draft');
+        window.location.reload();
       }else{
-      alert('Mohon melengkapi data penjualan!!!');
-     $('.simpanDraft').removeAttr('disabled','disabled');;
+        alert('Mohon melengkapi data penjualan!!!');
+        $('.simpanDraft').removeAttr('disabled','disabled');;
     }
     }
   })
 }
 
 function sal_save_finalUpdate(){
+  $('.simpanFinal').attr('disabled','disabled');
   var bb = $('#save_sform :input').serialize();
   var cc = $('#save_item :input').serialize();
   var data=tableDetail.$('input').serialize();
@@ -139,27 +140,33 @@ function sal_save_finalUpdate(){
     data: bb+'&'+cc+'&'+data,
 
     success:function(response){
-      $('#proses').modal('hide');
-        $("input[name='s_member']").val('');
-        $("input[name='s_gross']").val('');
-        $("input[name='s_disc_percent']").val('');
-        $("input[name='s_disc_value']").val('');
-        $("input[name='s_pajak']").val('');
-        $("input[name='s_net']").val('');
-        $("input[name='sd_qty[]']").val('');
-        $("input[name='sd_sell[]']").val('');
-        $("input[name='s_pembayaran[]']").val('');
-        $("input[name='s_dibayarkan']").val('');
-        $("input[name='s_kembalian']").val('');
-        $("input[name='sd_disc_percent[]']").val('');
-        $("input[name='sd_disc_value[]']").val('');
-        alert('Berhasil');
-        window.location.href = "/tammafood/penjualan/POSgrosir/index";
-        }         
-  })
+      if (response.status=='sukses') {
+        $('#proses').modal('hide');
+          $("input[name='s_member']").val('');
+          $("input[name='s_gross']").val('');
+          $("input[name='s_disc_percent']").val('');
+          $("input[name='s_disc_value']").val('');
+          $("input[name='s_pajak']").val('');
+          $("input[name='s_net']").val('');
+          $("input[name='sd_qty[]']").val('');
+          $("input[name='sd_sell[]']").val('');
+          $("input[name='s_pembayaran[]']").val('');
+          $("input[name='s_dibayarkan']").val('');
+          $("input[name='s_kembalian']").val('');
+          $("input[name='sd_disc_percent[]']").val('');
+          $("input[name='sd_disc_value[]']").val('');
+          alert('Berhasil');
+          window.location.href = "/tamma/penjualan/POSgrosir/index";
+        }else{
+          alert('Mohon melengkapi data penjualan!!!');
+          $('.simpanDraft').removeAttr('disabled','disabled');;
+        }        
+    }
+  });
 }  
 
 function sal_save_onProgresUpdate(){
+  $('.simpanProgres').attr('disabled','disabled');
   var bb = $('#save_sform :input').serialize();
   var cc = $('#save_item :input').serialize();
   var data=tableDetail.$('input').serialize();
@@ -169,23 +176,28 @@ function sal_save_onProgresUpdate(){
     data: bb+'&'+cc+'&'+data,
 
     success:function(response){
-      $('#proses').modal('hide');
-        $("input[name='s_member']").val('');
-        $("input[name='s_gross']").val('');
-        $("input[name='s_disc_percent']").val('');
-        $("input[name='s_disc_value']").val('');
-        $("input[name='s_pajak']").val('');
-        $("input[name='s_net']").val('');
-        $("input[name='sd_qty[]']").val('');
-        $("input[name='sd_sell[]']").val('');
-        $("input[name='s_pembayaran[]']").val('');
-        $("input[name='s_dibayarkan']").val('');
-        $("input[name='s_kembalian']").val('');
-        $("input[name='sd_disc_percent[]']").val('');
-        $("input[name='sd_disc_value[]']").val('');
-        alert('Berhasil');
-        window.location.href = "/tammafood/penjualan/POSgrosir/index";
-        }         
-  })
-}
+      if (response.status=='sukses') {
+        $('#proses').modal('hide');
+          $("input[name='s_member']").val('');
+          $("input[name='s_gross']").val('');
+          $("input[name='s_disc_percent']").val('');
+          $("input[name='s_disc_value']").val('');
+          $("input[name='s_pajak']").val('');
+          $("input[name='s_net']").val('');
+          $("input[name='sd_qty[]']").val('');
+          $("input[name='sd_sell[]']").val('');
+          $("input[name='s_pembayaran[]']").val('');
+          $("input[name='s_dibayarkan']").val('');
+          $("input[name='s_kembalian']").val('');
+          $("input[name='sd_disc_percent[]']").val('');
+          $("input[name='sd_disc_value[]']").val('');
+          alert('Berhasil');
+          window.location.href = "/tamma/penjualan/POSgrosir/index";
+        }else{
+          alert('Mohon melengkapi data penjualan!!!');
+          $('.simpanProgres').removeAttr('disabled','disabled');
+        }   
+    }
+  });
+}  
 </script>

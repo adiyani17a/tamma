@@ -62,7 +62,7 @@
                           <div class="form-group">
                             <label class="control-label tebal" for="penjualan">Total Penjualan</label>
                             <div class="input-group input-group-sm " style="width: 100%;">
-                              <input type="text" name="mapPenjualann" readonly="true" id="totalMapPenjualan"" class="form-control total" style="text-align: right;" value="Rp. {{ number_format( $edit[0]->s_gross ,2,',','.')}}"">
+                              <input type="text" name="mapPenjualan" readonly="true" id="totalMapPenjualan"" class="form-control total" style="text-align: right;" value="Rp. {{ number_format( $edit[0]->s_net ,2,',','.')}}">
                             </div>
                           </div>
 

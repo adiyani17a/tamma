@@ -12,7 +12,6 @@
               <th>Nama Item</th>
               <th>Tipe Item</th>
               <th>Group Item</th>
-              <th>Harga Jual</th>
               <th>Stock</th>
             </tr>
           </thead>
