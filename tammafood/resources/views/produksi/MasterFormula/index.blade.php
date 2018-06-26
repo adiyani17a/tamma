@@ -347,7 +347,7 @@
 
   function lihatDetail(id){
     $.ajax({
-      url : baseUrl + "/produksi/namaitem/view/formula/",
+      url : baseUrl + "/produksi/namaitem/view/formula",
       type: 'GET',
       data: {x:id},
       success : function(response){
@@ -358,7 +358,7 @@
 
   function editFormula(id){
     $.ajax({
-      url : baseUrl + "/produksi/namaitem/edit/formula/",
+      url : baseUrl + "/produksi/namaitem/edit/formula",
       type: 'GET',
       data: {x:id},
       success : function(response){

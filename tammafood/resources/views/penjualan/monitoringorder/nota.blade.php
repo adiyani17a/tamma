@@ -1,3 +1,4 @@
+
 <table class="table tabelan table-hover table-bordered" id="tableNotaPlan">
 	<thead>
 	  <tr>
@@ -13,7 +14,10 @@
 	</tbody>
 </table>
 
+
+
 <script type="text/javascript">
+
 	var tableNotaPlan = $('#tableNotaPlan').DataTable({
 	      processing: true,
 	      serverSide: true,

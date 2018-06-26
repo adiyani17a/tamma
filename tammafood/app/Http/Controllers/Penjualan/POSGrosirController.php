@@ -117,7 +117,7 @@ class POSGrosirController extends Controller
       ->select( 'i_name',
                 'sd_qty',
                 'i_sat1',
-                'm_psell',
+                'm_psell1',
                 'sd_disc_percent',
                 'sd_disc_value',
                 'sd_total')
@@ -167,7 +167,7 @@ class POSGrosirController extends Controller
       {
         $results[] = [ 'id' => $query->i_id, 
                        'label' => $query->i_code .' - '. $query->i_name,
-                       'harga' => $query->m_psell, 
+                       'harga' => $query->m_psell1, 
                        'kode' => $query->i_id, 
                        'nama' => $query->i_name, 
                        'satuan' => $query->i_sat1, 
@@ -274,7 +274,7 @@ class POSGrosirController extends Controller
   }
 
   public function sal_save_onProgres(Request $request){
-    dd($request->all());
+    // dd($request->all());
     DB::beginTransaction();
           try { 
     //nota fatkur
@@ -822,7 +822,7 @@ class POSGrosirController extends Controller
         ->select( 'i_id',
                   'i_code',
                   'i_name',
-                  'm_psell',
+                  'm_psell1',
                   'i_sat1',
                   's_qty')
         ->join('d_stock','d_stock.s_item','=','m_item.i_id')

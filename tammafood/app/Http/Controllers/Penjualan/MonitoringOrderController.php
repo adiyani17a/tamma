@@ -1,6 +1,7 @@
 <?php
-  
-namespace App\Http\Controllers\Produksi;
+
+namespace App\Http\Controllers\Penjualan;
+
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use DB;
@@ -16,17 +17,8 @@ use Response;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 
-class MonitoringProgressController extends Controller
+class MonitoringOrderController extends Controller
 {
-  public function monitoring(){
-    
-    if (Auth::user()->punyaAkses('Monitoring Order & Stock','ma_read')) {        
-      return view('produksi.monitoringprogress.index');
-    }else{
-      return view('system.hakakses.errorakses');
-    }
-  }
-
   public function tabel(){
    
     $pp = DB::Table('d_productplan')
@@ -95,10 +87,6 @@ class MonitoringProgressController extends Controller
                                                           data-target="#nota"
                                                           data-id="'.$key['i_id'].'">
                                                           '.$key['nota'].'</button>';
-        $data[$i]['plan'] = '<a href="#" data-toggle="modal" data-target="#modal" 
-                                                class="btn btn-info btn-sm plan" 
-                                                data-id="'.$key['i_id'].'"
-                                                data-name="'.$key['i_name'].'">Plan</a>';
 
         $data[$i]['j_butuh'] = ($data[$i]['jumlah'] - $data[$i]['s_qty']) <= 0 ? '-' : ($data[$i]['jumlah'] - $data[$i]['s_qty']);
         $data[$i]['j_kurang'] = $data[$i]['j_butuh'] == '-' ? '-' :  $data[$i]['j_butuh'] - $data[$i]['pp_qty'] <= 0 ? '-' : $data[$i]['j_butuh'] - $data[$i]['pp_qty'];
@@ -137,106 +125,4 @@ class MonitoringProgressController extends Controller
     ->make(true);
 
   }
-
-  public function plan($id){
-
-    $plan = d_productplan::
-          where('pp_item',$id)
-        ->where(function ($query) {
-              $query->where('pp_isspk','Y')
-                    ->orWhere('pp_isspk','N')
-                    ->orWhere('pp_isspk','P');
-                  })
-        ->orderBy('pp_date','asc')
-        ->get();
-
-    $spkY = DB::Table('d_productplan')
-        ->select(DB::raw("sum(pp_qty) as pp_qty"))
-        ->where('pp_item',$id)
-        ->where('pp_isspk','Y')
-        ->groupBy('pp_isspk')
-        ->get();
-
-    $spkN = DB::Table('d_productplan')
-        ->select(DB::raw("sum(pp_qty) as pp_qty"))
-        ->where('pp_item',$id)
-        ->where('pp_isspk','N')
-        ->groupBy('pp_isspk')
-        ->get();
-
-    $spkP = DB::Table('d_productplan')
-        ->select(DB::raw("sum(pp_qty) as pp_qty"))
-        ->where('pp_item',$id)
-        ->where('pp_isspk','P')
-        ->groupBy('pp_isspk')
-        ->get();
- 
-    $spk = array();
-    if(count($spkY) > 0){
-      $spk['Y'] = $spkY[0]->pp_qty;
-    }else{
-      $spk['Y'] = 0;
-    }
-
-    if(count($spkN) > 0){
-      $spk['N'] = $spkN[0]->pp_qty;
-    }else{
-      $spk['N'] = 0;
-    }
-
-    if(count($spkP) > 0){
-      $spk['P'] = $spkP[0]->pp_qty;
-    }else{
-      $spk['P'] = 0;
-    }
-
-    return view('produksi.monitoringprogress.plan', compact('plan','spk','id'));  
-  }
-
-  public function save(Request $request){
-  DB::beginTransaction();
-  try {
-    $del = DB::Table('d_productplan')
-      ->where('pp_item',$request->pp_item)
-      ->where('pp_isspk','N')
-      ->delete();
-
-      $maxid = DB::Table('d_productplan')->select('pp_id')->max('pp_id');
-      if ($maxid <= 0 || $maxid == '') {
-        $maxid  = 1;
-      }else{
-        $maxid += 1;
-      }
-      $pp = array();
-      for ($i=0; $i < $request->rowPlan; $i++) {
-        if ($request->{'pp_qty'.$i} == null) {
-          return response()->json([
-            'status' => 'gagal',
-            'data' => $e
-          ]);
-        }else{
-          $pp[$i] = DB::Table('d_productplan')
-            ->insert([
-              'pp_id' => $maxid,
-              'pp_item' => $request->pp_item,
-              'pp_date' => Carbon::parse($request->{'tanggal'.$i})->format('Y-m-d'),
-              'pp_qty' => $request->{'pp_qty'.$i},
-            ]);    
-
-          $maxid++;
-        }
-      }
-    DB::commit();
-    return response()->json([
-        'status' => 'sukses'
-    ]);
-    } catch (\Exception $e) {
-    DB::rollback();
-    return response()->json([
-        'status' => 'gagal',
-        'data' => $e
-    ]);
-    }
-  }
 }
-

@@ -47,7 +47,7 @@ class PenjualanController extends Controller
 
     public function monitoringorder()
     {
-        return view('/penjualan/monitoringorder/monitoring');
+        return view('/penjualan/monitoringorder/index');
     }
 
     public function retail()

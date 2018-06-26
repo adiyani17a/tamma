@@ -343,8 +343,24 @@ timepicker.on('change', function(evt) {
     {data: 'i_name', name: 'i_name', orderable: false},
     {data: 'action_belum', name: 'action_belum', orderable: false},
     {data: 'action_sudah', name: 'action_sudah', orderable: false, searchable: false},
-],
-});
+    ],
+    "responsive":true,
+
+                  "pageLength": 10,
+                "lengthMenu": [[10, 20, 50, - 1], [10, 20, 50, "All"]],
+                "language": {
+                    "searchPlaceholder": "Cari Data",
+                    "emptyTable": "Tidak ada data",
+                    "sInfo": "Menampilkan _START_ - _END_ Dari _TOTAL_ Data",
+                    "sSearch": '<i class="fa fa-search"></i>',
+                    "sLengthMenu": "Menampilkan &nbsp; _MENU_ &nbsp; Data",
+                    "infoEmpty": "",
+                    "paginate": {
+                            "previous": "Sebelumnya",
+                            "next": "Selanjutnya",
+                         }
+                  }
+  });
 
 var date = new Date();
 var newdate = new Date(date);

@@ -39,7 +39,7 @@ class monitoring_penjualan extends Controller
     						ON i_id = r2.sd_item
     						ORDER BY r1.sd_qty DESC
     						LIMIT 3");
-        return view('/penjualan/monitorprogress/progress',compact('high'));
+        return view('/penjualan/monitorprogress/index',compact('high'));
     }
 
     public function datatable_progress(request $req)

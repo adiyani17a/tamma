@@ -64,7 +64,6 @@
                                          <th>Jumlah Kebutuhan</th>
                                          <th>Jumlah Rencana Produksi</th>
                                          <th>Jumlah Kekuarangan</th>
-                                         <th>Aksi</th>
                                         </tr>
                                       </thead>
                                       <tbody>
@@ -74,30 +73,6 @@
                                   </div>                                       
                                 </div>
                             </div>
-                            <!-- Modal Plan-->
-                            <div class="modal fade" id="modal" role="dialog">
-                              <div class="modal-dialog modal-lg">
-                              <!-- Modal content-->
-                                  <div class="modal-content">
-                                    <div class="modal-header" style="background-color: #e77c38;">
-                                      <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                      <h4 id="title-plan" class="modal-title" style="color: white;">Rencana Produksi</h4>
-                                    </div>
-                                    <form id="form-plan" onsubmit="return false">
-
-                                      <div class="modal-body" id="table-plan">
-                                        
-                                      </div>
-                                               
-                                      <div class="modal-footer">
-                                        <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
-                                        <button id="btnSimpan" type="submit" class="btn btn-primary" onclick="simpan()">Simpan Data</button>
-                                      </div>
-                                    </form>
-                                  </div>
-                              </div>
-                            </div>
-                            <!-- end modal plan -->
                     </div>
                           <!-- /div alert-tab -->
            <!-- div note-tab -->
@@ -112,7 +87,7 @@
                       <div id="label-badge-tab" class="tab-pane fade">
                         <div class="row">
                           <div class="panel-body">
-                            <!-- Isi content -->we
+                            <!-- Isi content -->
                           </div>
                         </div>
                       </div><!-- /div label-badge-tab -->
@@ -156,7 +131,7 @@ $.extend($.fn.dataTableExt.oJUIClasses, extensions);
       },
 
     "ajax":{
-          "url" : baseUrl + "/produksi/monitoringprogress/tabel",
+          "url" : baseUrl + "/penjualan/monitoringorder/tabel",
           "type": "GET",
           
     },
@@ -169,7 +144,7 @@ $.extend($.fn.dataTableExt.oJUIClasses, extensions);
         { "data": "j_butuh" ,"className" : "dt-body-right"},
         { "data": "pp_qty" ,"className" : "dt-body-right"},
         { "data": "j_kurang" ,"className" : "dt-body-right"},
-        { "data": "plan" },],
+    ],
     "order":[2,'desc'],
 
   });
@@ -180,25 +155,11 @@ $.extend($.fn.dataTableExt.oJUIClasses, extensions);
   .on( 'error.dt', function ( e, settings, techNote, message ) {
     location.reload();
   } )
-  .DataTable();
-
-  $(document).on('click','.plan',function(){
-    var id = $(this).data('id');
-    var i_name = $(this).data('name');
-      $.ajax({
-        url : baseUrl + "/produksi/monitoringprogress/plan/"+id,
-        type: 'get',   
-        success:function(response){
-          $('#table-plan').html(response);
-          $("#judul-plan").text(i_name);
-        }
-      });
-    });
 
   $(document).on('click','.nota',function(){
-    var id = $(this).data('id');
+    var a = $(this).data('id');
       $.ajax({
-      url : baseUrl + "/produksi/monitoringprogress/nota/"+id,
+      url : baseUrl + "/penjualan/monitoringorder/nota/"+a,
       type: 'get',     
         success:function(response){
          $('#table-nota').html(response);
@@ -214,89 +175,6 @@ $.extend($.fn.dataTableExt.oJUIClasses, extensions);
     changeMonth: true,
     changeYear: true
   });
-
-
-
-function simpan() {
-  $('#btnSimpan').attr('disabled','disabled');
-  var form = document.getElementById('form-plan');
-  var dataInput = form.getElementsByTagName('input');
-  var tabel = $("#table-search input").serialize();
-  var pp_item = $('#pp_item').val();
-  var rowPlan = $('#rowPlan').val();
-  var dataSimpan = tabel+'&pp_item='+pp_item+'&rowPlan='+rowPlan;
-
-  for (var i=0; i<dataInput.length ; i++){
-  }
-  for (var i=7; i<dataInput.length ; i+=2){
-    ///validation
-    if (dataInput[i].value == '') {
-        Command: toastr["warning"]("Kolom Jumlah Rencana tidak boleh kosong ", "Peringatan !")
-
-        toastr.options = {
-          "closeButton": false,
-          "debug": false,
-          "newestOnTop": true,
-          "progressBar": false,
-          "positionClass": "toast-top-right",
-          "preventDuplicates": false,
-          "onclick": null,
-          "showDuration": "300",
-          "hideDuration": "1000",
-          "timeOut": "3000",
-          "extendedTimeOut": "1000",
-          "showEasing": "swing",
-          "hideEasing": "linear",
-          "showMethod": "fadeIn",
-          "hideMethod": "fadeOut"
-        }
-        $('#btnSimpan').removeAttr('disabled');
-        return false;
-    }
-  }
-  for (var i=5; i<dataInput.length ; i+=2){
-    if (dataInput[i].value == '') {
-        Command: toastr["warning"]("Kolom Tanggal tidak boleh kosong ", "Peringatan !")
-
-        toastr.options = {
-          "closeButton": false,
-          "debug": false,
-          "newestOnTop": true,
-          "progressBar": false,
-          "positionClass": "toast-top-right",
-          "preventDuplicates": false,
-          "onclick": null,
-          "showDuration": "300",
-          "hideDuration": "1000",
-          "timeOut": "3000",
-          "extendedTimeOut": "1000",
-          "showEasing": "swing",
-          "hideEasing": "linear",
-          "showMethod": "fadeIn",
-          "hideMethod": "fadeOut"
-        }
-        $('#btnSimpan').removeAttr('disabled');
-        return false;
-    }
-  }
-  $.ajax({
-      url : baseUrl + "/produksi/monitoringprogress/save",
-      type: "GET",
-      data : dataSimpan,
-        success: function(response){
-          if (response.status == 'sukses') {
-            var table = $('#data').DataTable();
-            table.ajax.reload( null, false );
-            alert('Berhasil disimpan');
-            $("#modal").modal("hide");
-            $('#btnSimpan').removeAttr('disabled');
-          }else{
-            alert('Mohon Melengkapai Data Rencana')
-            $('#btnSimpan').removeAttr('disabled');
-          }
-        },
-    });
-}
 
 </script>
 @endsection()

@@ -70,7 +70,7 @@
 
                   <!-- START div#header_form -->
                   <div class="col-md-12 col-sm-12 col-xs-12" style="margin-top:15px;" id="header_form">
-                    <form method="post">
+                    <form method="post" id="form_return_pembelian">
                       {{ csrf_field() }}
                       <div class="col-md-12 col-sm-12 col-xs-12 tamma-bg" style="margin-bottom: 10px; padding-top:10px;padding-bottom:20px;" id="appending-form">
                       </div>
@@ -111,11 +111,6 @@
       minViewMode: "months"
     });
 
-    $('.datepicker2').datepicker({
-      format:"dd-mm-yyyy",
-      autoclose: true
-    });
-
     //autofill
     $('#pilih_metode_return').change(function()
     {
@@ -133,6 +128,16 @@
         //remove child div inside appending-form before appending
         $('#appending-form div').remove();
         $('#appending-form').append('<div class="col-md-2 col-sm-3 col-xs-12">'
+                                      +'<label class="tebal">Nota Pembelian</label>'
+                                    +'</div>'
+                                    +'<div class="col-md-4 col-sm-9 col-xs-12">'
+                                      +'<div class="form-group">'
+                                        +'<select class="form-control input-sm select2" id="cari_nota_purchase" name="cariNotaPurchase" style="width: 100% !important;">'
+                                          +'<option> - Pilih Nota Pembelian</option>'
+                                        +'</select>'
+                                      +'</div>'
+                                    +'</div>'
+                                    +'<div class="col-md-2 col-sm-3 col-xs-12">'
                                       +'<label class="tebal">Kode Return</label>'
                                     +'</div>'
                                     +'<div class="col-md-4 col-sm-9 col-xs-12">'
@@ -158,21 +163,12 @@
                                       +'</div>'
                                     +'</div>'
                                     +'<div class="col-md-2 col-sm-3 col-xs-12">'
-                                      +'<label class="tebal">Nota Pembelian</label>'
-                                    +'</div>'
-                                    +'<div class="col-md-4 col-sm-9 col-xs-12">'
-                                      +'<div class="form-group">'
-                                        +'<select class="form-control input-sm select2" id="cari_nota_purchase" name="cariNotaPurchase" style="width: 100% !important;">'
-                                          +'<option> - Pilih Nota Pembelian</option>'
-                                        +'</select>'
-                                      +'</div>'
-                                    +'</div>'
-                                    +'<div class="col-md-2 col-sm-3 col-xs-12">'
                                       +'<label class="tebal">Supplier</label>'
                                     +'</div>'
                                     +'<div class="col-md-4 col-sm-9 col-xs-12">'
                                       +'<div class="form-group">'
                                         +'<input type="text" name="namaSup" readonly="" class="form-control input-sm" id="nama_sup">'
+                                        +'<input type="hidden" name="idSup" readonly="" class="form-control input-sm" id="id_sup">'
                                       +'</div>'
                                     +'</div>'
                                     +'<div class="col-md-2 col-sm-3 col-xs-12">'
@@ -247,6 +243,16 @@
         //remove child div inside appending-form before appending
         $('#appending-form div').remove();
         $('#appending-form').append('<div class="col-md-2 col-sm-3 col-xs-12">'
+                                      +'<label class="tebal">Nota Pembelian</label>'
+                                    +'</div>'
+                                    +'<div class="col-md-4 col-sm-9 col-xs-12">'
+                                      +'<div class="form-group">'
+                                        +'<select class="form-control input-sm select2" id="cari_nota_purchase" name="cariNotaPurchase" style="width: 100% !important;">'
+                                          +'<option> - Pilih Nota Pembelian</option>'
+                                        +'</select>'
+                                      +'</div>'
+                                    +'</div>'
+                                    +'<div class="col-md-2 col-sm-3 col-xs-12">'
                                       +'<label class="tebal">Kode Return</label>'
                                     +'</div>'
                                     +'<div class="col-md-4 col-sm-9 col-xs-12">'
@@ -272,21 +278,12 @@
                                       +'</div>'
                                     +'</div>'
                                     +'<div class="col-md-2 col-sm-3 col-xs-12">'
-                                      +'<label class="tebal">Nota Pembelian</label>'
-                                    +'</div>'
-                                    +'<div class="col-md-4 col-sm-9 col-xs-12">'
-                                      +'<div class="form-group">'
-                                        +'<select class="form-control input-sm select2" id="cari_nota_purchase" name="cariNotaPurchase" style="width: 100% !important;">'
-                                          +'<option> - Pilih Nota Pembelian</option>'
-                                        +'</select>'
-                                      +'</div>'
-                                    +'</div>'
-                                    +'<div class="col-md-2 col-sm-3 col-xs-12">'
                                       +'<label class="tebal">Supplier</label>'
                                     +'</div>'
                                     +'<div class="col-md-4 col-sm-9 col-xs-12">'
                                       +'<div class="form-group">'
                                         +'<input type="text" name="namaSup" readonly="" class="form-control input-sm" id="nama_sup">'
+                                        +'<input type="hidden" name="idSup" readonly="" class="form-control input-sm" id="id_sup">'
                                       +'</div>'
                                     +'</div>'
                                     +'<div class="col-md-2 col-sm-3 col-xs-12">'
@@ -384,6 +381,12 @@
         }, 
       });
 
+      //datepicker
+      $('.datepicker2').datepicker({
+        autoclose: true,
+        format:"dd-mm-yyyy",
+        endDate: 'today'
+      });
       //event onchange select option
       $('#cari_nota_purchase').change(function() {
         //remove existing appending row
@@ -396,29 +399,46 @@
           success: function(data)
           {
             //total diskon didapat dari value diskon + percentase diskon
-            var discTotalVal = parseInt(data.data_header[0].d_pcs_discount)+parseInt(data.data_header[0].d_pcs_disc_value)
+            var discTotalVal = parseInt(data.data_header[0].d_pcs_discount)+parseInt(data.data_header[0].d_pcs_disc_value);
+            var totalGross = data.data_header[0].d_pcs_total_gross;
+            var taxPercent = data.data_header[0].d_pcs_tax_percent;
+            var totalTax = data.data_header[0].d_pcs_tax_value;
+            //persentase diskon berdasarkan total harga bruto
+            var percentDiscTotalGross = parseFloat(discTotalVal*100/totalGross);
+            //console.log(percentDiscTotalGross);
+            //harga total setelah diskon dan 
+            var totalNett = data.data_header[0].d_pcs_total_net;
             //data header
             $('#nama_sup').val(data.data_header[0].s_company);
+            $('#id_sup').val(data.data_header[0].s_id);
             $('#method_bayar').val(data.data_header[0].d_pcs_method);
-            $('#nilai_total_gross').val(convertDecimalToRupiah(data.data_header[0].d_pcs_total_gross));
+            $('[name="metodeReturn"]').val($('#pilih_metode_return').val());
+            $('#nilai_total_gross').val(convertDecimalToRupiah(totalGross));
             $('#nilai_total_disc').val(convertDecimalToRupiah(discTotalVal));
-            $('#nilai_total_tax').val(convertDecimalToRupiah(data.data_header[0].d_pcs_tax_value));
-            $('#nilai_total_nett').val(convertDecimalToRupiah(data.data_header[0].d_pcs_total_net));
+            $('#nilai_total_tax').val(convertDecimalToRupiah(totalTax));
+            $('#nilai_total_nett').val(convertDecimalToRupiah(totalNett));
             var totalHarga = 0;
             var key = 1;
             i = randString(5);
             //loop data
             Object.keys(data.data_isi).forEach(function(){
+              var hargaTotalItemGross = data.data_isi[key-1].d_pcsdt_total;
               var qtyCost = data.data_isi[key-1].d_pcsdt_qtyconfirm;
+              //harga total per item setelah kena diskon & pajak
+              var hargaTotalItemNet = Math.round(parseFloat(hargaTotalItemGross - (hargaTotalItemGross * percentDiscTotalGross/100) + ((hargaTotalItemGross - (hargaTotalItemGross * percentDiscTotalGross/100)) * taxPercent/100)).toFixed(2));
+              //console.log(hargaTotalItemNet);
+              //harga satuan per item setelah kena diskon & pajak
+              var hargaSatuanItemNet = Math.round(parseFloat(hargaTotalItemNet/qtyCost).toFixed(2));
+              //console.log(hargaSatuanItemNet);
               $('#tabel-form-return').append('<tr class="tbl_form_row" id="row'+i+'">'
                               +'<td style="text-align:center">'+key+'</td>'
                               +'<td><input type="text" value="'+data.data_isi[key-1].i_code+' | '+data.data_isi[key-1].i_name+'" name="fieldNamaItem[]" class="form-control input-sm" readonly/>'
                               +'<input type="hidden" value="'+data.data_isi[key-1].i_id+'" name="fieldItemId[]" class="form-control input-sm"/>'
-                              +'<input type="hidden" value="'+data.data_isi[key-1].d_pcspdt_id+'" name="fieldidPlanDt[]" class="form-control input-sm"/></td>'
-                              +'<td><input type="text" value="'+qtyCost+'" name="fieldQty[]" class="form-control numberinput input-sm" id="qty_'+i+'"/></td>'
+                              +'<input type="hidden" value="'+data.data_isi[key-1].d_pcsrdt_id+'" name="fieldIdPcsRtrDet[]" class="form-control input-sm"/></td>'
+                              +'<td><input type="text" value="'+qtyCost+'" name="fieldQty[]" class="form-control numberinput input-sm field_qty" id="'+i+'"/></td>'
                               +'<td><input type="text" value="'+data.data_isi[key-1].i_sat1+'" name="fieldSatuan[]" class="form-control input-sm" readonly/></td>'
-                              +'<td><input type="text" value="'+convertDecimalToRupiah(data.data_isi[key-1].d_pcsdt_price)+'" name="fieldHarga[]" id="'+i+'" class="form-control input-sm field_harga numberinput readonly"/></td>'
-                              +'<td><input type="text" value="'+convertDecimalToRupiah(data.data_isi[key-1].d_pcsdt_price * qtyCost)+'" name="fieldHargaTotal[]" class="form-control input-sm hargaTotalItem" id="total_'+i+'" readonly/></td>'
+                              +'<td><input type="text" value="'+convertDecimalToRupiah(hargaSatuanItemNet)+'" name="fieldHarga[]" id="cost_'+i+'" class="form-control input-sm field_harga numberinput" readonly/></td>'
+                              +'<td><input type="text" value="'+convertDecimalToRupiah(hargaTotalItemNet)+'" name="fieldHargaTotal[]" class="form-control input-sm hargaTotalItem" id="total_'+i+'" readonly/></td>'
                               +'<td><input type="text" value="'+data.data_stok[key-1].qtyStok+'" name="fieldStok[]" class="form-control input-sm" readonly/></td>'
                               +'<td><button name="remove" id="'+i+'" class="btn btn-danger btn_remove btn-sm">X</button></td>'
                               +'</tr>');
@@ -426,11 +446,7 @@
               key++;
             });
             //set readonly to enabled
-            /*$('#potongan_harga').attr('readonly',false);
-            $('#diskon_harga').attr('readonly',false);
-            $('#ppn_harga').attr('readonly',false);
-            totalPembelianGross();
-            totalPembelianNett();*/
+            totalNilaiReturn();
           },
           error: function (jqXHR, textStatus, errorThrown)
           {
@@ -440,75 +456,29 @@
       });
     });
 
-    //autocomplete
-    $( "#ip_barang" ).focus(function() {
-      var key = 1;
-        $( "#ip_barang" ).autocomplete({
-            source: baseUrl+'/purchasing/rencanapembelian/autocomplete-barang',
-            minLength: 1,
-            select: function(event, ui) {
-                $('#ip_item').val(ui.item.id);
-                $('#ip_barang').val(ui.item.label);
-                $('#ip_qtyStok').val(ui.item.stok);
-                $('#ip_hargaPrev').val(ui.item.prevCost);
-                Object.keys(ui.item.sat).forEach(function(){
-                    $('#ip_sat').append($('<option>', { 
-                        value: ui.item.sat[key-1],
-                        text : ui.item.sat[key-1]
-                    }));
-                    key++;
-                });
-                $("input[name='ipQtyReq']").focus();
-            }
-        });
-        $('#ip_sat').empty();
-        $('#ip_barang').val("");
-        $('#ip_qtyreq').val("");
-        $('#ip_hargaPrev').val("");
-        $('#ip_qtyStok').val("");
-    });
-
-    var i = randString(5);
-    var no = 1;
-    $('#add_item').click(function() {
-        var ambilSatuan = $("#ip_sat option:selected").val();
-        $('#ip_sat').empty();
-        var ambilIdBarang = $('#ip_item').val();
-        var ambilBarang = $('#ip_barang').val();
-        var ambilQtyReq = $('#ip_qtyreq').val();
-        var ambilQtyStok = $('#ip_qtyStok').val();
-        var ambilHargaPrev = $('#ip_hargaPrev').val();
-        if (ambilIdBarang == "" || ambilBarang == "" || ambilQtyReq == "" || ambilQtyStok == "" ) 
-        {
-            alert('Terdapat kolom yang kosong, dimohon cek lagi!!');
-        }
-        else
-        {
-            $('#barang_table').append('<tr class="tbl_form_row" id="row'+i+'">'
-                                    +'<td style="text-align:center">'+no+'</td>'
-                                    +'<td><input type="text" name="fieldIpBarang[]" value="'+ambilBarang+'" id="field_ip_barang" class="form-control" required readonly>'
-                                    +'<input type="hidden" name="fieldIpItem[]" value="'+ambilIdBarang+'" id="field_ip_item" class="form-control"></td>'
-                                    +'<td><input type="text" name="fieldIpQtyReq[]" value="'+ambilQtyReq+'" id="field_ip_qty_req" class="form-control" required readonly></td>'
-                                    +'<td><input type="text" name="fieldIpQtySat[]" value="'+ambilSatuan+'" id="field_ip_qty_stok" class="form-control" required readonly></td>'
-                                    +'<td><input type="text" name="fieldHargaPrev[]" value="'+ambilHargaPrev+'" id="field_ip_qty_stok" class="form-control" required readonly></td>'
-                                    +'<td><input type="text" name="fieldIpQtyStok[]" value="'+ambilQtyStok+'" id="field_ip_qty_stok" class="form-control" required readonly></td>'
-                                    +'<td><button name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button></td>'
-                                    +'</tr>');
-            i = randString(5);
-            no++;
-            //kosongkan field setelah append row
-            $('#ip_item').val("");
-            $('#ip_barang').val("");
-            $('#ip_qtyreq').val("");
-            $('#ip_qtyStok').val("");
-            $('#ip_hargaPrev').val("");
-        } 
-    });
-
     $(document).on('click', '.btn_remove', function(){
-        no--;
-        var button_id = $(this).attr('id');
-        $('#row'+button_id+'').remove();
+      var button_id = $(this).attr('id');
+      $('#row'+button_id+'').remove();
+      totalNilaiReturn();
+    });
+
+    //event focus on input qty
+    $(document).on('focus', '.field_qty',  function(e){
+        var qty = $(this).val();
+        $(this).val(qty);
+        $('#button_save').attr('disabled', true);
+    });
+
+    //event onblur input qty
+    $(document).on('blur', '.field_qty',  function(e){
+      var getid = $(this).attr("id");
+      var qtyReturn = $(this).val();
+      var cost = convertToAngka($('#cost_'+getid+'').val());
+      var hasilTotal = parseInt(qtyReturn * cost);
+      var totalCost = $('#total_'+getid+'').val(convertDecimalToRupiah(hasilTotal));
+      // $(this).val(potonganRp);
+      totalNilaiReturn();
+      $('#button_save').attr('disabled', false);
     });
 
     //force integer input in textfield
@@ -529,50 +499,88 @@
     return text;
   }
 
-  /*function simpanPlan()
+  function simpanReturn()
   {
     if(confirm('Simpan Data ?'))
     {
-        $('#button_save').text('Menyimpan...'); //change button text
-        $('#button_save').attr('disabled',true); //set button disable 
-        $.ajax({
-            url : baseUrl + "/purchasing/rencanapembelian/simpan-plan",
-            type: "post",
-            dataType: "JSON",
-            data: $('#form_order_plan').serialize(),
-            success: function(response)
-            {
-                if(response.status == "sukses")
-                {
-                    alert(response.pesan);
-                    $('#button_save').text('Simpan Data'); //change button text
-                    $('#button_save').attr('disabled',false); //set button enable 
-                    window.location.href = baseUrl+"/purchasing/rencanapembelian/rencana";
-                }
-                else
-                {
-                    alert(response.pesan);
-                    $('#button_save').text('Simpan Data'); //change button text
-                    $('#button_save').attr('disabled',false); //set button enable 
-                    window.location.href = baseUrl+"/purchasing/rencanapembelian/rencana";
-                }
-            },
-            error: function (jqXHR, textStatus, errorThrown)
-            {
-                alert('Error updating data');
-            }
-        });
+      $('#button_save').text('Menyimpan...'); //change button text
+      $('#button_save').attr('disabled',true); //set button disable 
+      $.ajax({
+        url : baseUrl + "/purchasing/returnpembelian/simpan-data-return",
+        type: "POST",
+        dataType: "JSON",
+        data: $('#form_return_pembelian').serialize(),
+        success: function(response)
+        {
+          if(response.status == "sukses")
+          {
+            alert(response.pesan);
+            $('#button_save').text('Simpan Data'); //change button text
+            $('#button_save').attr('disabled',false); //set button enable 
+            window.location.href = baseUrl+"/purchasing/returnpembelian/pembelian";
+          }
+          else
+          {
+            alert(response.pesan);
+            $('#button_save').text('Simpan Data'); //change button text
+            $('#button_save').attr('disabled',false); //set button enable 
+            window.location.href = baseUrl+"/purchasing/returnpembelian/pembelian";
+          }
+        },
+        error: function (jqXHR, textStatus, errorThrown)
+        {
+          alert('Error updating data');
+        }
+      });
     }
-  }*/
+  }
 
   function convertDecimalToRupiah(decimal) 
   {
-      var angka = parseInt(decimal);
-      var rupiah = '';        
-      var angkarev = angka.toString().split('').reverse().join('');
-      for(var i = 0; i < angkarev.length; i++) if(i%3 == 0) rupiah += angkarev.substr(i,3)+'.';
-      var hasil = 'Rp. '+rupiah.split('',rupiah.length-1).reverse().join('');
-      return hasil+',00';
+    var angka = parseInt(decimal);
+    var rupiah = '';        
+    var angkarev = angka.toString().split('').reverse().join('');
+    for(var i = 0; i < angkarev.length; i++) if(i%3 == 0) rupiah += angkarev.substr(i,3)+'.';
+    var hasil = 'Rp. '+rupiah.split('',rupiah.length-1).reverse().join('');
+    return hasil+',00';
+  }
+
+  function convertToAngka(rupiah)
+  {
+    return parseInt(rupiah.replace(/,.*|[^0-9]/g, ''), 10);
+  }
+
+  function convertToRupiah(angka) 
+  {
+    var rupiah = '';        
+    var angkarev = angka.toString().split('').reverse().join('');
+    for(var i = 0; i < angkarev.length; i++) if(i%3 == 0) rupiah += angkarev.substr(i,3)+'.';
+    var hasil = 'Rp. '+rupiah.split('',rupiah.length-1).reverse().join('');
+    return hasil+',00'; 
+  }
+
+  function totalNilaiReturn()
+  {
+    var inputs = document.getElementsByClassName( 'hargaTotalItem' ),
+    hasil  = [].map.call(inputs, function( input ) 
+    {
+      if(input.value == '') input.value = 0;
+      return input.value;
+    });
+    console.log(hasil);
+    var total = 0;
+    for (var i = hasil.length - 1; i >= 0; i--){
+
+      hasil[i] = convertToAngka(hasil[i]);
+      hasil[i] = parseInt(hasil[i]);
+      total = total + hasil[i];
+    }
+      if (isNaN(total)) {
+          total=0;
+        }
+    total = convertToRupiah(total);
+    // console.log(total);
+    $('[name="nilaiTotalReturn"]').val(total);
   }
 </script>
 @endsection                            

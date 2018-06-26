@@ -73,6 +73,11 @@ Route::get('/purchasing/returnpembelian/pembelian', 'Pembelian\ReturnPembelianCo
 Route::get('/purchasing/returnpembelian/tambah-return', 'Pembelian\ReturnPembelianController@tambahReturn');
 Route::get('/purchasing/returnpembelian/lookup-data-pembelian', 'Pembelian\ReturnPembelianController@lookupDataPembelian');
 Route::get('/purchasing/returnpembelian/get-data-form/{id}', 'Pembelian\ReturnPembelianController@getDataForm');
+Route::post('/purchasing/returnpembelian/simpan-data-return', 'Pembelian\ReturnPembelianController@simpanDataReturn');
+Route::get('/purchasing/returnpembelian/get-data-return-pembelian', 'Pembelian\ReturnPembelianController@getDataReturnPembelian');
+Route::get('/purchasing/returnpembelian/get-data-detail/{id}', 'Pembelian\ReturnPembelianController@getDataDetail');
+Route::get('/purchasing/returnpembelian/get-data-detail/{id}/{type}', 'Pembelian\ReturnPembelianController@getDataDetail');
+Route::post('/purchasing/returnpembelian/update-data-return', 'Pembelian\ReturnPembelianController@updateDataReturn');
 //rizky
 Route::get('/purchasing/belanjasuplier/suplier', 'Pembelian\PurchasingController@suplier');
 Route::get('/purchasing/belanjalangsung/langsung', 'Pembelian\PurchasingController@langsung');
@@ -144,7 +149,6 @@ Route::get('/produksi/pengambilanitem/lihat/id', 'Produksi\PengambilanItemContro
 Route::get('/produksi/monitoringprogress/monitoring', 'Produksi\MonitoringProgressController@monitoring');
 Route::get('/produksi/monitoringprogress/tabel', 'Produksi\MonitoringProgressController@tabel');
 Route::get('/produksi/monitoringprogress/plan/{id}', 'Produksi\MonitoringProgressController@plan');
-// Route::get('/produksi/monitoringprogress/{tgl1}/{tgl2}','Produksi\MonitoringProgressController@search');
 Route::get('/produksi/monitoringprogress/refresh','Produksi\MonitoringProgressController@refresh');
 Route::get('/produksi/monitoringprogress/nota/{id}', 'Produksi\MonitoringProgressController@bukaNota');
 Route::get('/produksi/monitoringprogress/nota/tabel/{id}', 'Produksi\MonitoringProgressController@nota');
@@ -157,6 +161,12 @@ Route::get('/produksi/rencanaproduksi/hapus_rencana/{id}','Produksi\RencanaProdu
 Route::patch('/produksi/rencanaproduksi/produksi/edit_rencana', 'Produksi\RencanaProduksiController@edit_rencana');
 Route::get('/produksi/rencanaproduksi/produksi/autocomplete', 'Produksi\RencanaProduksiController@autocomplete');
 //finish mas shomad
+//Manajemen Harga 'Mahmud'
+Route::get('/penjualan/manajemenharga/tabelharga', 'Penjualan\ManajemenHargaController@tabelHarga');
+Route::get('/penjualan/manajemenharga/edit/mpsell/{id}', 'Penjualan\ManajemenHargaController@editMpsell');
+Route::get('/penjualan/manajemenharga/update/mpsell', 'Penjualan\ManajemenHargaController@updateMpsell');
+
+//End Manajemen Harga
 //Master Formula Mahmud
 Route::get('/master/masterproduksi/index', 'Produksi\MasterFormulaController@index');
 Route::get('/produksi/masterformula/table', 'Produksi\MasterFormulaController@table');
@@ -248,6 +258,10 @@ Route::get('/penjualan/POSgrosir/stock/table-stock', 'Penjualan\stockGrosirContr
 Route::get('/penjualan/mutasi/stock/grosir-retail', 'Penjualan\mutasiStokController@tableGrosirRetail');
 Route::get('/penjualan/mutasi/stock/penjualan-retail', 'Penjualan\mutasiStokController@tablePenjualanRetail');
 //End Mutasi
+//Monitoring Order Mahmud
+Route::get('/penjualan/monitoringorder/tabel', 'Penjualan\MonitoringOrderController@tabel');
+Route::get('/penjualan/monitoringorder/nota/{id}', 'Penjualan\MonitoringOrderController@bukaNota');
+Route::get('/penjualan/monitoringorder/nota/tabel/{id}', 'Penjualan\MonitoringOrderController@nota');
 /*HRD*/
 Route::get('/hrd/manajemenkpipegawai/kpi', 'HrdController@kpi');
 Route::get('/hrd/payroll/payroll', 'HrdController@payroll');

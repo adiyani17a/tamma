@@ -1,5 +1,8 @@
 @extends('main')
 @section('content')
+<style type="text/css">
+  .ui-autocomplete { z-index:2147483647; }
+</style>
     <!--BEGIN PAGE WRAPPER-->
   <div id="page-wrapper">
     <!--BEGIN TITLE & BREADCRUMB PAGE-->
@@ -25,69 +28,60 @@
                   <li class="active"><a href="#alert-tab" data-toggle="tab">Manajemen Harga</a></li>
                 </ul>
                 <div id="generalTabContent" class="tab-content responsive">
-                  
-                  @include('penjualan.manajemenharga.modal')
-
                   <div id="alert-tab" class="tab-pane fade in active">
-                   
                     <div class="row">
-
                       <div class="col-md-12 col-sm-12 col-xs-12">
-
-                        <div align="right" style="margin-bottom: 15px;">
-                          <button class="btn btn-box-tool" data-target="#tambah" data-toggle="modal"><i class="fa fa-plus"></i>&nbsp;&nbsp;Tambah Manajemen Harga</button>
-                        </div>
-
                         <div class="table-responsive">
-                          <table class="table tabelan table-bordered table-hover" id="data">
+                          <table class="table tabelan table-bordered table-hover" id="data-harga">
                             <thead>
                               <tr>
                                 <th>No</th>
-                                <th>No Manajemen Harga</th>
+                                <th>Kode Item</th>
+                                <th>Item Type</th>
+                                <th>Item Group</th>
+                                <th>Nama Item</th>
+                                <th>Harga A</th>
+                                <th>Harga B</th>
+                                <th>Harga C</th>
                                 <th>Aksi</th>
                               </tr>
                             </thead>
                             <tbody>
-                              <tr>
-                                <td>1</td>
-                                <td>08022018/MH/001</td>
-                                <td>
-                                  <a href="#" class="btn btn-warning btn-sm"><i class="fa fa-pencil"></i></a>
-                                  <a href="#" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i></a>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>2</td>
-                                <td>08022018/MH/002</td>
-                                <td>
-                                  <a href="#" class="btn btn-warning btn-sm"><i class="fa fa-pencil"></i></a>
-                                  <a href="#" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i></a>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>3</td>
-                                <td>08022018/MH/003</td>
-                                <td>
-                                  <a href="#" class="btn btn-warning btn-sm"><i class="fa fa-pencil"></i></a>
-                                  <a href="#" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i></a>
-                                </td>
-                              </tr>
+
                             </tbody>
                           </table>
                         </div>
-
                       </div>
-
-                    </div>
-                                  
+                    </div>             
                   </div>
                   <!-- /div alert-tab -->
+                      <!--Modal view Edit formula-->
+                      <div class="modal fade" id="myModalEdit" role="dialog">
+                        <div class="modal-dialog modal-lg">
+                          <form id="myFormUpdate">
+                            <!-- Modal content-->
+                              <div class="modal-content">
+                                <div class="modal-header" style="background-color: #e77c38;">
+                                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                  <h4 class="modal-title" style="color: white;">Form Edit Harga</h4>
+                                </div>
+                                <div id="edit-mpsell">
 
+                                </div>
+                                <div class="modal-footer" style="border-top: none;">
+                                  <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+                                  <button type="button" class="btn btn-primary" id="btn-simpan-edit" onclick="updatePrice()">Update Data</button>
+                                </div>
+                              </div>
+                            </form>   
+                          </div>
+                      </div>
+                      <!--End Modal-->
                   <!-- div note-tab -->
                   <div id="note-tab" class="tab-pane fade">
                     <div class="row">
                       <div class="panel-body">
-                        <!-- Isi Content -->we we we
+                        <!-- Isi Content -->
                       </div>
                     </div>
                   </div><!--/div note-tab -->
@@ -96,7 +90,7 @@
                   <div id="label-badge-tab" class="tab-pane fade">
                     <div class="row">
                       <div class="panel-body">
-                        <!-- Isi content -->we
+                        <!-- Isi content -->
                       </div>
                     </div>
                   </div><!-- /div label-badge-tab -->
@@ -112,8 +106,9 @@
 
 @endsection
 @section("extra_scripts")
-    <script type="text/javascript">
-     $(document).ready(function() {
+<script src="{{ asset ('assets/script/icheck.min.js') }}"></script>
+<script type="text/javascript">
+  $(document).ready(function() {
     var extensions = {
          "sFilterInput": "form-control input-sm",
         "sLengthSelect": "form-control input-sm"
@@ -122,25 +117,6 @@
     $.extend($.fn.dataTableExt.oStdClasses, extensions);
     // Used when bJQueryUI is true
     $.extend($.fn.dataTableExt.oJUIClasses, extensions);
-    $('#data').dataTable({
-          "responsive":true,
-
-          "pageLength": 10,
-        "lengthMenu": [[10, 20, 50, - 1], [10, 20, 50, "All"]],
-        "language": {
-            "searchPlaceholder": "Cari Data",
-            "emptyTable": "Tidak ada data",
-            "sInfo": "Menampilkan _START_ - _END_ Dari _TOTAL_ Data",
-            "sSearch": '<i class="fa fa-search"></i>',
-            "sLengthMenu": "Menampilkan &nbsp; _MENU_ &nbsp; Data",
-            "infoEmpty": "",
-            "paginate": {
-                    "previous": "Sebelumnya",
-                    "next": "Selanjutnya",
-                 }
-          }
-
-        });
     $('#data2').dataTable({
           "responsive":true,
 
@@ -160,33 +136,68 @@
           }
 
         });
-    $('#data3').dataTable({
-          "responsive":true,
 
-          "pageLength": 10,
-        "lengthMenu": [[10, 20, 50, - 1], [10, 20, 50, "All"]],
-        "language": {
-            "searchPlaceholder": "Cari Data",
-            "emptyTable": "Tidak ada data",
-            "sInfo": "Menampilkan _START_ - _END_ Dari _TOTAL_ Data",
-            "sSearch": '<i class="fa fa-search"></i>',
-            "sLengthMenu": "Menampilkan &nbsp; _MENU_ &nbsp; Data",
-            "infoEmpty": "",
-            "paginate": {
-                    "previous": "Sebelumnya",
-                    "next": "Selanjutnya",
-                 }
-          }
+    $('#data-harga').DataTable({
+      processing: true,
+      serverSide: true,
+      ajax: {
+          url : baseUrl + "/penjualan/manajemenharga/tabelharga",
+      },
+      columns: [
+        {data: 'DT_Row_Index', name: 'DT_Row_Index'},
+        {data: 'i_code', name: 'i_code'},
+        {data: 'i_type', name: 'i_type'},
+        {data: 'i_group', name: 'i_group'},
+        {data: 'i_name', name: 'i_name'},
+        {data: 'm_psell1', name: 'm_psell1'},
+        {data: 'm_psell2', name: 'm_psell2'},
+        {data: 'm_psell3', name: 'm_psell3'},
+        {data: 'action', name: 'action', orderable: false, searchable: false},
+      ],
+      language: {
+        searchPlaceholder: "Cari Data",
+        emptyTable: "Tidak ada data",
+        sInfo: "Menampilkan _START_ - _END_ Dari _TOTAL_ Data",
+        sSearch: '<i class="fa fa-search"></i>',
+        sLengthMenu: "Menampilkan &nbsp; _MENU_ &nbsp; Data",
+        infoEmpty: "",
+        paginate: {
+              previous: "Sebelumnya",
+              next: "Selanjutnya",
+           }
+      }
+    });
 
-        });
-});
-      $('.datepicker').datepicker({
-        format: "mm",
-        viewMode: "months",
-        minViewMode: "months"
-      });
-      $('.datepicker2').datepicker({
-        format:"dd-mm-yyyy"
-      });    
-      </script>
+    $('.datepicker').datepicker({
+      format: "mm",
+      viewMode: "months",
+      minViewMode: "months"
+    });
+
+    $('.datepicker2').datepicker({
+      format:"dd-mm-yyyy"
+    });  
+
+  });
+
+  function editmpsell(id){
+    $.ajax({
+      url : baseUrl + "/penjualan/manajemenharga/edit/mpsell/"+id,
+      type: 'GET',
+      success : function(response){
+        $('#edit-mpsell').html(response);
+      }
+    });
+  } 
+
+  function updatePrice(){
+    $.ajax({
+      url : baseUrl + "/penjualan/manajemenharga/update/mpsell/",
+      type: 'GET',
+      success : function(response){
+        $('#edit-mpsell').html(response);
+      }
+    });
+  }
+</script>
 @endsection()

@@ -11,7 +11,9 @@ class m_price extends Model
     protected $fillable = [	'm_pid', 
     						'm_pitem', 
     						'm_pbuy', 
-    						'm_psell'];
+    						'm_psell1',
+    						'm_psell2',
+    						'm_psell3'];
     						
     const CREATED_AT = 'm_pcreated';
     const UPDATED_AT = 'm_pupdated';
