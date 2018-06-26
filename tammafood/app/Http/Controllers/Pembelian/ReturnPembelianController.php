@@ -125,7 +125,7 @@ class ReturnPembelianController extends Controller
     ->make(true);
   }
 
-  public function getDataDetail($id)
+  public function getDataDetail($id, $type="all")
   {
     $dataHeader = d_purchasingreturn::join('d_purchasing','d_purchasingreturn.d_pcsr_pcsid','=','d_purchasing.d_pcs_id')
           ->join('d_supplier','d_purchasingreturn.d_pcsr_supid','=','d_supplier.s_id')
@@ -177,6 +177,32 @@ class ReturnPembelianController extends Controller
             ->orderBy('d_purchasingreturn_dt.d_pcsrdt_created', 'DESC')
             ->get();
     
+    //cek item type untuk hitung stok
+    foreach ($dataIsi as $val) 
+    {
+      $itemType[] = DB::table('m_item')->select('i_type', 'i_id')->where('i_id','=', $val->i_id)->first();
+    }
+
+    //ambil value stok by item type
+    foreach ($itemType as $val) 
+    {
+      if ($val->i_type == "BP") //brg produksi
+      {
+          $query = DB::select(DB::raw("SELECT IFNULL( (SELECT s_qty FROM d_stock where s_item = '$val->i_id' AND s_comp = '6' AND s_position = '6' limit 1) ,'0') as qtyStok"));
+          $stok[] = $query[0];
+      }
+      elseif ($val->i_type == "BJ") //brg jual
+      {
+          $query = DB::select(DB::raw("SELECT IFNULL( (SELECT s_qty FROM d_stock where s_item = '$val->i_id' AND s_comp = '7' AND s_position = '7' limit 1) ,'0') as qtyStok"));
+          $stok[] = $query[0];
+      }
+      elseif ($val->i_type == "BB") //bahan baku
+      {
+          $query = DB::select(DB::raw("SELECT IFNULL( (SELECT s_qty FROM d_stock where s_item = '$val->i_id' AND s_comp = '3' AND s_position = '3' limit 1) ,'0') as qtyStok"));
+          $stok[] = $query[0];
+      }
+    }
+
     return response()->json([
         'status' => 'sukses',
         'header' => $dataHeader,
@@ -184,7 +210,8 @@ class ReturnPembelianController extends Controller
         'data_isi' => $dataIsi,
         'spanTxt' => $spanTxt,
         'spanClass' => $spanClass,
-        'lblMethod' => $lblMethod
+        'lblMethod' => $lblMethod,
+        'data_stok' => $stok
     ]);
   }
 
@@ -257,7 +284,7 @@ class ReturnPembelianController extends Controller
 
     //ambil value stok by item type
     foreach ($itemType as $val) 
-    { 
+    {
       if ($val->i_type == "BP") //brg produksi
       {
           $query = DB::select(DB::raw("SELECT IFNULL( (SELECT s_qty FROM d_stock where s_item = '$val->i_id' AND s_comp = '6' AND s_position = '6' limit 1) ,'0') as qtyStok"));
@@ -345,6 +372,49 @@ class ReturnPembelianController extends Controller
     return response()->json([
           'status' => 'sukses',
           'pesan' => 'Data Return Pembelian Berhasil Disimpan'
+      ]);
+    } 
+    catch (\Exception $e) 
+    {
+      DB::rollback();
+      return response()->json([
+          'status' => 'gagal',
+          'pesan' => $e->getMessage()."\n at file: ".$e->getFile()."\n line: ".$e->getLine()
+      ]);
+    }
+  }
+
+  public function updateDataReturn(Request $request)
+  {
+    dd($request->all());
+    DB::beginTransaction();
+    try {
+      //update to table d_purchasingreturn
+      $data_header = d_purchasingreturn::find($request->idBelanjaEdit);
+      $data_header->d_pcsh_date = date('Y-m-d',strtotime($request->tanggalBeliEdit));
+      $pharian->d_pcsh_noreff = $request->noReffEdit;
+      $pharian->d_pcsh_staff = $request->namaStaffEdit;
+      $pharian->d_pcsh_totalprice = $this->konvertRp($request->totalBiayaEdit);
+      $pharian->d_pcsh_totalpaid = $this->konvertRp($request->totalBayarEdit);
+      $pharian->d_pcsh_updated = Carbon::now();
+      $pharian->save();
+      
+      //update to table d_purchasingharian_dt
+      $hitung_field_edit = count($request->fieldIpIdDetailEdit);
+      for ($i=0; $i < $hitung_field_edit; $i++) 
+      {
+        $phariandt = d_purchasingharian_dt::find($request->fieldIpIdDetailEdit[$i]);
+        $phariandt->d_pcshdt_qty = $request->fieldIpQtyEdit[$i];
+        $phariandt->d_pcshdt_price = $this->konvertRp($request->fieldIpHargaEdit[$i]);
+        $phariandt->d_pcshdt_pricetotal = $this->konvertRp($request->fieldIpHargaTotalEdit[$i]);
+        $phariandt->d_pcshdt_updated = Carbon::now();
+        $phariandt->save();
+      } 
+      
+    DB::commit();
+    return response()->json([
+          'status' => 'sukses',
+          'pesan' => 'Data Belanja Harian Berhasil Diupdate'
       ]);
     } 
     catch (\Exception $e) 
@@ -519,49 +589,6 @@ class ReturnPembelianController extends Controller
         'spanTxt' => $spanTxt,
         'spanClass' => $spanClass
       ]);
-    }
-
-    public function updateDataBelanja(Request $request)
-    {
-      //dd($request->all());
-      DB::beginTransaction();
-      try {
-        //update to table d_purchasingharian
-        $pharian = d_purchasingharian::find($request->idBelanjaEdit);
-        $pharian->d_pcsh_date = date('Y-m-d',strtotime($request->tanggalBeliEdit));
-        $pharian->d_pcsh_noreff = $request->noReffEdit;
-        $pharian->d_pcsh_staff = $request->namaStaffEdit;
-        $pharian->d_pcsh_totalprice = $this->konvertRp($request->totalBiayaEdit);
-        $pharian->d_pcsh_totalpaid = $this->konvertRp($request->totalBayarEdit);
-        $pharian->d_pcsh_updated = Carbon::now();
-        $pharian->save();
-        
-        //update to table d_purchasingharian_dt
-        $hitung_field_edit = count($request->fieldIpIdDetailEdit);
-        for ($i=0; $i < $hitung_field_edit; $i++) 
-        {
-          $phariandt = d_purchasingharian_dt::find($request->fieldIpIdDetailEdit[$i]);
-          $phariandt->d_pcshdt_qty = $request->fieldIpQtyEdit[$i];
-          $phariandt->d_pcshdt_price = $this->konvertRp($request->fieldIpHargaEdit[$i]);
-          $phariandt->d_pcshdt_pricetotal = $this->konvertRp($request->fieldIpHargaTotalEdit[$i]);
-          $phariandt->d_pcshdt_updated = Carbon::now();
-          $phariandt->save();
-        } 
-        
-      DB::commit();
-      return response()->json([
-            'status' => 'sukses',
-            'pesan' => 'Data Belanja Harian Berhasil Diupdate'
-        ]);
-      } 
-      catch (\Exception $e) 
-      {
-        DB::rollback();
-        return response()->json([
-            'status' => 'gagal',
-            'pesan' => $e->getMessage()."\n at file: ".$e->getFile()."\n line: ".$e->getLine()
-        ]);
-      }
     }
 
     public function deleteDataBelanja(Request $request)

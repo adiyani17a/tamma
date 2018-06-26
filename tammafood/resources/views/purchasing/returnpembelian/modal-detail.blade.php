@@ -14,6 +14,16 @@
           <span class="" id="txt_span_status_detail"></span>
           <div class="col-md-12 col-sm-12 col-xs-12 tamma-bg" style="margin-top:10px;padding-bottom: 10px;padding-top: 20px;margin-bottom: 15px;">
             <div class="col-md-3 col-sm-12 col-xs-12">
+              <label class="tebal">Nota Pembelian</label>
+            </div>
+
+            <div class="col-md-3 col-sm-12 col-xs-12">
+              <div class="form-group">
+                <label id="lblNotaPembelian"></label>
+              </div>  
+            </div>
+
+            <div class="col-md-3 col-sm-12 col-xs-12">
               <label class="tebal">Kode Return Pembelian</label>
             </div>
 
@@ -85,6 +95,7 @@
                   <th width="10%">Satuan</th>
                   <th width="15%">Harga</th>
                   <th width="15%">Total</th>
+                  <th width="10%">Stok</th>
                 </tr>
               </thead>
               <tbody id="div_item">
