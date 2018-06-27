@@ -549,7 +549,7 @@ class POSGrosirController extends Controller
   public function konvertRp($value){
     $value = str_replace(['Rp', '\\', '.', ' '], '', $value);
     return str_replace(',', '.', $value);
-    }
+  }
 
   public function tambahItemReq(Request $request){
       return DB::transaction(function() use ($request)

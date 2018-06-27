@@ -118,11 +118,18 @@
                                     <option value="retail">Retail</option>
                                     <option value="online">Online</option>
                                   </select>
-                                  @if ($errors->has('tipe_cust'))
-                                    <span class="help-block">
-                                      <strong>{{ $errors->first('tipe_cust') }}</strong>
-                                    </span>
-                                  @endif  
+                              </div>
+                            </div>
+                            <div class="col-md-4 col-sm-3 col-xs-12">  
+                              <label class="tebal">Kelas Pelanggan</label>
+                            </div>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                              <div class="form-group">
+                                  <select name="tipe_cust" id="tipe_cust" class="form-control input-sm">
+                                    <option value="C">C</option>
+                                    <option value="B">B</option>
+                                    <option value="A">A</option>
+                                  </select>
                               </div>
                             </div>
                             <div class="col-md-4 col-sm-3 col-xs-12">
@@ -133,11 +140,6 @@
                                 <div class="input-icon right">
                                   <i class="glyphicon glyphicon-earphone"></i>
                                   <input type="text" id="no_hp" name="no_hp" class="form-control input-sm"  value="{{ old('no_hp') }}">
-                                  @if ($errors->has('no_hp'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('no_hp') }}</strong>
-                                    </span>
-                                  @endif   
                                 </div>                               
                               </div>
                             </div>
@@ -148,12 +150,7 @@
                               <div class="form-group">
                                 <div class="input-icon right">
                                   <i class="glyphicon glyphicon-home"></i>
-                                  <textarea id="alamat" name="alamat" class="form-control input-sm"  value="{{ old('alamat') }}"></textarea>
-                                  @if ($errors->has('alamat'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('alamat') }}</strong>
-                                    </span>
-                                @endif                              
+                                  <textarea id="alamat" name="alamat" class="form-control input-sm"  value="{{ old('alamat') }}"></textarea>                             
                                 </div>    
                               </div>
                             </div>

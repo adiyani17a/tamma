@@ -137,37 +137,6 @@
 
         });
 
-    $('#data-harga').DataTable({
-      processing: true,
-      serverSide: true,
-      ajax: {
-          url : baseUrl + "/penjualan/manajemenharga/tabelharga",
-      },
-      columns: [
-        {data: 'DT_Row_Index', name: 'DT_Row_Index'},
-        {data: 'i_code', name: 'i_code'},
-        {data: 'i_type', name: 'i_type'},
-        {data: 'i_group', name: 'i_group'},
-        {data: 'i_name', name: 'i_name'},
-        {data: 'm_psell1', name: 'm_psell1'},
-        {data: 'm_psell2', name: 'm_psell2'},
-        {data: 'm_psell3', name: 'm_psell3'},
-        {data: 'action', name: 'action', orderable: false, searchable: false},
-      ],
-      language: {
-        searchPlaceholder: "Cari Data",
-        emptyTable: "Tidak ada data",
-        sInfo: "Menampilkan _START_ - _END_ Dari _TOTAL_ Data",
-        sSearch: '<i class="fa fa-search"></i>',
-        sLengthMenu: "Menampilkan &nbsp; _MENU_ &nbsp; Data",
-        infoEmpty: "",
-        paginate: {
-              previous: "Sebelumnya",
-              next: "Selanjutnya",
-           }
-      }
-    });
-
     $('.datepicker').datepicker({
       format: "mm",
       viewMode: "months",
@@ -178,6 +147,37 @@
       format:"dd-mm-yyyy"
     });  
 
+  });
+
+  var dataHarga =  $('#data-harga').DataTable({
+    processing: true,
+    serverSide: true,
+    ajax: {
+        url : baseUrl + "/penjualan/manajemenharga/tabelharga",
+    },
+    columns: [
+      {data: 'DT_Row_Index', name: 'DT_Row_Index'},
+      {data: 'i_code', name: 'i_code'},
+      {data: 'i_type', name: 'i_type'},
+      {data: 'i_group', name: 'i_group'},
+      {data: 'i_name', name: 'i_name'},
+      {data: 'm_psell1', name: 'm_psell1'},
+      {data: 'm_psell2', name: 'm_psell2'},
+      {data: 'm_psell3', name: 'm_psell3'},
+      {data: 'action', name: 'action', orderable: false, searchable: false},
+    ],
+    language: {
+      searchPlaceholder: "Cari Data",
+      emptyTable: "Tidak ada data",
+      sInfo: "Menampilkan _START_ - _END_ Dari _TOTAL_ Data",
+      sSearch: '<i class="fa fa-search"></i>',
+      sLengthMenu: "Menampilkan &nbsp; _MENU_ &nbsp; Data",
+      infoEmpty: "",
+      paginate: {
+            previous: "Sebelumnya",
+            next: "Selanjutnya",
+         }
+    }
   });
 
   function editmpsell(id){
@@ -191,11 +191,24 @@
   } 
 
   function updatePrice(){
+    if(!confirm("Apakah Anda yakin ingin update harga?")) return false;
+    var data = $('#myFormUpdate').serialize();
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
     $.ajax({
-      url : baseUrl + "/penjualan/manajemenharga/update/mpsell/",
-      type: 'GET',
+      url : baseUrl + "/penjualan/manajemenharga/update/mpsell",
+      type: 'POST',
+      data: data,
       success : function(response){
-        $('#edit-mpsell').html(response);
+        if (response.status=='sukses'){
+          alert('Data harga berhasil di update!');
+          dataHarga.ajax.reload( null, false );
+        }else{
+          alert('Data harga gagal di update! ')
+        }
       }
     });
   }

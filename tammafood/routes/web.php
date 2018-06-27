@@ -164,7 +164,7 @@ Route::get('/produksi/rencanaproduksi/produksi/autocomplete', 'Produksi\RencanaP
 //Manajemen Harga 'Mahmud'
 Route::get('/penjualan/manajemenharga/tabelharga', 'Penjualan\ManajemenHargaController@tabelHarga');
 Route::get('/penjualan/manajemenharga/edit/mpsell/{id}', 'Penjualan\ManajemenHargaController@editMpsell');
-Route::get('/penjualan/manajemenharga/update/mpsell', 'Penjualan\ManajemenHargaController@updateMpsell');
+Route::post('/penjualan/manajemenharga/update/mpsell', 'Penjualan\ManajemenHargaController@updateMpsell');
 
 //End Manajemen Harga
 //Master Formula Mahmud

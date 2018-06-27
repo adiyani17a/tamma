@@ -7,8 +7,8 @@
                 <div class="form-group">  
                   <input type="text" class="form-control input-sm" readonly name="kode-item" 
                   id="kode-item" value="{{ $data->i_code }}">
-                  <input type="text" class="form-control input-sm" name="id-price" 
-                  id="id-price" value="{{ $data->m_pid }}">
+                  <input type="hidden" class="form-control input-sm" name="m_pid" 
+                  id="m_pid" value="{{ $data->m_pid }}">
                 </div>
               </div> 
               <div class="col-md-4 col-sm-4 col-xs-12">
@@ -36,17 +36,17 @@
                      <tbody>
                       <tr>
                         <td>
-                          <input class="form-control text-right price1"  id="" name="" placeholder="Rp. 0,00" onkeyup="rege(event,'price1');" onblur="setRupiah(event,'price1')" 
+                          <input class="form-control text-right price1"  id="m_psell1" name="m_psell1" placeholder="Rp. 0,00" onkeyup="rege(event,'price1');" onblur="setRupiah(event,'price1')" 
                           onclick="setAwal('event','price1')"
                           value="Rp. {{ number_format($data->m_psell1 ,2,',','.') }}">
                         </td>
                         <td>
-                         <input class="form-control text-right price2"  id="" name="" placeholder="Rp. 0,00" onkeyup="rege(event,'price2');" onblur="setRupiah(event,'price2')" 
+                         <input class="form-control text-right price2"  id="m_psell2" name="m_psell2" placeholder="Rp. 0,00" onkeyup="rege(event,'price2');" onblur="setRupiah(event,'price2')" 
                           onclick="setAwal('event','price2')"
                           value="Rp. {{ number_format($data->m_psell2 ,2,',','.') }}">
                         </td>
                         <td>
-                         <input class="form-control text-right price3"  id="" name="" placeholder="Rp. 0,00" onkeyup="rege(event,'price3');" onblur="setRupiah(event,'price3')" 
+                         <input class="form-control text-right price3"  id="m_psell3" name="m_psell3" placeholder="Rp. 0,00" onkeyup="rege(event,'price3');" onblur="setRupiah(event,'price3')" 
                           onclick="setAwal('event','price3')"
                           value="Rp. {{ number_format($data->m_psell3 ,2,',','.') }}">
                         </td>

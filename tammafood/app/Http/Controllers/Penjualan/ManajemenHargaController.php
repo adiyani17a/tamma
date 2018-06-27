@@ -62,6 +62,12 @@ class ManajemenHargaController extends Controller
     ->make(true);
 	}
 
+  public function konvertRp($value){
+    $value = str_replace(['Rp', '\\', '.', ' '], '', $value);
+
+    return str_replace(',', '.', $value);
+  }
+
   public function editMpsell($id){
     $data = m_price::select('*')
       ->join('m_item','i_id','=','m_pitem')
@@ -71,7 +77,26 @@ class ManajemenHargaController extends Controller
     return view('penjualan.manajemenharga.modal-edit',compact('data'));
   }
 
-  public function updateMpsell(Requests $Requests){
-    
+  public function updateMpsell(Request $request){
+    DB::beginTransaction();
+        try {
+    m_price::where('m_pid',$request->m_pid)
+      ->update([
+        'm_psell1' => ($this->konvertRp($request->m_psell1)),
+        'm_psell2' => ($this->konvertRp($request->m_psell2)),
+        'm_psell3' => ($this->konvertRp($request->m_psell3)),
+        'm_pupdated' => Carbon::now()
+      ]);
+    DB::commit();
+    return response()->json([
+          'status' => 'sukses'
+        ]);
+      } catch (\Exception $e) {
+    DB::rollback();
+    return response()->json([
+        'status' => 'gagal',
+        'data' => $e
+        ]);
+      }
   }
 }
