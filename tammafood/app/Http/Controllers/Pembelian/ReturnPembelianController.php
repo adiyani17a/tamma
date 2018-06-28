@@ -535,11 +535,57 @@ class ReturnPembelianController extends Controller
     //dd($request->all());
     DB::beginTransaction();
     try {
+      //cari item & qty purchasingreturn_dt
+      $query = DB::table('d_purchasingreturn_dt')->select('d_pcsrdt_item', 'd_pcsrdt_qty', 'd_pcsrdt_smdetail')->where('d_pcsrdt_idpcsr', $request->id)->get();
+
+      foreach ($query as $value) 
+      {
+        //array variabel item m_item
+        $item[] = $value->d_pcsrdt_item;
+        //array variabel qty return
+        $qty_return[] = $value->d_pcsrdt_qty;
+        //array variabel sm_detailid
+        $id_smdetail[] = $value->d_pcsrdt_smdetail;
+      }
+
+      $hitung_row = count($item);
+      for ($i=0; $i < $hitung_row; $i++) 
+      { 
+        $grup = $this->getGroupGudang($item[$i]);
+        //cari id & s_qty d_stock
+        $q_dstock = DB::table('d_stock')
+          ->select('s_id', 's_qty')
+          ->where('s_item', $item[$i])
+          ->where('s_comp', $grup)
+          ->where('s_position', $grup)
+          ->first();
+        //array variabel id_stock (d_stock)
+        $id_stock[] = $q_dstock->s_id;
+        //array variabel qty_stock (d_stock)
+        $qty_stock[] = $q_dstock->s_qty;
+      }
+
+      for ($i=0; $i < $hitung_row ; $i++) 
+      { 
+        $grup2 = $this->getGroupGudang($item[$i]);
+        $stokAkhir = (int)$qty_return[$i] + (int)$qty_stock[$i];
+        // update d_stock
+        DB::table('d_stock')
+          ->where('s_id', $id_stock[$i])
+          ->update(['s_qty' => $stokAkhir]);
+
+        //delete row table d_stock_mutation
+        DB::table('d_stock_mutation')
+          ->where('sm_stock', '=', $id_stock[$i])
+          ->where('sm_detailid', '=', $id_smdetail[$i])
+          ->delete();
+      }
+
       //delete row table d_purchasingreturn_dt
       $deleteReturnDt = d_purchasingreturn_dt::where('d_pcsrdt_idpcsr', $request->id)->delete();
       //delete row table d_purchasingreturn
-      $deleteReturn = d_purchasingreturn::where('d_pcsr_id', $request->id)->delete();
-
+      $deleteReturn = d_purchasingreturn::where('d_pcsr_id', $request->id)->delete();   
+      
       DB::commit();
       return response()->json([
           'status' => 'sukses',

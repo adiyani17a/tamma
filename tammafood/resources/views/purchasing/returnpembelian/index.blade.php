@@ -192,14 +192,6 @@
       $('#button_save').attr('disabled', false);
     });
 
-    /*$('#tampil_data').on('change', function() {
-      lihatHistorybyTgl();
-    })
-
-    $('.refresh-data-history').click(function(event) {
-      $('#tbl-history').DataTable().ajax.reload();
-    });*/
-
   //end jquery
   });
 
@@ -228,7 +220,7 @@
         // $('[name="totalHargaFinal"]').val(data.header2.hargaNet);
         //loop data
         Object.keys(data.data_isi).forEach(function(){
-          $('#tabel-detail').append('<tr class="tbl_modal_row" id="row'+i+'">'
+          $('#tabel-detail').append('<tr class="tbl_modal_detail_row" id="row'+i+'">'
                           +'<td>'+key+'</td>'
                           +'<td>'+data.data_isi[key-1].i_code+' | '+data.data_isi[key-1].i_name+'</td>'
                           +'<td>'+data.data_isi[key-1].d_pcsrdt_qty+'</td>'
@@ -327,7 +319,7 @@
                     $('#btn_update').text('Update'); //change button text
                     $('#btn_update').attr('disabled',false); //set button enable
                     $('#modal-edit').modal('hide');
-                    $('#tbl-daftar').DataTable().ajax.reload();
+                    $('#tabel-return').DataTable().ajax.reload();
                 }
                 else
                 {
@@ -335,7 +327,7 @@
                     $('#btn_update').text('Update'); //change button text
                     $('#btn_update').attr('disabled',false); //set button enable
                     $('#modal-edit').modal('hide');
-                    $('#tbl-daftar').DataTable().ajax.reload();
+                    $('#tabel-return').DataTable().ajax.reload();
                 }
             },
             error: function (jqXHR, textStatus, errorThrown)
@@ -360,17 +352,17 @@
                 if(response.status == "sukses")
                 {
                     alert(response.pesan);
-                    $('#tbl-daftar').DataTable().ajax.reload();
+                    $('#tabel-return').DataTable().ajax.reload();
                 }
                 else
                 {
                     alert(response.pesan);
-                    $('#tbl-daftar').DataTable().ajax.reload();
+                    $('#tabel-return').DataTable().ajax.reload();
                 }
             },
             error: function (jqXHR, textStatus, errorThrown)
             {
-                alert('Error updating data');
+                alert('Error deleting data');
             }
         });
     }
