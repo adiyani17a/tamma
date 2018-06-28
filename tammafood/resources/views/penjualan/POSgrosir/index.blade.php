@@ -115,14 +115,21 @@
                               <select name="tipe_cust" id="tipe_cust" class="form-control input-sm">
                                 <option value="online">Online</option>
                                 <option value="retail">retail</option>
-                              </select>
-                              @if ($errors->has('tipe_cust'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('tipe_cust') }}</strong>
-                                </span>
-                              @endif                            
+                              </select>                            
                           </div>
                         </div>
+                        <div class="col-md-4 col-sm-3 col-xs-12">  
+                              <label class="tebal">Kelas Pelanggan</label>
+                            </div>
+                            <div class="col-md-8 col-sm-9 col-xs-12">
+                              <div class="form-group">
+                                  <select name="class_cust" id="class_cust" class="form-control input-sm">
+                                    <option value="C">C</option>
+                                    <option value="B">B</option>
+                                    <option value="A">A</option>
+                                  </select>
+                              </div>
+                            </div>
                         <div class="col-md-4 col-sm-3 col-xs-12">
                           <label class="tebal">Nomor HP<font color="red">*</font></label>
                         </div>
@@ -130,12 +137,7 @@
                           <div class="form-group">
                             <div class="input-icon right">
                               <i class="glyphicon glyphicon-earphone"></i>
-                              <input type="text" id="no_hp" name="no_hp" class="form-control input-sm"  value="{{ old('no_hp') }}">
-                              @if ($errors->has('no_hp'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('no_hp') }}</strong>
-                                </span>
-                              @endif   
+                              <input type="text" id="no_hp" name="no_hp" class="form-control input-sm"  value="{{ old('no_hp') }}">   
                             </div>                               
                           </div>
                         </div>
@@ -179,11 +181,26 @@
                       <div class="col-md-9 col-sm-6 col-xs-12" style="margin-top: 15px;">
                         <label class="control-label tebal" for="nama">Nama Pelanggan<font color="red">*</font></label>
                           <div class="input-group input-group-sm" style="width: 100%;">
-                            <input type="text" id="nama" name="s_member" class="form-control">
-                            <input type="hidden" id="id_cus" name="id_cus" class="form-control">                          
-                            <span class="input-group-btn"><button  type="button" class="btn btn-info btn-sm btn_simpan" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i></button></span>
+                            <input type="text" id="nama-customer" name="s_member" class="form-control"  required>
+                            <input type="hidden" id="id_cus" name="id_cus" class="form-control">
+                            <span class="input-group-btn">
+                              <button  type="button" class="btn btn-danger btn-sm" id="c-lock">
+                                <i class="fa fa-lock"></i>
+                              </button>
+                            </span>
+                            <span class="input-group-btn">
+                              <button  type="button" class="btn btn-info btn-sm btn_simpan" data-toggle="modal" data-target="#myModal">
+                                  <i class="fa fa-plus"></i>
+                              </button>
+                            </span>
                           </div>
                       </div>
+                      <div class="col-md-9 col-sm-6 col-xs-12" style="margin-top: 15px;">
+                         <label class="control-label tebal" for="alamat">Alamat Pelanggan<font color="red">*</font></label>
+                            <div class="input-group input-group-sm" style="width: 100%;">
+                              <input type="text" id="alamat2" name="sm_alamat" readonly class="form-control">  
+                            </div>
+                      </div> 
                       <div class="col-md-3 col-sm-6 col-xs-12" style="margin-top: 15px;">
                         <label for="tgl_faktur" class="control-label tebal">Tanggal Faktur</label>
                           <div class="input-group input-group-sm" style="width: 100%;">
@@ -191,11 +208,11 @@
                           </div>
                       </div>
                       <div class="col-md-9 col-sm-6 col-xs-12" style="margin-top: 15px;">
-                         <label class="control-label tebal" for="alamat">Alamat Pelanggan<font color="red">*</font></label>
-                            <div class="input-group input-group-sm" style="width: 100%;">
-                              <input type="text" id="alamat2" name="sm_alamat" class="form-control">  
-                            </div>
-                      </div>                                      
+                             <label class="control-label tebal" for="alamat">Kelas Pelanggan<font color="red">*</font></label>
+                              <div class="input-group input-group-sm" style="width: 100%;">
+                                <input type="text" id="c-class" readonly name="c-class" class="form-control">  
+                              </div>
+                          </div>                                     
                       <div class="col-md-3 col-sm-6 col-xs-12" style="margin-top: 15px;">
                          <label class="control-label tebal" for="no_faktur" >Nomor Faktur</label>
                           <div class="input-group input-group-sm" style="width: 100%;">
@@ -387,6 +404,24 @@
     // Used when bJQueryUI is true
 
     $.extend($.fn.dataTableExt.oJUIClasses, extensions);
+
+    $('#c-lock').click(function(){
+      var data1 = $('#nama-customer').val();
+      var data2 = $('#c-class').val();
+
+      if( data1 == '' || data2 == '' ){
+        alert('Harap mengisi nama pelanggan!');
+      }else{
+        if( $("#nama-customer").attr("readonly") == "readonly"){
+           $("#nama-customer").attr("readonly",false);
+        }else{
+          $("#nama-customer").attr("readonly",true);
+          $("#namaitem").attr("readonly",false);
+          $("#qty").attr("readonly",false);
+          $("#namaitem").focus();
+        }
+      }
+    })
    
   });
 
@@ -471,27 +506,36 @@ function lihatDetail(idDetail){
 }
 
     // customer 
-  $( "#nama" ).focus(function(){
+  $( "#nama-customer" ).focus(function(){
       var key = 1;
-    $( "#nama" ).autocomplete({
+      $("#namaitem").attr("readonly",true);
+      $("#qty").attr("readonly",true);
+    $( "#nama-customer" ).autocomplete({
     source: baseUrl+'/penjualan/POSretail/retail/autocomplete',
     minLength: 1,
     select: function(event, ui) {
       $('#id_cus').val(ui.item.id);
-      $('#nama').val(ui.item.label);
+      $('#nama-customer').val(ui.item.label);
       $('#alamat2').val(ui.item.alamat);
-      $("input[name='item']").focus();
+      $('#c-class').val(ui.item.c_class);
       }
     });
     $("#alamat2").val('');
-    $("#nama" ).val('');
+    $("#nama-customer" ).val('');
+    $('#c-class').val('');
+    tableDetail.row().clear().draw(false);
+    var inputs = document.getElementById( 'kode' ),
+    names  = [].map.call(inputs, function( input ) {
+        return input.value;
+    });
+    tamp = names;
   });
-
     //namaitem
   $( "#namaitem" ).focus(function(){
         var key = 1;
+    var TC = $('#c-class').val();
     $( "#namaitem" ).autocomplete({
-      source: baseUrl+'/penjualan/POSgrosir/grosir/autocompleteitem',
+      source: baseUrl+'/penjualan/POSgrosir/grosir/autocompleteitem/'+TC,
       minLength: 1,
       select: function(event, ui){
         $('#harga').val(ui.item.harga);
@@ -589,9 +633,11 @@ function tambah() {
           var isi   = $('#qty').val();
           var jumlah= $('#detailnama').val();
           var stok  = $('#s_qty').val();
-          if(isi == '' || jumlah == ''){
-            toastr.warning('Item Jumlah Stok tidak boleh kosong');
-            return false;
+          var data1 = $('#nama-customer').val();
+          var data2 = $('#c-class').val();
+        if(isi == '' || jumlah == '' || stok == '' || data1 == '' || data2 == ''){
+          toastr.warning('Item Jumlah Stok dan Nama Pelanggan tidak boleh kosong');
+          return false;
         }
           tambah();
           $("input[name='item']").val('');
