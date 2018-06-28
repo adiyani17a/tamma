@@ -129,7 +129,7 @@ class ReturnPembelianController extends Controller
   {
     $dataHeader = d_purchasingreturn::join('d_purchasing','d_purchasingreturn.d_pcsr_pcsid','=','d_purchasing.d_pcs_id')
           ->join('d_supplier','d_purchasingreturn.d_pcsr_supid','=','d_supplier.s_id')
-          ->select('d_purchasingreturn.*', 'd_supplier.s_id', 'd_supplier.s_company', 'd_purchasing.d_pcs_id', 'd_purchasing.d_pcs_code')
+          ->select('d_purchasingreturn.*', 'd_supplier.s_id', 'd_supplier.s_company', 'd_purchasing.d_pcs_id', 'd_purchasing.d_pcs_total_net', 'd_purchasing.d_pcs_code')
           ->where('d_purchasingreturn.d_pcsr_id', '=', $id)
           ->orderBy('d_pcsr_created', 'DESC')
           ->get();
@@ -355,19 +355,65 @@ class ReturnPembelianController extends Controller
       //variabel untuk hitung array field
       $hitung_field = count($request->fieldItemId);
 
-      //insert data isi
+      //update d_stock, insert d_stock_mutation & insert d_purchasingreturn_dt
       for ($i=0; $i < $hitung_field; $i++) 
       {
+        $grup = $this->getGroupGudang($request->fieldItemId[$i]);
+        $stokAkhir = (int)$request->fieldStok[$i] - (int)$request->fieldQty[$i];
+        DB::table('d_stock')
+          ->where('s_item', $request->fieldItemId[$i])
+          ->where('s_comp', $grup)
+          ->where('s_position', $grup)
+          ->update(['s_qty' => $stokAkhir]);
+
+        //get id d_stock
+        $dstock_id = DB::table('d_stock')
+          ->select('s_id')
+          ->where('s_item', $request->fieldItemId[$i])
+          ->where('s_comp', $grup)
+          ->where('s_position', $grup)
+          ->first();
+
+        //get last id stock_mutation
+        $lastIdSm = DB::select(DB::raw("SELECT EXISTS(SELECT sm_detailid FROM d_stock_mutation where sm_stock = '$dstock_id->s_id' ORDER BY sm_detailid DESC LIMIT 1) as zz"));
+        //dd($lastIdSm);
+      
+        if ($lastIdSm[0]->zz == 0 || $lastIdSm[0]->zz = '0')
+        {
+          $hasil_id = 1;
+        }
+        else
+        {
+          $hasil_id = (int)$lastIdSm[0]->zz + 1;
+        }
+
+        //insert to d_stock_mutation
+        DB::table('d_stock_mutation')->insert([
+          'sm_stock' => $dstock_id->s_id,
+          'sm_detailid' => $hasil_id,
+          'sm_date' => Carbon::now(),
+          'sm_comp' => $grup,
+          'sm_mutcat' => '12',
+          'sm_item' => $request->fieldItemId[$i],
+          'sm_qty' => $request->fieldQty[$i],
+          'sm_detail' => "PENGURANGAN",
+          'sm_hpp' => $this->konvertRp($request->fieldHargaTotal[$i]),
+          'sm_reff' => $request->kodeReturn,
+          'sm_insert' => Carbon::now(),
+        ]);
+
+        //insert d_purchasingreturn_dt
         $dataIsi = new d_purchasingreturn_dt;
         $dataIsi->d_pcsrdt_idpcsr = $lastId;
+        $dataIsi->d_pcsrdt_smdetail = $hasil_id;
         $dataIsi->d_pcsrdt_item = $request->fieldItemId[$i];
         $dataIsi->d_pcsrdt_qty = $request->fieldQty[$i];
         $dataIsi->d_pcsrdt_price = $this->konvertRp($request->fieldHarga[$i]);
         $dataIsi->d_pcsrdt_pricetotal = $this->konvertRp($request->fieldHargaTotal[$i]);
         $dataIsi->d_pcsrdt_created = Carbon::now();
         $dataIsi->save();
-      } 
-      
+      }
+
     DB::commit();
     return response()->json([
           'status' => 'sukses',
@@ -386,29 +432,86 @@ class ReturnPembelianController extends Controller
 
   public function updateDataReturn(Request $request)
   {
-    dd($request->all());
+    //dd($request->all());
     DB::beginTransaction();
     try {
-      //update to table d_purchasingreturn
-      $data_header = d_purchasingreturn::find($request->idBelanjaEdit);
-      $data_header->d_pcsh_date = date('Y-m-d',strtotime($request->tanggalBeliEdit));
-      $pharian->d_pcsh_noreff = $request->noReffEdit;
-      $pharian->d_pcsh_staff = $request->namaStaffEdit;
-      $pharian->d_pcsh_totalprice = $this->konvertRp($request->totalBiayaEdit);
-      $pharian->d_pcsh_totalpaid = $this->konvertRp($request->totalBayarEdit);
-      $pharian->d_pcsh_updated = Carbon::now();
-      $pharian->save();
-      
-      //update to table d_purchasingharian_dt
-      $hitung_field_edit = count($request->fieldIpIdDetailEdit);
-      for ($i=0; $i < $hitung_field_edit; $i++) 
+      //cek method return
+      if ($request->methodReturn == "PN") 
       {
-        $phariandt = d_purchasingharian_dt::find($request->fieldIpIdDetailEdit[$i]);
-        $phariandt->d_pcshdt_qty = $request->fieldIpQtyEdit[$i];
-        $phariandt->d_pcshdt_price = $this->konvertRp($request->fieldIpHargaEdit[$i]);
-        $phariandt->d_pcshdt_pricetotal = $this->konvertRp($request->fieldIpHargaTotalEdit[$i]);
-        $phariandt->d_pcshdt_updated = Carbon::now();
-        $phariandt->save();
+        //update to table d_purchasingreturn
+        $data_header = d_purchasingreturn::find($request->idReturn);
+        $data_header->d_pcsr_dateupdated = date('Y-m-d',strtotime(Carbon::now()));
+        $data_header->d_pcsr_updated = Carbon::now();
+        $data_header->d_pcsr_pricetotal = $this->konvertRp($request->priceTotal);
+        $data_header->d_pcsr_priceresult = (int)$request->priceTotalNett - (int)$request->priceTotal;
+        $data_header->save();
+      }
+      else
+      {
+        //update to table d_purchasingreturn
+        $data_header = d_purchasingreturn::find($request->idReturn);
+        $data_header->d_pcsr_dateupdated = date('Y-m-d',strtotime(Carbon::now()));
+        $data_header->d_pcsr_updated = Carbon::now();
+        $data_header->d_pcsr_pricetotal = $this->konvertRp($request->priceTotal);
+        $data_header->d_pcsr_priceresult = (int)$request->priceTotalNett;
+        $data_header->save();
+      }
+
+      //variabel untuk cek jumlah field
+      $hitung_field_edit = count($request->fieldIdItem);
+
+      for ($i=0; $i < $hitung_field_edit; $i++) 
+      { 
+        //mengembalikan stok sebelum return
+        $grup = $this->getGroupGudang($request->fieldIdItem[$i]);
+        $stokAkhir = (int)$request->fieldStokItem[$i] + (int)$request->fieldQtyLalu[$i];
+        DB::table('d_stock')
+          ->where('s_item', $request->fieldIdItem[$i])
+          ->where('s_comp', $grup)
+          ->where('s_position', $grup)
+          ->update(['s_qty' => $stokAkhir]);
+
+        //update d_stock
+        $grup2 = $this->getGroupGudang($request->fieldIdItem[$i]);
+        $stokAkhir2 = (int)$stokAkhir - (int)$request->fieldQty[$i];
+        DB::table('d_stock')
+          ->where('s_item', $request->fieldIdItem[$i])
+          ->where('s_comp', $grup2)
+          ->where('s_position', $grup2)
+          ->update(['s_qty' => $stokAkhir2]);
+
+        //update to table d_purchasingreturn_dt
+        $data_isi = d_purchasingreturn_dt::find($request->fieldIdDt[$i]);
+        $data_isi->d_pcsrdt_qty = $request->fieldQty[$i];
+        $data_isi->d_pcsrdt_price = $this->konvertRp($request->fieldHarga[$i]);
+        $data_isi->d_pcsrdt_pricetotal = $this->konvertRp($request->fieldHargaTotal[$i]);
+        $data_isi->d_pcsrdt_updated = Carbon::now();
+        $data_isi->save();
+
+        //cari stok mutasi detailid
+        $sm_detailid = DB::table('d_purchasingreturn_dt')
+          ->select('d_pcsrdt_smdetail')
+          ->where('d_pcsrdt_id','=', $request->fieldIdDt[$i])
+          ->first();
+
+        //get id d_stock
+        $dstock_id = DB::table('d_stock')
+          ->select('s_id')
+          ->where('s_item', $request->fieldIdItem[$i])
+          ->where('s_comp', $grup2)
+          ->where('s_position', $grup2)
+          ->first();
+
+        //update d_stock_mutasi
+        DB::table('d_stock_mutation')
+          ->where('sm_stock', $dstock_id->s_id)
+          ->where('sm_detailid', $sm_detailid->d_pcsrdt_smdetail)
+          ->where('sm_item', $request->fieldIdItem[$i])
+          ->update([
+            'sm_qty' => $request->fieldQty[$i],
+            'sm_hpp' => $this->konvertRp($request->fieldHargaTotal[$i]),
+            'sm_update' => Carbon::now(),
+          ]);
       } 
       
     DB::commit();
@@ -427,194 +530,54 @@ class ReturnPembelianController extends Controller
     }
   }
 
+  public function deleteDataReturn(Request $request)
+  {
+    //dd($request->all());
+    DB::beginTransaction();
+    try {
+      //delete row table d_purchasingreturn_dt
+      $deleteReturnDt = d_purchasingreturn_dt::where('d_pcsrdt_idpcsr', $request->id)->delete();
+      //delete row table d_purchasingreturn
+      $deleteReturn = d_purchasingreturn::where('d_pcsr_id', $request->id)->delete();
+
+      DB::commit();
+      return response()->json([
+          'status' => 'sukses',
+          'pesan' => 'Data Belanja Harian Berhasil Dihapus'
+      ]);
+    } 
+    catch (\Exception $e) 
+    {
+      DB::rollback();
+      return response()->json([
+          'status' => 'gagal',
+          'pesan' => $e->getMessage()."\n at file: ".$e->getFile()."\n line: ".$e->getLine()
+      ]);
+    }
+  }
+
   public function konvertRp($value)
   {
     $value = str_replace(['Rp', '\\', '.', ' '], '', $value);
     return (int)str_replace(',', '.', $value);
   }
 
-    // =======================================================================================================
-
-
-
-
-    
-
-    public function tambah_belanja()
+  public function getGroupGudang($id_item)
+  {
+    $typeBrg = DB::table('m_item')->select('i_type')->where('i_id','=', $id_item)->first();
+    if ($typeBrg->i_type == "BB") 
     {
-      //code order
-      $query = DB::select(DB::raw("SELECT MAX(RIGHT(d_pcsh_id,4)) as kode_max from d_purchasingharian WHERE DATE_FORMAT(d_pcsh_date, '%Y-%m') = DATE_FORMAT(CURRENT_DATE(), '%Y-%m')"));
-      $kd = "";
-
-      if(count($query)>0)
-      {
-        foreach($query as $k)
-        {
-          $tmp = ((int)$k->kode_max)+1;
-          $kd = sprintf("%05s", $tmp);
-        }
-      }
-      else
-      {
-        $kd = "00001";
-      }
-
-      $codePH = "PH-".date('myd')."-".$kd;
-      $namaStaff = 'Jamilah';
-      return view ('/purchasing/belanjaharian/tambah_belanja',compact('codePH', 'namaStaff'));
-    }
-
-    public function tambahMasterSupplier(Request $request)
+      $idGroupGdg = '3';
+    } 
+    elseif ($typeBrg->i_type == "BJ") 
     {
-      //dd($request->all());
-      DB::beginTransaction();
-      try {
-        //insert to table d_supplier
-        DB::table('d_supplier')->insert([
-          's_company' => $request->fNamaSupplier,
-          's_name' => $request->fNamaPemilik,
-          's_address' => $request->fNamaAlamat,
-          's_phone' => $request->fTelp,
-          's_fax' => $request->fFax,
-          's_note' => $request->fKeterangan,
-          's_insert' => Carbon::now()
-        ]);    
-        
-      DB::commit();
-      return response()->json([
-            'status' => 'sukses',
-            'pesan' => 'Data Master Supplier Berhasil Ditambahkan'
-        ]);
-      } 
-      catch (\Exception $e) 
-      {
-        DB::rollback();
-        return response()->json([
-            'status' => 'gagal',
-            'pesan' => $e
-        ]);
-      }
+      $idGroupGdg = '7';
     }
-
-    public function autocompleteSupplier(Request $request)
+    elseif ($typeBrg->i_type == "BP") 
     {
-      $term = $request->term;
-      $results = array();
-      $queries = DB::table('d_supplier')
-        ->where('s_company', 'LIKE', '%'.$term.'%')
-        ->take(8)->get();
-      
-      if ($queries == null) 
-      {
-        $results[] = [ 'id' => null, 'label' =>'tidak di temukan data terkait'];
-      } 
-      else 
-      {
-        foreach ($queries as $val) 
-        {
-          $results[] = [ 'id' => $val->s_id, 'label' => $val->s_company ];
-        }
-      }
-    
-      return Response::json($results);
+      $idGroupGdg = '6';
     }
-
-    public function autocompleteBarang(Request $request)
-    {
-      $term = $request->term;
-      $results = array();
-      $queries = DB::table('m_item')
-        ->where('i_name', 'LIKE', '%'.$term.'%')
-        ->where('i_type', '<>', 'BP')
-        ->take(8)->get();
-      
-      if ($queries == null) 
-      {
-        $results[] = [ 'id' => null, 'label' =>'tidak di temukan data terkait'];
-      } 
-      else 
-      {
-        foreach ($queries as $val) 
-        {
-          $results[] = [ 'id' => $val->i_id, 'label' => $val->i_name, 'satuan' => $val->i_sat1 ];
-        }
-      }
-    
-      return Response::json($results);
-    }
-
-    public function getEditBelanja($id)
-    {
-      $dataHeader = d_purchasingharian::join('d_supplier','d_purchasingharian.d_pcsh_supid','=','d_supplier.s_id')
-                ->select('d_purchasingharian.*', 'd_supplier.s_company', 'd_supplier.s_name', 'd_supplier.s_id')
-                ->where('d_pcsh_id', '=', $id)
-                ->orderBy('d_pcsh_created', 'DESC')
-                ->get();
-
-      $statusLabel = $dataHeader[0]->d_pcsh_status;
-      if ($statusLabel == "WT") 
-      {
-        $spanTxt = 'Waiting';
-        $spanClass = 'label-info';
-      }
-      elseif ($statusLabel == "DE")
-      {
-        $spanTxt = 'Dapat Diedit';
-        $spanClass = 'label-warning';
-      }
-      elseif ($statusLabel == "CF")
-      {
-        $spanTxt = 'Di setujui';
-        $spanClass = 'label-success';
-      }
-      else
-      {
-        $spanTxt = 'Barang telah diterima';
-        $spanClass = 'label-success';
-      }
-
-      $dataIsi = d_purchasingharian_dt::join('m_item', 'd_purchasingharian_dt.d_pcshdt_item', '=', 'm_item.i_id')
-                ->select('d_purchasingharian_dt.*', 'm_item.*')
-                ->where('d_purchasingharian_dt.d_pcshdt_pcshid', '=', $id)
-                ->orderBy('d_purchasingharian_dt.d_pcshdt_created', 'DESC')
-                ->get();
-
-      $fieldTanggal = date('d-m-Y',strtotime($dataHeader[0]->d_pcsh_date));
-
-      return response()->json([
-        'status' => 'sukses',
-        'header' => $dataHeader,
-        'tanggal' =>$fieldTanggal,
-        'data_isi' => $dataIsi,
-        'spanTxt' => $spanTxt,
-        'spanClass' => $spanClass
-      ]);
-    }
-
-    public function deleteDataBelanja(Request $request)
-    {
-      //dd($request->all());
-      DB::beginTransaction();
-      try {
-        //delete row table d_purchasingharian_dt
-        $deleteBelanjaDt = d_purchasingharian_dt::where('d_pcshdt_pcshid', $request->idBeli)->delete();
-        //delete row table d_purchasingharian
-        $deleteBelanja = d_purchasingharian::where('d_pcsh_id', $request->idBeli)->delete();
-
-        DB::commit();
-        return response()->json([
-            'status' => 'sukses',
-            'pesan' => 'Data Belanja Harian Berhasil Dihapus'
-        ]);
-      } 
-      catch (\Exception $e) 
-      {
-        DB::rollback();
-        return response()->json([
-            'status' => 'gagal',
-            'pesan' => $e->getMessage()."\n at file: ".$e->getFile()."\n line: ".$e->getLine()
-        ]);
-      }
-    }
+    return $idGroupGdg;
+  }
 
 }

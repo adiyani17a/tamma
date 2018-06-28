@@ -269,6 +269,12 @@
         $('#lblMetodeEdit').text(data.lblMethod);
         $('#lblTotalReturnEdit').text(data.header2.hargaTotalReturn);
         $('#id_return').val(data.header[0].d_pcsr_id);
+        $('#id_sup').val(data.header[0].d_pcsr_supid);
+        $('#code_return').val(data.header[0].d_pcsr_code);
+        $('#method_return').val(data.header[0].d_pcsr_method);
+        $('#price_total').val(data.header[0].d_pcsr_pricetotal);
+        $('#price_total_nett').val(data.header[0].d_pcs_total_net);
+        $('#price_result').val(data.header[0].d_pcsr_priceresult);
         //loop data
         Object.keys(data.data_isi).forEach(function(){
           var qtyCost = data.data_isi[key-1].d_pcsrdt_qty;
@@ -279,7 +285,9 @@
                           +'<td style="text-align:center">'+key+'</td>'
                           +'<td><input type="text" value="'+data.data_isi[key-1].i_code+' | '+data.data_isi[key-1].i_name+'" name="fieldNamaItem[]" class="form-control" readonly/>'
                           +'<input type="hidden" value="'+data.data_isi[key-1].d_pcsrdt_item+'" name="fieldIdItem[]" class="form-control" readonly/>'
-                          +'<input type="hidden" value="'+data.data_isi[key-1].d_pcsrdt_id+'" name="fieldIdDt[]" class="form-control"/></td>'
+                          +'<input type="hidden" value="'+data.data_isi[key-1].d_pcsrdt_id+'" name="fieldIdDt[]" class="form-control"/>'
+                          +'<input type="hidden" value="'+data.data_isi[key-1].d_pcsrdt_smdetail+'" name="fieldSmidDetail[]" class="form-control"/>'
+                          +'<input type="hidden" value="'+data.data_isi[key-1].d_pcsrdt_qty+'" name="fieldQtyLalu[]" class="form-control"/></td>'
                           +'<td><input type="text" value="'+qtyCost+'" name="fieldQty[]" class="form-control field_qty numberinput input-sm" id="'+i+'"/></td>'
                           +'<td><input type="text" value="'+data.data_isi[key-1].i_sat1+'" name="fieldSatuan[]" class="form-control input-sm" readonly/></td>'
                           +'<td><input type="text" value="'+convertDecimalToRupiah(hargaSatuanItemNet)+'" name="fieldHarga[]" class="form-control input-sm" id="cost_'+i+'" readonly/></td>'
@@ -299,45 +307,6 @@
       }
     });
   }
-
-  /*function editPlan(id) 
-  {
-    $.ajax({
-      url : baseUrl + "/purchasing/rencanapembelian/get-edit-plan/"+id+"/confirmed",
-      type: "GET",
-      dataType: "JSON",
-      success: function(data)
-      {
-        var key = 1;
-        //ambil data ke json->modal
-        $('#txt_span_status_edit').text(data.spanTxt);
-        $("#txt_span_status_edit").addClass('label'+' '+data.spanClass);
-        $('#lblCodeEdit').text(data.header[0].d_pcsp_code);
-        $('#lblTglEdit').text(data.header[0].d_pcsp_datecreated);
-        $('#lblStaffEdit').text(data.header[0].d_pcsp_staff);
-        $('#lblSupplierEdit').text(data.header[0].s_company);
-        //loop data
-        Object.keys(data.data_isi).forEach(function(){
-          $('#tabel-edit').append('<tr class="tbl_modal_edit_row">'
-                          +'<td>'+key+'</td>'
-                          +'<td>'+data.data_isi[key-1].i_code+' '+data.data_isi[key-1].i_name+'</td>'
-                          +'<td><input type="text" value="'+data.data_isi[key-1].d_pcspdt_qty+'" name="fieldQty[]" class="form-control numberinput input-sm"/>'
-                          +'<input type="hidden" value="'+data.data_isi[key-1].d_pcspdt_id+'" name="fieldIdDt[]" class="form-control"/></td>'
-                          +'<td>'+data.data_isi[key-1].d_pcspdt_qtyconfirm+'</td>'
-                          +'<td>'+data.data_isi[key-1].i_sat1+'</td>'
-                          +'<td>'+convertDecimalToRupiah(data.data_isi[key-1].d_pcspdt_prevcost)+'</td>'
-                          +'<td>'+data.data_stok[key-1].qtyStok+'</td>'
-                          +'</tr>');
-          key++;
-        });
-        $('#modal-edit').modal('show');
-      },
-      error: function (jqXHR, textStatus, errorThrown)
-      {
-          alert('Error get data from ajax');
-      }
-    });
-  }*/
 
   function submitEdit()
   {
@@ -377,15 +346,15 @@
     }
   }
 
-  /*function deletePlan(idPlan) 
+  function deleteReturPembelian(id) 
   {
     if(confirm('Yakin hapus data ?'))
     {
         $.ajax({
-            url : baseUrl + "/purchasing/rencanapembelian/delete-data-plan",
+            url : baseUrl + "/purchasing/returnpembelian/delete-data-return",
             type: "POST",
             dataType: "JSON",
-            data: {idPlan:idPlan, "_token": "{{ csrf_token() }}"},
+            data: {id:id, "_token": "{{ csrf_token() }}"},
             success: function(response)
             {
                 if(response.status == "sukses")
@@ -405,45 +374,7 @@
             }
         });
     }
-  }*/
-
-  /*function lihatHistorybyTgl(){
-    var tgl1 = $('#tanggal1').val();
-    var tgl2 = $('#tanggal2').val();
-    var tampil = $('#tampil_data').val();
-    $('#tbl-history').dataTable({
-      "destroy": true,
-      "processing" : true,
-      "serverside" : true,
-      "ajax" : {
-        url: baseUrl + "/purchasing/rencanapembelian/get-data-tabel-history/"+tgl1+"/"+tgl2+"/"+tampil,
-        type: 'GET'
-      },
-      "columns" : [
-        {"data" : "DT_Row_Index", orderable: true, searchable: false, "width" : "5%"}, //memanggil column row
-        {"data" : "d_pcsp_code", "width" : "10%"},
-        {"data" : "i_name", "width" : "15%"},
-        {"data" : "s_company", "width" : "15%"},
-        {"data" : "tglBuat", "width" : "10%"},
-        {"data" : "d_pcspdt_qty", "width" : "5%"},
-        {"data" : "tglConfirm", "width" : "10%"},
-        {"data" : "d_pcspdt_qtyconfirm", "width" : "5%"},
-        {"data" : "status", "width" : "10%"}
-      ],
-      "language": {
-        "searchPlaceholder": "Cari Data",
-        "emptyTable": "Tidak ada data",
-        "sInfo": "Menampilkan _START_ - _END_ Dari _TOTAL_ Data",
-        "sSearch": '<i class="fa fa-search"></i>',
-        "sLengthMenu": "Menampilkan &nbsp; _MENU_ &nbsp; Data",
-        "infoEmpty": "",
-        "paginate": {
-              "previous": "Sebelumnya",
-              "next": "Selanjutnya",
-           }
-      }
-    });
-  }*/
+  }
 
   function randString(angka) 
   {
@@ -502,6 +433,7 @@
     total = convertToRupiah(total);
     // console.log(total);
     $('#lblTotalReturnEdit').text(total);
+    $('#price_total').val(total);
   }
 
 </script>

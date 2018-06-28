@@ -78,6 +78,7 @@ Route::get('/purchasing/returnpembelian/get-data-return-pembelian', 'Pembelian\R
 Route::get('/purchasing/returnpembelian/get-data-detail/{id}', 'Pembelian\ReturnPembelianController@getDataDetail');
 Route::get('/purchasing/returnpembelian/get-data-detail/{id}/{type}', 'Pembelian\ReturnPembelianController@getDataDetail');
 Route::post('/purchasing/returnpembelian/update-data-return', 'Pembelian\ReturnPembelianController@updateDataReturn');
+Route::post('/purchasing/returnpembelian/delete-data-return', 'Pembelian\ReturnPembelianController@deleteDataReturn');
 //rizky
 Route::get('/purchasing/belanjasuplier/suplier', 'Pembelian\PurchasingController@suplier');
 Route::get('/purchasing/belanjalangsung/langsung', 'Pembelian\PurchasingController@langsung');

@@ -4,6 +4,13 @@
     <form method="post" id="form-edit-return">
       {{ csrf_field() }}
       <input type="hidden" name="idReturn" id="id_return" class="form-control">
+      <input type="hidden" name="idSup" id="id_sup" class="form-control">
+      <input type="hidden" name="codeReturn" id="code_return" class="form-control">
+      <input type="hidden" name="methodReturn" id="method_return" class="form-control">
+      <input type="hidden" name="priceTotal" id="price_total" class="form-control">
+      <input type="hidden" name="priceTotalNett" id="price_total_nett" class="form-control">
+      <input type="hidden" name="priceResult" id="price_result" class="form-control">
+
       <!-- Modal content-->
       <div class="modal-content">
         <div class="modal-header" style="background-color: #e77c38;">
