@@ -12,14 +12,15 @@ class d_purchasingreturn_dt extends Model
     const UPDATED_AT = 'd_pcsrdt_updated';
 
     protected $fillable = [
-    	'd_pcsrdt_id',
-    	'd_pcsrdt_idpcsr',
-    	'd_pcsrdt_item',
+        'd_pcsrdt_id',
+        'd_pcsrdt_idpcsr',
+        'd_pcsrdt_smdetail',
+        'd_pcsrdt_item',
         'd_pcsrdt_qty',
-    	'd_pcsrdt_price',
+        'd_pcsrdt_price',
         'd_pcsrdt_pricetotal',
         'd_pcsrdt_isconfirm',
-    	'd_pcsrdt_created',
+        'd_pcsrdt_created',
         'd_pcsrdt_updated'
     ];
 }
