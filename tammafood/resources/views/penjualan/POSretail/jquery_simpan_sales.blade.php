@@ -14,6 +14,7 @@ function simpan(){
         $("input[name='tgl_lahir']").val('');
         $("input[name='email']").val('');
         $("input[name='tipe_cust']").val('');
+        $("input[name='class_cust']").val('');
         $("input[name='no_hp']").val('');
         $("textarea[name='alamat']").val('');
         alert('Data Tersimpan');

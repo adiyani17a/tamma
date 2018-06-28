@@ -153,26 +153,62 @@ class POSGrosirController extends Controller
   return Response::json($results);
   }
 
-  public function autocompleteitem(Request $request){
+  public function autocompleteitem(Request $request, $id){
     $term = $request->term;
-
     $results = array();
-  
-    $queries = DB::select('select * from m_item left join d_stock on i_id = s_item join m_price on i_id = m_pitem where ( i_name like "%'.$term.'%" or i_code like "%'.$term.'%" ) and ( i_type = "BP" or i_type = "BJ" ) and ( s_comp = 2 and s_position = 2 or s_comp is null or s_position is null ) limit 50');
+    if ($id == 'A') {
+      $queries = DB::select('select i_id, i_code,i_name,m_psell1,i_sat1,s_qty from m_item left join d_stock on i_id = s_item join m_price on i_id = m_pitem where ( i_name like "%'.$term.'%" or i_code like "%'.$term.'%" ) and ( i_type = "BP" or i_type = "BJ" ) and ( s_comp = 2 and s_position = 2 or s_comp is null or s_position is null ) limit 50');
 
-    if ($queries == null) {
-      $results[] = [ 'i_id' => null, 'label' =>'tidak di temukan data terkait'];
-    } else {
-      foreach ($queries as $query) 
-      {
-        $results[] = [ 'id' => $query->i_id, 
-                       'label' => $query->i_code .' - '. $query->i_name,
-                       'harga' => $query->m_psell1, 
-                       'kode' => $query->i_id, 
-                       'nama' => $query->i_name, 
-                       'satuan' => $query->i_sat1, 
-                       's_qty'=>$query->s_qty 
-                     ];
+      if ($queries == null) {
+        $results[] = [ 'i_id' => null, 'label' =>'tidak di temukan data terkait'];
+      } else {
+        foreach ($queries as $query) 
+        {
+          $results[] = [ 'id' => $query->i_id, 
+                         'label' => $query->i_code .' - '. $query->i_name,
+                         'harga' => $query->m_psell1, 
+                         'kode' => $query->i_id, 
+                         'nama' => $query->i_name, 
+                         'satuan' => $query->i_sat1, 
+                         's_qty'=>$query->s_qty 
+                       ];
+        }
+      }
+    }else if ($id == 'B') {
+      $queries = DB::select('select i_id, i_code,i_name,m_psell2,i_sat1,s_qty from m_item left join d_stock on i_id = s_item join m_price on i_id = m_pitem where ( i_name like "%'.$term.'%" or i_code like "%'.$term.'%" ) and ( i_type = "BP" or i_type = "BJ" ) and ( s_comp = 2 and s_position = 2 or s_comp is null or s_position is null ) limit 50');
+
+      if ($queries == null) {
+        $results[] = [ 'i_id' => null, 'label' =>'tidak di temukan data terkait'];
+      } else {
+        foreach ($queries as $query) 
+        {
+          $results[] = [ 'id' => $query->i_id, 
+                         'label' => $query->i_code .' - '. $query->i_name,
+                         'harga' => $query->m_psell2, 
+                         'kode' => $query->i_id, 
+                         'nama' => $query->i_name, 
+                         'satuan' => $query->i_sat1, 
+                         's_qty'=>$query->s_qty 
+                       ];
+        }
+      }
+    }else{
+      $queries = DB::select('select i_id, i_code,i_name,m_psell3,i_sat1,s_qty from m_item left join d_stock on i_id = s_item join m_price on i_id = m_pitem where ( i_name like "%'.$term.'%" or i_code like "%'.$term.'%" ) and ( i_type = "BP" or i_type = "BJ" ) and ( s_comp = 2 and s_position = 2 or s_comp is null or s_position is null ) limit 50');
+
+      if ($queries == null) {
+        $results[] = [ 'i_id' => null, 'label' =>'tidak di temukan data terkait'];
+      } else {
+        foreach ($queries as $query) 
+        {
+          $results[] = [ 'id' => $query->i_id, 
+                         'label' => $query->i_code .' - '. $query->i_name,
+                         'harga' => $query->m_psell3, 
+                         'kode' => $query->i_id, 
+                         'nama' => $query->i_name, 
+                         'satuan' => $query->i_sat1, 
+                         's_qty'=>$query->s_qty 
+                       ];
+        }
       }
     }
 
