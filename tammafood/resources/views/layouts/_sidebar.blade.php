@@ -11,14 +11,38 @@
                 <div class="news-update-box hidden-xs"><span class="text-uppercase mrm pull-left text-white">News:</span>
                 </div>
                 <ul class="nav navbar navbar-top-links navbar-right mbn">
-                    <li class="dropdown"><a data-hover="dropdown" href="#" class="dropdown-toggle"><i class="fa fa-bell fa-fw"></i><span class="badge badge-green">3</span></a>
-
+                    <li class="dropdown"><a data-hover="dropdown" href="#" class="dropdown-toggle"><i class="fa fa-bell fa-fw"></i><span class="badge badge-green">!</span></a>
+                        <ul class="dropdown-menu dropdown-user pull-right">
+                            <li style="padding-left: 10px;"><h4>Notifikasi</h4></li>
+                            <li class="divider"></li>
+                            <li><a href="#"><i class="fa fa-warning"></i>Ini Pemberitahuan yang sangat panjang sekali</a></li>
+                            <li><a href="#"><i class="fa fa-check"></i>Ini Pemberitahuan</a></li>
+                            <li><a href="#"><i class="fa fa-times"></i>Ini Pemberitahuan</a></li>
+                            <li class="divider"></li>
+                            <li><a style="font-weight: bold;" href="#">4 Pemberitahuan Baru</a></li>
+                        </ul>
                     </li>
-                    <li class="dropdown"><a data-hover="dropdown" href="#" class="dropdown-toggle"><i class="fa fa-envelope fa-fw"></i><span class="badge badge-orange">7</span></a>
-
+                    <li class="dropdown"><a data-hover="dropdown" href="#" class="dropdown-toggle"><i class="fa fa-envelope fa-fw"></i><span class="badge badge-orange">!</span></a>
+                        <ul class="dropdown-menu dropdown-user pull-right">
+                            <li style="padding-left: 10px;"><h4>Pesan</h4></li>
+                            <li class="divider"></li>
+                            <li><a href="#"><i class="fa fa-warning"></i>Ini Pemberitahuan</a></li>
+                            <li><a href="#"><i class="fa fa-check"></i>Ini Pemberitahuan</a></li>
+                            <li><a href="#"><i class="fa fa-times"></i>Ini Pemberitahuan</a></li>
+                            <li class="divider"></li>
+                            <li><a style="font-weight: bold;" href="#">5 Pesan Baru</a></li>
+                        </ul>
                     </li>
-                    <li class="dropdown"><a data-hover="dropdown" href="#" class="dropdown-toggle"><i class="fa fa-tasks fa-fw"></i><span class="badge badge-blue">8</span></a>
-
+                    <li class="dropdown"><a data-hover="dropdown" href="#" class="dropdown-toggle"><i class="fa fa-tasks fa-fw"></i><span class="badge badge-blue">!</span></a>
+                        <ul class="dropdown-menu dropdown-user pull-right">
+                            <li style="padding-left: 10px;"><h4>Tugas</h4></li>
+                            <li class="divider"></li>
+                            <li><a href="#"><i class="fa fa-warning"></i>Ini Pemberitahuan</a></li>
+                            <li><a href="#"><i class="fa fa-check"></i>Ini Pemberitahuan</a></li>
+                            <li><a href="#"><i class="fa fa-times"></i>Ini Pemberitahuan</a></li>
+                            <li class="divider"></li>
+                            <li><a style="font-weight: bold;" href="#">5 Tugas Baru</a></li>
+                        </ul>
                     </li>
                     <li class="dropdown topbar-user"><a data-hover="dropdown" href="#" class="dropdown-toggle"><img src="{{ asset('assets/images/avatar/48.jpg')}}" alt="" class="img-responsive img-circle">&nbsp;<span class="hidden-xs">{{ Auth::user()->m_name }}</span>&nbsp;<span class="caret"></span></a>
                         <ul class="dropdown-menu dropdown-user pull-right">
