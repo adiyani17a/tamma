@@ -26,7 +26,13 @@
         </td>
         <td>Rp.
           <span class="pull-right">
-          {{ number_format($detail->m_psell,2,',','.')}}
+          @if($detail->m_psell2 == '0' && $detail->m_psell3 == '0' )
+            {{ number_format($detail->m_psell1,2,',','.')}}
+          @elseif ($detail->m_psell1 == '0' && $detail->m_psell3 == '0')
+            {{ number_format($detail->m_psell2,2,',','.')}}
+          @else
+            {{ number_format($detail->m_psell3,2,',','.')}}
+          @endif
           </span>
         </td>
         <td><span class="pull-right">

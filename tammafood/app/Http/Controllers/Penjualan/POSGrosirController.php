@@ -118,6 +118,8 @@ class POSGrosirController extends Controller
                 'sd_qty',
                 'i_sat1',
                 'm_psell1',
+                'm_psell2',
+                'm_psell3',
                 'sd_disc_percent',
                 'sd_disc_value',
                 'sd_total')

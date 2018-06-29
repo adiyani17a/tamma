@@ -523,6 +523,9 @@ function lihatDetail(idDetail){
     $("#alamat2").val('');
     $("#nama-customer" ).val('');
     $('#c-class').val('');
+    $("#s_qty").val('');
+    $("#qty").val('');
+    $("#namaitem" ).val('');
     tableDetail.row().clear().draw(false);
     var inputs = document.getElementById( 'kode' ),
     names  = [].map.call(inputs, function( input ) {
