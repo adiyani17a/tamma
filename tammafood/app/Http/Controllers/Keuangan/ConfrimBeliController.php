@@ -12,6 +12,8 @@ use App\d_purchasingplan;
 use App\d_purchasingplan_dt;
 use App\d_purchasing;
 use App\d_purchasing_dt;
+use App\d_purchasingreturn;
+use App\d_purchasingreturn_dt;
 
 class ConfrimBeliController extends Controller
 {
@@ -248,7 +250,7 @@ class ConfrimBeliController extends Controller
         DB::rollback();
         return response()->json([
             'status' => 'gagal',
-            'pesan' => $e
+            'pesan' => $e->getMessage()."\n at file: ".$e->getFile()."\n line: ".$e->getLine()
         ]);
     }
   }
@@ -465,7 +467,227 @@ class ConfrimBeliController extends Controller
         DB::rollback();
         return response()->json([
             'status' => 'gagal',
-            'pesan' => $e
+            'pesan' => $e->getMessage()."\n at file: ".$e->getFile()."\n line: ".$e->getLine()
+        ]);
+    }
+  }
+
+  public function getDataReturnPembelian()
+  {
+    $data = d_purchasingreturn::join('d_supplier','d_purchasingreturn.d_pcsr_supid','=','d_supplier.s_id')
+                ->join('d_purchasing','d_purchasingreturn.d_pcsr_pcsid','=','d_purchasing.d_pcs_id')
+                ->select('d_purchasingreturn.*', 'd_supplier.s_id', 'd_supplier.s_company', 'd_purchasing.d_pcs_code')
+                ->orderBy('d_pcsr_created', 'DESC')
+                ->get();
+    //dd($data);    
+    return DataTables::of($data)
+    ->addIndexColumn()
+    ->editColumn('tglReturn', function ($data) 
+    {
+      if ($data->d_pcsr_datecreated == null) 
+      {
+          return '-';
+      }
+      else 
+      {
+          return $data->d_pcsr_datecreated ? with(new Carbon($data->d_pcsr_datecreated))->format('d M Y') : '';
+      }
+    })
+    ->editColumn('metode', function ($data) 
+    {
+      if ($data->d_pcsr_method == 'TK') { return 'Tukar Barang'; } else { return 'Potong Nota'; }
+    })
+    ->editColumn('hargaTotal', function ($data) 
+    {
+      return 'Rp. '.number_format($data->d_pcsr_pricetotal,2,",",".");
+    })
+    ->editColumn('status', function ($data)
+    {
+      if ($data->d_pcsr_status == "WT") 
+      {
+        return '<span class="label label-info">Waiting</span>';
+      }
+      elseif ($data->d_pcsr_status == "DE") 
+      {
+        return '<span class="label label-warning">Dapat diedit</span>';
+      }
+      elseif ($data->d_pcsr_status == "CF") 
+      {
+        return '<span class="label label-success">Dikonfirmasi</span>';
+      }
+    })
+    ->editColumn('tglConfirm', function ($data) 
+    {
+      if ($data->d_pcsr_dateconfirm == null) 
+      {
+          return '-';
+      }
+      else 
+      {
+          return $data->d_pcsr_dateconfirm ? with(new Carbon($data->d_pcsr_dateconfirm))->format('d M Y') : '';
+      }
+    })
+    ->addColumn('action', function($data)
+    {
+      if ($data->d_pcsr_status == "WT") 
+      {
+        return '<div class="text-center">
+                  <button class="btn btn-sm btn-primary" title="Ubah Status"
+                      onclick=konfirmasiReturn("'.$data->d_pcsr_id.'","all")><i class="fa fa-check"></i>
+                  </button>
+              </div>'; 
+      }
+      else 
+      {
+        return '<div class="text-center">
+                  <button class="btn btn-sm btn-primary" title="Ubah Status"
+                      onclick=konfirmasiReturn("'.$data->d_pcsr_id.'","confirmed")><i class="fa fa-check"></i>
+                  </button>
+              </div>'; 
+      }
+    })
+    ->rawColumns(['status', 'action'])
+    ->make(true);
+  }
+
+  public function confirmReturnPembelian($id,$type)
+  {
+    $dataHeader = d_purchasingreturn::join('d_supplier','d_purchasingreturn.d_pcsr_supid','=','d_supplier.s_id')
+                ->join('d_purchasing','d_purchasingreturn.d_pcsr_pcsid','=','d_purchasing.d_pcs_id')
+                ->select('d_purchasingreturn.*', 'd_supplier.s_id', 'd_supplier.s_company', 'd_purchasing.d_pcs_code')
+                ->where('d_pcsr_id', '=', $id)
+                ->orderBy('d_pcsr_created', 'DESC')
+                ->get();
+
+    $statusLabel = $dataHeader[0]->d_pcsr_status;
+    if ($statusLabel == "WT") 
+    {
+        $spanTxt = 'Waiting';
+        $spanClass = 'label-info';
+    }
+    elseif ($statusLabel == "DE")
+    {
+        $spanTxt = 'Dapat Diedit';
+        $spanClass = 'label-warning';
+    }
+    else
+    {
+        $spanTxt = 'Di setujui';
+        $spanClass = 'label-success';
+    }
+
+    if ($type == "all") 
+    {
+      $dataIsi = d_purchasingreturn_dt::join('m_item', 'd_purchasingreturn_dt.d_pcsrdt_item', '=', 'm_item.i_id')
+                ->join('d_purchasingreturn', 'd_purchasingreturn_dt.d_pcsrdt_idpcsr', '=', 'd_purchasingreturn.d_pcsr_id')
+                ->select('d_purchasingreturn_dt.*', 'm_item.*', 'd_purchasingreturn.d_pcsr_code')
+                ->where('d_purchasingreturn_dt.d_pcsrdt_idpcsr', '=', $id)
+                ->orderBy('d_purchasingreturn_dt.d_pcsrdt_created', 'DESC')
+                ->get();
+    }
+    else
+    {
+      $dataIsi = d_purchasingreturn_dt::join('m_item', 'd_purchasingreturn_dt.d_pcsrdt_item', '=', 'm_item.i_id')
+                ->join('d_purchasingreturn', 'd_purchasingreturn_dt.d_pcsrdt_idpcsr', '=', 'd_purchasingreturn.d_pcsr_id')
+                ->select('d_purchasingreturn_dt.*', 'm_item.*', 'd_purchasingreturn.d_pcsr_code')
+                ->where('d_purchasingreturn_dt.d_pcsrdt_idpcsr', '=', $id)
+                ->where('d_purchasingreturn_dt.d_pcsrdt_isconfirm', '=', "TRUE")
+                ->orderBy('d_purchasingreturn_dt.d_pcsrdt_created', 'DESC')
+                ->get();
+    }
+
+    foreach ($dataIsi as $val) 
+    {
+      //cek item type
+      $itemType[] = DB::table('m_item')->select('i_type', 'i_id')->where('i_id','=', $val->i_id)->first();
+    }
+
+    //ambil value stok by item type
+    foreach ($itemType as $val) 
+    {
+        if ($val->i_type == "BP") //brg produksi
+        {
+            $query = DB::select(DB::raw("SELECT IFNULL( (SELECT s_qty FROM d_stock where s_item = '$val->i_id' AND s_comp = '6' AND s_position = '6' limit 1) ,'0') as qtyStok"));
+            $stok[] = $query[0];
+        }
+        elseif ($val->i_type == "BJ") //brg jual
+        {
+            $query = DB::select(DB::raw("SELECT IFNULL( (SELECT s_qty FROM d_stock where s_item = '$val->i_id' AND s_comp = '7' AND s_position = '7' limit 1) ,'0') as qtyStok"));
+            $stok[] = $query[0];
+        }
+        elseif ($val->i_type == "BB") //bahan baku
+        {
+            $query = DB::select(DB::raw("SELECT IFNULL( (SELECT s_qty FROM d_stock where s_item = '$val->i_id' AND s_comp = '3' AND s_position = '3' limit 1) ,'0') as qtyStok"));
+            $stok[] = $query[0];
+        }
+    }
+    
+    return Response()->json([
+        'status' => 'sukses',
+        'header' => $dataHeader,
+        'data_isi' => $dataIsi,
+        'data_stok' => $stok,
+        'spanTxt' => $spanTxt,
+        'spanClass' => $spanClass,
+    ]);
+  }
+
+  public function submitReturnPembelian(Request $request)
+  {
+    //dd($request->all());
+    DB::beginTransaction();
+    try {
+        //update table d_purchasingreturn
+        $purchase = d_purchasingreturn::find($request->idReturn);
+        if ($request->statusReturnConfirm != "WT") 
+        {
+            $purchase->d_pcsr_dateconfirm = date('Y-m-d',strtotime(Carbon::now()));
+            $purchase->d_pcsr_status = $request->statusReturnConfirm;
+            $purchase->d_pcsr_updated = Carbon::now();
+            $purchase->save();
+
+            //update table d_purchasingreturn_dt
+            $hitung_field = count($request->fieldConfirmReturn);
+            for ($i=0; $i < $hitung_field; $i++) 
+            {
+                $purchasedt = d_purchasingreturn_dt::find($request->fieldIdDtReturn[$i]);
+                $purchasedt->d_pcsrdt_qtyconfirm = $request->fieldConfirmReturn[$i];
+                $purchasedt->d_pcsrdt_updated = Carbon::now();
+                $purchasedt->d_pcsrdt_isconfirm = "TRUE";
+                $purchasedt->save();
+            }
+        }
+        else
+        {
+            $purchase->d_pcsr_dateconfirm = null;
+            $purchase->d_pcsr_status = $request->statusReturnConfirm;
+            $purchase->d_pcsr_updated = Carbon::now();
+            $purchase->save();
+
+            //update table d_purchasing_dt
+            $hitung_field = count($request->fieldConfirmReturn);
+            for ($i=0; $i < $hitung_field; $i++) 
+            {
+                $purchasedt = d_purchasingreturn_dt::find($request->fieldIdDtReturn[$i]);
+                $purchasedt->d_pcsrdt_qtyconfirm = $request->fieldConfirmReturn[$i];
+                $purchasedt->d_pcsrdt_updated = Carbon::now();
+                $purchasedt->d_pcsrdt_isconfirm = "FALSE";
+                $purchasedt->save();
+            }
+        }
+
+        DB::commit();
+        return response()->json([
+            'status' => 'sukses',
+            'pesan' => 'Data Konfirmasi Return Berhasil Diupdate'
+        ]);
+    } 
+    catch (\Exception $e) 
+    {
+        DB::rollback();
+        return response()->json([
+            'status' => 'gagal',
+            'pesan' => $e->getMessage()."\n at file: ".$e->getFile()."\n line: ".$e->getLine()
         ]);
     }
   }
@@ -477,6 +699,3 @@ class ConfrimBeliController extends Controller
   }
 
 }
-
-
-

@@ -30,6 +30,7 @@
           <ul id="generalTab" class="nav nav-tabs">
             <li class="active"><a href="#alert-tab" data-toggle="tab">Daftar Rencana Pembelian</a></li>
             <li><a href="#order-tab" data-toggle="tab" onclick="daftarTabelOrder()">Daftar Order Pembelian</a></li>
+            <li><a href="#return-tab" data-toggle="tab" onclick="daftarTabelReturn()">Daftar Return Pembelian</a></li>
           </ul>
 
           <div id="generalTabContent" class="tab-content responsive">
@@ -37,6 +38,8 @@
             @include('keuangan.konfirmasi_pembelian.tab-daftar')     
             <!-- tab daftar pembelian order -->
             @include('keuangan.konfirmasi_pembelian.tab-order')
+            <!-- tab daftar return pembelian -->
+            @include('keuangan.konfirmasi_pembelian.tab-return')
           </div>
         </div>
       </div>
@@ -48,6 +51,8 @@
     @include('keuangan.konfirmasi_pembelian.modal-confirm')
     <!--modal confirm order-->
     @include('keuangan.konfirmasi_pembelian.modal-confirm-order')
+    <!--modal confirm return-->
+    @include('keuangan.konfirmasi_pembelian.modal-confirm-return')
   <!-- /modal -->
 </div>
 @endsection
@@ -110,6 +115,7 @@
       //remove span class in modal detail
       $("#txt_span_status_confirm").removeClass();
       $("#txt_span_status_order_confirm").removeClass();
+      $("#txt_span_status_return_confirm").removeClass();
     });
 
     $(document).on('click', '.btn_remove_row', function(event){
@@ -347,9 +353,46 @@
     });
   } 
 
+  function daftarTabelReturn() 
+  {
+    $('#tbl-return').dataTable({
+        "destroy": true,
+        "processing" : true,
+        "serverside" : true,
+        "ajax" : {
+          url: baseUrl + "/keuangan/konfirmasipembelian/get-data-tabel-return",
+          type: 'GET'
+        },
+        "columns" : [
+          {"data" : "DT_Row_Index", orderable: true, searchable: false, "width" : "5%"}, //memanggil column row
+          {"data" : "tglReturn", "width" : "10%"},
+          {"data" : "d_pcsr_code", "width" : "10%"},
+          {"data" : "d_pcs_staff", "width" : "10%"},
+          {"data" : "metode", "width" : "15%"},
+          {"data" : "s_company", "width" : "15%"},
+          {"data" : "hargaTotal", "width" : "15%"},
+          {"data" : "status", "width" : "10%"},
+          {"data" : "tglConfirm", "width" : "10%"},
+          {"data" : "action", orderable: false, searchable: false, "width" : "10%"}
+        ],
+        "language": {
+          "searchPlaceholder": "Cari Data",
+          "emptyTable": "Tidak ada data",
+          "sInfo": "Menampilkan _START_ - _END_ Dari _TOTAL_ Data",
+          "sSearch": '<i class="fa fa-search"></i>',
+          "sLengthMenu": "Menampilkan &nbsp; _MENU_ &nbsp; Data",
+          "infoEmpty": "",
+          "paginate": {
+                "previous": "Sebelumnya",
+                "next": "Selanjutnya",
+             }
+        }
+    });
+  }
+
   function konfirmasiOrder(id,type) 
   {
-      $.ajax({
+    $.ajax({
       url : baseUrl + "/keuangan/konfirmasipembelian/confirm-order/"+id+"/"+type,
       type: "GET",
       dataType: "JSON",
@@ -411,6 +454,78 @@
         }
         
         $('#modal-confirm-order').modal('show');
+      },
+      error: function (jqXHR, textStatus, errorThrown)
+      {
+          alert('Error get data from ajax');
+      }
+    });
+  }
+
+  function konfirmasiReturn(id,type) 
+  {
+    $.ajax({
+      url : baseUrl + "/keuangan/konfirmasipembelian/confirm-return/"+id+"/"+type,
+      type: "GET",
+      dataType: "JSON",
+      success: function(data)
+      {
+        var key = 1;
+        var i = randString(5);
+        $('#txt_span_status_return_confirm').text(data.spanTxt);
+        $("#txt_span_status_return_confirm").addClass('label'+' '+data.spanClass);
+        $("#id_return").val(data.header[0].d_pcsr_id);
+        $("#status_return_confirm").val(data.header[0].d_pcsr_status);
+        $('#lblCodeReturnConfirm').text(data.header[0].d_pcsr_code);
+        $('#lblTglReturnConfirm').text(data.header[0].d_pcsr_datecreated);
+        $('#lblStaffReturnConfirm').text(data.header[0].d_pcs_staff);
+        $('#lblSupplierReturnConfirm').text(data.header[0].s_company);
+        $('#lblTotalReturnConfirm').text(convertDecimalToRupiah(data.header[0].d_pcsr_pricetotal));
+        
+        if ($("#status_return_confirm").val() != "CF") 
+        {
+          //loop data
+          Object.keys(data.data_isi).forEach(function(){
+            $('#tabel-return-confirm').append('<tr class="tbl_modal_detail_row" id="row'+i+'">'
+                            +'<td>'+key+'</td>'
+                            +'<td>'+data.data_isi[key-1].i_code+' '+data.data_isi[key-1].i_name+'</td>'
+                            +'<td>'+data.data_isi[key-1].d_pcsrdt_qty+'</td>'
+                            +'<td>'+data.data_isi[key-1].d_pcsrdt_qty
+                            +'<input type="hidden" value="'+data.data_isi[key-1].d_pcsrdt_qty+'" name="fieldConfirmReturn[]" id="'+i+'" class="form-control numberinput input-sm field_qty_confirm">'
+                            +'<input type="hidden" value="'+data.data_isi[key-1].d_pcsrdt_id+'" name="fieldIdDtReturn[]" class="form-control input-sm"/></td>'
+                            +'<td>'+data.data_isi[key-1].i_sat1+'</td>'
+                            +'<td id="price_'+i+'">'+convertDecimalToRupiah(data.data_isi[key-1].d_pcsrdt_price)+'</td>'
+                            +'<td id="total_'+i+'">'+convertDecimalToRupiah(data.data_isi[key-1].d_pcsrdt_pricetotal)+'</td>'
+                            +'<td>'+data.data_stok[key-1].qtyStok+'</td>'
+                            +'<td><button name="remove" id="'+i+'" class="btn btn-danger btn_remove_row_order btn-sm" disabled>X</button></td>'
+                            +'</tr>');
+            i = randString(5);
+            key++;
+          });
+        }
+        else
+        {
+          //loop data
+          Object.keys(data.data_isi).forEach(function(){
+            $('#tabel-return-confirm').append('<tr class="tbl_modal_detail_row" id="row'+i+'">'
+                            +'<td>'+key+'</td>'
+                            +'<td>'+data.data_isi[key-1].i_code+' '+data.data_isi[key-1].i_name+'</td>'
+                            +'<td>'+data.data_isi[key-1].d_pcsrdt_qty+'</td>'
+                            +'<td>'+data.data_isi[key-1].d_pcsrdt_qty
+                            +'<input type="hidden" value="'+data.data_isi[key-1].d_pcsrdt_qty+'" name="fieldConfirmReturn[]" id="'+i+'" class="form-control numberinput input-sm field_qty_confirm">'
+                            +'<input type="hidden" value="'+data.data_isi[key-1].d_pcsrdt_id+'" name="fieldIdDtReturn[]" class="form-control input-sm"/></td>'
+                            +'<td>'+data.data_isi[key-1].i_sat1+'</td>'
+                            +'<td id="price_'+i+'">'+convertDecimalToRupiah(data.data_isi[key-1].d_pcsrdt_price)+'</td>'
+                            +'<td id="total_'+i+'">'+convertDecimalToRupiah(data.data_isi[key-1].d_pcsrdt_pricetotal)+'</td>'
+                            +'<td>'+data.data_stok[key-1].qtyStok+'</td>'
+                            +'<td><button name="remove" id="'+i+'" class="btn btn-danger btn_remove_row_order btn-sm">X</button></td>'
+                            +'</tr>');
+            i = randString(5);
+            key++;
+          });
+        }
+        
+        $('#modal-confirm-return').modal('show');
       },
       error: function (jqXHR, textStatus, errorThrown)
       {
@@ -485,6 +600,44 @@
                 $('#button_confirm_order').text('Konfirmasi'); //change button text
                 $('#button_confirm_order').attr('disabled',false); //set button enable 
                 $('#tbl-order').DataTable().ajax.reload();
+            }
+          },
+          error: function (jqXHR, textStatus, errorThrown)
+          {
+            alert('Error updating data');
+          }
+      });
+    }
+  }
+
+  function submitReturnConfirm(id)
+  {
+    if(confirm('Anda yakin konfirmasi return pembelian ?'))
+    {
+      $('#button_confirm_return').text('Proses...'); //change button text
+      $('#button_confirm_return').attr('disabled',true); //set button disable 
+      $.ajax({
+          url : baseUrl + "/keuangan/konfirmasipembelian/confirm-return-submit",
+          type: "post",
+          dataType: "JSON",
+          data: $('#form-confirm-return').serialize(),
+          success: function(response)
+          {
+            if(response.status == "sukses")
+            {
+                alert(response.pesan);
+                $('#modal-confirm-return').modal('hide');
+                $('#button_confirm_return').text('Konfirmasi'); //change button text
+                $('#button_confirm_return').attr('disabled',false); //set button enable 
+                $('#tbl-return').DataTable().ajax.reload();
+            }
+            else
+            {
+                alert(response.pesan);
+                $('#modal-confirm-return').modal('hide');
+                $('#button_confirm_return').text('Konfirmasi'); //change button text
+                $('#button_confirm_return').attr('disabled',false); //set button enable 
+                $('#tbl-return').DataTable().ajax.reload();
             }
           },
           error: function (jqXHR, textStatus, errorThrown)

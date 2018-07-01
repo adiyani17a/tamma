@@ -307,6 +307,9 @@ Route::post('/keuangan/konfirmasipembelian/confirm-plan-submit', 'Keuangan\Confr
 Route::get('/keuangan/konfirmasipembelian/get-data-tabel-order', 'Keuangan\ConfrimBeliController@getDataOrderPembelian');
 Route::get('/keuangan/konfirmasipembelian/confirm-order/{id}/{type}', 'Keuangan\ConfrimBeliController@confirmOrderPembelian');
 Route::post('/keuangan/konfirmasipembelian/confirm-order-submit', 'Keuangan\ConfrimBeliController@submitOrderPembelian');
+Route::get('/keuangan/konfirmasipembelian/get-data-tabel-return', 'Keuangan\ConfrimBeliController@getDataReturnPembelian');
+Route::get('/keuangan/konfirmasipembelian/confirm-return/{id}/{type}', 'Keuangan\ConfrimBeliController@confirmReturnPembelian');
+Route::post('/keuangan/konfirmasipembelian/confirm-return-submit', 'Keuangan\ConfrimBeliController@submitReturnPembelian');
 // end rizky
 //mahmud
 Route::get('/produksi/lihatadonan/tabel/{id}/{qty}', 'Keuangan\spkFinancialController@tabelFormula');
