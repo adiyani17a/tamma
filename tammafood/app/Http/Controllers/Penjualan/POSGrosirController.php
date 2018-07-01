@@ -118,6 +118,8 @@ class POSGrosirController extends Controller
                 'sd_qty',
                 'i_sat1',
                 'm_psell1',
+                'm_psell2',
+                'm_psell3',
                 'sd_disc_percent',
                 'sd_disc_value',
                 'sd_total')
@@ -157,7 +159,7 @@ class POSGrosirController extends Controller
     $term = $request->term;
     $results = array();
     if ($id == 'A') {
-      $queries = DB::select('select i_id, i_code,i_name,m_psell1,i_sat1,s_qty from m_item left join d_stock on i_id = s_item join m_price on i_id = m_pitem where ( i_name like "%'.$term.'%" or i_code like "%'.$term.'%" ) and ( i_type = "BP" or i_type = "BJ" ) and ( s_comp = 2 and s_position = 2 or s_comp is null or s_position is null ) limit 50');
+      $queries = DB::select('select i_id, i_code,i_name,m_psell1,i_sat1,s_qty,i_type from m_item left join d_stock on i_id = s_item join m_price on i_id = m_pitem where ( i_name like "%'.$term.'%" or i_code like "%'.$term.'%" ) and ( i_type = "BP" or i_type = "BJ" ) and ( s_comp = 2 and s_position = 2 or s_comp is null or s_position is null ) limit 50');
 
       if ($queries == null) {
         $results[] = [ 'i_id' => null, 'label' =>'tidak di temukan data terkait'];
@@ -170,7 +172,8 @@ class POSGrosirController extends Controller
                          'kode' => $query->i_id, 
                          'nama' => $query->i_name, 
                          'satuan' => $query->i_sat1, 
-                         's_qty'=>$query->s_qty 
+                         's_qty'=>$query->s_qty,
+                         'i_type'=>$query->i_type
                        ];
         }
       }

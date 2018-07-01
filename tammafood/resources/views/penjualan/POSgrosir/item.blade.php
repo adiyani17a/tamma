@@ -7,12 +7,13 @@
                   <input type="hidden" id="harga" name="sd_sell" class="form-control">
                   <input type="hidden" id="detailnama" name="nama" class="form-control">
                   <input type="hidden" id="satuan" name="satuan" class="form-control" >
+                  <input type="hidden" id="i-type" name="i-type" class="form-control" >
               </div>
           </div>      
           <div class="col-md-3">
            <label class="control-label tebal" name="qty">Masukan Jumlah</label>
               <div class="input-group input-group-sm" style="width: 100%;">
-                 <input type="number" id="qty" name="qty" readonly class="form-control" onkeyup="setQty()">
+                 <input type="number" id="qty" name="qty" readonly class="form-control">
               </div>
           </div>
           <div class="col-md-3">

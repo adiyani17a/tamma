@@ -523,6 +523,9 @@ function lihatDetail(idDetail){
     $("#alamat2").val('');
     $("#nama-customer" ).val('');
     $('#c-class').val('');
+    $("#s_qty").val('');
+    $("#qty").val('');
+    $("#namaitem" ).val('');
     tableDetail.row().clear().draw(false);
     var inputs = document.getElementById( 'kode' ),
     names  = [].map.call(inputs, function( input ) {
@@ -545,6 +548,7 @@ function lihatDetail(idDetail){
         $('#satuan').val(ui.item.satuan);
         $('#s_qty').val(ui.item.s_qty);
         $('#qty').val(ui.item.qty);
+        $('#i-type').val(ui.item.i_type);
         $('#qty').val('1');
         $("input[name='qty']").focus();
         }
@@ -570,7 +574,8 @@ var tamp=[];
 
 function tambah() { 
   var kode  =$('#kode').val();      
-  var nama  =$('#detailnama').val();             
+  var nama  =$('#detailnama').val(); 
+  var type  =$('#i-type').val();            
   var harga =SetFormRupiah($('#harga').val());  
   var y     =($('#harga').val());          
   var qty   =parseInt($('#qty').val());
@@ -587,7 +592,7 @@ function tambah() {
   if ( index == -1){         
     tableDetail.row.add([
       
-      nama+'<input type="hidden" name="kode_item[]" class="kode_item kode" value="'+kode+'"><input type="hidden" name="nama_item[]" class="nama_item" value="'+nama+'"> ',
+      nama+'<input type="hidden" name="itype[]" class="type" value="'+type+'"><input type="hidden" name="kode_item[]" class="kode_item kode" value="'+kode+'"><input type="hidden" name="nama_item[]" class="nama_item" value="'+nama+'"> ',
       '<input size="30" style="text-align:right" type="text"  name="sd_qty[]" class="sd_qty form-control qty-'+kode+'" value="'+qty+'" onkeyup="UpdateHarga(\''+kode+'\'); qtyInput(\''+stok+'\', \''+kode+'\'); totalPenjualan()" onchange="qtyInput(\''+stok+'\', \''+kode+'\')"> ',
       satuan+'<input type="hidden" name="satuan[]" class="satuan" value="'+satuan+'"> ',
       '<input type="text" size="10" readonly style="text-align:right" name="harga_item[]" class="harga_item form-control harga-'+kode+'" value="'+harga+'"> ',
@@ -617,37 +622,57 @@ function tambah() {
       });
 
       UpdateTotal();
-      // UpdateDiscont();
       UpdateSubTotal();
       autoJumValPercent();
   }
     $('#qty').keypress(function(e){
-        var charCode;
-        if ((e.which && e.which == 13)) {
-          charCode = e.which;
-        }else if (window.event) {
-            e = window.event;
-            charCode = e.keyCode;
-        }
-        if ((e.which && e.which == 13)){
-          var isi   = $('#qty').val();
-          var jumlah= $('#detailnama').val();
-          var stok  = $('#s_qty').val();
-          var data1 = $('#nama-customer').val();
-          var data2 = $('#c-class').val();
-        if(isi == '' || jumlah == '' || stok == '' || data1 == '' || data2 == ''){
-          toastr.warning('Item Jumlah Stok dan Nama Pelanggan tidak boleh kosong');
-          return false;
-        }
-          tambah();
-          $("input[name='item']").val('');
-          $("input[name='s_qty']").val('');
-          $("input[name='qty']").val('');
-          $("input[name='item']").focus(); 
-             return false;
+    var charCode;
+    if ((e.which && e.which == 13)) {
+    charCode = e.which;
+    }else if (window.event) {
+      e = window.event;
+      charCode = e.keyCode;
+    }
+    if ((e.which && e.which == 13)){
 
-        }
-     });
+      var isi   = parseInt($('#qty').val());
+      var jumlah= $('#detailnama').val();
+      var stok  = parseInt($('#s_qty').val());
+      var data1 = $('#nama-customer').val();
+      var data2 = $('#c-class').val();
+      var itype = $('#i-type').val();
+      var c = isi > stok;
+    if(itype == 'BP'){
+      if(isi == '' || jumlah == '' || stok == '' || data1 == '' || data2 == ''){
+        toastr.warning('Item Jumlah Stok dan Nama Pelanggan tidak boleh kosong!');
+        return false;
+      }
+      var kode = $('#kode').val();
+      tambah();
+      qtyInput(stok, kode);
+        $("input[name='item']").val('');
+        $("input[name='s_qty']").val('');
+        $("input[name='qty']").val('');
+        $("input[name='item']").focus(); 
+        return false;
+     }else{
+      if(isi == '' || jumlah == '' || stok == '' || data1 == '' || data2 == '' || c ){
+        toastr.warning('Pembelian Barang jual melebihi stok!');
+        return false;
+      }
+      var kode = $('#kode').val();
+      tambah();
+      qtyInput(stok, kode);
+        $("input[name='item']").val('');
+        $("input[name='s_qty']").val('');
+        $("input[name='qty']").val('');
+        $("input[name='item']").focus(); 
+        return false;
+     }
+
+    }
+    
+    });
 
 @else
 $("input[name='item']").focus();
@@ -706,31 +731,31 @@ function tambahEdit() {
   autoJumValPercent();
 }
 
-$('#qty').keypress(function(e){
-    var charCode;
-    if ((e.which && e.which == 13)) {
-      charCode = e.which;
-    }else if (window.event) {
-        e = window.event;
-        charCode = e.keyCode;
-    }
-    if ((e.which && e.which == 13)){
-      var isi   = $('#qty').val();
-      var jumlah= $('#detailnama').val();
-      var stok  = $('#s_qty').val();
-      if(isi == '' || jumlah == ''){
-        toastr.warning('Item Jumlah Stok tidak boleh kosong');
-        return false;
-    }
-      tambahEdit();
-      $("input[name='item']").val('');
-      $("input[name='s_qty']").val('');
-      $("input[name='qty']").val('');
-      $("input[name='item']").focus(); 
-         return false;
+// $('#qty').keypress(function(e){
+//     var charCode;
+//     if ((e.which && e.which == 13)) {
+//       charCode = e.which;
+//     }else if (window.event) {
+//         e = window.event;
+//         charCode = e.keyCode;
+//     }
+//     if ((e.which && e.which == 13)){
+//       var isi   = $('#qty').val();
+//       var jumlah= $('#detailnama').val();
+//       var stok  = $('#s_qty').val();
+//       if(isi == '' || jumlah == ''){
+//         toastr.warning('Item Jumlah Stok tidak boleh kosong');
+//         return false;
+//     }
+//       tambahEdit();
+//       $("input[name='item']").val('');
+//       $("input[name='s_qty']").val('');
+//       $("input[name='qty']").val('');
+//       $("input[name='item']").focus(); 
+//          return false;
 
-    }
- });
+//     }
+//  });
   
 @endif
 
@@ -915,15 +940,20 @@ function hapus(a){
       totalPenjualan();
     }  
 
-// function qtyInput(stok, kode){
-//   input = $('.qty-'+kode).val();
-//   input = parseInt(input);
-//   stok = parseInt(stok);
-//   if (input > stok || input < 1) {
-//     $('.qty-'+kode).val(1);
-//   }
-//   UpdateHarga(kode);
-//   }
+function qtyInput(stok, kode){
+    var itype = $('#i-type').val();
+    var itype1 = $('.type').val();
+    if(itype == 'BJ' || itype1 == 'BJ'){
+      input = $('.qty-'+kode).val();
+      input = parseInt(input);
+      stok = parseInt(stok);
+      if (input > stok || input < 1) {
+        toastr.warning('Pembelian melebihi stok, nilai set 1!');
+        $('.qty-'+kode).val(1);
+      }
+      UpdateHarga(kode);
+    }  
+  }
 
 //request
 $("#rnamaitem").autocomplete({

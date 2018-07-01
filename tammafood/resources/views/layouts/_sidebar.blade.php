@@ -6,19 +6,46 @@
             <div class="topbar-main"><a id="menu-toggle" href="#" class="hidden-xs"><i class="fa fa-bars"></i></a>
 
                 <form id="topbar-search" action="" method="" class="hidden-sm hidden-xs">
-                    <div class="input-icon right text-white"><a href="#"><i class="fa fa-search"></i></a><input type="text" placeholder="Search here..." class="form-control text-white"/></div>
+                    <div class="input-icon right text-white">
+                        <a href="#" class="hidden" id="btn-reset" onclick="btnReset()"><i class="fa fa-times"></i></a>
+                        <input type="text" placeholder="Search Menu.." id="filterInput" onfocus="myFunction()" onchange="myFunction()" onkeyup="myFunction()" class="form-control text-white"/>
+                    </div>
                 </form>
                 <div class="news-update-box hidden-xs"><span class="text-uppercase mrm pull-left text-white">News:</span>
                 </div>
                 <ul class="nav navbar navbar-top-links navbar-right mbn">
-                    <li class="dropdown"><a data-hover="dropdown" href="#" class="dropdown-toggle"><i class="fa fa-bell fa-fw"></i><span class="badge badge-green">3</span></a>
-
+                    <li class="dropdown"><a data-hover="dropdown" href="#" class="dropdown-toggle"><i class="fa fa-bell fa-fw"></i><span class="badge badge-green">!</span></a>
+                        <ul class="dropdown-menu dropdown-user pull-right">
+                            <li style="padding-left: 10px;"><h4>Notifikasi</h4></li>
+                            <li class="divider"></li>
+                            <li><a href="#"><i class="fa fa-warning"></i>Ini Pemberitahuan yang sangat panjang sekali</a></li>
+                            <li><a href="#"><i class="fa fa-check"></i>Ini Pemberitahuan</a></li>
+                            <li><a href="#"><i class="fa fa-times"></i>Ini Pemberitahuan</a></li>
+                            <li class="divider"></li>
+                            <li><a style="font-weight: bold;" href="#">4 Pemberitahuan Baru</a></li>
+                        </ul>
                     </li>
-                    <li class="dropdown"><a data-hover="dropdown" href="#" class="dropdown-toggle"><i class="fa fa-envelope fa-fw"></i><span class="badge badge-orange">7</span></a>
-
+                    <li class="dropdown"><a data-hover="dropdown" href="#" class="dropdown-toggle"><i class="fa fa-envelope fa-fw"></i><span class="badge badge-orange">!</span></a>
+                        <ul class="dropdown-menu dropdown-user pull-right">
+                            <li style="padding-left: 10px;"><h4>Pesan</h4></li>
+                            <li class="divider"></li>
+                            <li><a href="#"><i class="fa fa-warning"></i>Ini Pemberitahuan</a></li>
+                            <li><a href="#"><i class="fa fa-check"></i>Ini Pemberitahuan</a></li>
+                            <li><a href="#"><i class="fa fa-times"></i>Ini Pemberitahuan</a></li>
+                            <li class="divider"></li>
+                            <li><a style="font-weight: bold;" href="#">5 Pesan Baru</a></li>
+                        </ul>
                     </li>
-                    <li class="dropdown"><a data-hover="dropdown" href="#" class="dropdown-toggle"><i class="fa fa-tasks fa-fw"></i><span class="badge badge-blue">8</span></a>
-
+                    <li class="dropdown"><a data-hover="dropdown" href="#" class="dropdown-toggle"><i class="fa fa-tasks fa-fw"></i><span class="badge badge-blue">!</span></a>
+                        <ul class="dropdown-menu dropdown-user pull-right">
+                            <li style="padding-left: 10px;"><h4>Tugas</h4></li>
+                            <li class="divider"></li>
+                            <li><a href="#"><i class="fa fa-warning"></i>Ini Pemberitahuan</a></li>
+                            <li><a href="#"><i class="fa fa-check"></i>Ini Pemberitahuan</a></li>
+                            <li><a href="#"><i class="fa fa-times"></i>Ini Pemberitahuan</a></li>
+                            <li class="divider"></li>
+                            <li><a style="font-weight: bold;" href="#">5 Tugas Baru</a></li>
+                        </ul>
                     </li>
                     <li class="dropdown topbar-user"><a data-hover="dropdown" href="#" class="dropdown-toggle"><img src="{{ asset('assets/images/avatar/48.jpg')}}" alt="" class="img-responsive img-circle">&nbsp;<span class="hidden-xs">{{ Auth::user()->m_name }}</span>&nbsp;<span class="caret"></span></a>
                         <ul class="dropdown-menu dropdown-user pull-right">
@@ -89,7 +116,53 @@
                         <li class="{{Request::is('master') ? 'active' : '' || Request::is('master/*') ? 'active' : '' }}"><a href="#"><i class="fa fa-tachometer fa-fw">
                             <div class="icon-bg bg-orange"></div>
                             </i>
-                            <span class="menu-title">Master</span><span class="fa arrow"></span></a>
+                            <span class="menu-title">Master</span><span class="fa arrow"></span>
+
+                            <!-- Filter Menu Submenu -->
+                            <span class="hidden">
+                                @if(Auth::user()->punyaAkses('Data Supplier','ma_read'))
+                                    Data Suplier
+                                @endif
+
+                                @if(Auth::user()->punyaAkses('Data Customer','ma_read'))
+                                    Data Customer
+                                @endif
+
+                                @if(Auth::user()->punyaAkses('Data Satuan','ma_read'))
+                                    Data Satuan
+                                @endif
+
+                                @if(Auth::user()->punyaAkses('Data Group','ma_read'))
+                                    Data Group
+                                @endif
+
+                                @if(Auth::user()->punyaAkses('Data Jenis Produksi','ma_read'))
+                                    Data Jenis Produksi
+                                @endif
+
+                                @if(Auth::user()->punyaAkses('Data Pegawai','ma_read'))
+                                    Data Pegawai
+                                @endif
+
+                                @if(Auth::user()->punyaAkses('Data Akun Keuangan','ma_read'))
+                                    Data Akun Keuangan
+                                @endif
+
+                                @if(Auth::user()->punyaAkses('Data Transaksi Keuangan','ma_read'))
+                                    Data Transaksi Keuangan
+                                @endif
+
+                                @if(Auth::user()->punyaAkses('Data Barang','ma_read'))
+                                    Data Barang
+                                @endif
+
+                                @if(Auth::user()->punyaAkses('Master Formula','ma_read'))
+                                    Master Formula
+                                @endif
+                                Master Formula
+                            </span>
+                            <!-- End Filter Menu Submenu -->
+                        </a>
                             <ul class="nav nav-second-level">
                                  @if(Auth::user()->punyaAkses('Data Supplier','ma_read'))
                                 <li class="{{ Request::is('master/datasuplier/suplier') ? 'active' : '' || Request::is('master/datasuplier/*') ? 'active' : '' }}"><a href="{{ url('/master/datasuplier/suplier') }}"><span class="submenu-title">Data Suplier</span><span class="hidden">Master</span></a>
@@ -147,31 +220,57 @@
                         <div class="clearfix"></div>
                         <li class="{{Request::is('purchasing') ? 'active' : '' || Request::is('purchasing/*') ? 'active' : '' }}"><a href="#"><i class="fa fa-credit-card fa-fw">
                             <div class="icon-bg bg-green"></div>
-                            </i><span class="menu-title">Purchasing</span><span class="fa arrow"></span></a>
+                            </i><span class="menu-title">Purchasing</span><span class="fa arrow"></span>
+                            <!-- FIlter Menu SUbmenu -->
+                            <span class="hidden">
+
+                                @if(Auth::user()->punyaAkses('Rencana Bahan Baku Produksi','ma_read'))
+                                    Rencana Bahan Baku Produksi
+                                @endif
+
+                                @if(Auth::user()->punyaAkses('Rencana Pembelian','ma_read'))
+                                    Rencana Pembelian
+                                @endif
+
+                                @if(Auth::user()->punyaAkses('Order Pembelian','ma_read'))
+                                    Order Pembelian
+                                @endif
+
+                                @if(Auth::user()->punyaAkses('Belanja Harian','ma_read'))
+                                    Belanja Harian
+                                @endif
+
+                                @if(Auth::user()->punyaAkses('Return Pembelian','ma_read'))
+                                    Return Pembelian
+                                @endif
+                                
+                            </span>
+                            <!-- End Filter Menu Submenu -->
+                        </a>
                             <ul class="nav nav-second-level">
                                 @if(Auth::user()->punyaAkses('Rencana Bahan Baku Produksi','ma_read'))
                                 <li class="{{ Request::is('purchasing/rencanabahanbaku/bahan') ? 'active' : '' || Request::is('purchasing/rencanabahanbaku/*') ? 'active' : '' }}">
-                                <a href="{{ url('/purchasing/rencanabahanbaku/bahan') }}"><span class="submenu-title">Rencana Bahan Baku Produksi</span></a>
+                                <a href="{{ url('/purchasing/rencanabahanbaku/bahan') }}"><span class="submenu-title">Rencana Bahan Baku Produksi</span><span class="hidden">Purchasing</span></a>
                                 </li>
                                 @endif
                                 @if(Auth::user()->punyaAkses('Rencana Pembelian','ma_read'))
                                 <li class="{{ Request::is('purchasing/rencanapembelian/rencana') ? 'active' : '' || Request::is('purchasing/rencanapembelian/*') ? 'active' : '' }}">
-                                <a href="{{ url('/purchasing/rencanapembelian/rencana') }}"><span class="submenu-title">Rencana Pembelian</span></a>
+                                <a href="{{ url('/purchasing/rencanapembelian/rencana') }}"><span class="submenu-title">Rencana Pembelian</span><span class="hidden">Purchasing</span></a>
                                 </li>
                                 @endif
                                 @if(Auth::user()->punyaAkses('Order Pembelian','ma_read'))
                                 <li class="{{ Request::is('purchasing/orderpembelian/order') ? 'active' : '' || Request::is('purchasing/orderpembelian/*') ? 'active' : '' }}">
-                                <a href="{{ url('/purchasing/orderpembelian/order') }}"><span class="submenu-title">Order Pembelian</span></a>
+                                <a href="{{ url('/purchasing/orderpembelian/order') }}"><span class="submenu-title">Order Pembelian</span><span class="hidden">Purchasing</span></a>
                                 </li>
                                 @endif
                                 @if(Auth::user()->punyaAkses('Belanja Harian','ma_read'))
                                 <li class="{{ Request::is('purchasing/belanjaharian/belanja') ? 'active' : '' || Request::is('purchasing/belanjaharian/*') ? 'active' : '' }}">
-                                <a href="{{ url('/purchasing/belanjaharian/belanja') }}"><span class="submenu-title">Belanja Harian</span></a>
+                                <a href="{{ url('/purchasing/belanjaharian/belanja') }}"><span class="submenu-title">Belanja Harian</span><span class="hidden">Purchasing</span></a>
                                 </li>
                                 @endif
                                 @if(Auth::user()->punyaAkses('Return Pembelian','ma_read'))
                                 <li class="{{ Request::is('purchasing/returnpembelian/pembelian') ? 'active' : '' || Request::is('purchasing/returnpembelian/*') ? 'active' : '' }}">
-                                <a href="{{ url('/purchasing/returnpembelian/pembelian') }}"><span class="submenu-title">Return Pembelian</span></a>
+                                <a href="{{ url('/purchasing/returnpembelian/pembelian') }}"><span class="submenu-title">Return Pembelian</span><span class="hidden">Purchasing</span></a>
                                 </li>
                                 @endif
                                 <!-- <li class="{{ Request::is('purchasing/belanjasuplier/suplier') ? 'active' : '' || Request::is('purchasing/belanjasuplier/suplier*') ? 'active' : '' }}">
@@ -184,45 +283,81 @@
                         <div class="clearfix"></div>
                         <li  class="{{Request::is('inventory') ? 'active' : '' || Request::is('inventory/*') ? 'active' : '' }}"><a href="#"><i class="fa fa-desktop fa-fw">
                             <div class="icon-bg bg-green"></div>
-                            </i><span class="menu-title">Inventory</span><span class="fa arrow"></span></a>
+                            </i><span class="menu-title">Inventory</span><span class="fa arrow"></span>
+                            <span class="hidden">
+
+                                @if(Auth::user()->punyaAkses('Penerimaan Barang Suplier','ma_read'))
+                                    Penerimaan Barang Suplier
+                                @endif
+
+                                @if(Auth::user()->punyaAkses('Penerimaan Barang Hasil Produksi','ma_read'))
+                                    Penerimaan Barang Hasil Produksi
+                                @endif
+
+                                @if(Auth::user()->punyaAkses('Penerimaan Barang Return Customer','ma_read'))
+                                    Penerimaan Barang Return Customer
+                                @endif
+
+                                @if(Auth::user()->punyaAkses('Barang Digunakan','ma_read'))
+                                    Barang Digunakan
+                                @endif
+
+                                @if(Auth::user()->punyaAkses('Stock Opname','ma_read'))
+                                    Stock Opname
+                                @endif
+
+                                @if(Auth::user()->punyaAkses('Penerimaan Barang Suplier','ma_read'))
+                                    Penerimaan Barang Suplier
+                                @endif
+
+                                @if(Auth::user()->punyaAkses('Ritail Transfer','ma_read'))
+                                    Ritail Transfer
+                                @endif
+
+                                @if(Auth::user()->punyaAkses('Grosir Transfer','ma_read'))
+                                    Grosir Transfer
+                                @endif
+                                
+                            </span>
+                        </a>
                             <ul class="nav nav-second-level">
 
                                 @if(Auth::user()->punyaAkses('Penerimaan Barang Suplier','ma_read'))
-                                <li class="{{ Request::is('inventory/p_suplier/suplier') ? 'active' : '' || Request::is('inventory/p_suplier/*') ? 'active' : '' }}"><a href="{{ url('/inventory/p_suplier/suplier') }}"><span class="submenu-title">Penerimaan Barang Suplier</span></a>
+                                <li class="{{ Request::is('inventory/p_suplier/suplier') ? 'active' : '' || Request::is('inventory/p_suplier/*') ? 'active' : '' }}"><a href="{{ url('/inventory/p_suplier/suplier') }}"><span class="submenu-title">Penerimaan Barang Suplier</span><span class="hidden">Inventory</span></a>
                                 </li>
                                 @endif
 
                                 @if(Auth::user()->punyaAkses('Penerimaan Barang Hasil Produksi','ma_read'))
-                                <li class="{{ Request::is('inventory/p_hasilproduksi/produksi') ? 'active' : '' || Request::is('inventory/p_hasilproduksi/*') ? 'active' : '' }}"><a href="{{ url('/inventory/p_hasilproduksi/produksi') }}"><span class="submenu-title">Penerimaan Barang Hasil Produksi</span></a>
+                                <li class="{{ Request::is('inventory/p_hasilproduksi/produksi') ? 'active' : '' || Request::is('inventory/p_hasilproduksi/*') ? 'active' : '' }}"><a href="{{ url('/inventory/p_hasilproduksi/produksi') }}"><span class="submenu-title">Penerimaan Barang Hasil Produksi</span><span class="hidden">Inventory</span></a>
                                 </li>
                                 @endif
 
                                 @if(Auth::user()->punyaAkses('Penerimaan Barang Return Customer','ma_read'))
-                                <li class="{{ Request::is('inventory/p_returncustomer/cust') ? 'active' : '' || Request::is('inventory/p_returncustomer/*') ? 'active' : '' }}"><a href="{{ url('/inventory/p_returncustomer/cust') }}"><span class="submenu-title">Penerimaan Barang Return Customer</span></a>
+                                <li class="{{ Request::is('inventory/p_returncustomer/cust') ? 'active' : '' || Request::is('inventory/p_returncustomer/*') ? 'active' : '' }}"><a href="{{ url('/inventory/p_returncustomer/cust') }}"><span class="submenu-title">Penerimaan Barang Return Customer</span><span class="hidden">Inventory</span></a>
                                 </li>
                                 @endif
 
                                 @if(Auth::user()->punyaAkses('Barang Digunakan','ma_read'))
-                                <li class="{{ Request::is('inventory/b_digunakan/barang') ? 'active' : '' || Request::is('inventory/b_digunakan/*') ? 'active' : '' }}"><a href="{{ url('/inventory/b_digunakan/barang') }}"><span class="submenu-title">Barang Digunakan</span></a>
+                                <li class="{{ Request::is('inventory/b_digunakan/barang') ? 'active' : '' || Request::is('inventory/b_digunakan/*') ? 'active' : '' }}"><a href="{{ url('/inventory/b_digunakan/barang') }}"><span class="submenu-title">Barang Digunakan</span><span class="hidden">Inventory</span></a>
                                 </li>
                                 @endif
 
                                 @if(Auth::user()->punyaAkses('Stock Opname','ma_read'))
-                                <li class="{{ Request::is('inventory/stockopname/opname') ? 'active' : '' || Request::is('inventory/stockopname/*') ? 'active' : '' }}"><a href="{{ url('/inventory/stockopname/opname') }}"><span class="submenu-title">Stock Opname</span></a>
+                                <li class="{{ Request::is('inventory/stockopname/opname') ? 'active' : '' || Request::is('inventory/stockopname/*') ? 'active' : '' }}"><a href="{{ url('/inventory/stockopname/opname') }}"><span class="submenu-title">Stock Opname</span><span class="hidden">Inventory</span></a>
                                 </li>
                                 @endif
 
                                 @if(Auth::user()->punyaAkses('Penerimaan Barang Suplier','ma_read'))
-                                <li class="{{ Request::is('inventory/datagudang/gudang') ? 'active' : '' || Request::is('inventory/datagudang/*') ? 'active' : '' }}"><a href="{{ url('/inventory/datagudang/gudang') }}"><span class="submenu-title"> Stock Gudang</span></a>
+                                <li class="{{ Request::is('inventory/datagudang/gudang') ? 'active' : '' || Request::is('inventory/datagudang/*') ? 'active' : '' }}"><a href="{{ url('/inventory/datagudang/gudang') }}"><span class="submenu-title"> Stock Gudang</span><span class="hidden">Inventory</span></a>
                                 </li>
                                 @endif
 
                                 @if(Auth::user()->punyaAkses('Ritail Transfer','ma_read'))
-                                <li class="{{ Request::is('inventory/POSretail/transfer') ? 'active' : '' || Request::is('inventory/POSretail/transfer/*') ? 'active' : '' }}"><a href="{{ url('inventory/POSretail/transfer') }}"><span class="submenu-title">Ritail Transfer</span></a>
+                                <li class="{{ Request::is('inventory/POSretail/transfer') ? 'active' : '' || Request::is('inventory/POSretail/transfer/*') ? 'active' : '' }}"><a href="{{ url('inventory/POSretail/transfer') }}"><span class="submenu-title">Ritail Transfer</span><span class="hidden">Inventory</span></a>
                                 </li>
                                 @endif
                                 @if(Auth::user()->punyaAkses('Grosir Transfer','ma_read'))
-                                <li class="{{ Request::is('inventory/POSgrosir/transfer') ? 'active' : '' || Request::is('inventory/POSgrosir/transfer/*') ? 'active' : '' }}"><a href="{{ url('inventory/POSgrosir/transfer') }}"><span class="submenu-title">Grosir Transfer</span></a>
+                                <li class="{{ Request::is('inventory/POSgrosir/transfer') ? 'active' : '' || Request::is('inventory/POSgrosir/transfer/*') ? 'active' : '' }}"><a href="{{ url('inventory/POSgrosir/transfer') }}"><span class="submenu-title">Grosir Transfer</span><span class="hidden">Inventory</span></a>
                                 </li>
                                 @endif
 
@@ -234,19 +369,47 @@
                         <div class="clearfix"></div>
                         <li  class="{{Request::is('produksi') ? 'active' : '' || Request::is('produksi/*') ? 'active' : '' }}"><a href="#"><i class="fa fa-bar-chart-o fa-fw">
                             <div class="icon-bg bg-green"></div>
-                            </i><span class="menu-title">Produksi</span><span class="fa arrow"></span></a>
+                            </i><span class="menu-title">Produksi</span><span class="fa arrow"></span>
+                            <span class="hidden">
+
+                                @if(Auth::user()->punyaAkses('Monitoring Order & Stock','ma_read'))
+                                    Monitoring Order & Stock
+                                @endif
+
+                                @if(Auth::user()->punyaAkses('Rencana Produksi','ma_read'))
+                                    Rencana Produksi
+                                @endif
+
+                                @if(Auth::user()->punyaAkses('Manajemen SPK','ma_read'))
+                                    Manajemen SPK
+                                @endif
+
+                                @if(Auth::user()->punyaAkses('Manajemen Output Produksi','ma_read'))
+                                    Manajemen Output Produksi
+                                @endif
+
+                                @if(Auth::user()->punyaAkses('Pembuatan Pengambilan Item ','ma_read'))
+                                    Pembuatan Pengambilan Item 
+                                @endif
+                                Pembuatan Pengambilan Item
+                                @if(Auth::user()->punyaAkses('Manajemen Sampah(Waste)','ma_read'))
+                                    Manajemen Sampah(Waste)
+                                @endif
+                                
+                            </span>
+                        </a>
                             <ul class="nav nav-second-level">
 
                                 @if(Auth::user()->punyaAkses('Monitoring Order & Stock','ma_read'))
-                                <li class="{{ Request::is('produksi/monitoringprogress/monitoring') ? 'active' : '' || Request::is('produksi/monitoringprogress/*') ? 'active' : '' }}"><a href="{{ url('/produksi/monitoringprogress/monitoring') }}"><span class="submenu-title">Monitoring Order & Stock</span></a>
+                                <li class="{{ Request::is('produksi/monitoringprogress/monitoring') ? 'active' : '' || Request::is('produksi/monitoringprogress/*') ? 'active' : '' }}"><a href="{{ url('/produksi/monitoringprogress/monitoring') }}"><span class="submenu-title">Monitoring Order & Stock</span><span class="hidden">Produksi</span></a>
                                 </li>
                                 @endif
                                 @if(Auth::user()->punyaAkses('Rencana Produksi','ma_read'))
-                                <li class="{{ Request::is('produksi/rencanaproduksi/produksi') ? 'active' : '' || Request::is('produksi/rencanaproduksi/*') ? 'active' : '' }}"><a href="{{ url('/produksi/rencanaproduksi/produksi') }}"><span class="submenu-title">Rencana Produksi</span></a>
+                                <li class="{{ Request::is('produksi/rencanaproduksi/produksi') ? 'active' : '' || Request::is('produksi/rencanaproduksi/*') ? 'active' : '' }}"><a href="{{ url('/produksi/rencanaproduksi/produksi') }}"><span class="submenu-title">Rencana Produksi</span><span class="hidden">Produksi</span></a>
                                 </li>
                                 @endif
                                 @if(Auth::user()->punyaAkses('Manajemen SPK','ma_read'))
-                                <li class="{{ Request::is('produksi/spk/spk') ? 'active' : '' || Request::is('produksi/spk/*') ? 'active' : '' }}"><a href="{{ url('/produksi/spk/spk') }}"><span class="submenu-title">Manajemen SPK</span></a>
+                                <li class="{{ Request::is('produksi/spk/spk') ? 'active' : '' || Request::is('produksi/spk/*') ? 'active' : '' }}"><a href="{{ url('/produksi/spk/spk') }}"><span class="submenu-title">Manajemen SPK</span><span class="hidden">Produksi</span></a>
                                 </li>
                                 @endif
 
@@ -254,15 +417,15 @@
                                 </li> -->
                                 @if(Auth::user()->punyaAkses('Manajemen Output Produksi','ma_read'))
 
-                                <li class="{{ Request::is('produksi/o_produksi/index') ? 'active' : '' || Request::is('produksi/o_produksi/*') ? 'active' : '' }}"><a href="{{ url('/produksi/o_produksi/index') }}"><span class="submenu-title">Manajemen Output Produksi</span></a>
+                                <li class="{{ Request::is('produksi/o_produksi/index') ? 'active' : '' || Request::is('produksi/o_produksi/*') ? 'active' : '' }}"><a href="{{ url('/produksi/o_produksi/index') }}"><span class="submenu-title">Manajemen Output Produksi</span><span class="hidden">Produksi</span></a>
                                 </li>
                                 @endif
 
-                                <li class="{{ Request::is('produksi/suratjalan/index') ? 'active' : '' || Request::is('produksi/suratjalan/*') ? 'active' : '' }}"><a href="{{ url('/produksi/suratjalan/index') }}"><span class="submenu-title">Pembuatan Pengambilan Item</span></a>
+                                <li class="{{ Request::is('produksi/suratjalan/index') ? 'active' : '' || Request::is('produksi/suratjalan/*') ? 'active' : '' }}"><a href="{{ url('/produksi/suratjalan/index') }}"><span class="submenu-title">Pembuatan Pengambilan Item</span><span class="hidden">Produksi</span></a>
                                 </li>
                                 
                                 @if(Auth::user()->punyaAkses('Manajemen Sampah (Waste)','ma_read'))
-                                <li class="{{ Request::is('produksi/waste/waste') ? 'active' : '' || Request::is('produksi/waste/*') ? 'active' : '' }}"><a href="{{ url('/produksi/waste/waste') }}"><span class="submenu-title">Manajemen Sampah (Waste)</span></a>
+                                <li class="{{ Request::is('produksi/waste/waste') ? 'active' : '' || Request::is('produksi/waste/*') ? 'active' : '' }}"><a href="{{ url('/produksi/waste/waste') }}"><span class="submenu-title">Manajemen Sampah (Waste)</span><span class="hidden">Produksi</span></a>
                                 </li>
                                 @endif
 
@@ -274,49 +437,94 @@
                         <div class="clearfix"></div>
                         <li  class="{{Request::is('penjualan') ? 'active' : '' || Request::is('penjualan/*') ? 'active' : '' }}"><a href="#"><i class="fa fa-truck fa-fw">
                             <div class="icon-bg bg-green"></div>
-                            </i><span class="menu-title">Penjualan</span><span class="fa arrow"></span></a>
+                            </i><span class="menu-title">Penjualan</span><span class="fa arrow"></span>
+                            <span class="hidden">
+
+                                @if(Auth::user()->punyaAkses('Manajemen Harga','ma_read'))
+                                    Manajemen Harga
+                                @endif
+
+                                @if(Auth::user()->punyaAkses('Manajemen Produksi','ma_read'))
+                                    Manajemen Produksi
+                                @endif
+
+                                @if(Auth::user()->punyaAkses('Broadcast Promosi Via Email','ma_read'))
+                                    Broadcast Promosi Via Email
+                                @endif
+
+                                @if(Auth::user()->punyaAkses('Rencana Penjualan','ma_read'))
+                                    Rencana Penjualan
+                                @endif
+
+                                @if(Auth::user()->punyaAkses('POS Penjualan Retail','ma_read'))
+                                    POS Penjualan Retail
+                                @endif
+
+                                @if(Auth::user()->punyaAkses('POS Penjualan Grosir / Online','ma_read'))
+                                    POS Penjualan Grosir / Online
+                                @endif
+
+                                @if(Auth::user()->punyaAkses('Monitoring Order & Stock','ma_read'))
+                                    Monitoring Order & Stock
+                                @endif
+
+                                @if(Auth::user()->punyaAkses('Manajemen Return Penjualan','ma_read'))
+                                    Manajemen Return Penjualan
+                                @endif
+
+                                @if(Auth::user()->punyaAkses('Monitoring Progress Penjualan','ma_read'))
+                                    Monitoring Progress Penjualan
+                                @endif
+
+                                @if(Auth::user()->punyaAkses('Mutasi Stock & Retail','ma_read'))
+                                    Mutasi Stock & Retail
+                                @endif
+                                
+                            </span>
+
+                        </a>
                             <ul class="nav nav-second-level">
 
                                 @if(Auth::user()->punyaAkses('Manajemen Harga','ma_read'))
-                                <li class="{{ Request::is('penjualan/manajemenharga/harga') ? 'active' : '' || Request::is('penjualan/manajemenharga/*') ? 'active' : '' }}"><a href="{{ url('/penjualan/manajemenharga/harga') }}"><span class="submenu-title">Manajemen Harga</span></a>
+                                <li class="{{ Request::is('penjualan/manajemenharga/harga') ? 'active' : '' || Request::is('penjualan/manajemenharga/*') ? 'active' : '' }}"><a href="{{ url('/penjualan/manajemenharga/harga') }}"><span class="submenu-title">Manajemen Harga</span><span class="hidden">Penjualan</span></a>
                                 </li>
                                 @endif
                                 @if(Auth::user()->punyaAkses('Manajemen Promosi','ma_read'))
-                                <li class="{{ Request::is('penjualan/manajemenpromosi/promosi') ? 'active' : '' || Request::is('penjualan/manajemenpromosi/*') ? 'active' : '' }}"><a href="{{ url('/penjualan/manajemenpromosi/promosi') }}"><span class="submenu-title">Manajemen Promosi</span></a>
+                                <li class="{{ Request::is('penjualan/manajemenpromosi/promosi') ? 'active' : '' || Request::is('penjualan/manajemenpromosi/*') ? 'active' : '' }}"><a href="{{ url('/penjualan/manajemenpromosi/promosi') }}"><span class="submenu-title">Manajemen Promosi</span><span class="hidden">Penjualan</span></a>
                                 </li>
                                 @endif
                                 @if(Auth::user()->punyaAkses('Broadcast Promosi Via Email','ma_read'))
-                                <li class="{{ Request::is('penjualan/broadcastpromosi/promosi2') ? 'active' : '' || Request::is('penjualan/broadcastpromosi/*') ? 'active' : '' }}"><a href="{{ url('/penjualan/broadcastpromosi/promosi2') }}"><span class="submenu-title">Broadcast Promosi Via Email</span></a>
+                                <li class="{{ Request::is('penjualan/broadcastpromosi/promosi2') ? 'active' : '' || Request::is('penjualan/broadcastpromosi/*') ? 'active' : '' }}"><a href="{{ url('/penjualan/broadcastpromosi/promosi2') }}"><span class="submenu-title">Broadcast Promosi Via Email</span><span class="hidden">Penjualan</span></a>
                                 </li>
                                 @endif
                                 @if(Auth::user()->punyaAkses('Rencana Penjualan','ma_read'))
-                                <li class="{{ Request::is('penjualan/rencanapenjualan/rencana') ? 'active' : '' || Request::is('penjualan/rencanapenjualan/*') ? 'active' : '' }}"><a href="{{ url('/penjualan/rencanapenjualan/rencana') }}"><span class="submenu-title">Rencana Penjualan</span></a>
+                                <li class="{{ Request::is('penjualan/rencanapenjualan/rencana') ? 'active' : '' || Request::is('penjualan/rencanapenjualan/*') ? 'active' : '' }}"><a href="{{ url('/penjualan/rencanapenjualan/rencana') }}"><span class="submenu-title">Rencana Penjualan</span><span class="hidden">Penjualan</span></a>
                                 </li>
                                 @endif
                                 @if(Auth::user()->punyaAkses('POS Penjualan Retail','ma_read'))
-                                <li class="{{ Request::is('penjualan/POSretail/index') ? 'active' : ''}}"><a href="{{ url('/penjualan/POSretail/index') }}"><span class="submenu-title">POS Penjualan Retail</span></a>
+                                <li class="{{ Request::is('penjualan/POSretail/index') ? 'active' : ''}}"><a href="{{ url('/penjualan/POSretail/index') }}"><span class="submenu-title">POS Penjualan Retail</span><span class="hidden">Penjualan</span></a>
                                 </li>
                                 @endif
 
                                 @if(Auth::user()->punyaAkses('POS Penjualan Grosir / Online','ma_read'))
-                                <li class="{{ Request::is('penjualan/POSgrosir/index') ? 'active' : ''}}"><a href="{{ url('/penjualan/POSgrosir/index') }}"><span class="submenu-title">POS Penjualan Grosir / Online</span></a>
+                                <li class="{{ Request::is('penjualan/POSgrosir/index') ? 'active' : ''}}"><a href="{{ url('/penjualan/POSgrosir/index') }}"><span class="submenu-title">POS Penjualan Grosir / Online</span><span class="hidden">Penjualan</span></a>
                                 </li>
                                 @endif
 
                                 @if(Auth::user()->punyaAkses('Monitoring Order & Stock','ma_read'))
-                                <li class="{{ Request::is('penjualan/monitoringorder/monitoring') ? 'active' : '' || Request::is('penjualan/monitoringorder/*') ? 'active' : '' }}"><a href="{{ url('/penjualan/monitoringorder/monitoring') }}"><span class="submenu-title">Monitoring Order & Stock</span></a>
+                                <li class="{{ Request::is('penjualan/monitoringorder/monitoring') ? 'active' : '' || Request::is('penjualan/monitoringorder/*') ? 'active' : '' }}"><a href="{{ url('/penjualan/monitoringorder/monitoring') }}"><span class="submenu-title">Monitoring Order & Stock</span><span class="hidden">Penjualan</span></a>
                                 </li>
                                 @endif
                                 @if(Auth::user()->punyaAkses('Manajemen Return Penjualan','ma_read'))
-                                <li class="{{ Request::is('penjualan/manajemenreturn/r_penjualan') ? 'active' : '' || Request::is('penjualan/manajemenreturn/*') ? 'active' : '' }}"><a href="{{ url('/penjualan/manajemenreturn/r_penjualan') }}"><span class="submenu-title">Manajemen Return Penjualan</span></a>
+                                <li class="{{ Request::is('penjualan/manajemenreturn/r_penjualan') ? 'active' : '' || Request::is('penjualan/manajemenreturn/*') ? 'active' : '' }}"><a href="{{ url('/penjualan/manajemenreturn/r_penjualan') }}"><span class="submenu-title">Manajemen Return Penjualan</span><span class="hidden">Penjualan</span></a>
                                 </li>
                                 @endif
                                 @if(Auth::user()->punyaAkses('Monitoring Progress Penjualan','ma_read'))
-                                <li class="{{ Request::is('penjualan/monitorprogress/progress') ? 'active' : '' || Request::is('penjualan/monitorprogress/*') ? 'active' : '' }}"><a href="{{ url('/penjualan/monitorprogress/progress') }}"><span class="submenu-title">Monitoring Progress Penjualan</span></a>
+                                <li class="{{ Request::is('penjualan/monitorprogress/progress') ? 'active' : '' || Request::is('penjualan/monitorprogress/*') ? 'active' : '' }}"><a href="{{ url('/penjualan/monitorprogress/progress') }}"><span class="submenu-title">Monitoring Progress Penjualan</span><span class="hidden">Penjualan</span></a>
                                 </li>
                                 @endif
                                 @if(Auth::user()->punyaAkses('Mutasi Stock & Retail','ma_read'))
-                                <li class="{{ Request::is('penjualan/mutasistok/mutasi') ? 'active' : '' || Request::is('penjualan/mutasistok/*') ? 'active' : '' }}"><a href="{{ url('/penjualan/mutasistok/mutasi') }}"><span class="submenu-title">Mutasi Stock & Retail</span></a>
+                                <li class="{{ Request::is('penjualan/mutasistok/mutasi') ? 'active' : '' || Request::is('penjualan/mutasistok/*') ? 'active' : '' }}"><a href="{{ url('/penjualan/mutasistok/mutasi') }}"><span class="submenu-title">Mutasi Stock & Retail</span><span class="hidden">Penjualan</span></a>
                                 </li>
                                 @endif
 
@@ -327,39 +535,75 @@
                         <div class="clearfix"></div>
                         <li  class="{{Request::is('hrd') ? 'active' : '' || Request::is('hrd/*') ? 'active' : '' }}"><a href="#"><i class="fa fa-users fa-fw">
                             <div class="icon-bg bg-green"></div>
-                            </i><span class="menu-title">HRD</span><span class="fa arrow"></span></a>
+                            </i><span class="menu-title">HRD</span><span class="fa arrow"></span>
+                            <span class="hidden">
+
+                                @if(Auth::user()->punyaAkses('Data Karyawan','ma_read'))
+                                    Data Karyawan
+                                @endif
+
+                                @if(Auth::user()->punyaAkses('Data Administrasi Pegawai','ma_read'))
+                                    Data Administrasi Pegawai
+                                @endif
+
+                                @if(Auth::user()->punyaAkses('Data Lembur Pegawai','ma_read'))
+                                    Data Lembur Pegawai
+                                @endif
+
+                                @if(Auth::user()->punyaAkses('Scoreboard Pegawai Per Hari','ma_read'))
+                                    Scoreboard Pegawai Per Hari
+                                @endif
+
+                                @if(Auth::user()->punyaAkses('Payroll','ma_read'))
+                                    Payroll
+                                @endif
+
+                                @if(Auth::user()->punyaAkses('Manajemen KPI Pegawai','ma_read'))
+                                    Manajemen KPI Pegawai
+                                @endif
+
+                                @if(Auth::user()->punyaAkses('Training Pegawai','ma_read'))
+                                    Training Pegawai
+                                @endif
+
+                                @if(Auth::user()->punyaAkses('Recruitment','ma_read'))
+                                    Recruitment
+                                @endif
+                                
+                            </span>
+                        </a>
                             <ul class="nav nav-second-level">
 
                                 @if(Auth::user()->punyaAkses('Data Karyawan','ma_read'))
-                                <li class="{{ Request::is('hrd/datajabatan/datajabatan') ? 'active' : '' || Request::is('hrd/datajabatan/*') ? 'active' : '' }}"><a href="{{ url('/hrd/datajabatan/datajabatan')}}"><span class="submenu-title">Data Jabatan</span></a>
+                                <li class="{{ Request::is('hrd/datajabatan/datajabatan') ? 'active' : '' || Request::is('hrd/datajabatan/*') ? 'active' : '' }}"><a href="{{ url('/hrd/datajabatan/datajabatan')}}"><span class="submenu-title">Data Jabatan</span><span class="hidden">HRD</span></a>
                                 </li>
                                 @endif
                                 @if(Auth::user()->punyaAkses('Data Administrasi Pegawai','ma_read'))
-                                <li class="{{ Request::is('hrd/dataadministrasi/admin') ? 'active' : '' || Request::is('hrd/dataadministrasi/*') ? 'active' : '' }}"><a href="{{ url('/hrd/dataadministrasi/admin')}}"><span class="submenu-title">Data Administrasi Pegawai</span></a>
+                                <li class="{{ Request::is('hrd/dataadministrasi/admin') ? 'active' : '' || Request::is('hrd/dataadministrasi/*') ? 'active' : '' }}"><a href="{{ url('/hrd/dataadministrasi/admin')}}"><span class="submenu-title">Data Administrasi Pegawai</span><span class="hidden">HRD</span></a>
                                 </li>
                                 @endif
                                 @if(Auth::user()->punyaAkses('Data Lembur Pegawai','ma_read'))
-                                <li class="{{ Request::is('hrd/datalembur/lembur') ? 'active' : '' || Request::is('hrd/datalembur/*') ? 'active' : '' }}"><a href="{{ url('/hrd/datalembur/lembur')}}"><span class="submenu-title">Data Lembur Pegawai</span></a>
+                                <li class="{{ Request::is('hrd/datalembur/lembur') ? 'active' : '' || Request::is('hrd/datalembur/*') ? 'active' : '' }}"><a href="{{ url('/hrd/datalembur/lembur')}}"><span class="submenu-title">Data Lembur Pegawai</span><span class="hidden">HRD</span></a>
                                 </li>
                                 @endif
                                 @if(Auth::user()->punyaAkses('Scoreboard Pegawai Per Hari','ma_read'))
-                                <li class="{{ Request::is('hrd/scoreboard/score') ? 'active' : '' || Request::is('hrd/scoreboard/*') ? 'active' : '' }}"><a href="{{ url('/hrd/scoreboard/score')}}"><span class="submenu-title">Scoreboard Pegawai Per Hari</span></a>
+                                <li class="{{ Request::is('hrd/scoreboard/score') ? 'active' : '' || Request::is('hrd/scoreboard/*') ? 'active' : '' }}"><a href="{{ url('/hrd/scoreboard/score')}}"><span class="submenu-title">Scoreboard Pegawai Per Hari</span><span class="hidden">HRD</span></a>
                                 </li>
                                 @endif
                                 @if(Auth::user()->punyaAkses('Payroll','ma_read'))
-                                <li class="{{ Request::is('hrd/payroll/payroll') ? 'active' : '' || Request::is('hrd/payroll/*') ? 'active' : '' }}"><a href="{{ url('/hrd/payroll/payroll') }}"><span class="submenu-title">Payroll</span></a>
+                                <li class="{{ Request::is('hrd/payroll/payroll') ? 'active' : '' || Request::is('hrd/payroll/*') ? 'active' : '' }}"><a href="{{ url('/hrd/payroll/payroll') }}"><span class="submenu-title">Payroll</span><span class="hidden">HRD</span></a>
                                 </li>
                                 @endif
                                 @if(Auth::user()->punyaAkses('Manajemen KPI Pegawai','ma_read'))
-                                <li class="{{ Request::is('hrd/manajemenkpipegawai/kpi') ? 'active' : '' || Request::is('hrd/manajemenkpipegawai/*') ? 'active' : '' }}"><a href="{{ url('/hrd/manajemenkpipegawai/kpi') }}"><span class="submenu-title">Manajemen KPI Pegawai</span></a>
+                                <li class="{{ Request::is('hrd/manajemenkpipegawai/kpi') ? 'active' : '' || Request::is('hrd/manajemenkpipegawai/*') ? 'active' : '' }}"><a href="{{ url('/hrd/manajemenkpipegawai/kpi') }}"><span class="submenu-title">Manajemen KPI Pegawai</span><span class="hidden">HRD</span></a>
                                 </li>
                                 @endif
                                 @if(Auth::user()->punyaAkses('Training Pegawai','ma_read'))
-                                <li class="{{ Request::is('hrd/training/training') ? 'active' : '' || Request::is('hrd/training/*') ? 'active' : '' }}"><a href="{{ url('/hrd/training/training')}}"><span class="submenu-title">Training Pegawai</span></a>
+                                <li class="{{ Request::is('hrd/training/training') ? 'active' : '' || Request::is('hrd/training/*') ? 'active' : '' }}"><a href="{{ url('/hrd/training/training')}}"><span class="submenu-title">Training Pegawai</span><span class="hidden">HRD</span></a>
                                 </li>
                                 @endif
                                 @if(Auth::user()->punyaAkses('Recruitment','ma_read'))
-                                <li class="{{ Request::is('hrd/recruitment/rekrut') ? 'active' : '' || Request::is('hrd/recruitment/*') ? 'active' : '' }}"><a href="{{ url('/hrd/recruitment/rekrut') }}"><span class="submenu-title">Recruitment</span></a>
+                                <li class="{{ Request::is('hrd/recruitment/rekrut') ? 'active' : '' || Request::is('hrd/recruitment/*') ? 'active' : '' }}"><a href="{{ url('/hrd/recruitment/rekrut') }}"><span class="submenu-title">Recruitment</span><span class="hidden">HRD</span></a>
                                 </li>
                                 @endif
 
@@ -370,62 +614,126 @@
                         <div class="clearfix"></div>
                         <li  class="{{Request::is('keuangan') ? 'active' : '' || Request::is('keuangan/*') ? 'active' : '' }}"><a href="#"><i class="fa fa-money fa-fw">
                             <div class="icon-bg bg-green"></div>
-                            </i><span class="menu-title">Keuangan</span><span class="fa arrow"></span></a>
+                            </i><span class="menu-title">Keuangan</span><span class="fa arrow"></span>
+                            <span class="hidden">
+
+                                @if(Auth::user()->punyaAkses('Manajemen SPK','ma_read'))
+                                    Manajemen SPK
+                                @endif
+
+                                @if(Auth::user()->punyaAkses('Proses Input Produksi','ma_read'))
+                                    Proses Input Produksi
+                                @endif
+
+                                @if(Auth::user()->punyaAkses('Laporan Hutang Piutang','ma_read'))
+                                    Laporan Hutang Piutang
+                                @endif
+
+                                @if(Auth::user()->punyaAkses('Laporan(Jurnal,Buku Besar,Neraca,DLL)','ma_read'))
+                                    Laporan(Jurnal,Buku Besar,Neraca,DLL)
+                                @endif
+
+                                @if(Auth::user()->punyaAkses('Analisa Progress Terhadap Perencanaan','ma_read'))
+                                    Analisa Progress Terhadap Perencanaan
+                                @endif
+
+                                @if(Auth::user()->punyaAkses('Analisa Net Profit Terhadap OCF','ma_read'))
+                                    Analisa Net Profit Terhadap OCF
+                                @endif
+
+                                @if(Auth::user()->punyaAkses('Analisa Pertumbuhan Aset','ma_read'))
+                                    Analisa Pertumbuhan Aset
+                                @endif
+
+                                @if(Auth::user()->punyaAkses('Analisa Cashflow','ma_read'))
+                                    Analisa Cashflow
+                                @endif
+
+                                @if(Auth::user()->punyaAkses('Analisa Common Size dan Index','ma_read'))
+                                    Analisa Common Size dan Index
+                                @endif
+
+                                @if(Auth::user()->punyaAkses('Analisa Rasio Keuangan','ma_read'))
+                                    Analisa Rasio Keuangan
+                                @endif
+
+                                @if(Auth::user()->punyaAkses('Analisa Three Bottom Line','ma_read'))
+                                    Analisa Three Bottom Line
+                                @endif
+
+                                @if(Auth::user()->punyaAkses('Analisa ROE','ma_read'))
+                                    Analisa ROE
+                                @endif
+
+                                @if(Auth::user()->punyaAkses('Konfirmasi Rencana Pembelian','ma_read'))
+                                    Konfirmasi Rencana Pembelian
+                                @endif
+
+                                @if(Auth::user()->punyaAkses('Konfirmasi Rencana Pembelian','ma_read'))
+                                    Konfirmasi Rencana Pembelian
+                                @endif
+
+                                @if(Auth::user()->punyaAkses('Penerimaan Barang Hasil Produksi','ma_read'))
+                                    Penerimaan Barang Hasil Produksi
+                                @endif
+                                
+                            </span>
+                        </a>
                             <ul class="nav nav-second-level">
                                 @if(Auth::user()->punyaAkses('Manajemen SPK','ma_read'))
-                                <li class="{{ Request::is('keuangan/spk/spk') ? 'active' : '' || Request::is('keuangan/spk/spk/*') ? 'active' : '' }}"><a href="{{ url('keuangan/spk/spk') }}"><span class="submenu-title">Manajemen SPK</span></a>
+                                <li class="{{ Request::is('keuangan/spk/spk') ? 'active' : '' || Request::is('keuangan/spk/spk/*') ? 'active' : '' }}"><a href="{{ url('keuangan/spk/spk') }}"><span class="submenu-title">Manajemen SPK</span><span class="hidden">Keuangan</span></a>
                                 </li>
                                 @endif
                                 @if(Auth::user()->punyaAkses('Proses Input Transaksi','ma_read'))
-                                <li class="{{ Request::is('keuangan/p_inputtransaksi/transaksi') ? 'active' : '' || Request::is('keuangan/p_inputtransaksi/*') ? 'active' : '' }}"><a href="{{ url('/keuangan/p_inputtransaksi/transaksi') }}"><span class="submenu-title">Proses Input Transaksi</span></a>
+                                <li class="{{ Request::is('keuangan/p_inputtransaksi/transaksi') ? 'active' : '' || Request::is('keuangan/p_inputtransaksi/*') ? 'active' : '' }}"><a href="{{ url('/keuangan/p_inputtransaksi/transaksi') }}"><span class="submenu-title">Proses Input Transaksi</span><span class="hidden">Keuangan</span></a>
                                 </li>
                                 @endif
                                 @if(Auth::user()->punyaAkses('Laporan Hutang Piutang','ma_read'))
-                                <li class="{{ Request::is('keuangan/l_hutangpiutang/hutang') ? 'active' : '' || Request::is('keuangan/l_hutangpiutang/*') ? 'active' : '' }}"><a href="{{ url('/keuangan/l_hutangpiutang/hutang') }}"><span class="submenu-title">Laporan Hutang Piutang</span></a>
+                                <li class="{{ Request::is('keuangan/l_hutangpiutang/hutang') ? 'active' : '' || Request::is('keuangan/l_hutangpiutang/*') ? 'active' : '' }}"><a href="{{ url('/keuangan/l_hutangpiutang/hutang') }}"><span class="submenu-title">Laporan Hutang Piutang</span><span class="hidden">Keuangan</span></a>
                                 </li>
                                 @endif
                                 @if(Auth::user()->punyaAkses('Laporan (Jurnal,Buku Besar,Neraca,DLL)','ma_read'))
-                                <li class="{{ Request::is('keuangan/l_jurnal/jurnal') ? 'active' : '' || Request::is('keuangan/l_jurnal/*') ? 'active' : '' }}"><a href="{{ url('/keuangan/l_jurnal/jurnal') }}"><span class="submenu-title">Laporan (Jurnal,Buku Besar,Neraca,DLL)</span></a>
+                                <li class="{{ Request::is('keuangan/l_jurnal/jurnal') ? 'active' : '' || Request::is('keuangan/l_jurnal/*') ? 'active' : '' }}"><a href="{{ url('/keuangan/l_jurnal/jurnal') }}"><span class="submenu-title">Laporan (Jurnal,Buku Besar,Neraca,DLL)</span><span class="hidden">Keuangan</span></a>
                                 </li>
                                 @endif
                                 @if(Auth::user()->punyaAkses('Analisa Progress Terhadap Perencanaan','ma_read'))
-                                <li class="{{ Request::is('keuangan/analisaprogress/analisa') ? 'active' : '' || Request::is('keuangan/analisaprogress/*') ? 'active' : '' }}"><a href="{{ url('/keuangan/analisaprogress/analisa') }}"><span class="submenu-title">Analisa Progress Terhadap Perencanaan</span></a>
+                                <li class="{{ Request::is('keuangan/analisaprogress/analisa') ? 'active' : '' || Request::is('keuangan/analisaprogress/*') ? 'active' : '' }}"><a href="{{ url('/keuangan/analisaprogress/analisa') }}"><span class="submenu-title">Analisa Progress Terhadap Perencanaan</span><span class="hidden">Keuangan</span></a>
                                 </li>
                                 @endif
                                 @if(Auth::user()->punyaAkses('Analisa Net Profit Terhadap OCF','ma_read'))
-                                <li class="{{ Request::is('keuangan/analisaocf/analisa2') ? 'active' : '' || Request::is('keuangan/analisaocf/*') ? 'active' : '' }}"><a href="{{ url('/keuangan/analisaocf/analisa2') }}"><span class="submenu-title">Analisa Net Profit Terhadap OCF</span></a>
+                                <li class="{{ Request::is('keuangan/analisaocf/analisa2') ? 'active' : '' || Request::is('keuangan/analisaocf/*') ? 'active' : '' }}"><a href="{{ url('/keuangan/analisaocf/analisa2') }}"><span class="submenu-title">Analisa Net Profit Terhadap OCF</span><span class="hidden">Keuangan</span></a>
                                 </li>
                                 @endif
                                 @if(Auth::user()->punyaAkses('Analisa Pertumbuhan Aset','ma_read'))
-                                <li class="{{ Request::is('keuangan/analisaaset/analisa3') ? 'active' : '' || Request::is('keuangan/analisaaset/*') ? 'active' : '' }}"><a href="{{ url('/keuangan/analisaaset/analisa3') }}"><span class="submenu-title">Analisa Pertumbuhan Aset</span></a>
+                                <li class="{{ Request::is('keuangan/analisaaset/analisa3') ? 'active' : '' || Request::is('keuangan/analisaaset/*') ? 'active' : '' }}"><a href="{{ url('/keuangan/analisaaset/analisa3') }}"><span class="submenu-title">Analisa Pertumbuhan Aset</span><span class="hidden">Keuangan</span></a>
                                 </li>
                                 @endif
                                 @if(Auth::user()->punyaAkses('Analisa Cashflow','ma_read'))
-                                <li class="{{ Request::is('keuangan/analisacashflow/analisa4') ? 'active' : '' || Request::is('keuangan/analisacashflow/*') ? 'active' : '' }}"><a href="{{ url('/keuangan/analisacashflow/analisa4') }}"><span class="submenu-title">Analisa Cashflow</span></a>
+                                <li class="{{ Request::is('keuangan/analisacashflow/analisa4') ? 'active' : '' || Request::is('keuangan/analisacashflow/*') ? 'active' : '' }}"><a href="{{ url('/keuangan/analisacashflow/analisa4') }}"><span class="submenu-title">Analisa Cashflow</span><span class="hidden">Keuangan</span></a>
                                 </li>
                                 @endif
                                 @if(Auth::user()->punyaAkses('Analisa Common Size dan Index','ma_read'))
-                                <li class="{{ Request::is('keuangan/analisaindex/analisa5') ? 'active' : '' || Request::is('keuangan/analisaindex/*') ? 'active' : '' }}"><a href="{{ url('/keuangan/analisaindex/analisa5') }}"><span class="submenu-title">Analisa Common Size dan Index</span></a>
+                                <li class="{{ Request::is('keuangan/analisaindex/analisa5') ? 'active' : '' || Request::is('keuangan/analisaindex/*') ? 'active' : '' }}"><a href="{{ url('/keuangan/analisaindex/analisa5') }}"><span class="submenu-title">Analisa Common Size dan Index</span><span class="hidden">Keuangan</span></a>
                                 </li>
                                 @endif
                                 @if(Auth::user()->punyaAkses('Analisa Rasio Keuangan','ma_read'))
-                                <li class="{{ Request::is('keuangan/analisarasio/analisa6') ? 'active' : '' || Request::is('keuangan/analisarasio/*') ? 'active' : '' }}"><a href="{{ url('/keuangan/analisarasio/analisa6') }}"><span class="submenu-title">Analisa Rasio Keuangan</span></a>
+                                <li class="{{ Request::is('keuangan/analisarasio/analisa6') ? 'active' : '' || Request::is('keuangan/analisarasio/*') ? 'active' : '' }}"><a href="{{ url('/keuangan/analisarasio/analisa6') }}"><span class="submenu-title">Analisa Rasio Keuangan</span><span class="hidden">Keuangan</span></a>
                                 </li>
                                 @endif
                                 @if(Auth::user()->punyaAkses('Analisa Three Bottom Line','ma_read'))
-                                <li class="{{ Request::is('keuangan/analisabottom/analisa7') ? 'active' : '' || Request::is('keuangan/analisabottom/*') ? 'active' : '' }}"><a href="{{ url('/keuangan/analisabottom/analisa7') }}"><span class="submenu-title">Analisa Three Bottom Line</span></a>
+                                <li class="{{ Request::is('keuangan/analisabottom/analisa7') ? 'active' : '' || Request::is('keuangan/analisabottom/*') ? 'active' : '' }}"><a href="{{ url('/keuangan/analisabottom/analisa7') }}"><span class="submenu-title">Analisa Three Bottom Line</span><span class="hidden">Keuangan</span></a>
                                 </li>
                                 @endif
                                 @if(Auth::user()->punyaAkses('Analisa ROE','ma_read'))
-                                <li class="{{ Request::is('keuangan/analisaroe/analisa8') ? 'active' : '' || Request::is('keuangan/analisaroe/*') ? 'active' : '' }}"><a href="{{ url('/keuangan/analisaroe/analisa8') }}"><span class="submenu-title">Analisa ROE</span></a>
+                                <li class="{{ Request::is('keuangan/analisaroe/analisa8') ? 'active' : '' || Request::is('keuangan/analisaroe/*') ? 'active' : '' }}"><a href="{{ url('/keuangan/analisaroe/analisa8') }}"><span class="submenu-title">Analisa ROE</span><span class="hidden">Keuangan</span></a>
                                 </li>
                                 @endif
                                 @if(Auth::user()->punyaAkses('Konfirmasi Rencana Pembelian','ma_read'))
-                                <li class="{{ Request::is('keuangan/konfirmasipembelian/konfirmasi-purchase') ? 'active' : '' || Request::is('keuangan/konfirmasipembelian/*') ? 'active' : '' }}"><a href="{{ url('/keuangan/konfirmasipembelian/konfirmasi-purchase') }}"><span class="submenu-title">Konfirmasi Data Pembelian</span></a>
+                                <li class="{{ Request::is('keuangan/konfirmasipembelian/konfirmasi-purchase') ? 'active' : '' || Request::is('keuangan/konfirmasipembelian/*') ? 'active' : '' }}"><a href="{{ url('/keuangan/konfirmasipembelian/konfirmasi-purchase') }}"><span class="submenu-title">Konfirmasi Data Pembelian</span><span class="hidden">Keuangan</span></a>
                                 </li>
                                 @endif
                                 @if(Auth::user()->punyaAkses('Penerimaan Barang Hasil Produksi','ma_read'))
-                                <li class="{{ Request::is('keuangan/p_hasilproduksi/pembatalanPenerimaan') ? 'active' : '' || Request::is('keuangan/p_hasilproduksi/*') ? 'active' : '' }}"><a href="{{ url('/keuangan/p_hasilproduksi/pembatalanPenerimaan') }}"><span class="submenu-title">Penerimaan Barang Hasil Produksi</span></a>
+                                <li class="{{ Request::is('keuangan/p_hasilproduksi/pembatalanPenerimaan') ? 'active' : '' || Request::is('keuangan/p_hasilproduksi/*') ? 'active' : '' }}"><a href="{{ url('/keuangan/p_hasilproduksi/pembatalanPenerimaan') }}"><span class="submenu-title">Penerimaan Barang Hasil Produksi</span><span class="hidden">Keuangan</span></a>
                                 </li>
                                 @endif
                                 
@@ -436,25 +744,45 @@
                         <div class="clearfix"></div>
                         <li  class="{{Request::is('system') ? 'active' : '' || Request::is('system/*') ? 'active' : '' }}"><a href="#"><i class="fa fa-cog fa-fw fa-spin">
                             <div class="icon-bg bg-green"></div>
-                            </i><span class="menu-title">System</span><span class="fa arrow"></span></a>
+                            </i><span class="menu-title">System</span><span class="fa arrow"></span>
+                            <span class="hidden">
+
+                                @if(Auth::user()->punyaAkses('Manajemen User','ma_read'))
+                                    Manajemen User
+                                @endif
+
+                                @if(Auth::user()->punyaAkses('Manajemen Hak Akses','ma_read'))
+                                    Manajemen Hak Akses
+                                @endif
+
+                                @if(Auth::user()->punyaAkses('Profil Perusahaan','ma_read'))
+                                    Profil Perusahaan
+                                @endif
+
+                                @if(Auth::user()->punyaAkses('Tahun Finansial','ma_read'))
+                                    Tahun Finansial
+                                @endif
+                                
+                            </span>
+                        </a>
 
 
                             <ul class="nav nav-second-level">
 
                                 @if(Auth::user()->punyaAkses('Manajemen User','ma_read'))
-                                <li class="{{ Request::is('system/hakuser/user') ? 'active' : '' || Request::is('system/hakuser/*') ? 'active' : '' }}"><a href="{{ url('/system/hakuser/user') }}"><span class="submenu-title">Manajemen User</span></a>
+                                <li class="{{ Request::is('system/hakuser/user') ? 'active' : '' || Request::is('system/hakuser/*') ? 'active' : '' }}"><a href="{{ url('/system/hakuser/user') }}"><span class="submenu-title">Manajemen User</span><span class="hidden">System</span></a>
                                 </li>
                                 @endif
                                 @if(Auth::user()->punyaAkses('Manajemen Hak Akses','ma_read'))
-                                <li class="{{ Request::is('system/hakakses/akses') ? 'active' : '' || Request::is('system/hakakses/*') ? 'active' : '' }}"><a href="{{ url('/system/hakakses/akses') }}"><span class="submenu-title">Manajemen Hak Akses</span></a>
+                                <li class="{{ Request::is('system/hakakses/akses') ? 'active' : '' || Request::is('system/hakakses/*') ? 'active' : '' }}"><a href="{{ url('/system/hakakses/akses') }}"><span class="submenu-title">Manajemen Hak Akses</span><span class="hidden">System</span></a>
                                 </li>
                                 @endif
                                 @if(Auth::user()->punyaAkses('Profil Perusahaan','ma_read'))
-                                <li class="{{ Request::is('system/profilperusahaan/profil') ? 'active' : '' || Request::is('system/profilperusahaan/*') ? 'active' : '' }}"><a href="{{ url('/system/profilperusahaan/profil') }}"><span class="submenu-title">Profil Perusahaan</span></a>
+                                <li class="{{ Request::is('system/profilperusahaan/profil') ? 'active' : '' || Request::is('system/profilperusahaan/*') ? 'active' : '' }}"><a href="{{ url('/system/profilperusahaan/profil') }}"><span class="submenu-title">Profil Perusahaan</span><span class="hidden">System</span></a>
                                 </li>
                                 @endif
                                 @if(Auth::user()->punyaAkses('Tahun Finansial','ma_read'))
-                                <li class="{{ Request::is('system/thnfinansial/finansial') ? 'active' : '' || Request::is('system/thnfinansial/*') ? 'active' : '' }}"><a href="{{ url('/system/thnfinansial/finansial') }}"><span class="submenu-title">Tahun Finansial</span></a>
+                                <li class="{{ Request::is('system/thnfinansial/finansial') ? 'active' : '' || Request::is('system/thnfinansial/*') ? 'active' : '' }}"><a href="{{ url('/system/thnfinansial/finansial') }}"><span class="submenu-title">Tahun Finansial</span><span class="hidden">System</span></a>
                                 </li>
                                 @endif
 

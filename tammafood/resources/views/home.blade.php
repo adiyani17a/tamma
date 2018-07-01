@@ -170,7 +170,7 @@
                                         <div class="chat-scroller">
                                             <ul class="chats">
                                                 <li class="in">
-                                                    <img src="../assets/images/avatar/48.jpg" class="avatar img-responsive" />
+                                                    <img src="{{asset('assets/images/avatar/48.jpg')}}" class="avatar img-responsive" />
                                                     <div class="message">
                                                         <span class="chat-arrow"></span><a href="#" class="chat-name">Admin</a>&nbsp;<span
                                                             class="chat-datetime">at July 06, 2014 17:06</span><span class="chat-body">Lorem ipsum
@@ -178,7 +178,7 @@
                                                                 ut laoreet dolore magna aliquam erat volutpat.</span></div>
                                                 </li>
                                                 <li class="out">
-                                                    <img src="../assets/images/avatar/48.jpg" class="avatar img-responsive" />
+                                                    <img src="{{asset('assets/images/avatar/48.jpg')}}" class="avatar img-responsive" />
                                                     <div class="message">
                                                         <span class="chat-arrow"></span><a href="#" class="chat-name">Admin</a>&nbsp;<span
                                                             class="chat-datetime">at July 06, 2014 18:06</span><span class="chat-body">Lorem ipsum
@@ -186,7 +186,7 @@
                                                                 ut laoreet dolore magna aliquam erat volutpat.</span></div>
                                                 </li>
                                                 <li class="in">
-                                                    <img src="../assets/images/avatar/48.jpg" class="avatar img-responsive" />
+                                                    <img src="{{asset('assets/images/avatar/48.jpg')}}" class="avatar img-responsive" />
                                                     <div class="message">
                                                         <span class="chat-arrow"></span><a href="#" class="chat-name">Admin</a>&nbsp;<span
                                                             class="chat-datetime">at July 06, 2014 17:06</span><span class="chat-body">Lorem ipsum
@@ -194,7 +194,7 @@
                                                                 ut laoreet dolore magna aliquam erat volutpat.</span></div>
                                                 </li>
                                                 <li class="out">
-                                                    <img src="../assets/images/avatar/48.jpg" class="avatar img-responsive" />
+                                                    <img src="{{asset('assets/images/avatar/48.jpg')}}" class="avatar img-responsive" />
                                                     <div class="message">
                                                         <span class="chat-arrow"></span><a href="#" class="chat-name">Admin</a>&nbsp;<span
                                                             class="chat-datetime">at July 06, 2014 18:06</span><span class="chat-body">Lorem ipsum
@@ -202,7 +202,7 @@
                                                                 ut laoreet dolore magna aliquam erat volutpat.</span></div>
                                                 </li>
                                                 <li class="in">
-                                                    <img src="../assets/images/avatar/48.jpg" class="avatar img-responsive" />
+                                                    <img src="{{asset('assets/images/avatar/48.jpg')}}" class="avatar img-responsive" />
                                                     <div class="message">
                                                         <span class="chat-arrow"></span><a href="#" class="chat-name">Admin</a>&nbsp;<span
                                                             class="chat-datetime">at July 06, 2014 17:06</span><span class="chat-body">Lorem ipsum
@@ -244,7 +244,7 @@
                                                             class="label label-green mrs">css3</span><span class="label label-green mrs">jquery</span></p>
                                                 </div>
                                                 <div class="col-xs-12 col-sm-4 text-center">
-                                                    <figure><img src="../assets/images/avatar/128.jpg" alt="" style="display: inline-block" class="img-responsive img-circle"/>
+                                                    <figure><img src="{{asset('assets/images/avatar/128.jpg')}}" alt="" style="display: inline-block" class="img-responsive img-circle"/>
                                                     <figcaption class="ratings"><p><a href="#"><span class="fa fa-star"></span></a><a href="#"><span class="fa fa-star"></span></a><a href="#"><span class="fa fa-star"></span></a><a href="#"><span class="fa fa-star"></span></a><a href="#"><span class="fa fa-star-o"></span></a></p></figcaption>
                                                 </figure>
                                                 </div>
