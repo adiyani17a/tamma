@@ -146,6 +146,7 @@ Route::get('/produksi/rencanaproduksi/produksi/autocomplete', 'Produksi\RencanaP
 
 /*Penjualan*/
 Route::get('/penjualan/manajemenharga/harga', 'PenjualanController@harga');
+Route::get('/penjualan/manajemenharga/tabelharga', 'Penjualan\ManajemenHargaController@tabelHarga');
 Route::get('/penjualan/manajemenpromosi/promosi', 'PenjualanController@promosi');
 Route::get('/penjualan/broadcastpromosi/promosi2', 'PenjualanController@promosi2');
 Route::get('/penjualan/rencanapenjualan/rencana', 'PenjualanController@rencana');
