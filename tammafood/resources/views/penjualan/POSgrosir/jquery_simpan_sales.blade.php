@@ -54,8 +54,12 @@ function sal_save_final(){
             $("input[name='sd_disc_value[]']").val('');
             $("input[name='sp_method[]']").val('');
             $("input[name='sp_nominal[]']").val('');
-            alert('Berhasil');
-            window.location.reload();
+            var id = $('#idfatkur').val();
+            if (confirm("Berhasil!, Ingin langsung cetak nota?")) {
+              window.location.href = "/tamma/penjualan/POSgrosir/print/"+id;
+            }
+              // alert('Berhasil');
+              // window.location.reload();
           }else{
             alert('Mohon melengkapi data penjualan!!!');
             $('.simpanFinal').removeAttr('disabled','disabled');

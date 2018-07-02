@@ -229,6 +229,11 @@ Route::get('/penjualan/POSretail/setbarcode', 'Penjualan\POSRetailController@set
 Route::get('/penjualan/POSretail/stock/table-stock', 'Penjualan\stockController@tableStock');
 //POSGrosir
 Route::get('/penjualan/POSgrosir/index', 'Penjualan\POSGrosirController@grosir');
+//ferdy
+Route::get('/penjualan/POSgrosir/print/{id}', 'Penjualan\POSGrosirController@print');
+Route::get('/penjualan/POSgrosir/suratjalan', 'Penjualan\POSGrosirController@suratjalan');
+Route::get('/penjualan/POSgrosir/lpacking', 'Penjualan\POSGrosirController@lpacking');
+//end ferdy
 Route::get('/penjualan/POSgrosir/grosir/store', 'Penjualan\POSGrosirController@store');
 Route::get('/penjualan/POSgrosir/grosir/autocomplete', 'Penjualan\POSGrosirController@autocomplete');
 Route::get('/penjualan/POSgrosir/grosir/sal_save_final', 'Penjualan\POSGrosirController@sal_save_final');

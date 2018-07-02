@@ -56,7 +56,7 @@ class POSGrosirController extends Controller
 
       $ket = 'create';
 
-    return view('/penjualan/POSgrosir/index',compact('id_cust','fatkur', 'idreq','stock','dataPayment','ket'));
+    return view('/penjualan/POSgrosir/index',compact('id_cust','fatkur', 'idreq','stock','dataPayment','ket','idfatkur'));
   }
 
   public function edit_sales($id){ 
@@ -382,6 +382,7 @@ class POSGrosirController extends Controller
   }
 
   public function sal_save_final(Request $request){ 
+    // dd($request->all());
     DB::beginTransaction();
             try { 
         //nota fatkur
@@ -429,7 +430,7 @@ class POSGrosirController extends Controller
             'sd_qty' => $request->sd_qty[$i],
             'sd_price' => ($this->konvertRp($request->harga_item[$i])),
             'sd_disc_percent' => $request->sd_disc_percent[$i],
-            'sd_disc_value' => $request->sd_disc_value[$i],
+            'sd_disc_value' => ($this->konvertRp($request->sd_disc_value[$i])),
             'sd_total' => ($this->konvertRp($request->hasil[$i]))
         ]);
       }
@@ -1053,6 +1054,32 @@ class POSGrosirController extends Controller
     return $updateStock;
   }
 
+  public function print($id){
+    $data = d_sales_dt::select( 'i_code',
+                                'i_name',
+                                'i_sat1',
+                                'sd_price',
+                                'sd_total',
+                                'sd_disc_value',
+                                'sd_qty',
+                                'sd_disc_percent')
+      ->join('m_item','i_id','=','sd_item')
+      ->where('sd_sales',$id)->get();
+
+      $dataTotal = d_sales_dt::select(DB::raw('SUM(sd_total) as total'))
+      ->join('m_item','i_id','=','sd_item')
+      ->where('sd_sales',$id)->get();
+
+    return view('penjualan.POSGrosir.print',compact('data','dataTotal'));
+  }
+
+  public function suratjalan(){
+    return view('penjualan.POSGrosir.suratjalan');
+  }
+
+  public function lpacking(){
+    return view('penjualan.POSGrosir.lpacking');
+  }
 }
 
 
