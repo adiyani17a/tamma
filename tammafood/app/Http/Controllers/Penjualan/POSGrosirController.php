@@ -248,6 +248,7 @@ class POSGrosirController extends Controller
             'c_email' => $request->email,
             'c_hp' => $request->no_hp,
             'c_address' => $request->alamat,
+            'c_class' => $request->class_cust,
             'c_type' =>'GR',
             'c_insert' => Carbon::now(),
             'c_update' => $request->c_update
