@@ -217,7 +217,7 @@
                          <label class="control-label tebal" for="no_faktur" >Nomor Faktur</label>
                           <div class="input-group input-group-sm" style="width: 100%;">
                             <input type="text" id="no_faktur" name="s_nota" class="form-control" readonly="true" value="{{$fatkur}}">
-                            <input type="text" id="idfatkur" name="s_nota" class="form-control" readonly="true" value="{{$idfatkur}}">
+                            <input type="hidden" id="idfatkur" name="s_nota" class="form-control" readonly="true" value="{{$idfatkur}}">
                           </div>
                       </div>
                     </form>

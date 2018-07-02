@@ -1055,6 +1055,13 @@ class POSGrosirController extends Controller
   }
 
   public function print($id){
+    $sales = d_sales::select( 'c_name',
+                              'c_address')
+      ->join('m_customer','c_id','=','s_customer')
+      ->where('s_id',$id)
+      ->first();
+    // dd($sales);
+
     $data = d_sales_dt::select( 'i_code',
                                 'i_name',
                                 'i_sat1',
@@ -1069,8 +1076,8 @@ class POSGrosirController extends Controller
       $dataTotal = d_sales_dt::select(DB::raw('SUM(sd_total) as total'))
       ->join('m_item','i_id','=','sd_item')
       ->where('sd_sales',$id)->get();
-
-    return view('penjualan.POSGrosir.print',compact('data','dataTotal'));
+    // return view('penjualan.POSGrosir.print',compact('data','dataTotal','sales'));
+    return view('penjualan.POSGrosir.dist180.sample',compact('data','dataTotal','sales'));
   }
 
   public function suratjalan(){

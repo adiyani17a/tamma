@@ -210,7 +210,7 @@ Route::get('/penjualan/POSgrosir/grosir/create_sal', 'Penjualan\POSGrosirControl
 Route::get('/penjualan/POSgrosir/grosir/edit_sales/{id}', 'Penjualan\POSGrosirController@edit_sales');
 Route::get('/penjualan/POSgrosir/grosir/distroy/{id}', 'Penjualan\POSGrosirController@distroy');
 Route::put('/penjualan/POSgrosir/grosir/update/{id}', 'Penjualan\POSGrosirController@update');
-Route::get('/penjualan/POSgrosir/grosir/autocompleteitem', 'Penjualan\POSGrosirController@autocompleteitem');
+Route::get('/penjualan/POSgrosir/grosir/autocompleteitem/{id}', 'Penjualan\POSGrosirController@autocompleteitem');
 Route::get('/penjualan/POSgrosir/grosir/item_save', 'Penjualan\POSGrosirController@item_save');
 Route::get('/penjualan/POSgrosir/getdata', 'Penjualan\POSGrosirController@detail');
 Route::get('/penjualan/POSgrosir/grosir/req_retail', 'Penjualan\POSGrosirController@req_retail');

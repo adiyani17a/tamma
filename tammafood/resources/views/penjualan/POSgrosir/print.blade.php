@@ -36,11 +36,9 @@
               <td>
             <br>
                 Kepada Yth, <br>
-                &nbsp;Fitrah Kebab
+                &nbsp;{{ $sales->c_came }}
                 <br>
-                Jl. Wonosari km.8 sekarsuli no.23 RT 04 RW
-                <br>
-                45 Sedangtirto Berbah Sleman Yogyakarta
+              {{--   {{ $sales->c_address }} --}}
                 <br>
                 <br>
               </td>
