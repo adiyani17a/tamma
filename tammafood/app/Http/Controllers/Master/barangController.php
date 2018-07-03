@@ -22,14 +22,20 @@ class barangController extends Controller
 
     public function datatable_barang()
     {
-        $list = DB::select("SELECT * from m_item  join m_price on m_price.m_pitem = m_item.i_id ");
+        $list = DB::table('m_item')
+                ->join('m_price','m_item.i_id','=','m_price.m_pitem')
+                ->join('m_group','m_item.i_code_group','=','m_group.m_gcode')
+                ->join('m_satuan','m_item.i_sat1','=','m_satuan.m_sid')
+                ->select('m_item.*', 'm_price.*', 'm_group.*', 'm_satuan.*')
+                ->orderBy('m_item.i_id', 'DESC')
+                ->get();
         // return $list;
         $data = collect($list);
         
         // return $data;
 
         return Datatables::of($data)
-            
+                ->addIndexColumn()
                 ->addColumn('aksi', function ($data) {
 
                          return  '<button id="edit" onclick="edit(this)" class="btn btn-warning btn-sm" title="Edit"><i class="glyphicon glyphicon-pencil"></i></button>'.'
@@ -49,81 +55,143 @@ class barangController extends Controller
         $group  = DB::table('m_group')->get();
         return view('master.databarang.tambah_barang',compact('kode','group','satuan'));
     }
+
     public function kode_barang(Request $request)
     {
-        $kode = DB::Table('m_item')->max('i_id');
         $group = DB::Table('m_group')->where('m_gcode','=',$request->id)->first();
-        json_encode($group);
-        if ($kode <= 0 || $kode <= '') {
-            $kode  = 1;
-        }else{
-            $kode += 1;
+        $kode = DB::select(DB::raw("SELECT MAX(RIGHT(i_code,6)) as kode_max from m_item WHERE i_code_group ='$request->id'"));
+        $kd = "";
+
+        if(count($kode)>0)
+        {
+            foreach($kode as $k)
+            {
+                $tmp = ((int)$k->kode_max)+1;
+                $kd = sprintf("%06s", $tmp);
+            }
         }
+        else
+        {
+            $kd = "000001";
+        }
+
+        $code = $group->m_gcode.$kd;
         
-        $kode = str_pad($kode, 3, '0', STR_PAD_LEFT);
-        $tanggal = date("ym");
-        
-        $kode = $group->m_gcode.$tanggal.'/'.$kode;
-        return response()->json([$kode]);
+        return response()->json([$code]);
     }
+
     public function simpan_barang(Request $request)
     {
-        // dd($request->all());
-        $tanggal = date("Y-m-d h:i:s");
+        //dd($request->all());
+        DB::beginTransaction();
+        try 
+        {
+            $tanggal = date("Y-m-d h:i:s");
+            $data_item = DB::table('m_item')
+                        ->insert([
+                            'i_code'=>$request->kode_barang,
+                            'i_type' => $request->type,
+                            'i_code_group'=> $request->code_group,
+                            'i_name'=> $request->nama,
+                            'i_sat1'=>$request->satuan1,
+                            'i_sat_isi1'=> $request->isi_sat1,
+                            'i_sat2'=>$request->satuan2,
+                            'i_sat_isi2'=> $request->isi_sat2,
+                            'i_sat3'=>$request->satuan3,
+                            'i_sat_isi3'=> $request->isi_sat3,
+                            'i_det'=>$request->detail,
+                            'i_insert'=>$tanggal
+                        ]);
 
-        $kode = DB::Table('m_item')->max('i_id');
 
-        if ($kode <= 0 || $kode <= '') {
-            $kode  = 1;
-        }else{
-            $kode += 1;
-        }
+            //-----insert m_price------//
+            $get_itemid = DB::table('m_item')->select('i_id')->where('i_code','=', $request->kode_barang)->first();
+            $data_price = DB::table('m_price')
+                            ->insert([
+                                'm_pitem' => $get_itemid->i_id,
+                                'm_pbuy1' => $this->konvertRp($request->hargaBeli1),
+                                'm_pbuy2' => $this->konvertRp($request->hargaBeli2),
+                                'm_pbuy3' => $this->konvertRp($request->hargaBeli3),
+                                'm_pcreated' => $tanggal
+                            ]);
 
-        $data_item = DB::table('m_item')
-                ->insert([
-                    'i_id' => $kode,
-                    'i_name'=>$request->nama,
-                    'i_type' => $request->type,
-                    'i_code'=> $request->kode_barang,
-                    'i_group'=> $request->code_group,
-                    'i_code_group'=> $request->code_group,
-                    'i_sat1'=>$request->satuan1,
-                    'i_sat_isi1'=> $request->isi_sat1,
-
-                    'i_sat2'=>$request->satuan2,
-                    'i_sat_isi2'=> $request->isi_sat2,
-
-                    'i_sat3'=>$request->satuan3,
-                    'i_sat_isi3'=> $request->isi_sat3,
-
-                    'i_insert'=>$tanggal,
-                    'i_detail'=>$request->detail,
-                    'i_weight'=>$request->berat,
-                    
-                    'i_minstock'=>$request->min_stock,
-
+            //-----update/insert d_stock------//
+            //cek grup item
+            if ($request->type == "BP") //brg produksi
+            {
+                $s_comp = '6';
+                $s_position = '6';
+                //cek ada tidaknya record pada tabel
+                $rows = DB::table('d_stock')->select('s_id')
+                    ->where('s_comp','6')
+                    ->where('s_position','6')
+                    ->where('s_item',$get_itemid->i_id)
+                    ->exists();
+            }
+            elseif ($request->type == "BJ") //brg jual
+            {
+                $s_comp = '7';
+                $s_position = '7';
+                //cek ada tidaknya record pada tabel
+                $rows = DB::table('d_stock')->select('s_id')
+                    ->where('s_comp','7')
+                    ->where('s_position','7')
+                    ->where('s_item',$get_itemid->i_id)
+                    ->exists();
+            }
+            elseif ($request->type == "BB") //bahan baku
+            {
+                $s_comp = '3';
+                $s_position = '3';
+                //cek ada tidaknya record pada tabel
+                $rows = DB::table('d_stock')->select('s_id')
+                    ->where('s_comp','3')
+                    ->where('s_position','3')
+                    ->where('s_item',$get_itemid->i_id)
+                    ->exists();
+            }
+       
+            // dd($rows);
+            if($rows !== FALSE) //jika terdapat record, maka lakukan update
+            {
+                //update stok minimum
+                $update = DB::table('d_stock')
+                    ->where('s_comp', $s_comp)
+                    ->where('s_position', $s_position)
+                    ->where('s_item', $get_itemid->i_id)
+                    ->update(['s_qty_min' => $request->min_stock]);
+            }
+            else //jika tidak ada record, maka lakukan insert
+            {
+                //get last id
+                $id_stock = DB::table('d_stock')->max('s_id') + 1;
+                //insert value ke tbl d_stock
+                DB::table('d_stock')->insert([
+                    's_id' => $id_stock,
+                    's_comp' => $s_comp,
+                    's_position' => $s_position,
+                    's_item' => $get_itemid->i_id,
+                    's_qty' => '0',
+                    's_qty_min' => $request->min_stock,
                 ]);
-
-
-        //------------------------//
-
-
-        $kode_price = DB::Table('m_price')->max('m_pid');
-
-        if ($kode_price <= 0 || $kode_price <= '') {
-            $kode_price  = 1;
-        }else{
-            $kode_price += 1;
+            } 
+        
+            DB::commit();
+            return response()->json([
+              'status' => 'sukses',
+              'pesan' => 'Data Master Barang Berhasil Disimpan'
+            ]);
+        } 
+        catch (\Exception $e) 
+        {
+          DB::rollback();
+          return response()->json([
+              'status' => 'gagal',
+              'pesan' => $e->getMessage()."\n at file: ".$e->getFile()."\n line: ".$e->getLine()
+          ]);
         }
-
-        $data_price = DB::table('m_price')
-                ->insert([
-                    'm_pid'=>$kode_price,
-                    'm_pitem'=>$kode,
-                    'm_pbuy'=>$request->harga,
-                ]);
-    return response()->json(['status'=>1]);
     }
+
     public function hapus_barang(Request $request)
     {
       // dd($request->all());
@@ -132,6 +200,7 @@ class barangController extends Controller
 
       return response()->json(['status'=>1]);
     }
+
     public function edit_barang(Request $request)
     {
       $satuan  = DB::table('m_satuan')->get();
@@ -142,6 +211,7 @@ class barangController extends Controller
       $group  = DB::table('m_group')->get();
       return view('master/databarang/edit_barang',compact('data_item','data_price','satuan','group'));
     }
+
     public function update_barang(Request $request)
     {
         // dd($request->all());
@@ -191,5 +261,10 @@ class barangController extends Controller
       return response()->json($data);
     }
 
-}
+    public function konvertRp($value)
+    {
+        $value = str_replace(['Rp', '\\', '.', ' '], '', $value);
+        return (int)str_replace(',', '.', $value);
+    }
 
+}

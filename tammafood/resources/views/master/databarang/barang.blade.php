@@ -5,12 +5,12 @@
                 <!--BEGIN TITLE & BREADCRUMB PAGE-->
                 <div id="title-breadcrumb-option-demo" class="page-title-breadcrumb">
                     <div class="page-header pull-left" style="font-family: 'Raleway', sans-serif;">
-                        <div class="page-title">Master Data Barang Jual</div>
+                        <div class="page-title">Master Data Barang</div>
                     </div>
                     <ol class="breadcrumb page-breadcrumb pull-right" style="font-family: 'Raleway', sans-serif;">
                         <li><i class="fa fa-home"></i>&nbsp;<a href="{{ url('/home') }}">Home</a>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
                         <li><i></i>&nbsp;Master&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
-                        <li class="active">Master Data Barang Jual</li>
+                        <li class="active">Master Data Barang</li>
                     </ol>
                     <div class="clearfix">
                     </div>
@@ -27,7 +27,7 @@
                   
                                 
                               <ul id="generalTab" class="nav nav-tabs">
-                                <li class="active"><a href="#alert-tab" data-toggle="tab">Master Data Barang Jual</a></li>
+                                <li class="active"><a href="#alert-tab" data-toggle="tab">Master Data Barang</a></li>
                                 <!-- <li><a href="#note-tab" data-toggle="tab">2</a></li>
                                 <li><a href="#label-badge-tab" data-toggle="tab">3</a></li> -->
                               </ul>
@@ -54,11 +54,12 @@
                           <table class="table tabelan table-hover table-bordered" width="100%" cellspacing="0" id="data">
                             <thead>
                                 <tr>
-                                  <th class="wd-15p" width="5%">id Barang</th>
+                                  <th class="wd-15p" width="5%">No</th>
                                   <th class="wd-15p" width="5%">Kode Barang</th>
                                   <th class="wd-15p">Nama Barang</th>
+                                  <th class="wd-15p">Satuan</th>
                                   <th class="wd-15p">Kelompok Barang</th>
-                                  <th class="wd-15p">Harga Barang</th>
+                                  <th class="wd-15p">Harga Beli</th>
                                   <th class="wd-15p" width="10%">Aksi</th>
                                 </tr>
                               </thead>
@@ -111,16 +112,16 @@
                   },
                 ],
             "columns": [
-            { "data": "i_id" },
+            { "data" : "DT_Row_Index", orderable: true, searchable: false, "width" : "5%"},
             { "data": "i_code" },
             { "data": "i_name" },
-            { "data": "i_group" },
-            { "data": "m_pbuy" ,render: $.fn.dataTable.render.number( '.', '.', 0, '' )},
+            { "data": "m_sname" },
+            { "data": "m_gname" },
+            { "data": "m_pbuy1" ,render: $.fn.dataTable.render.number( '.', '.', 0, '' )},
             { "data": "aksi" },
             ],
             "responsive":true,
-
-                  "pageLength": 10,
+                "pageLength": 10,
                 "lengthMenu": [[10, 20, 50, - 1], [10, 20, 50, "All"]],
                 "language": {
                     "searchPlaceholder": "Cari Data",
