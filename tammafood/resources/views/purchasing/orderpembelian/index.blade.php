@@ -190,6 +190,7 @@
 
   function detailOrder(id) 
   {
+    $('#append-modal-detail div').remove();
     $.ajax({
       url : baseUrl + "/purchasing/orderpembelian/get-data-detail/" + id,
       type: "GET",
@@ -210,6 +211,35 @@
         $('[name="diskonHarga"]').val(data.header2.nilaiDiskon);
         $('[name="ppnHarga"]').val(data.header2.nilaiPajak);
         $('[name="totalHargaFinal"]').val(data.header2.hargaNet);
+        if (data.header[0].d_pcs_method != "CASH") 
+        {
+          $('#append-modal-detail div').remove();
+          var metode = data.header[0].d_pcs_method;
+          if (metode == "DEPOSIT") 
+          {
+            $('#append-modal-detail div').remove();
+            $('#append-modal-detail').append('<div class="col-md-3 col-sm-12 col-xs-12">'
+                                      +'<label class="tebal">Batas Terakhir Pengiriman</label>'
+                                  +'</div>'
+                                  +'<div class="col-md-3 col-sm-12 col-xs-12">'
+                                    +'<div class="form-group">'
+                                      +'<label id="dueDate">'+data.header[0].d_pcs_duedate+'</label>'
+                                    +'</div>'
+                                  +'</div>');
+          }
+          else if(metode == "CREDIT")
+          {
+            $('#append-modal-detail div').remove();
+            $('#append-modal-detail').append('<div class="col-md-3 col-sm-12 col-xs-12">'
+                                      +'<label class="tebal">TOP (Termin Of Payment)</label>'
+                                  +'</div>'
+                                  +'<div class="col-md-3 col-sm-12 col-xs-12">'
+                                    +'<div class="form-group">'
+                                      +'<label id="dueDate">'+data.header[0].d_pcs_duedate+'</label>'
+                                    +'</div>'
+                                  +'</div>');
+          }
+        }
         //loop data
         Object.keys(data.data_isi).forEach(function(){
           $('#tabel-order').append('<tr class="tbl_modal_row" id="row'+i+'">'
@@ -236,6 +266,7 @@
 
   function editOrder(id) 
   {
+    $('#append-modal-edit div').remove();
     $.ajax({
       url : baseUrl + "/purchasing/orderpembelian/get-edit-order/"+id,
       type: "GET",
@@ -259,6 +290,35 @@
         $('#diskon_harga').val(data.header[0].d_pcs_disc_percent+'%')
         $('#ppn_harga').val(data.header[0].d_pcs_tax_percent+'%')
         $('#total_nett').val(convertDecimalToRupiah(data.header[0].d_pcs_total_net))
+        if (data.header[0].d_pcs_method != "CASH") 
+        {
+          $('#append-modal-edit div').remove();
+          var metode = data.header[0].d_pcs_method;
+          if (metode == "DEPOSIT") 
+          {
+            $('#append-modal-edit div').remove();
+            $('#append-modal-edit').append('<div class="col-md-3 col-sm-12 col-xs-12">'
+                                      +'<label class="tebal">Batas Terakhir Pengiriman</label>'
+                                  +'</div>'
+                                  +'<div class="col-md-3 col-sm-12 col-xs-12">'
+                                    +'<div class="form-group">'
+                                      +'<label id="dueDate">'+data.header[0].d_pcs_duedate+'</label>'
+                                    +'</div>'
+                                  +'</div>');
+          }
+          else if(metode == "CREDIT")
+          {
+            $('#append-modal-edit div').remove();
+            $('#append-modal-edit').append('<div class="col-md-3 col-sm-12 col-xs-12">'
+                                      +'<label class="tebal">TOP (Termin Of Payment)</label>'
+                                  +'</div>'
+                                  +'<div class="col-md-3 col-sm-12 col-xs-12">'
+                                    +'<div class="form-group">'
+                                      +'<label id="dueDate">'+data.header[0].d_pcs_duedate+'</label>'
+                                    +'</div>'
+                                  +'</div>');
+          }
+        }
         //loop data
         Object.keys(data.data_isi).forEach(function(){
           var qtyCost = data.data_isi[key-1].d_pcsdt_qty;

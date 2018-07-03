@@ -12,13 +12,13 @@ class d_purchasingplan extends Model
     const UPDATED_AT = 'd_pcsp_updated';
     
     protected $fillable = [
-    	'd_pcsp_id', 
+        'd_pcsp_id', 
         'd_pcsp_code', 
-    	'd_pcsp_sup',
+        'd_pcsp_sup',
         'd_pcsp_staff',
-    	'd_pcsp_datecreated',
+        'd_pcsp_datecreated',
         'd_pcsp_dateconfirm',
-    	'd_pcsp_status',
-    	'd_pcsp_updated',
+        'd_pcsp_status',
+        'd_pcsp_updated',
     ];
 }
