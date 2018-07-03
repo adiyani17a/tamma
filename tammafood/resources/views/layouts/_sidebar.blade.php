@@ -489,18 +489,18 @@
                                 <li class="{{ Request::is('penjualan/manajemenharga/harga') ? 'active' : '' || Request::is('penjualan/manajemenharga/*') ? 'active' : '' }}"><a href="{{ url('/penjualan/manajemenharga/harga') }}"><span class="submenu-title">Manajemen Harga</span><span class="hidden">Penjualan</span></a>
                                 </li>
                                 @endif
-                                @if(Auth::user()->punyaAkses('Manajemen Promosi','ma_read'))
+{{--                                 @if(Auth::user()->punyaAkses('Manajemen Promosi','ma_read'))
                                 <li class="{{ Request::is('penjualan/manajemenpromosi/promosi') ? 'active' : '' || Request::is('penjualan/manajemenpromosi/*') ? 'active' : '' }}"><a href="{{ url('/penjualan/manajemenpromosi/promosi') }}"><span class="submenu-title">Manajemen Promosi</span><span class="hidden">Penjualan</span></a>
                                 </li>
-                                @endif
-                                @if(Auth::user()->punyaAkses('Broadcast Promosi Via Email','ma_read'))
+                                @endif --}}
+{{--                                 @if(Auth::user()->punyaAkses('Broadcast Promosi Via Email','ma_read'))
                                 <li class="{{ Request::is('penjualan/broadcastpromosi/promosi2') ? 'active' : '' || Request::is('penjualan/broadcastpromosi/*') ? 'active' : '' }}"><a href="{{ url('/penjualan/broadcastpromosi/promosi2') }}"><span class="submenu-title">Broadcast Promosi Via Email</span><span class="hidden">Penjualan</span></a>
                                 </li>
-                                @endif
-                                @if(Auth::user()->punyaAkses('Rencana Penjualan','ma_read'))
+                                @endif --}}
+{{--                                 @if(Auth::user()->punyaAkses('Rencana Penjualan','ma_read'))
                                 <li class="{{ Request::is('penjualan/rencanapenjualan/rencana') ? 'active' : '' || Request::is('penjualan/rencanapenjualan/*') ? 'active' : '' }}"><a href="{{ url('/penjualan/rencanapenjualan/rencana') }}"><span class="submenu-title">Rencana Penjualan</span><span class="hidden">Penjualan</span></a>
                                 </li>
-                                @endif
+                                @endif --}}
                                 @if(Auth::user()->punyaAkses('POS Penjualan Retail','ma_read'))
                                 <li class="{{ Request::is('penjualan/POSretail/index') ? 'active' : ''}}"><a href="{{ url('/penjualan/POSretail/index') }}"><span class="submenu-title">POS Penjualan Retail</span><span class="hidden">Penjualan</span></a>
                                 </li>
@@ -515,14 +515,14 @@
                                 <li class="{{ Request::is('penjualan/monitoringorder/monitoring') ? 'active' : '' || Request::is('penjualan/monitoringorder/*') ? 'active' : '' }}"><a href="{{ url('/penjualan/monitoringorder/monitoring') }}"><span class="submenu-title">Monitoring Order & Stock</span><span class="hidden">Penjualan</span></a>
                                 </li>
                                 @endif
-                                @if(Auth::user()->punyaAkses('Manajemen Return Penjualan','ma_read'))
+{{--                                 @if(Auth::user()->punyaAkses('Manajemen Return Penjualan','ma_read'))
                                 <li class="{{ Request::is('penjualan/manajemenreturn/r_penjualan') ? 'active' : '' || Request::is('penjualan/manajemenreturn/*') ? 'active' : '' }}"><a href="{{ url('/penjualan/manajemenreturn/r_penjualan') }}"><span class="submenu-title">Manajemen Return Penjualan</span><span class="hidden">Penjualan</span></a>
                                 </li>
-                                @endif
-                                @if(Auth::user()->punyaAkses('Monitoring Progress Penjualan','ma_read'))
+                                @endif --}}
+{{--                                 @if(Auth::user()->punyaAkses('Monitoring Progress Penjualan','ma_read'))
                                 <li class="{{ Request::is('penjualan/monitorprogress/progress') ? 'active' : '' || Request::is('penjualan/monitorprogress/*') ? 'active' : '' }}"><a href="{{ url('/penjualan/monitorprogress/progress') }}"><span class="submenu-title">Monitoring Progress Penjualan</span><span class="hidden">Penjualan</span></a>
                                 </li>
-                                @endif
+                                @endif --}}
                                 @if(Auth::user()->punyaAkses('Mutasi Stock & Retail','ma_read'))
                                 <li class="{{ Request::is('penjualan/mutasistok/mutasi') ? 'active' : '' || Request::is('penjualan/mutasistok/*') ? 'active' : '' }}"><a href="{{ url('/penjualan/mutasistok/mutasi') }}"><span class="submenu-title">Mutasi Stock & Retail</span><span class="hidden">Penjualan</span></a>
                                 </li>

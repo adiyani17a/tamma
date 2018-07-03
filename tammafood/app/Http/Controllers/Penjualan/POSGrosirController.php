@@ -555,7 +555,6 @@ class POSGrosirController extends Controller
       d_sales_dt::where('sd_sales', $s_id)->delete();
 
       for ($i=0; $i < count($kodeItem); $i++) {
-<<<<<<< HEAD
 
         $d_sales_dt = d_sales_dt::insert([
           'sd_sales' => $s_id,
@@ -568,22 +567,6 @@ class POSGrosirController extends Controller
           'sd_total' => ($this->konvertRp($request->hasil[$i]))
         ]);
       }
-
-=======
-
-        $d_sales_dt = d_sales_dt::insert([
-          'sd_sales' => $s_id,
-          'sd_detailid' => $i + 1,
-          'sd_item' => $kodeItem[$i],
-          'sd_qty' => $qtyItem[$i],
-          'sd_price' => ($this->konvertRp($request->harga_item[$i])),
-          'sd_disc_percent' => $request->sd_disc_percent[$i],
-          'sd_disc_value' => ($this->konvertRp($request->sd_disc_value[$i])),
-          'sd_total' => ($this->konvertRp($request->hasil[$i]))
-        ]);
-      }
-
->>>>>>> parent of 03aafe6... Merge branch 'master' of https://github.com/adiyani17a/tamma
     DB::commit();
     return response()->json([
           'status' => 'sukses'
@@ -1092,6 +1075,7 @@ class POSGrosirController extends Controller
       $dataTotal = d_sales_dt::select(DB::raw('SUM(sd_total) as total'))
       ->join('m_item','i_id','=','sd_item')
       ->where('sd_sales',$id)->get();
+      
     // return view('penjualan.POSGrosir.print',compact('data','dataTotal','sales'));
      return view('penjualan.POSGrosir.dist180.sample',compact('data','dataTotal','sales'));
   }

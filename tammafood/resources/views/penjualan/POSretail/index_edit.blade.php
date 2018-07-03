@@ -5,43 +5,46 @@
                     <div class="col-md-12 col-sm-12 col-xs-12 tamma-bg" style="padding-bottom: 25px;padding-top: 5px;">
                       <form id="save_sform">
                         <div class="col-md-9 col-sm-6 col-xs-12" style="margin-top: 15px;">
-                          <label class="control-label tebal" for="nama" >Nama Customer</label>
+                          <label class="control-label tebal" for="nama" >Nama Pelanggan<font color="red">*</font></label>
                           <div class="input-group input-group-sm" style="width: 100%;">
-                            <input type="text" id="nama" name="s_member" class="form-control" onkeyup="setnama()" value="{{$edit[0]->c_name}}">
+                            <input type="text" id="nama-customer" name="s_member" class="form-control" readonly value="{{$edit[0]->c_name}}">
                             <input type="hidden" id="id_cus" name="id_cus" class="form-control" value="{{$edit[0]->s_customer}}">
-                            <input type="hidden" id="s_id" name="s_id" class="form-control" value="{{$edit[0]->s_id}}">
-                            <span class="input-group-btn"><button  type="button" class="btn btn-info btn-sm btn_simpan" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i></button></span>
+                              <span class="input-group-btn">
+                                <button  type="button" class="btn btn-danger btn-sm" id="c-lock">
+                                  <i class="fa fa-lock"></i>
+                                </button>
+                              </span>
+                              <span class="input-group-btn">
+                                <button  type="button" class="btn btn-info btn-sm btn_simpan" data-toggle="modal" data-target="#myModal">
+                                    <i class="fa fa-plus"></i>
+                                </button>
+                              </span>
                           </div>
                         </div>
-                        
+                        <div class="col-md-9 col-sm-6 col-xs-12" style="margin-top: 15px;">
+                          <label class="control-label tebal" for="alamat">Alamat Pelanggan<font color="red">*</font></label>
+                            <div class="input-group input-group-sm" style="width: 100%;">
+                              <input type="text" id="alamat2" name="sm_alamat" class="form-control" readonly value="{{$edit[0]->c_address}}  {{$edit[0]->c_hp}}">  
+                            </div>
+                        </div>
                         <div class="col-md-3 col-sm-6 col-xs-12" style="margin-top: 15px;">
                           <label for="tgl_faktur" class="control-label tebal">Tanggal Faktur</label>
-                          <div class="input-group input-group-sm" style="width: 100%;">
-                            <input id="tgl_faktur" type="text" name="s_date" class="form-control" readonly="readonly" value="{{ date('d-m-Y') }}">
-                          </div>
+                            <div class="input-group input-group-sm" style="width: 100%;">
+                              <input id="tgl_faktur" type="text" name="s_date" class="form-control" readonly="readonly" value="{{ date('d-m-Y') }}">
+                            </div>
                         </div>
-
                         <div class="col-md-9 col-sm-6 col-xs-12" style="margin-top: 15px;">
-                          <label class="control-label tebal" for="alamat">Alamat Customer</label>
-                          <div class="input-group input-group-sm" style="width: 100%;">
-                            <input type="text" id="alamat2" name="sm_alamat" class="form-control" value="{{$edit[0]->c_address}}  {{$edit[0]->c_hp}}">  
+                             <label class="control-label tebal" for="alamat">Kelas Pelanggan<font color="red">*</font></label>
+                              <div class="input-group input-group-sm" style="width: 100%;">
+                                <input type="text" id="c-class" readonly name="c-class" class="form-control" value="{{$edit[0]->c_class}}">  
+                              </div>
                           </div>
-                        </div>
-
                         <div class="col-md-3 col-sm-6 col-xs-12" style="margin-top: 15px;">
                           <label class="control-label tebal" for="no_faktur" >Nomor Faktur</label>
                           <div class="input-group input-group-sm" style="width: 100%;">
                             <input type="text" id="no_faktur" name="s_nota" class="form-control" readonly="true" value="{{$edit[0]->s_note}}">
                           </div>
-                        </div>
-
-                        <div class="col-md-3 col-md-offset-9 col-sm-12 col-xs-12" style="margin-top: 15px;">
-                          <label class="control-label tebal" for="total_amount">Total Amount</label>
-                          <div class="input-group input-group-sm" style="width: 100%;">
-                            <input type="text" class="form-control" readonly="true" name="s_net"  id="amount">
-                            <input type="hidden" name="s_staff" value="{{ Auth::user()->m_id}}" >
-                          </div>
-                        </div>     
+                        </div>    
                       </form>
                     </div>
                   </div>

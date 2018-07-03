@@ -56,7 +56,7 @@ function sal_save_final(){
             $("input[name='sp_nominal[]']").val('');
             var id = $('#idfatkur').val();
             if (confirm("Berhasil!, Ingin langsung cetak nota?")) {
-              window.location.href = "/tamma/penjualan/POSgrosir/print/"+id;
+              window.location.href = "/tammalocal/penjualan/POSgrosir/print/"+id;
             }
               // alert('Berhasil');
               // window.location.reload();

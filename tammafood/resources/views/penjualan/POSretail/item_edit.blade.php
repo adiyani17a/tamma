@@ -54,15 +54,20 @@
               {{ $x->i_sat1 }}<input type="hidden" name="satuan[]" class="satuan" value="{{ $x->i_sat1 }}">
             </td>
             <td>
-              <input type="text" size="10" readonly style="text-align:right" name="harga_item[]" class="harga_item form-control harga-{{ $x->i_id }}" value="Rp. {{ number_format( $x->m_psell ,2,',','.')}}">
+              <input type="text" size="10" readonly name="harga_item[]" class="harga_item form-control harga-{{ $x->i_id }}"  style="text-align: right;"
+              value="Rp.@if ($x->m_psell2 == '0' || $x->m_psell3 == '0'){{ number_format($x->m_psell1,2,',','.')}}@elseif ($x->m_psell1 == '0' || $x->m_psell3 == '0'){{ number_format($x->m_psell2,2,',','.')}}@else{{ number_format($x->m_psell3,2,',','.')}}@endif">
             </td>
-            <td><div class="input-group">
-              <input type="text" style="text-align:right" class="form-control discpercent hasildiscpercent" name="sd_disc_percent[]"  
-              value="@if($x->sd_disc_percent == null)0 @else {{ $x->sd_disc_percent }}  @endif"
-              onkeyup="discpercent(this, event)"><span class="input-group-addon">%</span></div>
+            <td>
+              <div class="input-group">
+                <input type="text" style="text-align:right" class="form-control discpercent hasildiscpercent" name="sd_disc_percent[]"  
+                value="@if($x->sd_disc_percent == null)@else {{ $x->sd_disc_percent }}  @endif"
+                onkeyup="discpercent(this, event)">
+                <span class="input-group-addon">%</span>
+              </div>
             </td>
-            <td><input type="text" style="text-align:right" class="form-control discvalue hasildiscvalue" name="sd_disc_value[]"  
-               value="@if($x->sd_disc_value == null)0 @else {{ $x->sd_disc_value }}  @endif"
+            <td>
+              <input type="text" style="text-align:right" class="form-control discvalue hasildiscvalue" name="sd_disc_value[]"  
+               value="Rp.@if($x->sd_disc_value == null) @else {{ number_format($x->sd_disc_value,2,',','.')}}  @endif"
               onkeyup="discvalue(this, event)">
             </td>
             <td>

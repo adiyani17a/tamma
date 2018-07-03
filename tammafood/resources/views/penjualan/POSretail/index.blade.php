@@ -180,7 +180,7 @@
                           <div class="col-md-9 col-sm-6 col-xs-12" style="margin-top: 15px;">
                             <label class="control-label tebal" for="nama" >Nama Pelanggan<font color="red">*</font></label>
                               <div class="input-group input-group-sm" style="width: 100%;">
-                                <input type="text" id="nama-customer" name="s_member" class="form-control"  required>
+                                <input type="text" id="nama-customer" name="s_member" class="form-control">
                                 <input type="hidden" id="id_cus" name="id_cus" class="form-control">
                                 <span class="input-group-btn">
                                   <button  type="button" class="btn btn-danger btn-sm" id="c-lock">
@@ -426,7 +426,7 @@
 @section("extra_scripts")
 
   <script src="{{ asset ('assets/script/bootstrap-datepicker.js') }}"></script>
-
+  <script src="{{ asset ('assets/script/icheck.min.js') }}"></script>
   @include('penjualan.POSretail.jquery_simpan_sales')
   <script type="text/javascript">
   $(document).ready(function() {
@@ -455,6 +455,10 @@
           $("#namaitem").focus();
         }
       }
+    })
+
+    $( "#nama-customer" ).click(function(){
+
     })
 
   });
@@ -553,17 +557,15 @@
     // customer 
   $( "#nama-customer" ).focus(function(){
       var key = 1;
-      $("#namaitem").attr("readonly",true);
-      $("#qty").attr("readonly",true);
     $( "#nama-customer" ).autocomplete({
-    source: baseUrl+'/penjualan/POSretail/retail/autocomplete',
-    minLength: 1,
-    select: function(event, ui) {
-      $('#id_cus').val(ui.item.id);
-      $('#nama-customer').val(ui.item.label);
-      $('#alamat2').val(ui.item.alamat);
-      $('#c-class').val(ui.item.c_class);
-      }
+      source: baseUrl+'/penjualan/POSretail/retail/autocomplete',
+      minLength: 1,
+      select: function(event, ui) {
+        $('#id_cus').val(ui.item.id);
+        $('#nama-customer').val(ui.item.label);
+        $('#alamat2').val(ui.item.alamat);
+        $('#c-class').val(ui.item.c_class);
+        }
     });
     $("#alamat2").val('');
     $("#nama-customer" ).val('');
@@ -628,16 +630,13 @@
         '<input size="30" style="text-align:right" type="text"  name="sd_qty[]" class="sd_qty form-control qty-'+kode+'" value="'+qty+'" onkeyup="UpdateHarga(\''+kode+'\'); qtyInput(\''+stok+'\', \''+kode+'\'); totalPenjualan()" onchange="qtyInput(\''+stok+'\', \''+kode+'\')"> ',
         satuan+'<input type="hidden" name="satuan[]" class="satuan" value="'+satuan+'"> ',
         '<input type="text" size="10" readonly style="text-align:right" name="harga_item[]" class="harga_item form-control harga-'+kode+'" value="'+harga+'"> ',
-        '<div class="input-group"><input type="text" size="11"  style="text-align:right" name="sd_disc_percent[]" class="form-control discpercent discpercent-'+kode+'" value="0" onkeyup="discpercent(this, event);autoJumValPercent()"><span class="input-group-addon">%</span></div> <input name="totalValuePercent[]" type="text" value="0" style="display:none" class="form-control totalValuePercent jumTotValuePercent totalValuePercent-'+kode+'">',
-        '<input type="text" size="10"  style="text-align:right" name="sd_disc_value[]" class="form-control discvalue hasildiscvalue pricevalue-'+kode+'" value="0" onkeyup="discvalue(this, event);autoJumValValue();rege(event,\''+pricevalue+'\')"  onblur="setRupiah(event,\''+pricevalue+'\')" onclick="setAwal(\''+event+'\',\''+pricevalue+'\')">',
-        '<input type="text" size="200" readonly style="text-align:right" name="hasil[]" id="hasil" class="form-control hasil hasil-'+kode+'" value="'+x+'"><input type="hidden" size="200" readonly style="text-align:right" name="" id="hasil2" class="hasil2 form-control" value="'+b+'">',          
+        '<div class="input-group"><input type="text" size="11"  style="text-align:right" name="sd_disc_percent[]" class="form-control discpercent discpercent-'+kode+'" placeholder="0" onkeyup="discpercent(this, event);autoJumValPercent()"><span class="input-group-addon">%</span></div> <input name="totalValuePercent[]" type="text" value="0" style="display:none" class="form-control totalValuePercent jumTotValuePercent totalValuePercent-'+kode+'">',
+        '<input type="text" size="10"  style="text-align:right" name="sd_disc_value[]" class="form-control discvalue hasildiscvalue pricevalue-'+kode+'" placeholder="0" onkeyup="discvalue(this, event);autoJumValValue();rege(event,\''+pricevalue+'\')"  onblur="setRupiah(event,\''+pricevalue+'\')" onclick="setAwal(\''+event+'\',\''+pricevalue+'\')">',
+        '<input type="text" size="200" readonly style="text-align:right" name="hasilplaceholder="0"[]" id="hasil" class="form-control hasil hasil-'+kode+'" value="'+x+'"><input type="hidden" size="200" readonly style="text-align:right" name="" id="hasil2" class="hasil2 form-control" value="'+b+'">',          
         Hapus
 
       ]);
       tableDetail.draw();
-      discpercent();
-      discvalue();
-      totalPenjualan();  
 
     index++;
     tamp.push(kode);
@@ -717,21 +716,20 @@
       if ( res.length != 0 ){  
 
         tableDetail.row.add([
-          nama+'<input type="hidden" name="kode_item[]" class="kode_item kode" value="'+kode+'"><input type="hidden" name="nama_item[]" class="nama_item" value="'+nama+'"> ',
+        nama+'<input type="hidden" name="kode_item[]" class="kode_item kode" value="'+kode+'"><input type="hidden" name="nama_item[]" class="nama_item" value="'+nama+'"> ',
         '<input size="30" style="text-align:right" type="text"  name="sd_qty[]" class="sd_qty form-control qty-'+kode+'" value="'+qty+'" onkeyup="UpdateHarga(\''+kode+'\'); qtyInput(\''+stok+'\', \''+kode+'\'); totalPenjualan()" onchange="qtyInput(\''+stok+'\', \''+kode+'\')"> ',
         satuan+'<input type="hidden" name="satuan[]" class="satuan" value="'+satuan+'"> ',
         '<input type="text" size="10" readonly style="text-align:right" name="harga_item[]" class="harga_item form-control harga-'+kode+'" value="'+harga+'"> ',
-        '<div class="input-group"><input type="text" size="11"  style="text-align:right" name="sd_disc_percent[]" class="form-control discpercent discpercent-'+kode+'" value="0" onkeyup="discpercent(this, event);autoJumValPercent()"><span class="input-group-addon">%</span></div> <input name="totalValuePercent[]" type="text" value="0" style="display:none" class="form-control totalValuePercent jumTotValuePercent totalValuePercent-'+kode+'">',
-        '<input type="text" size="10"  style="text-align:right" name="sd_disc_value[]" class="form-control discvalue hasildiscvalue pricevalue-'+kode+'" value="0" onkeyup="discvalue(this, event);autoJumValValue();rege(event,\''+pricevalue+'\')"  onblur="setRupiah(event,\''+pricevalue+'\')" onclick="setAwal(\''+event+'\',\''+pricevalue+'\')">',
+        '<div class="input-group"><input type="text" size="11"  style="text-align:right" name="sd_disc_percent[]" class="form-control discpercent discpercent-'+kode+'" value="0" onkeyup="discpercent(this, event);autoJumValPercent()"><span class="input-group-addon">%</span></div><input name="totalValuePercent[]" type="text" value="0" style="display:none" class="form-control totalValuePercent jumTotValuePercent totalValuePercent-'+kode+'">',
+        '<input type="text" size="10" style="text-align:right" name="sd_disc_value[]" class="form-control discvalue hasildiscvalue pricevalue-'+kode+'" value="0" onkeyup="discvalue(this, event);autoJumValValue();rege(event,\''+pricevalue+'\')"  onblur="setRupiah(event,\''+pricevalue+'\')" onclick="setAwal(\''+event+'\',\''+pricevalue+'\')">',
         '<input type="text" size="200" readonly style="text-align:right" name="hasil[]" id="hasil" class="form-control hasil hasil-'+kode+'" value="'+x+'"><input type="hidden" size="200" readonly style="text-align:right" name="" id="hasil2" class="hasil2 form-control" value="'+b+'">',      
           Hapus
 
           ]);
         tableDetail.draw();
-        discpercent();
-        discvalue();
-        totalPenjualan();
+
       }else{
+
         var qtyLawas= parseInt($(".qty-"+kode).val());
           $(".qty-"+kode).val(qtyLawas+qty);
         var q = parseInt(qtyLawas+qty);
@@ -778,7 +776,13 @@
 
     var hpercent = 0;
   function discpercent(inField, e){
-    var getIndex = $('input.discpercent:text').index(inField);        
+    var getIndex = $('input.discpercent:text').index(inField); 
+    var dataInput = $('input.discpercent:text:eq('+getIndex+')').val();
+    if (dataInput == '' || dataInput == '0') {
+      $('input.discvalue:text:eq('+getIndex+')').attr("readonly",false);
+    }else{
+      $('input.discvalue:text:eq('+getIndex+')').attr("readonly",true);
+    }      
     var diskon = $('input.discpercent:text:eq('+getIndex+')').val();
     var harga = $('input.harga_item:text:eq('+getIndex+')').val();
     var qty = $('input.sd_qty:eq('+getIndex+')').val();
@@ -803,7 +807,13 @@
   }
 
   function discvalue(inField, e){
-    var getIndex = $('input.discvalue:text').index(inField);   
+    var getIndex = $('input.discvalue:text').index(inField);  
+    var dataInput = $('input.discvalue:text:eq('+getIndex+')').val();
+    if (dataInput == '' || dataInput == '0') {
+      $('input.discpercent:text:eq('+getIndex+')').attr("readonly",false);
+    }else{
+      $('input.discpercent:text:eq('+getIndex+')').attr("readonly",true);
+    }
     var diskon = $('input.discvalue:text:eq('+getIndex+')').val();
     var harga = $('input.harga_item:text:eq('+getIndex+')').val();
     var qty = $('input.sd_qty:eq('+getIndex+')').val();
@@ -819,8 +829,9 @@
         diskon = 0;
         $('input.discvalue:text:eq('+getIndex+')').val(0);
       }
-      hasil = hasil - hpercent - diskon;
+      hasil = hasil - diskon;
       hasil = convertToRupiah(hasil);
+      console.log(hasil);
       $('input.hasil:text:eq('+getIndex+')').val(hasil);
       UpdateTotal();
     }
