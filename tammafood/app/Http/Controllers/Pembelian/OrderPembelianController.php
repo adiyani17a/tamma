@@ -417,24 +417,48 @@ class OrderPembelianController extends Controller
       $replaceCharPPN = (int)str_replace("%","",$request->ppnHarga);
       $diskonPotHarga = $this->konvertRp($request->potonganHarga);
       $discValue = $totalGross * $replaceCharDisc / 100;
+
       DB::beginTransaction();
       try {
-        //insert to table d_purchasing
-        $dataHeader = new d_purchasing;
-        $dataHeader->d_pcsp_id = $request->cariKodePlan;
-        $dataHeader->s_id = $request->cariSup;
-        $dataHeader->d_pcs_code = $request->kodePo;
-        $dataHeader->d_pcs_staff = $request->namaStaff;
-        $dataHeader->d_pcs_method = $request->methodBayar;
-        $dataHeader->d_pcs_total_gross = $totalGross;
-        $dataHeader->d_pcs_discount = $diskonPotHarga;
-        $dataHeader->d_pcs_disc_percent = $replaceCharDisc;
-        $dataHeader->d_pcs_disc_value = $discValue;
-        $dataHeader->d_pcs_tax_percent = $replaceCharPPN;
-        $dataHeader->d_pcs_tax_value = ($totalGross - $diskonPotHarga - $discValue) * $replaceCharPPN / 100;
-        $dataHeader->d_pcs_total_net = $this->konvertRp($request->totalNett);
-        $dataHeader->d_pcs_date_created = date('Y-m-d',strtotime($request->tanggal));
-        $dataHeader->save();
+        if (isset($request->apdTgl)) 
+        {
+          //insert to table d_purchasing
+          $dataHeader = new d_purchasing;
+          $dataHeader->d_pcsp_id = $request->cariKodePlan;
+          $dataHeader->s_id = $request->cariSup;
+          $dataHeader->d_pcs_code = $request->kodePo;
+          $dataHeader->d_pcs_staff = $request->namaStaff;
+          $dataHeader->d_pcs_method = $request->methodBayar;
+          $dataHeader->d_pcs_total_gross = $totalGross;
+          $dataHeader->d_pcs_discount = $diskonPotHarga;
+          $dataHeader->d_pcs_disc_percent = $replaceCharDisc;
+          $dataHeader->d_pcs_disc_value = $discValue;
+          $dataHeader->d_pcs_tax_percent = $replaceCharPPN;
+          $dataHeader->d_pcs_duedate = date('Y-m-d',strtotime($request->apdTgl));
+          $dataHeader->d_pcs_tax_value = ($totalGross - $diskonPotHarga - $discValue) * $replaceCharPPN / 100;
+          $dataHeader->d_pcs_total_net = $this->konvertRp($request->totalNett);
+          $dataHeader->d_pcs_date_created = date('Y-m-d',strtotime($request->tanggal));
+          $dataHeader->save(); 
+        }
+        else
+        {
+          //insert to table d_purchasing
+          $dataHeader = new d_purchasing;
+          $dataHeader->d_pcsp_id = $request->cariKodePlan;
+          $dataHeader->s_id = $request->cariSup;
+          $dataHeader->d_pcs_code = $request->kodePo;
+          $dataHeader->d_pcs_staff = $request->namaStaff;
+          $dataHeader->d_pcs_method = $request->methodBayar;
+          $dataHeader->d_pcs_total_gross = $totalGross;
+          $dataHeader->d_pcs_discount = $diskonPotHarga;
+          $dataHeader->d_pcs_disc_percent = $replaceCharDisc;
+          $dataHeader->d_pcs_disc_value = $discValue;
+          $dataHeader->d_pcs_tax_percent = $replaceCharPPN;
+          $dataHeader->d_pcs_tax_value = ($totalGross - $diskonPotHarga - $discValue) * $replaceCharPPN / 100;
+          $dataHeader->d_pcs_total_net = $this->konvertRp($request->totalNett);
+          $dataHeader->d_pcs_date_created = date('Y-m-d',strtotime($request->tanggal));
+          $dataHeader->save(); 
+        }
         
         //get last lastId then insert id to d_purchasing_dt
         $lastId = d_purchasing::select('d_pcs_id')->max('d_pcs_id');

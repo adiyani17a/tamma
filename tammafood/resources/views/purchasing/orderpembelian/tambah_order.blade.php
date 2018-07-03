@@ -90,7 +90,7 @@
   
                         <div class="col-md-3 col-sm-12 col-xs-12">
                           <div class="form-group">
-                              <select class="form-control input-sm" name="methodBayar">
+                              <select class="form-control input-sm" name="methodBayar" id="method_bayar">
                                   <option value="CASH">Tunai</option>
                                   <option value="DEPOSIT">Deposit</option>
                                   <option value="CREDIT">Tempo</option>
@@ -121,6 +121,18 @@
                             </select>
                           </div>
                         </div>
+
+                        <div id="appending"></div>
+
+                        <!-- <div class="col-md-3 col-sm-12 col-xs-12">
+                          <label class="tebal">TOP (Termin Of Payment)</label>
+                        </div>
+                        
+                        <div class="col-md-3 col-sm-12 col-xs-12">
+                          <div class="form-group">
+                            <input type="text" readonly="" class="form-control input-sm" name="topOrder" value="{{$namaStaff}}">
+                          </div>
+                        </div> -->
 
                       </div>
 
@@ -199,9 +211,9 @@
                       </div>
 
                       <div align="right" style="padding-top:10px;">
-                          <div id="div_button_save" class="form-group">
-                              <button type="button" id="button_save" class="btn btn-primary" onclick="simpanPo()">Simpan Data</button> 
-                          </div>
+                        <div id="div_button_save" class="form-group">
+                          <button type="button" id="button_save" class="btn btn-primary" onclick="simpanPo()">Simpan Data</button> 
+                        </div>
                       </div>
                     
                     </form>
@@ -284,6 +296,46 @@
           },
           cache: true
       }, 
+    });
+
+    $('#method_bayar').change(function() {
+      //remove child div inside appending-form before appending
+      $('#appending div').remove();
+      var metode = $(this).val();
+      if (metode == "DEPOSIT") 
+      {
+        $('#appending div').remove();
+        $('#appending').append('<div class="col-md-3 col-sm-12 col-xs-12">'
+                                  +'<label class="tebal">Batas Terakhir Pengiriman</label>'
+                              +'</div>'
+                              +'<div class="col-md-3 col-sm-12 col-xs-12">'
+                                +'<div class="form-group">'
+                                  +'<input type="text" id="apd_tgl" name="apdTgl" class="form-control datepicker3 input-sm">'
+                                +'</div>'
+                              +'</div>');
+
+        $('.datepicker3').datepicker({
+          format:"dd-mm-yyyy",
+          autoclose: true
+        });
+      }
+      else if(metode == "CREDIT")
+      {
+        $('#appending div').remove();
+        $('#appending').append('<div class="col-md-3 col-sm-12 col-xs-12">'
+                                  +'<label class="tebal">TOP (Termin Of Payment)</label>'
+                              +'</div>'
+                              +'<div class="col-md-3 col-sm-12 col-xs-12">'
+                                +'<div class="form-group">'
+                                  +'<input type="text" id="apd_tgl" name="apdTgl" class="form-control datepicker3 input-sm">'
+                                +'</div>'
+                              +'</div>');
+
+        $('.datepicker3').datepicker({
+          format:"dd-mm-yyyy",
+          autoclose: true
+        });
+      }
     });
 
     //set default value each field

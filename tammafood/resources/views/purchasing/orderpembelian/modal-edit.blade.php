@@ -73,6 +73,8 @@
                 <label id="lblSupplierEdit"></label>
               </div>
             </div>
+
+            <div id="append-modal-edit"></div>
           </div>
 
           <input type="hidden" id="id_purchase_edit" name="idPurchaseEdit">  

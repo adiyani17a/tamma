@@ -72,6 +72,9 @@
                 <label id="lblSupplier"></label>
               </div>
             </div>
+
+            <div id="append-modal-detail"></div>
+
           </div>
 
           <div class="col-md-12 col-sm-12 col-xs-12 tamma-bg" style="margin-bottom: 20px; padding-bottom:5px;padding-top: 10px;">
