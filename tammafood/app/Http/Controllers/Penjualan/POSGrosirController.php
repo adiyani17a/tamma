@@ -1075,9 +1075,12 @@ class POSGrosirController extends Controller
       $dataTotal = d_sales_dt::select(DB::raw('SUM(sd_total) as total'))
       ->join('m_item','i_id','=','sd_item')
       ->where('sd_sales',$id)->get();
-      
+    //print biasa  
     // return view('penjualan.POSGrosir.print',compact('data','dataTotal','sales'));
-     return view('penjualan.POSGrosir.dist180.sample',compact('data','dataTotal','sales'));
+    //print kertas ncr
+      return view('penjualan.POSGrosir.print_faktur', compact('data', 'dataTotal', 'sales'));
+    // print kertas ncr
+    // return view('penjualan.POSGrosir.dist180.sample',compact('data','dataTotal','sales'));
   }
 
   public function suratjalan(){

@@ -30,7 +30,7 @@
       </div>
 
       <div class="col-md-3 col-sm-3 col-xs-12" align="right">
-        <select name="tampilData" id="tampil_data" onchange="tampilDataGrosir(this);" class="form-control">
+        <select name="tampilData" id="tampil_data" onchange="tampilDataGrosir(this);" class="form-control input-sm">
           <option value="semua" class="form-control">Tampilkan Data : Semua</option>
           <option value="draft" class="form-control">Tampilkan Data : Draft</option>
           <option value="progress" class="form-control">Tampilkan Data : Progress</option>
