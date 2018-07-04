@@ -1,10 +1,10 @@
 <html>
    <!-- License:  LGPL 2.1 or QZ INDUSTRIES SOURCE CODE LICENSE -->
    <head><title>QZ Print Plugin</title>
-   <script type="text/javascript" src="js/preparejzebra.js"></script>
-   <script type="text/javascript" src="js/jquery-1.7.1.js"></script>
-   <script type="text/javascript" src="js/html2canvas.js"></script>
-   <script type="text/javascript" src="js/jquery.plugin.html2canvas.js"></script>
+   <script type="text/javascript" src="{{ asset ('assets/jzebra/js/preparejzebra.js')}}"></script>
+   <script type="text/javascript" src="{{ asset ('assets/jzebra/js/jquery-1.7.1.js')}}"></script>
+   <script type="text/javascript" src="{{ asset ('assets/jzebra/js/html2canvas.js')}}"></script>
+   <script type="text/javascript" src="{{ asset ('assets/jzebra/js/jquery.plugin.html2canvas.js')}}"></script>
    </head>
    <body id="content" bgcolor="#FFF380">
    <h1 id="title">QZ Print Plugin</h1><br />
