@@ -71,9 +71,17 @@
 		table.border-none ,.border-none td{
 			border:none !important;
 		}
+		@media print {
+			.button-group{
+				display: none;
+			}
+		}
 	</style>
 </head>
 <body>
+	<div class="button-group">
+		<button onclick="prints()">Print</button>
+	</div>
 	<div class="div-width">
 		<table class="border-none" width="100%" cellspacing="0" cellpadding="0">
 			<tr>
@@ -241,5 +249,11 @@
 			</tr>
 		</table>
 	</div>
+	<script type="text/javascript">
+		function prints()
+		{
+			window.print();
+		}
+	</script>
 </body>
 </html>

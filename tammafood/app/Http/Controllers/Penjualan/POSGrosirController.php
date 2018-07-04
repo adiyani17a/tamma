@@ -1078,7 +1078,7 @@ class POSGrosirController extends Controller
     //print biasa  
     // return view('penjualan.POSGrosir.print',compact('data','dataTotal','sales'));
     //print kertas ncr
-      return view('penjualan.POSGrosir.print_ncr', compact('data', 'dataTotal', 'sales'));
+      return view('penjualan.POSGrosir.print_faktur', compact('data', 'dataTotal', 'sales'));
     // print kertas ncr
     // return view('penjualan.POSGrosir.dist180.sample',compact('data','dataTotal','sales'));
   }
