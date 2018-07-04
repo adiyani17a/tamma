@@ -19,6 +19,7 @@ class m_item extends Model
                             'i_sat_isi1',
                             'i_sat_isi2',
                             'i_sat_isi3',
+                            'i_isactive',
                             'i_price'];
 
     public $incrementing = false;

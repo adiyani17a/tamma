@@ -54,7 +54,7 @@
                           <table class="table tabelan table-hover table-bordered" width="100%" cellspacing="0" id="data">
                             <thead>
                                 <tr>
-                                  <th class="wd-15p" width="5%">No</th>
+                                  <th class="wd-15p" width="5%">ID</th>
                                   <th class="wd-15p" width="5%">Kode Barang</th>
                                   <th class="wd-15p">Nama Barang</th>
                                   <th class="wd-15p">Satuan</th>
@@ -112,7 +112,7 @@
                   },
                 ],
             "columns": [
-            { "data" : "DT_Row_Index", orderable: true, searchable: false, "width" : "5%"},
+            { "data" : "i_id" },
             { "data": "i_code" },
             { "data": "i_name" },
             { "data": "m_sname" },
@@ -137,7 +137,9 @@
                   }
       });
       
-       function hapus(a) {
+      function hapus(a) {
+        if(confirm('Yakin hapus data ?'))
+        {
           var parent = $(a).parents('tr');
           var id = $(parent).find('.d_id').text();
           console.log(id);
@@ -145,11 +147,18 @@
                type: "get",
                url: '{{ route('hapus_barang') }}',
                data: {id},
-               success: function(data){
-                  if (data.status == 1) {
-                      location.reload();
+               success: function(response){
+                  if(response.status == "sukses")
+                  {
+                    // alert(response.pesan);
+                    toastr.success(response.pesan, 'Pemberitahuan');
+                    location.reload();
                   }
-                  
+                  else
+                  {
+                    toastr.error(response.pesan, 'Pemberitahuan'); 
+                    location.reload();
+                  }
                },
                error: function(){
                 iziToast.warning({
@@ -160,6 +169,7 @@
                async: false
              });  
         }
+      }
 
 
          function edit(a) {
