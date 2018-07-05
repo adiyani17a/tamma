@@ -101,12 +101,42 @@ class POSRetailController extends Controller
     $fatkur = 'XX'  . $year . $month . $date . $idfatkur;
     $idreq = 'REQ'  . $year . $month . $date . $idreq;
 
-    $edit = d_sales::join('m_customer', 'm_customer.c_id', '=' , 'd_sales.s_customer')
-    ->join('d_sales_dt','d_sales_dt.sd_sales','=','d_sales.s_id')
-    ->join('m_item','m_item.i_id','=','d_sales_dt.sd_item')
-     ->join('m_price','m_price.m_pitem', '=','d_sales_dt.sd_item')
-    ->where('d_sales.s_id',$id)
-    ->get();
+    $edit = d_sales::select('c_name',
+                            's_customer',
+                            'c_address',
+                            'c_hp',
+                            'c_class',
+                            's_note',
+                            'd_sales.s_id as sales_id',
+                            's_net',
+                            's_disc_value',
+                            'i_name',
+                            'sd_sales',
+                            'sd_detailid',
+                            'i_id',
+                            'i_name',
+                            'sd_qty',
+                            's_qty',
+                            'i_sat1',
+                            'm_psell1',
+                            'm_psell2',
+                            'm_psell3',
+                            'sd_disc_percent',
+                            'sd_disc_value',
+                            'sd_total',
+                            's_status',
+                            'm_sname')
+      ->join('m_customer', 'm_customer.c_id', '=' , 'd_sales.s_customer')
+      ->join('d_sales_dt','d_sales_dt.sd_sales','=','d_sales.s_id')
+      ->join('m_item','m_item.i_id','=','d_sales_dt.sd_item')
+      ->join('m_price','m_price.m_pitem', '=','d_sales_dt.sd_item')
+      ->join('d_stock','d_stock.s_item','=','m_item.i_id')
+      ->join('m_satuan','m_satuan.m_sid','=','i_sat1')
+      ->where('s_comp','1')
+      ->where('s_position','1')
+      ->where('d_sales.s_id',$id)
+      ->where('s_status','DR')
+      ->get();
 
     $dataPayment = DB::table('m_paymentmethod')->get();
 
@@ -119,7 +149,7 @@ class POSRetailController extends Controller
     $detalis = DB::table('d_sales_dt')
       ->select( 'i_name',
                 'sd_qty',
-                'i_sat1',
+                'm_sname',
                 'm_psell1',
                 'm_psell2',
                 'm_psell3',
@@ -129,6 +159,7 @@ class POSRetailController extends Controller
       ->join('d_sales', 'd_sales_dt.sd_sales', '=', 'd_sales.s_id' )
       ->join('m_item', 'm_item.i_id', '=' , 'd_sales_dt.sd_item')
       ->join('m_price','m_price.m_pitem', '=','d_sales_dt.sd_item')
+      ->join('m_satuan','m_satuan.m_sid','=','i_sat1')
       ->where('sd_sales','=',$request->x)
       ->get();
     
@@ -160,7 +191,14 @@ class POSRetailController extends Controller
     $results = array();
     if ($id == 'A') {
 
-      $queries = DB::select('select i_id, i_code,i_name,m_psell1,i_sat1,s_qty from m_item left join d_stock on i_id = s_item join m_price on i_id = m_pitem where ( i_name like "%'.$term.'%" or i_code like "%'.$term.'%" ) and ( i_type = "BP" or i_type = "BJ" ) and ( s_comp = 1 and s_position = 1 or s_comp is null or s_position is null ) limit 50');
+      $queries = DB::select('select i_id, i_code,i_name,m_psell1,s_qty,m_sname 
+                            from m_item left join d_stock on i_id = s_item 
+                            join m_price on i_id = m_pitem 
+                            join m_satuan on m_sid = i_sat1 
+                            where ( i_name like "%'.$term.'%" or i_code like "%'.$term.'%" ) 
+                            and ( i_type = "BP" or i_type = "BJ" ) 
+                            and ( s_comp = 1 and s_position = 1 or s_comp is null or s_position is null ) 
+                            limit 50');
 
       if ($queries == null) {
         $results[] = [ 'id' => null, 'label' =>'tidak di temukan data terkait'];
@@ -171,14 +209,21 @@ class POSRetailController extends Controller
                          'harga' => $query->m_psell1, 
                          'kode' => $query->i_id, 
                          'nama' => $query->i_name, 
-                         'satuan' => $query->i_sat1, 
+                         'satuan' => $query->m_sname, 
                          's_qty'=>$query->s_qty 
                        ];
         }
       }
 
   }else if ($id == 'B') {
-    $queries = DB::select('select i_id, i_code,i_name,m_psell2,i_sat1,s_qty from m_item left join d_stock on i_id = s_item join m_price on i_id = m_pitem where ( i_name like "%'.$term.'%" or i_code like "%'.$term.'%" ) and ( i_type = "BP" or i_type = "BJ" ) and ( s_comp = 1 and s_position = 1 or s_comp is null or s_position is null ) limit 50');
+    $queries = DB::select('select i_id, i_code,i_name,m_psell2,s_qty,m_sname
+                          from m_item left join d_stock on i_id = s_item 
+                          join m_price on i_id = m_pitem 
+                          join m_satuan on m_sid = i_sat1
+                          where ( i_name like "%'.$term.'%" or i_code like "%'.$term.'%" ) 
+                          and ( i_type = "BP" or i_type = "BJ" ) 
+                          and ( s_comp = 1 and s_position = 1 or s_comp is null or s_position is null ) 
+                          limit 50');
 
       if ($queries == null) {
         $results[] = [ 'id' => null, 'label' =>'tidak di temukan data terkait'];
@@ -189,13 +234,20 @@ class POSRetailController extends Controller
                          'harga' => $query->m_psell2, 
                          'kode' => $query->i_id, 
                          'nama' => $query->i_name, 
-                         'satuan' => $query->i_sat1, 
+                         'satuan' => $query->m_sname, 
                          's_qty'=>$query->s_qty 
                        ];
         }
       }
   }else{
-    $queries = DB::select('select i_id, i_code,i_name,m_psell3,i_sat1,s_qty from m_item left join d_stock on i_id = s_item join m_price on i_id = m_pitem where ( i_name like "%'.$term.'%" or i_code like "%'.$term.'%" ) and ( i_type = "BP" or i_type = "BJ" ) and ( s_comp = 1 and s_position = 1 or s_comp is null or s_position is null ) limit 50');
+    $queries = DB::select('select i_id, i_code,i_name,m_psell3,s_qty,m_sname
+                          from m_item left join d_stock on i_id = s_item 
+                          join m_price on i_id = m_pitem 
+                          join m_satuan on m_sid = i_sat1
+                          where ( i_name like "%'.$term.'%" or i_code like "%'.$term.'%" ) 
+                          and ( i_type = "BP" or i_type = "BJ" ) 
+                          and ( s_comp = 1 and s_position = 1 or s_comp is null or s_position is null ) 
+                          limit 50');
 
       if ($queries == null) {
         $results[] = [ 'id' => null, 'label' =>'tidak di temukan data terkait'];
@@ -206,7 +258,7 @@ class POSRetailController extends Controller
                          'harga' => $query->m_psell3, 
                          'kode' => $query->i_id, 
                          'nama' => $query->i_name, 
-                         'satuan' => $query->i_sat1, 
+                         'satuan' => $query->m_sname, 
                          's_qty'=>$query->s_qty 
                        ];
         }
@@ -295,15 +347,26 @@ class POSRetailController extends Controller
   }  
 
   public function sal_save_final(Request $request){ 
+  // dd($request->all());
   DB::beginTransaction();
     try {
     $s_id = d_sales::max('s_id') + 1;
-
-    $customer = d_sales::insert([
-        's_id' =>$s_id,
-        's_channel' =>'RT',
+    //nota
+    $year = carbon::now()->format('y');
+    $month = carbon::now()->format('m');
+    $date = carbon::now()->format('d');
+    if ($idfatkur <= 0 || $idfatkur <= '') {
+      $idfatkur  = 1;
+    }else{
+      $idfatkur += 1;
+    }
+    $fatkur = 'XX'  . $year . $month . $date . $idfatkur;
+    //end Nota
+    d_sales::insert([
+        's_id' => $s_id,
+        's_channel' => 'RT',
         's_date' => date('Y-m-d',strtotime($request->s_date)),
-        's_note' => $request->s_nota,
+        's_note' => $fatkur,
         's_staff' => $request->s_staff,
         's_customer' => $request->id_cus,
         's_disc_percent' => $request->s_disc_percent,
@@ -425,12 +488,23 @@ class POSRetailController extends Controller
     // dd($request->all());
     DB::beginTransaction();
     try {
-    $s_id = d_sales::max('s_id')+1;
+    $s_id = d_sales::max('s_id') + 1;
+    //nota
+    $year = carbon::now()->format('y');
+    $month = carbon::now()->format('m');
+    $date = carbon::now()->format('d');
+    if ($s_id <= 0 || $s_id <= '') {
+      $s_id  = 1;
+    }else{
+      $s_id += 1;
+    }
+    $fatkur = 'XX'  . $year . $month . $date . $s_id;
+    //end Nota
     d_sales::insert([
           's_id' =>$s_id,
           's_channel' =>'RT',
           's_date' =>date('Y-m-d',strtotime($request->s_date)),
-          's_note' =>$request->s_nota,
+          's_note' =>$fatkur,
           's_staff' =>$request->s_staff,
           's_customer' => $request->id_cus,
           's_disc_percent' => $request->s_disc_percent,
@@ -470,15 +544,15 @@ class POSRetailController extends Controller
   }
 
   public function sal_save_finalUpdate(Request $request){
+    // dd($request->all());
     DB::beginTransaction();
     try {
     $s_id = $request->s_id;
     $kodeItem = $request->kode_item;
     $qtyItem = $request->sd_qty;
     $m = d_sales::where('s_id',$s_id)->first();
-
+    // dd($m->s_status);
      if ($m->s_status == 'DR') {
-
         d_sales::where('s_id',$s_id)
           ->update([
             's_channel' => 'RT',
@@ -601,7 +675,6 @@ class POSRetailController extends Controller
           ->get();
     }
     
-    // return view('/penjualan/POSretail/NotaPenjualan.dt_notaJual',compact('detalis'));
     return DataTables::of($detalis)
         // ->addIndexColumn()
         ->editColumn('sDate', function ($data) 
@@ -610,7 +683,11 @@ class POSRetailController extends Controller
         })
         ->editColumn('sGross', function ($data) 
         {
-            return number_format( $data->s_gross ,2,',','.');
+            return '<div>Rp.
+                      <span class="pull-right">
+                        '.number_format( $data->s_gross ,2,',','.').'
+                      </span>
+                    </div>';
         })
         ->editColumn('status', function ($data)  {
             if ($data->s_status == "DR") 
@@ -622,6 +699,7 @@ class POSRetailController extends Controller
                 return 'Final';
             }
         })
+
         ->addColumn('action', function($data)
         {
           if ($data->s_status == 'FN') { $attr = 'disabled'; } else { $attr = ''; };
@@ -646,7 +724,7 @@ class POSRetailController extends Controller
                     </div>'; 
           })
         //inisisai column status agar kode html digenerate ketika ditampilkan
-        ->rawColumns(['action'])
+        ->rawColumns(['action','sGross'])
         ->make(true);
   }
 
@@ -662,9 +740,14 @@ class POSRetailController extends Controller
     $d2 = substr($tgl2,0,2);
       $tgl2 = $y2.'-'.$m2.'-'.$d2;
 
-    $leagues = DB::table('d_sales_dt')
-      ->select('sd_item','s_date','i_name','i_type','i_group', DB::raw("sum(sd_qty) as jumlah"))
+    $leagues = d_sales_dt::select('sd_item',
+                                  's_date',
+                                  'i_name',
+                                  'm_gname',
+                                  'i_type', 
+                                  DB::raw("sum(sd_qty) as jumlah"))
       ->join('m_item', 'm_item.i_id', '=' , 'd_sales_dt.sd_item')
+      ->join('m_group','m_group.m_gcode','=','m_item.i_code_group')
       ->join('d_sales', 'd_sales.s_id', '=' , 'd_sales_dt.sd_sales')
       ->where('s_channel','RT')
       ->where('s_status','FN')
@@ -674,7 +757,7 @@ class POSRetailController extends Controller
       ->get();
 
     return DataTables::of($leagues)
-      ->addIndexColumn()
+      // ->addIndexColumn()
       ->editColumn('sDate', function ($data) 
       {
         return date('d M Y', strtotime($data->s_date));
@@ -690,6 +773,7 @@ class POSRetailController extends Controller
               return 'Barang Produksi';
           }
       })
+      
       ->make(true);
   }
       
