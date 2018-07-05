@@ -539,6 +539,23 @@ class BelanjaHarianController extends Controller
       ->make(true);
     }
 
+    public function getDataMasterBarang()
+    {
+      $satuan  = DB::table('m_satuan')->get();
+      $group  = DB::table('m_group')->get();
+
+      return response()->json([
+        'status' => 'sukses',
+        'satuan' => $satuan,
+        'group' => $group
+      ]);
+    }
+
+    public function simpanDataBarang()
+    {
+      
+    }
+
     public function konvertRp($value)
     {
       $value = str_replace(['Rp', '\\', '.', ' '], '', $value);
