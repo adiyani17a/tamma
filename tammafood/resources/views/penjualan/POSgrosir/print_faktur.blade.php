@@ -87,7 +87,7 @@
 			<tr>
 				<td class="s16 italic bold" width="35%">TAMMA ROBAH INDONESIA</td>
 				<td class="s16" width="30%"><p class="underline text-center">FAKTUR</p></td>
-				<td class="s16" width="35%">Surabaya, <text class="bold">{{date('d/m/Y')}}</text></td>
+				<td class="s16" width="35%">Surabaya, <text class="bold">{{ $sales->s_date }}</text></td>
 			</tr>
 			<tr>
 				<td>Jl. Raya Randu no.74<br>
@@ -95,10 +95,10 @@
 					Telp. 031-51165528<br>
 					Fax. 081331100028-081234561066
 				</td>
-				<td class="text-center">01180525040-PJ</td>
+				<td class="text-center">{{ $sales->s_note }}</td>
 				<td>Kepada Yth,<br>
-					Fitrah Kebab<br>
-					Jl. Wonosari km.8 sekarsuli no.23 RT 04 RW Sendangtirto Berbah Sleman Yogyakarta
+					{{$sales->c_name}}<br>
+					{{$sales->c_address}}
 				</td>
 			</tr>
 		</table>
@@ -112,33 +112,27 @@
 				<td>Total</td>
 				<td>Discount</td>
 			</tr>
+			<?php $totalDis = 0 ?>
+			@foreach ($data as $index => $item)
 			<tr>
-				<td class="text-center">1</td>
-				<td>005000018</td>
-				<td>Tortilla Catering</td>
-				<td class="text-right">100,00 PAK</td>
-				<td class="text-right">16,000.00</td>
-				<td class="text-right" width="10%">1,600,000.00</td>
-				<td class="text-right" width="10%">0.00</td>
+				<td class="text-center">{{ $index+1 }}</td>
+				<td>{{ $item->i_code }}</td>
+            	<td>{{ $item->i_name }}</td>
+				<td class="text-center">{{ $item->i_sat1 }}</td>
+				<td class="text-right">{{ $item->sd_price }}</td>
+				<td class="text-right" width="10%">{{ $item->sd_total }}</td>
+				<td class="text-right" width="10%">
+				@if ($item->sd_disc_percent == '0')
+                  {{ number_format($item->sd_disc_value,2,'.',',')}}
+                  <?php $totalDis += $item->sd_disc_value ?>
+                @else
+                  {{ number_format(($item->sd_qty*$item->sd_price)*($item->sd_disc_percent/100),2,'.',',') }}
+                  <?php $totalDis += ($item->sd_qty*$item->sd_price)*($item->sd_disc_percent/100) ?>
+                @endif
+            	</td>
 			</tr>
-			<tr>
-				<td class="text-center empty"></td>
-				<td></td>
-				<td></td>
-				<td class="text-right"></td>
-				<td class="text-right"></td>
-				<td class="text-right" width="10%"></td>
-				<td class="text-right" width="10%"></td>
-			</tr>
-			<tr>
-				<td class="text-center empty"></td>
-				<td></td>
-				<td></td>
-				<td class="text-right"></td>
-				<td class="text-right"></td>
-				<td class="text-right" width="10%"></td>
-				<td class="text-right" width="10%"></td>
-			</tr>
+			@endforeach
+			@foreach($array as $a)
 			<tr>
 				<td class="text-center empty"></td>
 				<td></td>
@@ -148,65 +142,12 @@
 				<td class="text-right" width="10%"></td>
 				<td class="text-right" width="10%"></td>
 			</tr>
-			<tr>
-				<td class="text-center empty"></td>
-				<td></td>
-				<td></td>
-				<td class="text-right"></td>
-				<td class="text-right"></td>
-				<td class="text-right" width="10%"></td>
-				<td class="text-right" width="10%"></td>
-			</tr>
-			<tr>
-				<td class="text-center empty"></td>
-				<td></td>
-				<td></td>
-				<td class="text-right"></td>
-				<td class="text-right"></td>
-				<td class="text-right" width="10%"></td>
-				<td class="text-right" width="10%"></td>
-			</tr>
-			<tr>
-				<td class="text-center empty"></td>
-				<td></td>
-				<td></td>
-				<td class="text-right"></td>
-				<td class="text-right"></td>
-				<td class="text-right" width="10%"></td>
-				<td class="text-right" width="10%"></td>
-			</tr>
-			<tr>
-				<td class="text-center empty"></td>
-				<td></td>
-				<td></td>
-				<td class="text-right"></td>
-				<td class="text-right"></td>
-				<td class="text-right" width="10%"></td>
-				<td class="text-right" width="10%"></td>
-			</tr>
-			<tr>
-				<td class="text-center empty"></td>
-				<td></td>
-				<td></td>
-				<td class="text-right"></td>
-				<td class="text-right"></td>
-				<td class="text-right" width="10%"></td>
-				<td class="text-right" width="10%"></td>
-			</tr>
-			<tr>
-				<td class="text-center empty"></td>
-				<td></td>
-				<td></td>
-				<td class="text-right"></td>
-				<td class="text-right"></td>
-				<td class="text-right" width="10%"></td>
-				<td class="text-right" width="10%"></td>
-			</tr>
+			@endforeach
 			<tr>
 				<td colspan="2" class="border-none-right">Keterangan :</td>
 				<td colspan="3" class="border-none-left border-none-right"></td>
 				<td class="border-none-right border-none-left">Jumlah</td>
-				<td class="border-none-left text-right">1,600,000.00</td>
+				<td class="border-none-left text-right">{{ number_format($dataTotal[0]->total,2,'.',',')}}</td>
 			</tr>
 			<tr>
 				<td colspan="5" class="vertical-baseline border-none-right" style="position: relative;">
@@ -229,11 +170,11 @@
 						<table class="border-none" width="100%" cellspacing="0">
 							<tr>
 								<td width="50%">Total Diskon</td>
-								<td width="50%" class="text-right">0.00</td>
+								<td width="50%" class="text-right">{{ $totalDis }}</td>
 							</tr>
 							<tr>
 								<td width="50%">Sub Total</td>
-								<td width="50%" class="text-right">1,600,000.00</td>
+								<td width="50%" class="text-right">{{ number_format($dataTotal[0]->total,2,'.',',')}}</td>
 							</tr>
 							<tr>
 								<td width="50%">PPN</td>
@@ -241,7 +182,7 @@
 							</tr>
 							<tr>
 								<td width="50%">Total</td>
-								<td width="50%" class="text-right">1,600,000.00</td>
+								<td width="50%" class="text-right">{{ number_format($dataTotal[0]->total,2,'.',',')}}</td>
 							</tr>
 						</table>
 					</div>
