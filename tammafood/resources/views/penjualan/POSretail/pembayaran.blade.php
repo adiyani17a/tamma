@@ -26,7 +26,7 @@
                   </select>
                 </td>
                 <td>
-                  <input type="text" name="sp_nominal[]" id="bayar" value="" class="i_price form-control total bandingPayment totPayment" onkeyup="updateKembalian()" style="text-align: right;" onkeyup="rege(event,'i_price');" onblur="setRupiah(event,'i_price')" onclick="setAwal('event','i_price')" onkeydown="warna()">
+                  <input type="text" name="sp_nominal[]" id="bayar" autocomplete="off" placeholder="Rp. 0,00" value="" class="i_price form-control total bandingPayment totPayment" onkeyup="updateKembalian()" style="text-align: right;" onkeyup="rege(event,'i_price');" onblur="setRupiah(event,'i_price')" onclick="setAwal('event','i_price')" onkeydown="warna()">
                 </td>
                 <td>
                  <button type="button" class="btn btn-info" onclick="tambahPayment()"><i class="glyphicon glyphicon-plus"></i></button> <button type="button" class="btn btn-danger hapus" disabled ><i class="glyphicon glyphicon-minus"></i></button>
@@ -65,7 +65,7 @@
                 <td>Total Belanja</td>
                 <td>
                   <input type="text" name="totalAmount" readonly="true" id="totalPayment" 
-                  class="form-control total" style="text-align: right;" value="{{ number_format( $edit[0]->sd_total ,2,',','.')}}">
+                  class="form-control total" style="text-align: right;" >
                 </td>
               </tr>
             </tbody>
@@ -81,7 +81,7 @@
                   </select>
                 </td>
                 <td>
-                  <input type="text" name="sp_nominal[]" id="bayar" value="" class="i_price form-control total bandingPayment totPayment" onkeyup="updateKembalian()" style="text-align: right;" onkeyup="rege(event,'i_price');" onblur="setRupiah(event,'i_price')" onclick="setAwal('event','i_price')" onkeydown="warna()">
+                  <input type="text" name="sp_nominal[]" id="bayar" autocomplete="off" placeholder="Rp. 0,00" value="" class="i_price form-control total bandingPayment totPayment" onkeyup="updateKembalian()" style="text-align: right;" onkeyup="rege(event,'i_price');" onblur="setRupiah(event,'i_price')" onclick="setAwal('event','i_price')" onkeydown="warna()">
                 </td>
                 <td>
                  <button type="button" class="btn btn-info" onclick="tambahPayment()"><i class="glyphicon glyphicon-plus"></i></button> <button type="button" class="btn btn-danger hapus" disabled ><i class="glyphicon glyphicon-minus"></i></button>
@@ -95,13 +95,13 @@
                 <td>Total Pembayaran</td>
                 <td>
                   <input type="text" readonly="true" class="form-control" id="totPembayaran" style="text-align: right;" 
-                  value="0">
+                  value="" placeholder="Rp. 0,00">
                 </td>
               </tr>
               <tr>
                 <td>Kembalian</td>
                 <td>
-                  <input type="text" name="s_kembalian" value="0" id="kembalian" readonly="true" class="form-control kembalianFinal" style="text-align: right;" onkeyup="tetepNul()">
+                  <input type="text" name="s_kembalian" value="" placeholder="Rp. 0,00" id="kembalian" readonly="true" class="form-control kembalianFinal" style="text-align: right;" onkeyup="tetepNul()">
                 </td>
               </tr>
             </tbody>
