@@ -506,8 +506,18 @@
                                 </li>
                                 @endif
 
+                                @if(Auth::user()->punyaAkses('Laporan POS Penjualan Retail','ma_read'))
+                                <li class="{{ Request::is('penjualan/laporanRetail/index') ? 'active' : ''}}"><a href="{{ url('/penjualan/laporanRetail/index') }}"><span class="submenu-title">Laporan Penjualan Retail</span><span class="hidden">Penjualan</span></a>
+                                </li>
+                                @endif
+
                                 @if(Auth::user()->punyaAkses('POS Penjualan Grosir / Online','ma_read'))
                                 <li class="{{ Request::is('penjualan/POSgrosir/index') ? 'active' : ''}}"><a href="{{ url('/penjualan/POSgrosir/index') }}"><span class="submenu-title">POS Penjualan Grosir / Online</span><span class="hidden">Penjualan</span></a>
+                                </li>
+                                @endif
+
+                                 @if(Auth::user()->punyaAkses('Laporan POS Penjualan Grosir / Online','ma_read'))
+                                <li class="{{ Request::is('penjualan/laporanGrosir/index') ? 'active' : ''}}"><a href="{{ url('/penjualan/laporanGrosir/index') }}"><span class="submenu-title">Laporan Penjualan Grosir / Online</span><span class="hidden">Penjualan</span></a>
                                 </li>
                                 @endif
 
