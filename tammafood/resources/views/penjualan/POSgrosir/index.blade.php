@@ -501,7 +501,8 @@ function lihatDetail(idDetail){
     type: 'GET',
     data: {x:idDetail},
     success:function(response){
-      $('#tombolPrint').html('<a target="_blank" href="'+ baseUrl +'/penjualan/POSgrosir/print/'+ idDetail +'" class="btn btn-primary" title="Print"><i class="fa fa-print"></i> Print Nota</a>'+
+      $('#tombolPrint').html('<a target="_blank" href="'+ baseUrl +'/penjualan/POSgrosir/print/'+ idDetail +'" class="btn btn-primary"><i class="fa fa-print"></i> Print Faktur</a>'+
+        '<a target="_blank" href="'+ baseUrl +'/penjualan/POSgrosir/print_surat_jalan/'+ idDetail +'" class="btn btn-primary"><i class="fa fa-print"></i> Print Surat Jalan</a>'+
         '<button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>');
       $('#detailNota').html(response);
     }

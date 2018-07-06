@@ -229,6 +229,10 @@ Route::get('/penjualan/POSretail/get-tanggaljual/{tgl1}/{tgl2}', 'Penjualan\POSR
 Route::get('/pembayaran/POSretail/pay-methode', 'Penjualan\POSRetailController@PayMethode');
 Route::get('/penjualan/POSretail/setbarcode', 'Penjualan\POSRetailController@setBarcode');
 Route::get('/penjualan/POSretail/stock/table-stock', 'Penjualan\stockController@tableStock');
+// Ari 
+Route::get('/penjualan/POSretail/print/{id}', 'Penjualan\POSRetailController@print');
+Route::get('/penjualan/POSretail/print_surat_jalan/{id}', 'Penjualan\POSRetailController@print_surat_jalan');
+// End irA
 //POSGrosir
 Route::get('/penjualan/POSgrosir/index', 'Penjualan\POSGrosirController@grosir');
 //ferdy
@@ -261,6 +265,9 @@ Route::get('/penjualan/POSgrosir/setbarcode', 'Penjualan\POSGrosirController@set
 Route::get('/penjualan/POSgrosir/ubahstatus', 'Penjualan\POSGrosirController@statusMove');
 Route::get('/penjualan/POSgrosir/showNote', 'Penjualan\POSGrosirController@showNote');
 Route::get('/pembayaran/POSgrosir/changestatus', 'Penjualan\POSGrosirController@changeStatus');
+// Ari
+Route::get('/penjualan/POSgrosir/print_surat_jalan/{id}', 'Penjualan\POSGrosirController@print_surat_jalan');
+// End irA
 //thoriq stock penjualan grosir
 Route::get('/penjualan/POSgrosir/stock/table-stock', 'Penjualan\stockGrosirController@tableStock');
 //mutasi Stok Mahmud

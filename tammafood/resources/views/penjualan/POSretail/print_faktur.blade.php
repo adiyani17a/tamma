@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Surat Jalan</title>
+	<title>Faktur</title>
 	<style type="text/css">
 		*{
 			font-size: 12px;
@@ -86,24 +86,20 @@
 		<table class="border-none" width="100%" cellspacing="0" cellpadding="0">
 			<tr>
 				<td class="s16 italic bold" width="35%">TAMMA ROBAH INDONESIA</td>
-				<td class="s16" width="30%"><p class="underline text-center">Surat Jalan</p></td>
-				<td class="s16" width="35%">Surabaya, <text class="bold">{{$sales->s_date}}</text></td>
+				<td class="s16" width="30%"><p class="underline text-center">FAKTUR</p></td>
+				<td class="s16" width="35%">Surabaya, <text class="bold">{{ $sales->s_date }}</text></td>
 			</tr>
 			<tr>
 				<td>Jl. Raya Randu no.74<br>
 					Sidotopo Wetan - Surabaya 60123<br>
 					Telp. 031-51165528<br>
-					Fax. 081331100028-081234561066<br>
-					http:://www.tammafood.com
+					Fax. 081331100028-081234561066
 				</td>
 				<td class="text-center">{{ $sales->s_note }}</td>
 				<td>Kepada Yth,<br>
 					{{$sales->c_name}}<br>
 					{{$sales->c_address}}
 				</td>
-			</tr>
-			<tr>
-				<td colspan="3" class="bold">*) Setelah Transfer Mohon di Info : 08573190-0003 "SMS PROMO" DAFAFOOD</td>
 			</tr>
 		</table>
 		<table width="100%" cellspacing="0" class="tabel" border="1px">
@@ -155,7 +151,28 @@
 			</tr>
 			<tr>
 				<td colspan="5" class="vertical-baseline border-none-right" style="position: relative;">
-					
+					<?php
+					function terbilang($x) {
+					  $angka = ["", "Satu", "Dua", "Tiga", "Empat", "Lima", "Enam", "Tujuh", "Delapan", "Sembilan", "Sepuluh", "Sebelas"];
+					  if ($x < 12)
+					    return " " . $angka[$x];
+					  elseif ($x < 20)
+					    return terbilang($x - 10) . " Belas";
+					  elseif ($x < 100)
+					    return terbilang($x / 10) . " Puluh" . terbilang($x % 10);
+					  elseif ($x < 200)
+					    return "Seratus" . terbilang($x - 100);
+					  elseif ($x < 1000)
+					    return terbilang($x / 100) . " Ratus" . terbilang($x % 100);
+					  elseif ($x < 2000)
+					    return "Seribu" . terbilang($x - 1000);
+					  elseif ($x < 1000000)
+					    return terbilang($x / 1000) . " Ribu" . terbilang($x % 1000);
+					  elseif ($x < 1000000000)
+					    return terbilang($x / 1000000) . " Juta" . terbilang($x % 1000000);
+					}
+					?>
+					<div class="top s16">Terbilang : <?php echo ucwords(terbilang($dataTotal[0]->total)); ?> Rupiah</div>
 					<div class="float-left" style="width: 40vw;">
 						<ul style="padding-left: -15px;">
 							<li>Barang yang sudah dibeli tidak bisa dikembalikan lagi kecuali ada perjanjian</li>
@@ -169,8 +186,27 @@
 						<div>Accounting</div>
 					</div>
 				</td>
-				<td colspan="2" class="border-none-left">
-					<!-- Empty -->
+				<td colspan="2" class="vertical-baseline border-none-left">
+					<div class="top">
+						<table class="border-none" width="100%" cellspacing="0">
+							<tr>
+								<td width="50%">Total Diskon</td>
+								<td width="50%" class="text-right">{{ $totalDis }}</td>
+							</tr>
+							<tr>
+								<td width="50%">Sub Total</td>
+								<td width="50%" class="text-right">{{ number_format($dataTotal[0]->total,2,'.',',')}}</td>
+							</tr>
+							<tr>
+								<td width="50%">PPN</td>
+								<td width="50%" class="text-right">0.00</td>
+							</tr>
+							<tr>
+								<td width="50%">Total</td>
+								<td width="50%" class="text-right">{{ number_format($dataTotal[0]->total,2,'.',',')}}</td>
+							</tr>
+						</table>
+					</div>
 				</td>
 			</tr>
 		</table>

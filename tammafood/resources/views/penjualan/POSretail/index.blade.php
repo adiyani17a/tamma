@@ -216,6 +216,7 @@
                              <label class="control-label tebal" for="no_faktur" >Nomor Faktur</label>
                               <div class="input-group input-group-sm" style="width: 100%;">
                                 <input type="text" id="no_faktur" name="s_nota" class="form-control" readonly="true" value="{{$fatkur}}">
+                                <input type="hidden" id="idfatkur" class="form-control" name="s_id" readonly="true" value="{{$idfatkur+1}}">
                               </div>
                           </div>
                         </form>
@@ -362,8 +363,8 @@
                           
                         </div>
                       </div>
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+                      <div id="buttonDetail" class="modal-footer">
+                        
                       </div>
                     </div>
                     
@@ -554,6 +555,9 @@
     type: 'get',
     data: {x:idDetail},
     success:function(response){
+      $('#buttonDetail').html('<a target="_blank" href="'+ baseUrl +'/penjualan/POSretail/print/'+ idDetail +'" class="btn btn-primary"><i class="fa fa-print"></i>&nbsp;Print Faktur</a>' +
+        '<a target="_blank" href="'+ baseUrl +'/penjualan/POSretail/print_surat_jalan/'+ idDetail +'" class="btn btn-primary"><i class="fa fa-print"></i>&nbsp;Print Surat Jalan</a>' +
+        '<button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>');
       $('#xx').html(response);
     }
    });  

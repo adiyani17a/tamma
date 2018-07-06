@@ -1101,6 +1101,41 @@ class POSGrosirController extends Controller
   public function lpacking(){
     return view('penjualan.POSGrosir.lpacking');
   }
+  public function print_surat_jalan($id){
+    $sales = d_sales::select( 'c_name',
+                              'c_address',
+                              's_date',
+                              's_note')
+      ->join('m_customer','c_id','=','s_customer')
+      ->where('s_id',$id)
+      ->first();
+    // dd($sales);
+
+    $data = d_sales_dt::select( 'i_code',
+                                'i_name',
+                                'i_sat1',
+                                'sd_price',
+                                'sd_total',
+                                'sd_disc_value',
+                                'sd_qty',
+                                'sd_disc_percent')
+      ->join('m_item','i_id','=','sd_item')
+      ->where('sd_sales',$id)->get();
+
+      $dataTotal = d_sales_dt::select(DB::raw('SUM(sd_total) as total'))
+      ->join('m_item','i_id','=','sd_item')
+      ->where('sd_sales',$id)->get();
+      $count = count($data);
+      $tes = 15 - $count;
+      $array = [];
+
+      if ($tes > 0) {
+        for ($i=0; $i < $tes; $i++) { 
+          array_push($array, 'a');
+        }
+      }
+      return view('penjualan.POSgrosir.print_surat_jalan', compact('data', 'dataTotal', 'sales', 'array'));
+  }
 }
 
 

@@ -58,8 +58,14 @@ function sal_save_final(){
         $("input[name='sp_method[]']").val('');
         $("input[name='sp_nominal[]']").val('');
         $("input[name='hasil[]']").val('');
-        alert('Berhasil');
-        window.location.href = baseUrl+"/penjualan/POSretail/index";
+            var id = $('#idfatkur').val();
+        if (confirm("Berhasil!, Ingin langsung cetak nota?")) {
+              window.open(baseUrl+"/penjualan/POSretail/print/"+id, "_blank");
+            window.location.href = baseUrl+"/penjualan/POSretail/index";
+
+            } else {
+            window.location.href = baseUrl+"/penjualan/POSretail/index";
+            }
       }else{
         alert('Mohon melengkapi data!!!');
        $('.simpanFinal').removeAttr('disabled','disabled');
