@@ -59,7 +59,7 @@ function sal_save_final(){
         $("input[name='sp_nominal[]']").val('');
         $("input[name='hasil[]']").val('');
         alert('Berhasil');
-        window.location.href = "/tamma/penjualan/POSretail/index";
+        window.location.href = baseUrl+"/penjualan/POSretail/index";
       }else{
         alert('Mohon melengkapi data!!!');
        $('.simpanFinal').removeAttr('disabled','disabled');

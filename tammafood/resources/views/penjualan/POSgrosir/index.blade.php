@@ -300,8 +300,8 @@
                                     
                                   </div>
                                 </div>
-                                <div class="modal-footer">
-                                  <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+                                <div id="tombolPrint" class="modal-footer">
+                                  
                                 </div>
                               </div>
                               
@@ -501,6 +501,8 @@ function lihatDetail(idDetail){
     type: 'GET',
     data: {x:idDetail},
     success:function(response){
+      $('#tombolPrint').html('<a target="_blank" href="'+ baseUrl +'/penjualan/POSgrosir/print/'+ idDetail +'" class="btn btn-primary" title="Print"><i class="fa fa-print"></i> Print Nota</a>'+
+        '<button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>');
       $('#detailNota').html(response);
     }
   });   

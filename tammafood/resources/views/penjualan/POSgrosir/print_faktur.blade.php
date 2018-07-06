@@ -119,8 +119,8 @@
 				<td>{{ $item->i_code }}</td>
             	<td>{{ $item->i_name }}</td>
 				<td class="text-center">{{ $item->i_sat1 }}</td>
-				<td class="text-right">{{ $item->sd_price }}</td>
-				<td class="text-right" width="10%">{{ $item->sd_total }}</td>
+				<td class="text-right">{{ number_format($item->sd_price,2,'.',',') }}</td>
+				<td class="text-right" width="10%">{{ number_format($item->sd_total,2,'.',',') }}</td>
 				<td class="text-right" width="10%">
 				@if ($item->sd_disc_percent == '0')
                   {{ number_format($item->sd_disc_value,2,'.',',')}}
@@ -154,7 +154,7 @@
 					<div class="top s16">Terbilang : Satu Juta Enam Ratus Ribu Rupiah</div>
 					<div class="float-left" style="width: 40vw;">
 						<ul style="padding-left: -15px;">
-							<li>Barang yang sudah dibeli tidak bisa dikemblikan lagi kecuali ada perjanjian</li>
+							<li>Barang yang sudah dibeli tidak bisa dikembalikan lagi kecuali ada perjanjian</li>
 							<li>Keterlambatan, kehilangan atau kerusakan barang selama pengiriman tidak menjadi tanggung jawab kami.</li>
 							<li>Klaim dilayani 1x24 jam setelah barang diterima</li>
 						</ul>
