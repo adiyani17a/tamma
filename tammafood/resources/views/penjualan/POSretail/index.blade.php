@@ -330,7 +330,7 @@
                         </div>
 
                         <div class="col-md-3 col-sm-3 col-xs-12" align="right">
-                          <select name="tampilData" id="tampil_data" class="form-control">
+                          <select name="tampilData" id="tampil_data" class="form-control input-sm">
                             <option value="semua" class="form-control">Tampilkan Data : Semua</option>
                             <option value="draft" class="form-control">Tampilkan Data : Draft</option>
                             <option value="final" class="form-control">Tampilkan Data : Final</option>
