@@ -271,6 +271,14 @@ Route::get('/penjualan/mutasi/stock/penjualan-retail', 'Penjualan\mutasiStokCont
 Route::get('/penjualan/monitoringorder/tabel', 'Penjualan\MonitoringOrderController@tabel');
 Route::get('/penjualan/monitoringorder/nota/{id}', 'Penjualan\MonitoringOrderController@bukaNota');
 Route::get('/penjualan/monitoringorder/nota/tabel/{id}', 'Penjualan\MonitoringOrderController@nota');
+//Laporan Retail
+Route::get('/penjualan/laporanRetail/index', 'Penjualan\LaporanRetailController@index');
+Route::get('/penjualan/laporanRetail/index', 'Penjualan\LaporanRetailController@index');
+Route::get('/penjualan/laporanRetail/get-data-laporan/{tgl1}/{tgl2}', 'Penjualan\LaporanRetailController@getDataLaporan');
+//Laporan Grosir
+Route::get('/penjualan/laporanGrosir/index', 'Penjualan\LaporanGrosirController@index');
+Route::get('/penjualan/laporanGrosir/index', 'Penjualan\LaporanGrosirController@index');
+Route::get('/penjualan/laporanGrosir/get-data-laporan/{tgl1}/{tgl2}', 'Penjualan\LaporanGrosirController@getDataLaporan');
 /*HRD*/
 Route::get('/hrd/manajemenkpipegawai/kpi', 'HrdController@kpi');
 Route::get('/hrd/payroll/payroll', 'HrdController@payroll');
