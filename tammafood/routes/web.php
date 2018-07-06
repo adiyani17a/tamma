@@ -74,6 +74,7 @@ Route::get('/purchasing/belanjaharian/get-edit-belanja/{id}', 'Pembelian\Belanja
 Route::post('/purchasing/belanjaharian/update-data-belanja', 'Pembelian\BelanjaHarianController@updateDataBelanja');
 Route::post('/purchasing/belanjaharian/delete-data-belanja', 'Pembelian\BelanjaHarianController@deleteDataBelanja');
 Route::get('/purchasing/belanjaharian/get-belanja-by-tgl/{tgl1}/{tgl2}', 'Pembelian\BelanjaHarianController@getBelanjaByTgl');
+Route::get('/purchasing/belanjaharian/get-data-masterbarang', 'Pembelian\BelanjaHarianController@getDataMasterBarang');
 //return pembelian
 Route::get('/purchasing/returnpembelian/pembelian', 'Pembelian\ReturnPembelianController@index');
 Route::get('/purchasing/returnpembelian/tambah-return', 'Pembelian\ReturnPembelianController@tambahReturn');
@@ -276,6 +277,14 @@ Route::get('/penjualan/mutasi/stock/penjualan-retail', 'Penjualan\mutasiStokCont
 Route::get('/penjualan/monitoringorder/tabel', 'Penjualan\MonitoringOrderController@tabel');
 Route::get('/penjualan/monitoringorder/nota/{id}', 'Penjualan\MonitoringOrderController@bukaNota');
 Route::get('/penjualan/monitoringorder/nota/tabel/{id}', 'Penjualan\MonitoringOrderController@nota');
+//Laporan Retail
+Route::get('/penjualan/laporanRetail/index', 'Penjualan\LaporanRetailController@index');
+Route::get('/penjualan/laporanRetail/index', 'Penjualan\LaporanRetailController@index');
+Route::get('/penjualan/laporanRetail/get-data-laporan/{tgl1}/{tgl2}', 'Penjualan\LaporanRetailController@getDataLaporan');
+//Laporan Grosir
+Route::get('/penjualan/laporanGrosir/index', 'Penjualan\LaporanGrosirController@index');
+Route::get('/penjualan/laporanGrosir/index', 'Penjualan\LaporanGrosirController@index');
+Route::get('/penjualan/laporanGrosir/get-data-laporan/{tgl1}/{tgl2}', 'Penjualan\LaporanGrosirController@getDataLaporan');
 /*HRD*/
 Route::get('/hrd/manajemenkpipegawai/kpi', 'HrdController@kpi');
 Route::get('/hrd/payroll/payroll', 'HrdController@payroll');

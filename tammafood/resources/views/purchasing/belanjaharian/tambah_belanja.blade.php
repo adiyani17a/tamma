@@ -151,7 +151,11 @@
                               <td>
                                   {{ csrf_field() }}
                                   <input type="hidden" id="ip_item" class="form-control" value="" name="ipItem">
-                                  <input type="text" id="ip_barang" class="form-control ui-autocomplete-input input-sm" placeholder="Masukkan nama barang" autocomplete="off" name="ipBarang">
+                                  <div class="input-group input-group-sm" style="width: 100%;">
+                                    <input type="text" id="ip_barang" class="form-control ui-autocomplete-input input-sm" placeholder="Masukkan nama barang" autocomplete="off" name="ipBarang">
+                                    <!-- <span class="input-group-btn"><button  type="button" class="btn btn-info btn-sm btn_add_barang" data-toggle="modal" data-target="#modal-barang"><i class="fa fa-plus"></i></button></span> -->
+                                    <span class="input-group-btn"><button  type="button" class="btn btn-info btn-sm btn_add_barang" onclick="tambahMasterBarang()"><i class="fa fa-plus"></i></button></span>
+                                  </div>
                               </td>
                               <td>
                                   <input type="text" id="ip_qty" class="form-control input-sm numberinput" value="" name="ipQty">
@@ -194,8 +198,11 @@
   <!--END PAGE WRAPPER-->
   <!-- modal-supplier -->
   @include('purchasing.belanjaharian.modal-supplier')
+  <!-- modal-barang -->
+  @include('purchasing.belanjaharian.modal-barang')
 @endsection
 @section("extra_scripts")
+<script src="{{ asset("js/inputmask/inputmask.jquery.js") }}"></script>
 <script src="{{ asset ('assets/script/icheck.min.js') }}"></script>
 <script type="text/javascript">
   $(document).ready(function() {
@@ -340,6 +347,144 @@
         return (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57) && e.which != 46) ? false : true;
     });
 
+    $('#code_group').change(function(){
+      var id = $(this).val();
+      var bid = $('#code_group').find(':selected').data('val');
+      console.log(id);
+      $.ajax({
+         type: "get",
+         url: '{{ route('kode_barang') }}',
+         data: {id},
+         success: function(data){
+          $('#kode_barang').val(data);
+         
+         },
+         error: function(){
+        
+         },
+         async: false
+      });
+    });
+
+    // fungsi jika modal hidden
+    /*$(".modal").on("hidden.bs.modal", function(){
+      
+    });*/
+
+    //mask money
+    $.fn.maskFunc = function(){
+      $('.currency').inputmask("currency", {
+          radixPoint: ",",
+          groupSeparator: ".",
+          digits: 2,
+          autoGroup: true,
+          prefix: '', //Space after $, this will not truncate the first character.
+          rightAlign: false,
+          oncleared: function () { self.Value(''); }
+      });
+    }
+
+    $(this).maskFunc();
+
+    $('#code_group').change(function(){
+      var id = $(this).val();
+      var bid = $('#code_group').find(':selected').data('val');
+      console.log(id);
+      $.ajax({
+         type: "get",
+         url: '{{ route('kode_barang') }}',
+         data: {id},
+         success: function(data){
+          $('#kode_barang').val(data);
+         
+         },
+         error: function(){
+        
+         },
+         async: false
+      });
+    });
+
+    //event focus on isi_sat3
+    $(document).on('focus', '#isi_sat2',  function(e){
+      $('#isi_sat2').attr('readonly', false);
+      $('#isi_sat3').attr('readonly', false);
+      $('#harga_beli1').val('').attr('readonly', true);
+      $('#harga_beli2').val('');
+      $('#harga_beli3').val('');
+    });
+
+    //event focus on isi_sat3
+    $(document).on('focus', '#isi_sat3',  function(e){
+      $('#isi_sat2').attr('readonly', false);
+      $('#isi_sat3').attr('readonly', false);
+      $('#harga_beli1').val('').attr('readonly', true);
+      $('#harga_beli2').val('');
+      $('#harga_beli3').val('');
+    });
+
+    //event onblur harga isi_sat3
+    $(document).on('blur', '#isi_sat3',  function(e){
+      $('#harga_beli1').attr('readonly', false);
+    });
+
+    //event focus on harga beli1
+    $(document).on('focus', '#harga_beli1',  function(e){
+      $('#isi_sat2').attr('readonly', true);
+      $('#isi_sat3').attr('readonly', true);
+    });
+
+    //event onblur harga beli1
+    $(document).on('blur', '#harga_beli1',  function(e){
+      var harga1 = convertToAngka($(this).val());
+      // console.log(harga1);
+      var isi2 = $('#isi_sat2').val();
+      var isi3 = $('#isi_sat3').val();
+      var harga2 = parseInt(harga1 * isi2);
+      var harga3 = parseInt(harga1 * isi3);
+      // console.log(harga2);
+      // console.log(harga3);
+      $('#harga_beli2').val(harga2);
+      $('#harga_beli3').val(harga3);
+    });
+
+    $('#change_function').on("click", "#save_barang",function(){
+      if(confirm('Simpan Data Barang ?'))
+      {
+        $('#save_barang').text('Menyimpan...'); //change button text
+        $('#save_barang').attr('disabled',true); //set button disable 
+        $.ajax({
+          type: "get",
+          url: '{{ route('simpan_barang') }}',
+          data: $('#form-master-barang').serialize(),
+          success: function(response)
+          {
+            if(response.status == "sukses")
+            {
+              // alert(response.pesan);
+              toastr.success(response.pesan, 'Pemberitahuan');
+              $('#save_barang').text('Simpan Data'); //change button text
+              $('#save_barang').attr('disabled',false); //set button enable
+              $('#modal-barang').modal('hide');
+            }
+            else
+            {
+              toastr.error(response.pesan, 'Pemberitahuan');
+              $('#save_barang').text('Simpan Data'); //change button text
+              $('#save_barang').attr('disabled',false); //set button enable
+              $('#modal-barang').modal('hide');
+            }              
+          },
+          error: function()
+          {
+            toastr.error('Data Tidak Tersimpan!','Pemberitahuan') 
+          },
+          async: false
+        });
+      }
+    });
+
+
   //end jquery
   });
 
@@ -413,6 +558,65 @@
             }
         });
     }
+  }
+
+  function tambahMasterBarang() 
+  {
+    $('#code_group').empty();
+    $('#satuan_1').empty();
+    $('#satuan_2').empty();
+    $('#satuan_3').empty();
+    $('#code_group').append($('<option>', { value: "", text : "- Pilih Data -" }));
+    $('#satuan_1').append($('<option>', { value: "", text : "- Pilih Data -" }));
+    $('#satuan_2').append($('<option>', { value: "", text : "- Pilih Data -" }));
+    $('#satuan_3').append($('<option>', { value: "", text : "- Pilih Data -" }));
+    $.ajax({
+      url : baseUrl + "/purchasing/belanjaharian/get-data-masterbarang",
+      type: "GET",
+      dataType: "JSON",
+      success: function(data)
+      {
+        var key = 1;
+        var key2 = 1;
+        Object.keys(data.group).forEach(function(){
+          $('#code_group').append($('<option>',
+          {
+            value: data.group[key-1].m_gcode,
+            text : data.group[key-1].m_gname 
+          }));
+
+          key++;
+        });
+
+        Object.keys(data.satuan).forEach(function(){
+          $('#satuan_1').append($('<option>',
+          {
+            value: data.satuan[key2-1].m_sid,
+            text : data.satuan[key2-1].m_sname 
+          }));
+
+          $('#satuan_2').append($('<option>',
+          {
+            value: data.satuan[key2-1].m_sid,
+            text : data.satuan[key2-1].m_sname 
+          }));
+
+          $('#satuan_3').append($('<option>',
+          {
+            value: data.satuan[key2-1].m_sid,
+            text : data.satuan[key2-1].m_sname 
+          }));
+          
+          key2++;
+        });
+
+        $('#modal-barang').modal('show');
+      },
+      error: function (jqXHR, textStatus, errorThrown)
+      {
+          alert('Error get data from ajax');
+      }
+    });
   }
 
   function convertDecimalToRupiah(decimal) 

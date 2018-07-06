@@ -57,17 +57,19 @@ function sal_save_final(){
         $("input[name='sd_disc_value[]']").val('');
         $("input[name='sp_method[]']").val('');
         $("input[name='sp_nominal[]']").val('');
+        $("input[name='hasil[]']").val('');
         alert('Berhasil');
-        window.location.href = "/tamma/penjualan/POSretail/index";
+        window.location.href = baseUrl+"/penjualan/POSretail/index";
       }else{
         alert('Mohon melengkapi data!!!');
-       $('.simpanFinal').removeAttr('disabled','disabled');;
+       $('.simpanFinal').removeAttr('disabled','disabled');
       }
       }         
     })
   }
 
 function sal_save_finalUpdate(){
+  $('.simpanFinal').attr('disabled','disabled');
   var bb = $('#save_sform :input').serialize();
   var cc = $('#save_item :input').serialize();
   var data=tableDetail.$('input').serialize();
@@ -77,25 +79,30 @@ function sal_save_finalUpdate(){
     data: bb+'&'+cc+'&'+data,
 
     success:function(response){
-      $('#proses').modal('hide');
-        $("input[name='s_member']").val('');
-        $("input[name='s_gross']").val('');
-        $("input[name='s_disc_percent']").val('');
-        $("input[name='s_disc_value']").val('');
-        $("input[name='s_pajak']").val('');
-        $("input[name='s_net']").val('');
-        $("input[name='sd_qty[]']").val('');
-        $("input[name='sd_sell[]']").val('');
-        $("input[name='s_dibayarkan']").val('');
-        $("input[name='totalDiscount[]']").val('');
-        $("input[name='s_kembalian']").val('');
-        $("input[name='sd_disc_percent[]']").val('');
-        $("input[name='sd_disc_value[]']").val('');
-        $("input[name='sp_method[]']").val('');
-        $("input[name='sp_nominal[]']").val('');
-        alert('Berhasil');
-        window.location.href = "/tamma/penjualan/POSretail/index";
-        }         
+      if (response.status=='sukses') {
+        $('#proses').modal('hide');
+          $("input[name='s_member']").val('');
+          $("input[name='s_gross']").val('');
+          $("input[name='s_disc_percent']").val('');
+          $("input[name='s_disc_value']").val('');
+          $("input[name='s_pajak']").val('');
+          $("input[name='s_net']").val('');
+          $("input[name='sd_qty[]']").val('');
+          $("input[name='sd_sell[]']").val('');
+          $("input[name='s_dibayarkan']").val('');
+          $("input[name='totalDiscount[]']").val('');
+          $("input[name='s_kembalian']").val('');
+          $("input[name='sd_disc_percent[]']").val('');
+          $("input[name='sd_disc_value[]']").val('');
+          $("input[name='sp_method[]']").val('');
+          $("input[name='sp_nominal[]']").val('');
+          alert('Berhasil Update Nota');
+          window.location.href = "tammalocal/penjualan/POSretail/index";
+        }else{
+          alert('Mohon untuk melengkapi data!');
+          $('.simpanFinal').removeAttr('disabled','disabled');
+        }
+      }        
     })
   } 
 
@@ -124,6 +131,7 @@ function sal_save_draft(){
         $("input[name='s_kembalian']").val('');
         $("input[name='sd_disc_percent[]']").val('');
         $("input[name='sd_disc_value[]']").val('');
+        $("input[name='hasil[]']").val('');
         alert('di simpan sebagai draft');
         window.location.reload();
       }else{

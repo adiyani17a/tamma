@@ -217,7 +217,7 @@
 					
 					<div class="float-left" style="width: 40vw;">
 						<ul style="padding-left: -15px;">
-							<li>Barang yang sudah dibeli tidak bisa dikemblikan lagi kecuali ada perjanjian</li>
+							<li>Barang yang sudah dibeli tidak bisa dikembalikan lagi kecuali ada perjanjian</li>
 							<li>Keterlambatan, kehilangan atau kerusakan barang selama pengiriman tidak menjadi tanggung jawab kami.</li>
 							<li>Klaim dilayani 1x24 jam setelah barang diterima</li>
 						</ul>
