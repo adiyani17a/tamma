@@ -119,8 +119,8 @@
 				<td>{{ $item->i_code }}</td>
             	<td>{{ $item->i_name }}</td>
 				<td class="text-center">{{ $item->i_sat1 }}</td>
-				<td class="text-right">{{ $item->sd_price }}</td>
-				<td class="text-right" width="10%">{{ $item->sd_total }}</td>
+				<td class="text-right">{{ number_format($item->sd_price,2,'.',',') }}</td>
+				<td class="text-right" width="10%">{{ number_format($item->sd_total,2,'.',',') }}</td>
 				<td class="text-right" width="10%">
 				@if ($item->sd_disc_percent == '0')
                   {{ number_format($item->sd_disc_value,2,'.',',')}}
