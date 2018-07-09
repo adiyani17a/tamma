@@ -174,9 +174,11 @@ class RencanaPembelianController extends Controller
       {
         $dataIsi = d_purchasingplan_dt::join('d_purchasingplan','d_purchasingplan_dt.d_pcspdt_idplan','=','d_purchasingplan.d_pcsp_id')
                                 ->join('m_item', 'd_purchasingplan_dt.d_pcspdt_item', '=', 'm_item.i_id')
+                                ->join('m_satuan', 'd_purchasingplan_dt.d_pcspdt_sat', '=', 'm_satuan.m_sid')
                                 ->select('d_purchasingplan_dt.d_pcspdt_item',
                                          'm_item.i_code',
                                          'm_item.i_name',
+                                         'm_satuan.m_sname',
                                          'd_purchasingplan_dt.d_pcspdt_qty',
                                          'd_purchasingplan_dt.d_pcspdt_qtyconfirm'
                                 )
@@ -188,9 +190,11 @@ class RencanaPembelianController extends Controller
       {
         $dataIsi = d_purchasingplan_dt::join('d_purchasingplan','d_purchasingplan_dt.d_pcspdt_idplan','=','d_purchasingplan.d_pcsp_id')
                                 ->join('m_item', 'd_purchasingplan_dt.d_pcspdt_item', '=', 'm_item.i_id')
+                                ->join('m_satuan', 'd_purchasingplan_dt.d_pcspdt_sat', '=', 'm_satuan.m_sid')
                                 ->select('d_purchasingplan_dt.d_pcspdt_item',
                                          'm_item.i_code',
                                          'm_item.i_name',
+                                         'm_satuan.m_sname',
                                          'd_purchasingplan_dt.d_pcspdt_qty',
                                          'd_purchasingplan_dt.d_pcspdt_qtyconfirm'
                                 )
@@ -265,11 +269,13 @@ class RencanaPembelianController extends Controller
       {
         $dataIsi = d_purchasingplan_dt::join('d_purchasingplan','d_purchasingplan_dt.d_pcspdt_idplan','=','d_purchasingplan.d_pcsp_id')
                                 ->join('m_item', 'd_purchasingplan_dt.d_pcspdt_item', '=', 'm_item.i_id')
+                                ->join('m_satuan', 'd_purchasingplan_dt.d_pcspdt_sat', '=', 'm_satuan.m_sid')
                                 ->select('d_purchasingplan_dt.d_pcspdt_id',
                                          'd_purchasingplan_dt.d_pcspdt_item',
                                          'm_item.i_code',
                                          'm_item.i_name',
-                                         'm_item.i_sat1',
+                                         'm_satuan.m_sname',
+                                         'm_satuan.m_sid',
                                          'd_purchasingplan_dt.d_pcspdt_prevcost',
                                          'd_purchasingplan_dt.d_pcspdt_qty',
                                          'd_purchasingplan_dt.d_pcspdt_qtyconfirm'
@@ -282,11 +288,13 @@ class RencanaPembelianController extends Controller
       {
         $dataIsi = d_purchasingplan_dt::join('d_purchasingplan','d_purchasingplan_dt.d_pcspdt_idplan','=','d_purchasingplan.d_pcsp_id')
                                 ->join('m_item', 'd_purchasingplan_dt.d_pcspdt_item', '=', 'm_item.i_id')
+                                ->join('m_satuan', 'd_purchasingplan_dt.d_pcspdt_sat', '=', 'm_satuan.m_sid')
                                 ->select('d_purchasingplan_dt.d_pcspdt_id',
                                          'd_purchasingplan_dt.d_pcspdt_item',
                                          'm_item.i_code',
                                          'm_item.i_name',
-                                         'm_item.i_sat1',
+                                         'm_satuan.m_sname',
+                                         'm_satuan.m_sid',
                                          'd_purchasingplan_dt.d_pcspdt_prevcost',
                                          'd_purchasingplan_dt.d_pcspdt_qty',
                                          'd_purchasingplan_dt.d_pcspdt_qtyconfirm'
@@ -398,7 +406,7 @@ class RencanaPembelianController extends Controller
                     // ->select(DB::raw('MAX(sm_hpp) as hargaPrev'))
                     ->select('sm_hpp')
                     ->where('sm_item', '=', $idItem)
-                    ->where('sm_mutcat', '=', "11")
+                    ->where('sm_mutcat', '=', "12")
                     ->orderBy('sm_date', 'desc')
                     ->limit(1)
                     ->get();
@@ -410,10 +418,16 @@ class RencanaPembelianController extends Controller
             $hargaLalu = $value->sm_hpp;
           }
 
+          //get data txt satuan
+          $txtSat1 = DB::table('m_satuan')->select('m_sname', 'm_sid')->where('m_sid','=', $val->i_sat1)->first();
+          $txtSat2 = DB::table('m_satuan')->select('m_sname', 'm_sid')->where('m_sid','=', $val->i_sat2)->first();
+          $txtSat3 = DB::table('m_satuan')->select('m_sname', 'm_sid')->where('m_sid','=', $val->i_sat3)->first();
+
           $results[] = [ 'id' => $val->i_id,
                          'label' => $val->i_code .'  '.$val->i_name,
                          'stok' => $stok,
                          'sat' => [$val->i_sat1, $val->i_sat2, $val->i_sat3],
+                         'satTxt' => [$txtSat1->m_sname, $txtSat2->m_sname, $txtSat3->m_sname],
                          'prevCost' => 'Rp. '.number_format((int)$hargaLalu,2,",",".")
                        ];
         }
@@ -424,7 +438,7 @@ class RencanaPembelianController extends Controller
 
     public function simpanPlan(Request $request)
     {
-      //dd($this->konvertRp($request->fieldHargaPrev[0]));
+      //dd($request->all());
       DB::beginTransaction();
       try {
         //insert to table d_purchasingplan
@@ -449,6 +463,7 @@ class RencanaPembelianController extends Controller
           $plandt = new d_purchasingplan_dt;
           $plandt->d_pcspdt_idplan = $lastIdPlan;
           $plandt->d_pcspdt_item = $request->fieldIpItem[$i];
+          $plandt->d_pcspdt_sat = $request->fieldIpSatid[$i];
           $plandt->d_pcspdt_qty = $request->fieldIpQtyReq[$i];
           $plandt->d_pcspdt_prevcost = $this->konvertRp($request->fieldHargaPrev[$i]);
           $plandt->d_pcspdt_updated = Carbon::now();
@@ -545,30 +560,33 @@ class RencanaPembelianController extends Controller
 
         if ($tampil == 'wait') {
           $data = DB::table('d_purchasingplan_dt')
-            ->select('d_purchasingplan_dt.*', 'd_purchasingplan.*', 'm_item.i_name', 'd_supplier.s_company')
+            ->select('d_purchasingplan_dt.*', 'd_purchasingplan.*', 'm_item.i_name', 'd_supplier.s_company', 'm_satuan.m_sname')
             ->leftJoin('d_purchasingplan','d_purchasingplan_dt.d_pcspdt_idplan','=','d_purchasingplan.d_pcsp_id')
             ->leftJoin('d_supplier','d_purchasingplan.d_pcsp_sup','=','d_supplier.s_id')
             ->leftJoin('m_item','d_purchasingplan_dt.d_pcspdt_item','=','m_item.i_id')
+            ->leftJoin('m_satuan','d_purchasingplan_dt.d_pcspdt_sat','=','m_satuan.m_sid')
             ->where('d_purchasingplan_dt.d_pcspdt_isconfirm','=',"FALSE")
             ->where('d_purchasingplan.d_pcsp_status','=',"WT")
             ->whereBetween('d_purchasingplan.d_pcsp_datecreated', [$tanggal1, $tanggal2])
             ->get();
         }elseif ($tampil == 'edit') {
           $data = DB::table('d_purchasingplan_dt')
-            ->select('d_purchasingplan_dt.*', 'd_purchasingplan.*', 'm_item.i_name', 'd_supplier.s_company')
+            ->select('d_purchasingplan_dt.*', 'd_purchasingplan.*', 'm_item.i_name', 'd_supplier.s_company', 'm_satuan.m_sname')
             ->leftJoin('d_purchasingplan','d_purchasingplan_dt.d_pcspdt_idplan','=','d_purchasingplan.d_pcsp_id')
             ->leftJoin('d_supplier','d_purchasingplan.d_pcsp_sup','=','d_supplier.s_id')
             ->leftJoin('m_item','d_purchasingplan_dt.d_pcspdt_item','=','m_item.i_id')
+            ->leftJoin('m_satuan','d_purchasingplan_dt.d_pcspdt_sat','=','m_satuan.m_sid')
             ->where('d_purchasingplan_dt.d_pcspdt_isconfirm','=',"TRUE")
             ->where('d_purchasingplan.d_pcsp_status','=',"DE")
             ->whereBetween('d_purchasingplan.d_pcsp_datecreated', [$tanggal1, $tanggal2])
             ->get();
         }else{
           $data = DB::table('d_purchasingplan_dt')
-            ->select('d_purchasingplan_dt.*', 'd_purchasingplan.*', 'm_item.i_name', 'd_supplier.s_company')
+            ->select('d_purchasingplan_dt.*', 'd_purchasingplan.*', 'm_item.i_name', 'd_supplier.s_company', 'm_satuan.m_sname')
             ->leftJoin('d_purchasingplan','d_purchasingplan_dt.d_pcspdt_idplan','=','d_purchasingplan.d_pcsp_id')
             ->leftJoin('d_supplier','d_purchasingplan.d_pcsp_sup','=','d_supplier.s_id')
             ->leftJoin('m_item','d_purchasingplan_dt.d_pcspdt_item','=','m_item.i_id')
+            ->leftJoin('m_satuan','d_purchasingplan_dt.d_pcspdt_sat','=','m_satuan.m_sid')
             ->where('d_purchasingplan_dt.d_pcspdt_isconfirm','=',"TRUE")
             ->where('d_purchasingplan.d_pcsp_status','=',"FN")
             ->whereBetween('d_purchasingplan.d_pcsp_datecreated', [$tanggal1, $tanggal2])

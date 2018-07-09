@@ -156,6 +156,15 @@
       }
     });
 
+    //event change, apabila status !fn = maka btn_remove disabled
+    $('#status_confirm').change(function(event) {
+      //alert($(this).val());
+      if($(this).val() == "WT")
+      {
+        $('.crfmField').val('0');
+      }
+    });
+
     //event onblur input harga
     $(document).on('blur', '.field_qty_confirm',  function(e){
       var getid = $(this).attr("id");
@@ -209,9 +218,9 @@
                             +'<td>'+key+'</td>'
                             +'<td>'+data.data_isi[key-1].i_code+' '+data.data_isi[key-1].i_name+'</td>'
                             +'<td>'+data.data_isi[key-1].d_pcspdt_qty+'</td>'
-                            +'<td><input type="text" value="'+data.data_isi[key-1].d_pcspdt_qtyconfirm+'" name="fieldConfirm[]" class="form-control numberinput input-sm"/>'
+                            +'<td><input type="text" value="'+data.data_isi[key-1].d_pcspdt_qtyconfirm+'" name="fieldConfirm[]" class="form-control numberinput input-sm crfmField"/>'
                             +'<input type="hidden" value="'+data.data_isi[key-1].d_pcspdt_id+'" name="fieldIdDt[]" class="form-control"/></td>'
-                            +'<td>'+data.data_isi[key-1].i_sat1+'</td>'
+                            +'<td>'+data.data_isi[key-1].m_sname+'</td>'
                             +'<td>'+convertDecimalToRupiah(data.data_isi[key-1].d_pcspdt_prevcost)+'</td>'
                             +'<td>'+data.data_stok[key-1].qtyStok+'</td>'
                             +'<td><button name="remove" id="'+i+'" class="btn btn-danger btn_remove_row btn-sm" disabled>X</button></td>'
@@ -228,9 +237,9 @@
                             +'<td>'+key+'</td>'
                             +'<td>'+data.data_isi[key-1].i_code+' '+data.data_isi[key-1].i_name+'</td>'
                             +'<td>'+data.data_isi[key-1].d_pcspdt_qty+'</td>'
-                            +'<td><input type="text" value="'+data.data_isi[key-1].d_pcspdt_qtyconfirm+'" name="fieldConfirm[]" class="form-control numberinput input-sm"/>'
+                            +'<td><input type="text" value="'+data.data_isi[key-1].d_pcspdt_qtyconfirm+'" name="fieldConfirm[]" class="form-control numberinput input-sm crfmField"/>'
                             +'<input type="hidden" value="'+data.data_isi[key-1].d_pcspdt_id+'" name="fieldIdDt[]" class="form-control"/></td>'
-                            +'<td>'+data.data_isi[key-1].i_sat1+'</td>'
+                            +'<td>'+data.data_isi[key-1].m_sname+'</td>'
                             +'<td>'+convertDecimalToRupiah(data.data_isi[key-1].d_pcspdt_prevcost)+'</td>'
                             +'<td>'+data.data_stok[key-1].qtyStok+'</td>'
                             +'<td><button name="remove" id="'+i+'" class="btn btn-danger btn_remove_row btn-sm">X</button></td>'
@@ -277,9 +286,9 @@
                             +'<td>'+key+'</td>'
                             +'<td>'+data.data_isi[key-1].i_code+' '+data.data_isi[key-1].i_name+'</td>'
                             +'<td>'+data.data_isi[key-1].d_pcspdt_qty+'</td>'
-                            +'<td><input type="text" value="'+data.data_isi[key-1].d_pcspdt_qtyconfirm+'" name="fieldConfirm[]" class="form-control numberinput input-sm"/>'
+                            +'<td><input type="text" value="'+data.data_isi[key-1].d_pcspdt_qtyconfirm+'" name="fieldConfirm[]" class="form-control numberinput input-sm crfmField"/>'
                             +'<input type="hidden" value="'+data.data_isi[key-1].d_pcspdt_id+'" name="fieldIdDt[]" class="form-control"/></td>'
-                            +'<td>'+data.data_isi[key-1].i_sat1+'</td>'
+                            +'<td>'+data.data_isi[key-1].m_sname+'</td>'
                             +'<td>'+convertDecimalToRupiah(data.data_isi[key-1].d_pcspdt_prevcost)+'</td>'
                             +'<td>'+data.data_stok[key-1].qtyStok+'</td>'
                             +'<td><button name="remove" id="'+i+'" class="btn btn-danger btn_remove_row_order btn-sm" disabled>X</button></td>'
@@ -296,9 +305,9 @@
                             +'<td>'+key+'</td>'
                             +'<td>'+data.data_isi[key-1].i_code+' '+data.data_isi[key-1].i_name+'</td>'
                             +'<td>'+data.data_isi[key-1].d_pcspdt_qty+'</td>'
-                            +'<td><input type="text" value="'+data.data_isi[key-1].d_pcspdt_qtyconfirm+'" name="fieldConfirm[]" class="form-control numberinput input-sm"/>'
+                            +'<td><input type="text" value="'+data.data_isi[key-1].d_pcspdt_qtyconfirm+'" name="fieldConfirm[]" class="form-control numberinput input-sm crfmField"/>'
                             +'<input type="hidden" value="'+data.data_isi[key-1].d_pcspdt_id+'" name="fieldIdDt[]" class="form-control"/></td>'
-                            +'<td>'+data.data_isi[key-1].i_sat1+'</td>'
+                            +'<td>'+data.data_isi[key-1].m_sname+'</td>'
                             +'<td>'+convertDecimalToRupiah(data.data_isi[key-1].d_pcspdt_prevcost)+'</td>'
                             +'<td>'+data.data_stok[key-1].qtyStok+'</td>'
                             +'<td><button name="remove" id="'+i+'" class="btn btn-danger btn_remove_row_order btn-sm">X</button></td>'

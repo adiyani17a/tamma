@@ -127,11 +127,12 @@ class ConfrimBeliController extends Controller
     {
         $dataIsi = d_purchasingplan_dt::join('d_purchasingplan','d_purchasingplan_dt.d_pcspdt_idplan','=','d_purchasingplan.d_pcsp_id')
                                 ->join('m_item', 'd_purchasingplan_dt.d_pcspdt_item', '=', 'm_item.i_id')
+                                ->join('m_satuan', 'd_purchasingplan_dt.d_pcspdt_sat', '=', 'm_satuan.m_sid')
                                 ->select('d_purchasingplan_dt.d_pcspdt_id',
                                          'd_purchasingplan_dt.d_pcspdt_item',
                                          'm_item.i_code',
                                          'm_item.i_name',
-                                         'm_item.i_sat1',
+                                         'm_satuan.m_sname',
                                          'd_purchasingplan_dt.d_pcspdt_qty',
                                          'd_purchasingplan_dt.d_pcspdt_prevcost',
                                          'd_purchasingplan_dt.d_pcspdt_qtyconfirm'
@@ -144,11 +145,12 @@ class ConfrimBeliController extends Controller
     {
         $dataIsi = d_purchasingplan_dt::join('d_purchasingplan','d_purchasingplan_dt.d_pcspdt_idplan','=','d_purchasingplan.d_pcsp_id')
                                 ->join('m_item', 'd_purchasingplan_dt.d_pcspdt_item', '=', 'm_item.i_id')
+                                ->join('m_satuan', 'd_purchasingplan_dt.d_pcspdt_sat', '=', 'm_satuan.m_sid')
                                 ->select('d_purchasingplan_dt.d_pcspdt_id',
                                          'd_purchasingplan_dt.d_pcspdt_item',
                                          'm_item.i_code',
                                          'm_item.i_name',
-                                         'm_item.i_sat1',
+                                         'm_satuan.m_sname',
                                          'd_purchasingplan_dt.d_pcspdt_qty',
                                          'd_purchasingplan_dt.d_pcspdt_prevcost',
                                          'd_purchasingplan_dt.d_pcspdt_qtyconfirm'
