@@ -557,6 +557,7 @@
     success:function(response){
       $('#buttonDetail').html('<a target="_blank" href="'+ baseUrl +'/penjualan/POSretail/print/'+ idDetail +'" class="btn btn-primary"><i class="fa fa-print"></i>&nbsp;Print Faktur</a>' +
         '<a target="_blank" href="'+ baseUrl +'/penjualan/POSretail/print_surat_jalan/'+ idDetail +'" class="btn btn-primary"><i class="fa fa-print"></i>&nbsp;Print Surat Jalan</a>' +
+        '<a target="_blank" href="'+ baseUrl +'/penjualan/print_jangan_dibanting/'+ idDetail +'" class="btn btn-primary"><i class="fa fa-print"></i>&nbsp;Print Jangan Di Banting</a>' +
         '<button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>');
       $('#xx').html(response);
     }

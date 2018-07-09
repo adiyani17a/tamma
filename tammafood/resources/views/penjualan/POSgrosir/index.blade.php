@@ -503,6 +503,7 @@ function lihatDetail(idDetail){
     success:function(response){
       $('#tombolPrint').html('<a target="_blank" href="'+ baseUrl +'/penjualan/POSgrosir/print/'+ idDetail +'" class="btn btn-primary"><i class="fa fa-print"></i> Print Faktur</a>'+
         '<a target="_blank" href="'+ baseUrl +'/penjualan/POSgrosir/print_surat_jalan/'+ idDetail +'" class="btn btn-primary"><i class="fa fa-print"></i> Print Surat Jalan</a>'+
+        '<a target="_blank" href="'+ baseUrl +'/penjualan/print_jangan_dibanting/'+ idDetail +'" class="btn btn-primary"><i class="fa fa-print"></i>&nbsp;Print Jangan Di Banting</a>' +
         '<button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>');
       $('#detailNota').html(response);
     }

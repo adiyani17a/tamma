@@ -267,6 +267,8 @@ Route::get('/penjualan/POSgrosir/showNote', 'Penjualan\POSGrosirController@showN
 Route::get('/pembayaran/POSgrosir/changestatus', 'Penjualan\POSGrosirController@changeStatus');
 // Ari
 Route::get('/penjualan/POSgrosir/print_surat_jalan/{id}', 'Penjualan\POSGrosirController@print_surat_jalan');
+Route::get('/penjualan/print_jangan_dibanting/{id}', 'Penjualan\POSGrosirController@print_awas_barang_panas');
+
 // End irA
 //thoriq stock penjualan grosir
 Route::get('/penjualan/POSgrosir/stock/table-stock', 'Penjualan\stockGrosirController@tableStock');

@@ -1136,6 +1136,18 @@ class POSGrosirController extends Controller
       }
       return view('penjualan.POSgrosir.print_surat_jalan', compact('data', 'dataTotal', 'sales', 'array'));
   }
+
+  public function print_awas_barang_panas($id){
+    $sales = d_sales::select( 'c_name',
+                              'c_address',
+                              'c_hp')
+      ->join('m_customer','c_id','=','s_customer')
+      ->where('s_id',$id)
+      ->first();
+
+    
+      return view('penjualan.POSretail.print_awas_barang_panas', compact('sales'));
+  }
 }
 
 
