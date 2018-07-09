@@ -299,6 +299,9 @@ Route::get('/hrd/dataadministrasi/admin', 'HrdController@admin');
 Route::get('/hrd/datalembur/lembur', 'HrdController@lembur');
 Route::get('/hrd/scoreboard/score', 'HrdController@score');
 Route::get('/hrd/training/training', 'HrdController@training');
+// Ari
+Route::get('/hrd/manajemensurat/manajemensurat', 'HrdController@manajemensurat');
+// End irA
 /*Keuangan*/
 Route::get('/keuangan/p_inputtransaksi/transaksi', 'Keuangan\KeuanganController@transaksi');
 Route::get('/keuangan/l_hutangpiutang/hutang', 'Keuangan\KeuanganController@hutang');
@@ -477,3 +480,4 @@ Route::get('/master/datakeuangan/hapus_akun', 'keuangan\akunController@hapus_aku
 Route::get('/master/datatransaksi/transaksi', 'Keuangan\transaksiController@index');
 // transaksi keuangan end
 // Route Keuangan End
+

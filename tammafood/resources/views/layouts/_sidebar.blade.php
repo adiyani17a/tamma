@@ -579,7 +579,10 @@
                                 @if(Auth::user()->punyaAkses('Recruitment','ma_read'))
                                     Recruitment
                                 @endif
-                                
+
+                                @if(Auth::user()->punyaAkses('Manajemen Surat','ma_read'))
+                                    Manajemen Surat
+                                @endif                                
                             </span>
                         </a>
                             <ul class="nav nav-second-level">
@@ -614,6 +617,10 @@
                                 @endif
                                 @if(Auth::user()->punyaAkses('Recruitment','ma_read'))
                                 <li class="{{ Request::is('hrd/recruitment/rekrut') ? 'active' : '' || Request::is('hrd/recruitment/*') ? 'active' : '' }}"><a href="{{ url('/hrd/recruitment/rekrut') }}"><span class="submenu-title">Recruitment</span><span class="hidden">HRD</span></a>
+                                </li>
+                                @endif
+                                @if(Auth::user()->punyaAkses('Manajemen Surat','ma_read'))
+                                <li class="{{ Request::is('hrd/manajemensurat/*') ? 'active' : '' }}"><a href="{{ url('/hrd/manajemensurat/manajemensurat') }}"><span class="submenu-title">Manajemen Surat</span><span class="hidden">HRD</span></a>
                                 </li>
                                 @endif
 
