@@ -161,7 +161,7 @@
                                   <input type="text" id="ip_qty" class="form-control input-sm numberinput" value="" name="ipQty">
                               </td>
                               <td>
-                                  <input type="text" id="ip_satuan" class="form-control input-sm" value="" name="ipSatuan" readonly>
+                                  <select class="form-control input-sm" id="ip_satuan" name="ipSat" style="width: 100%;"></select>
                               </td>
                               <td>
                                   <input type="text" id="ip_harga" class="form-control input-sm" value="" name="ipHarga">
@@ -253,13 +253,22 @@
             select: function(event, ui) {
                 $('#ip_item').val(ui.item.id);
                 $('#ip_barang').val(ui.item.label);
-                $('#ip_satuan').val(ui.item.satuan);
+                //$('#ip_satuan').val(ui.item.satuan);
+                Object.keys(ui.item.sat).forEach(function()
+                {
+                  $('#ip_satuan').append($('<option>', 
+                  { 
+                      value: ui.item.sat[key-1],
+                      text : ui.item.satTxt[key-1]
+                  }));
+                  key++;
+                });
                 $('#ip_harga').val(convertDecimalToRupiah('0.00'));
                 $('#ip_harga_total').val(convertDecimalToRupiah('0.00'));
                 $("input[name='ipQty']").focus();
             }
         });
-        $('#ip_satuan').val("");
+        $('#ip_satuan').empty();
         $('#ip_barang').val("");
         $('#ip_item').val("");
         $('#ip_qty').val("");
@@ -291,6 +300,16 @@
       //totalPembelian();
     });
 
+    //event onblur qty
+    $(document).on('blur', '#ip_qty',  function(e){
+      var qty = $(this).val();
+      var harga = convertToAngka($('#ip_harga').val());
+      //hitung nilai harga total
+      var valueHargaTotal = convertToRupiah(qty * harga);
+      $('#ip_harga_total').val(valueHargaTotal);
+      //totalPembelian();
+    });
+
     $(document).on('blur', '#total_bayar',  function(e){
       var valueHargaByr = convertToRupiah($(this).val());
       $(this).val(valueHargaByr);
@@ -299,15 +318,15 @@
     var i = randString(5);
     var no = 1;
     $('#add_item').click(function() {
-        var ambilSatuan = $("#ip_sat option:selected").val();
-        $('#ip_sat').empty();
+        var ambilSatuanId = $("#ip_satuan option:selected").val();
+        var ambilSatuanTxt = $("#ip_satuan option:selected").text();
+        $('#ip_satuan').empty();
         var ambilIdBarang = $('#ip_item').val();
         var ambilBarang = $('#ip_barang').val();
         var ambilQty = $('#ip_qty').val();
-        var ambilSatuan = $('#ip_satuan').val();
         var ambilHarga = $('#ip_harga').val();
         var ambilHargaTotal = $('#ip_harga_total').val();
-        if (ambilIdBarang == "" || ambilBarang == "" || ambilQty == "" || ambilSatuan == "" ) 
+        if (ambilIdBarang == "" || ambilBarang == "" || ambilQty == "" || ambilSatuanId == "" ) 
         {
             alert('Terdapat kolom yang kosong, dimohon cek lagi!!');
         }
@@ -318,7 +337,8 @@
                                     +'<td><input type="text" name="fieldIpBarang[]" value="'+ambilBarang+'" id="field_ip_barang" class="form-control" required readonly>'
                                     +'<input type="hidden" name="fieldIpItem[]" value="'+ambilIdBarang+'" id="field_ip_item" class="form-control"></td>'
                                     +'<td><input type="text" name="fieldIpQty[]" value="'+ambilQty+'" id="field_ip_qty" class="form-control" required readonly></td>'
-                                    +'<td><input type="text" name="fieldIpSat[]" value="'+ambilSatuan+'" id="field_ip_sat" class="form-control" required readonly></td>'
+                                    +'<td><input type="text" name="fieldIpSatTxt[]" value="'+ambilSatuanTxt+'" id="field_ip_sat_txt" class="form-control" required readonly>'
+                                    +'<input type="hidden" name="fieldIpSatId[]" value="'+ambilSatuanId+'" id="field_ip_sat_id" class="form-control" required readonly></td>'
                                     +'<td><input type="text" name="fieldIpHarga[]" value="'+ambilHarga+'" id="field_ip_harga" class="form-control" required readonly></td>'
                                     +'<td><input type="text" name="fieldIpHargaTot[]" value="'+ambilHargaTotal+'" id="field_ip_harga_tot" class="form-control hargaTotalItem" required readonly></td>'
                                     +'<td><button name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button></td>'
