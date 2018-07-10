@@ -486,10 +486,22 @@
     endDate: 'today'
     });//datepicker("setDate", "0");
 
+  $( "#nama-customer" ).autocomplete({
+      source: baseUrl+'/penjualan/POSretail/retail/autocomplete',
+      minLength: 1,
+      select: function(event, ui) {
+        $('#id_cus').val(ui.item.id);
+        $('#nama-customer').val(ui.item.label);
+        $('#alamat2').val(ui.item.alamat);
+        $('#c-class').val(ui.item.c_class);
+        }
+    });
+
   discpercentEdit();
   discvalueEdit();
   UpdateTotal();
   updateKembalian();
+  dataInput();
 
   });
 
@@ -611,7 +623,11 @@
         $('#detailnama').val(ui.item.nama);
         $('#namaitem').val(ui.item.label);
         $('#satuan').val(ui.item.satuan);
-        $('#s_qty').val(ui.item.s_qty);
+        if (ui.item.s_qty == null) {
+          $('#s_qty').val('0');
+        }else{
+          $('#s_qty').val(ui.item.s_qty);
+        }
         $('#qty').val(ui.item.qty);
         $('#qty').val('1');
         $("input[name='qty']").focus();
@@ -1008,7 +1024,7 @@
     input = parseInt(input);
     stok = parseInt(stok);
     if (input > stok || input < 1) {
-      $('.qty-'+kode).val(1);
+      $('.qty-'+kode).val('0');
       toastr.warning('Barang yang di beli melebihi stok');
       }
       UpdateHarga(kode);
