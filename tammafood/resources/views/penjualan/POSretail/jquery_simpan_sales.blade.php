@@ -18,7 +18,7 @@ function simpan(){
         $("input[name='no_hp']").val('');
         $("textarea[name='alamat']").val('');
         alert('Data Tersimpan');
-        window.location.reload();
+        window.location.href = baseUrl+"/penjualan/POSretail/index";
       }else{
         alert('Mohon melengkapi data!!!');
        $('.simpanCus').removeAttr('disabled','disabled');
