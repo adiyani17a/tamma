@@ -177,7 +177,7 @@
                           +'<td>'+data.data_isi[key-1].m_sname+'</td>'
                           +'<td>'+data.data_isi[key-1].d_pcspdt_qty+'</td>'
                           +'<td>'+data.data_isi[key-1].d_pcspdt_qtyconfirm+'</td>'
-                          +'<td>'+data.data_stok[key-1].qtyStok+'</td>'
+                          +'<td>'+data.data_stok[key-1].qtyStok+' '+data.data_satuan[key-1]+'</td>'
                           +'</tr>');
           key++;
         });
@@ -214,7 +214,7 @@
                           +'<td>'+data.data_isi[key-1].m_sname+'</td>'
                           +'<td>'+data.data_isi[key-1].d_pcspdt_qty+'</td>'
                           +'<td>'+data.data_isi[key-1].d_pcspdt_qtyconfirm+'</td>'
-                          +'<td>'+data.data_stok[key-1].qtyStok+'</td>'
+                          +'<td>'+data.data_stok[key-1].qtyStok+' '+data.data_satuan[key-1]+'</td>'
                           +'</tr>');
           key++;
         });
@@ -255,7 +255,7 @@
                           +'<input type="hidden" value="'+data.data_isi[key-1].d_pcspdt_id+'" name="fieldIdDt[]" class="form-control"/></td>'
                           +'<td>'+data.data_isi[key-1].d_pcspdt_qtyconfirm+'</td>'
                           +'<td>'+convertDecimalToRupiah(data.data_isi[key-1].d_pcspdt_prevcost)+'</td>'
-                          +'<td>'+data.data_stok[key-1].qtyStok+'</td>'
+                          +'<td>'+data.data_stok[key-1].qtyStok+' '+data.data_satuan[key-1]+'</td>'
                           +'</tr>');
           key++;
         });
@@ -295,7 +295,7 @@
                           +'<input type="hidden" value="'+data.data_isi[key-1].d_pcspdt_id+'" name="fieldIdDt[]" class="form-control"/></td>'
                           +'<td>'+data.data_isi[key-1].d_pcspdt_qtyconfirm+'</td>'
                           +'<td>'+convertDecimalToRupiah(data.data_isi[key-1].d_pcspdt_prevcost)+'</td>'
-                          +'<td>'+data.data_stok[key-1].qtyStok+'</td>'
+                          +'<td>'+data.data_stok[key-1].qtyStok+' '+data.data_satuan[key-1]+'</td>'
                           +'</tr>');
           key++;
         });
