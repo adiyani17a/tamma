@@ -60,9 +60,7 @@ function sal_save_final(){
         $("input[name='hasil[]']").val('');
             var id = $('#idfatkur').val();
         if (confirm("Berhasil!, Ingin langsung cetak nota?")) {
-              window.open(baseUrl+"/penjualan/POSretail/print/"+id, "_blank");
-            window.location.href = baseUrl+"/penjualan/POSretail/index";
-
+            window.open(baseUrl+"/penjualan/POSretail/print/"+id, "_blank");
         } else {
             window.location.href = baseUrl+"/penjualan/POSretail/index";
         }
@@ -102,12 +100,16 @@ function sal_save_finalUpdate(){
           $("input[name='sd_disc_value[]']").val('');
           $("input[name='sp_method[]']").val('');
           $("input[name='sp_nominal[]']").val('');
-          alert('Berhasil Update Nota');
-          window.location.href = "tammalocal/penjualan/POSretail/index";
-        }else{
-          alert('Mohon untuk melengkapi data!');
-          $('.simpanFinal').removeAttr('disabled','disabled');
+          var id = $('#no_faktur').val();
+        if (confirm("Berhasil!, Ingin langsung cetak nota?")) {
+          window.open(baseUrl+"/penjualan/POSretail/print/"+id, "_blank");
+        } else {
+          window.location.href = baseUrl+"/penjualan/POSretail/index";
         }
+      }else{
+        alert('Mohon melengkapi data!!!');
+       $('.simpanFinal').removeAttr('disabled','disabled');
+      }
       }        
     })
   } 
