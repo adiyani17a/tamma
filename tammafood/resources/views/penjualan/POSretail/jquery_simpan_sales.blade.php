@@ -63,9 +63,9 @@ function sal_save_final(){
               window.open(baseUrl+"/penjualan/POSretail/print/"+id, "_blank");
             window.location.href = baseUrl+"/penjualan/POSretail/index";
 
-            } else {
+        } else {
             window.location.href = baseUrl+"/penjualan/POSretail/index";
-            }
+        }
       }else{
         alert('Mohon melengkapi data!!!');
        $('.simpanFinal').removeAttr('disabled','disabled');

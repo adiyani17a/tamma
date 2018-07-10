@@ -170,7 +170,7 @@
                           +'<td>'+key+'</td>'
                           +'<td>'+data.data_isi[key-1].i_name+'</td>'
                           +'<td>'+data.data_isi[key-1].d_pcshdt_qty+'</td>'
-                          +'<td>'+data.data_isi[key-1].i_sat1+'</td>'
+                          +'<td>'+data.data_isi[key-1].m_sname+'</td>'
                           +'<td>'+convertDecimalToRupiah(data.data_isi[key-1].d_pcshdt_price)+'</td>'
                           +'<td>'+convertDecimalToRupiah(data.data_isi[key-1].d_pcshdt_pricetotal)+'</td>'
                           +'</tr>');
@@ -217,7 +217,8 @@
                             +'<input type="hidden" name="fieldIpIdDetailEdit[]" value="'+data.data_isi[key-1].d_pcshdt_id+'" id="field_ip_detail_edit" class="form-control">'
                             +'<input type="hidden" name="fieldIpItemEdit[]" value="'+data.data_isi[key-1].d_pcshdt_item+'" id="field_ip_item_edit" class="form-control"></td>'
                             +'<td><input type="text" name="fieldIpQtyEdit[]" value="'+data.data_isi[key-1].d_pcshdt_qty+'" id="qty_'+i+'" data-qty="'+i+'" class="form-control field_qty input-sm" required></td>'
-                            +'<td><input type="text" name="fieldIpSatEdit[]" value="'+data.data_isi[key-1].i_sat1+'" id="field_ip_sat_edit" class="form-control input-sm" required readonly></td>'
+                            +'<td><input type="text" name="fieldIpSatTxtEdit[]" value="'+data.data_isi[key-1].m_sname+'" id="field_ip_sat_txt_edit" class="form-control input-sm" required readonly>'
+                            +'<input type="hidden" name="fieldIpSatIdEdit[]" value="'+data.data_isi[key-1].m_sid+'" id="field_ip_sat_id_edit" class="form-control input-sm" required readonly></td>'
                             +'<td><input type="text" value="'+convertDecimalToRupiah(data.data_isi[key-1].d_pcshdt_price)+'" name="fieldIpHargaEdit[]" id="price_'+i+'" data-price="'+i+'" class="form-control input-sm field_harga numberinput"/></td>'
                             +'<td><input type="text" value="'+convertDecimalToRupiah(data.data_isi[key-1].d_pcshdt_pricetotal)+'" name="fieldIpHargaTotalEdit[]" class="form-control input-sm hargaTotalItem" id="total_'+i+'" readonly/></td>'
                             +'</tr>');

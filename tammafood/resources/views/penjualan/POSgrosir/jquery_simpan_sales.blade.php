@@ -63,8 +63,6 @@ function sal_save_final(){
             } else {
               window.location.href = baseUrl+"/penjualan/POSgrosir/index";
             }
-              // alert('Berhasil');
-              // window.location.reload();
           }else{
             alert('Mohon melengkapi data penjualan!!!');
             $('.simpanFinal').removeAttr('disabled','disabled');
