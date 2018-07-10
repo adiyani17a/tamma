@@ -199,6 +199,7 @@
         "rowsGroup": [
           'first:name'
         ],
+        "lengthMenu": [[10, 20, 50, - 1], [10, 20, 50, "All"]],
         "language": {
           "searchPlaceholder": "Cari Data",
           "emptyTable": "Tidak ada data",
