@@ -108,13 +108,10 @@
 		</table>
 		<table width="100%" cellspacing="0" class="tabel" border="1px">
 			<tr class="text-center">
-				<td>No</td>
+				<td width="1%">No</td>
 				<td>Kode Barang</td>
 				<td>Nama Barang</td>
-				<td>Unit</td>
-				<td>Harga</td>
-				<td>Total</td>
-				<td>Discount</td>
+				<td colspan="2">Unit</td>
 			</tr>
 			<?php $totalDis = 0 ?>
 			@foreach ($data as $index => $item)
@@ -122,18 +119,7 @@
 				<td class="text-center">{{ $index+1 }}</td>
 				<td>{{ $item->i_code }}</td>
             	<td>{{ $item->i_name }}</td>
-				<td class="text-center">{{ $item->i_sat1 }}</td>
-				<td class="text-right">{{ number_format($item->sd_price,2,'.',',') }}</td>
-				<td class="text-right" width="10%">{{ number_format($item->sd_total,2,'.',',') }}</td>
-				<td class="text-right" width="10%">
-				@if ($item->sd_disc_percent == '0')
-                  {{ number_format($item->sd_disc_value,2,'.',',')}}
-                  <?php $totalDis += $item->sd_disc_value ?>
-                @else
-                  {{ number_format(($item->sd_qty*$item->sd_price)*($item->sd_disc_percent/100),2,'.',',') }}
-                  <?php $totalDis += ($item->sd_qty*$item->sd_price)*($item->sd_disc_percent/100) ?>
-                @endif
-            	</td>
+				<td class="text-right" colspan="2">{{$item->sd_qty}}&nbsp;{{ $item->m_sname }}</td>
 			</tr>
 			@endforeach
 			@foreach($array as $a)
@@ -141,20 +127,17 @@
 				<td class="text-center empty"></td>
 				<td></td>
 				<td></td>
-				<td class="text-right"></td>
-				<td class="text-right"></td>
-				<td class="text-right" width="10%"></td>
-				<td class="text-right" width="10%"></td>
+				<td class="text-right" colspan="2"></td>
 			</tr>
 			@endforeach
 			<tr>
-				<td colspan="2" class="border-none-right">Keterangan :</td>
-				<td colspan="3" class="border-none-left border-none-right"></td>
+				<td class="border-none-right">Keterangan :</td>
+				<td colspan="2" class="border-none-left border-none-right"></td>
 				<td class="border-none-right border-none-left">Jumlah</td>
 				<td class="border-none-left text-right">{{ number_format($dataTotal[0]->total,2,'.',',')}}</td>
 			</tr>
 			<tr>
-				<td colspan="5" class="vertical-baseline border-none-right" style="position: relative;">
+				<td colspan="3" class="vertical-baseline border-none-right" style="position: relative;">
 					
 					<div class="float-left" style="width: 40vw;">
 						<ul style="padding-left: -15px;">
