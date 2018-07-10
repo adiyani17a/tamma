@@ -42,13 +42,6 @@ class LaporanRetailController extends Controller
                 ->orderBy('d_sales_dt.sd_item', 'DESC')
                 ->get();
 
-    //dd($data);
-
-    /*return response()->json([
-        'status' => 'sukses',
-        'data' => $data
-    ]);*/
-
     return DataTables::of($data)
     ->editColumn('nama', function ($data)
     {

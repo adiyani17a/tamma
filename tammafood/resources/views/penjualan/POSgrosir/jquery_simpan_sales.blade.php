@@ -17,6 +17,7 @@ function simpan(){
         $("input[name='no_hp']").val('');
         $("textarea[name='alamat']").val('');
         alert('Data Tersimpan');
+        window.location.href = baseUrl+"/penjualan/POSgrosir/index";
         }else{
         alert('Mohon melengkapi data!!!');
        $('.simpanCus').removeAttr('disabled','disabled');
@@ -63,8 +64,6 @@ function sal_save_final(){
             } else {
               window.location.href = baseUrl+"/penjualan/POSgrosir/index";
             }
-              // alert('Berhasil');
-              // window.location.reload();
           }else{
             alert('Mohon melengkapi data penjualan!!!');
             $('.simpanFinal').removeAttr('disabled','disabled');

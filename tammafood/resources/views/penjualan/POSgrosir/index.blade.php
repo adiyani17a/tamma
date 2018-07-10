@@ -135,10 +135,10 @@
                         </div>
                         <div class="col-md-8 col-sm-9 col-xs-12">
                           <div class="form-group">
-                            <div class="input-icon right">
-                              <i class="glyphicon glyphicon-earphone"></i>
-                              <input type="text" id="no_hp" name="no_hp" class="form-control input-sm"  value="{{ old('no_hp') }}">   
-                            </div>                               
+                            <div class="input-group">
+                              <span class="input-group-addon" id="basic-addon1">+62</span>
+                              <input type="text" id="no_hp" name="no_hp" class="form-control input-sm"  value="{{ old('no_hp') }}">
+                            </div>                              
                           </div>
                         </div>
                         <div class="col-md-4 col-sm-3 col-xs-12">
@@ -591,16 +591,6 @@ function lihatDetail(idDetail){
       $("#qty").val('');
       $("#namaitem" ).val('');
   });
-
-// function UpdateHarga(kode){
-//   var qty = $('.qty-'+kode).val();
-//   var harga = $('.harga-'+kode).val();
-//   console.log(harga);
-//   var hasil = convertToAngka(harga);
-//   hasil = hasil * qty;
-//   var hasilRp = convertToRupiah(hasil);
-//   $('.hasil-'+kode).val(hasilRp);
-// } 
 
 @if ($ket == 'create') 
 var index=0;

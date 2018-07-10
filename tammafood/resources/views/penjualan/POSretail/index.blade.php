@@ -139,7 +139,10 @@
                               <div class="form-group">
                                 <div class="input-icon right">
                                   <i class="glyphicon glyphicon-earphone"></i>
-                                  <input type="text" id="no_hp" name="no_hp" class="form-control input-sm"  value="{{ old('no_hp') }}">
+                                  <div class="input-group">
+                                    <span class="input-group-addon" id="basic-addon1">+62</span>
+                                    <input type="text" id="no_hp" name="no_hp" class="form-control input-sm"  value="{{ old('no_hp') }}">
+                                  </div>
                                 </div>                               
                               </div>
                             </div>

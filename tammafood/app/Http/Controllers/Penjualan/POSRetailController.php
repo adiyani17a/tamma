@@ -327,7 +327,7 @@ class POSRetailController extends Controller
         'c_name' => $request->nama_cus,
         'c_birthday' => $request->tgl_lahir,
         'c_email' => $request->email,
-        'c_hp' => $request->no_hp,
+        'c_hp' => '+62'.$request->no_hp,
         'c_address' => $request->alamat,
         'c_class' => $request->class_cust,
         'c_type' =>'RT',
