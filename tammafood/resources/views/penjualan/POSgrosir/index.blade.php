@@ -217,7 +217,7 @@
                          <label class="control-label tebal" for="no_faktur" >Nomor Faktur</label>
                           <div class="input-group input-group-sm" style="width: 100%;">
                             <input type="text" id="no_faktur" name="s_nota" class="form-control" readonly="true" value="{{$fatkur}}">
-                            <input type="hidden" id="idfatkur" name="s_nota" class="form-control" readonly="true" value="{{$idfatkur}}">
+                            <input type="hidden" id="idfatkur" name="s_notaId" class="form-control" readonly="true" value="{{$idfatkur}}">
                           </div>
                       </div>
                     </form>
@@ -391,7 +391,7 @@
 @section("extra_scripts")
 
   <script src="{{ asset ('assets/script/bootstrap-datepicker.js') }}"></script>
-
+  <script src="{{ asset ('assets/script/icheck.min.js') }}"></script>
   @include('penjualan.POSgrosir.jquery_simpan_sales')
 
   <script type="text/javascript">
@@ -423,6 +423,44 @@
         }
       }
     })
+
+    var date = new Date();
+    var newdate = new Date(date);
+
+    newdate.setDate(newdate.getDate()-3);
+    var nd = new Date(newdate);
+    $('.datepicker').datepicker({
+      format: "mm",
+      viewMode: "months",
+      minViewMode: "months"
+    });
+    $('.datepicker1').datepicker({
+      autoclose: true,
+      format:"dd-mm-yyyy",
+      endDate: 'today'
+    }).datepicker("setDate", nd);
+    $('.datepicker2').datepicker({
+      autoclose: true,
+      format:"dd-mm-yyyy",
+      endDate: 'today'
+    });//.datepicker("setDate", "0");
+
+    $( "#nama-customer" ).autocomplete({
+    source: baseUrl+'/penjualan/POSretail/retail/autocomplete',
+    minLength: 1,
+    select: function(event, ui) {
+      $('#id_cus').val(ui.item.id);
+      $('#nama-customer').val(ui.item.label);
+      $('#alamat2').val(ui.item.alamat);
+      $('#c-class').val(ui.item.c_class);
+      }
+    });
+
+    UpdateTotal();
+    updateKembalian();
+    dataInput();
+    discpercentEdit();
+    discvalueEdit();
    
   });
 
@@ -474,36 +512,23 @@
       $('.autoCari').trigger('click'); 
     });
 
-var date = new Date();
-var newdate = new Date(date);
-
-newdate.setDate(newdate.getDate()-3);
-var nd = new Date(newdate);
-$('.datepicker').datepicker({
-  format: "mm",
-  viewMode: "months",
-  minViewMode: "months"
-});
-$('.datepicker1').datepicker({
-  autoclose: true,
-  format:"dd-mm-yyyy",
-  endDate: 'today'
-}).datepicker("setDate", nd);
-$('.datepicker2').datepicker({
-  autoclose: true,
-  format:"dd-mm-yyyy",
-  endDate: 'today'
-});//.datepicker("setDate", "0"); 
-
 function lihatDetail(idDetail){
    $.ajax({
     url : baseUrl + "/penjualan/POSgrosir/getdata",
     type: 'GET',
     data: {x:idDetail},
     success:function(response){
-      $('#tombolPrint').html('<a target="_blank" href="'+ baseUrl +'/penjualan/POSgrosir/print/'+ idDetail +'" class="btn btn-primary"><i class="fa fa-print"></i> Print Faktur</a>'+
-        '<a target="_blank" href="'+ baseUrl +'/penjualan/POSgrosir/print_surat_jalan/'+ idDetail +'" class="btn btn-primary"><i class="fa fa-print"></i> Print Surat Jalan</a>'+
-        '<a target="_blank" href="'+ baseUrl +'/penjualan/print_jangan_dibanting/'+ idDetail +'" class="btn btn-primary"><i class="fa fa-print"></i>&nbsp;Print Jangan Di Banting</a>' +
+      $('#tombolPrint').html(
+        '<div class="btn-group" style="margin-right:10px;">'+
+          '<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">'+
+          '<i class="fa fa-print"></i>&nbsp;Print&nbsp;<span class="caret"></span></button>'+
+          '<ul class="dropdown-menu" role="menu" style="text-align:left;">'+
+            '<li><a target="_blank" href="'+ baseUrl +'/penjualan/POSgrosir/print/'+ idDetail +'"><i class="fa fa-print"></i>&nbsp;Print Faktur</a></li>'+
+            '<li><a target="_blank" href="'+ baseUrl +'/penjualan/POSgrosir/print_surat_jalan/'+ idDetail +'"><i class="fa fa-print"></i>&nbsp;Print Surat Jalan</a></li>'+
+            '<li><a target="_blank" href="'+ baseUrl +'/penjualan/print_jangan_dibanting/'+ idDetail +'"><i class="fa fa-print"></i>&nbsp;Print Jangan Di Banting</a></li>' +
+          '</ul>'+
+        '</div>'+
+        
         '<button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>');
       $('#detailNota').html(response);
     }
@@ -551,7 +576,11 @@ function lihatDetail(idDetail){
         $('#detailnama').val(ui.item.nama);
         $('#namaitem').val(ui.item.label);
         $('#satuan').val(ui.item.satuan);
-        $('#s_qty').val(ui.item.s_qty);
+        if (ui.item.s_qty == null) {
+          $('#s_qty').val('0');
+        }else{
+          $('#s_qty').val(ui.item.s_qty);
+        }
         $('#qty').val(ui.item.qty);
         $('#i-type').val(ui.item.i_type);
         $('#qty').val('1');
@@ -563,15 +592,15 @@ function lihatDetail(idDetail){
       $("#namaitem" ).val('');
   });
 
-function UpdateHarga(kode){
-  var qty = $('.qty-'+kode).val();
-  var harga = $('.harga-'+kode).val();
-  console.log(harga);
-  var hasil = convertToAngka(harga);
-  hasil = hasil * qty;
-  var hasilRp = convertToRupiah(hasil);
-  $('.hasil-'+kode).val(hasilRp);
-} 
+// function UpdateHarga(kode){
+//   var qty = $('.qty-'+kode).val();
+//   var harga = $('.harga-'+kode).val();
+//   console.log(harga);
+//   var hasil = convertToAngka(harga);
+//   hasil = hasil * qty;
+//   var hasilRp = convertToRupiah(hasil);
+//   $('.hasil-'+kode).val(hasilRp);
+// } 
 
 @if ($ket == 'create') 
 var index=0;
@@ -597,19 +626,23 @@ function tambah() {
   if ( index == -1){         
     tableDetail.row.add([
       
-      nama+'<input type="hidden" name="itype[]" class="type" value="'+type+'"><input type="hidden" name="kode_item[]" class="kode_item kode" value="'+kode+'"><input type="hidden" name="nama_item[]" class="nama_item" value="'+nama+'"> ',
-      '<input size="30" style="text-align:right" type="text"  name="sd_qty[]" class="sd_qty form-control qty-'+kode+'" value="'+qty+'" onkeyup="UpdateHarga(\''+kode+'\'); qtyInput(\''+stok+'\', \''+kode+'\'); totalPenjualan()" onchange="qtyInput(\''+stok+'\', \''+kode+'\')"> ',
+      nama+'<input type="hidden" name="kode_item[]" class="kode_item kode" value="'+kode+'"><input type="hidden" name="nama_item[]" class="nama_item" value="'+nama+'"> ',
+
+      '<input size="30" style="text-align:right" type="number"  name="sd_qty[]" class="sd_qty form-control qty-'+kode+'" value="'+qty+'" onkeyup="UpdateHarga(\''+kode+'\');qtyInput(\''+type+'\',\''+stok+'\', \''+kode+'\');totalPenjualan()" onclick="UpdateHarga(\''+kode+'\')" onchange="qtyInput(\''+type+'\',\''+stok+'\', \''+kode+'\')"> ',
+
       satuan+'<input type="hidden" name="satuan[]" class="satuan" value="'+satuan+'"> ',
+
       '<input type="text" size="10" readonly style="text-align:right" name="harga_item[]" class="harga_item form-control harga-'+kode+'" value="'+harga+'"> ',
+
       '<div class="input-group"><input type="text" size="11"  style="text-align:right" name="sd_disc_percent[]" class="form-control discpercent discpercent-'+kode+'" value="0" onkeyup="discpercent(this, event);autoJumValPercent()"><span class="input-group-addon">%</span></div> <input name="totalValuePercent[]" type="text" value="0" style="display:none" class="form-control totalValuePercent jumTotValuePercent totalValuePercent-'+kode+'">',
+
       '<input type="text" size="10"  id="discmasmoney" style="text-align:right" name="sd_disc_value[]" class="form-control discvalue hasildiscvalue pricevalue-'+kode+'" value="0" onkeyup="discvalue(this, event);autoJumValValue();rege(event,\''+pricevalue+'\')"  onblur="setRupiah(event,\''+pricevalue+'\')" onclick="setAwal(\''+event+'\',\''+pricevalue+'\')" >',
+
       '<input type="text" size="200" readonly style="text-align:right" name="hasil[]" id="hasil" class="form-control hasil hasil-'+kode+'" value="'+x+'"><input type="hidden" size="200" readonly style="text-align:right" name="" id="hasil2" class="hasil2 form-control" value="">',          
       Hapus
       ]);
     tableDetail.draw();
-    discpercent();
-    discvalue();
-    totalPenjualan();
+
   index++;
   tamp.push(kode);
       }else{
@@ -630,6 +663,7 @@ function tambah() {
       UpdateSubTotal();
       autoJumValPercent();
   }
+
     $('#qty').keypress(function(e){
     var charCode;
     if ((e.which && e.which == 13)) {
@@ -648,7 +682,7 @@ function tambah() {
       var itype = $('#i-type').val();
       var c = isi > stok;
     if(itype == 'BP'){
-      if(isi == '' || jumlah == '' || stok == '' || data1 == '' || data2 == ''){
+      if(isi == '' || jumlah == '' || data1 == '' || data2 == ''){
         toastr.warning('Item Jumlah Stok dan Nama Pelanggan tidak boleh kosong!');
         return false;
       }
@@ -674,9 +708,7 @@ function tambah() {
         $("input[name='item']").focus(); 
         return false;
      }
-
     }
-    
     });
 
 @else
@@ -684,7 +716,8 @@ $("input[name='item']").focus();
 function tambahEdit() { 
   var kode  = [];
   kode [0] = $('#kode').val();    
-  var nama  =$('#detailnama').val();             
+  var nama  =$('#detailnama').val(); 
+  var type  =$('#i-type').val();            
   var harga =SetFormRupiah($('#harga').val());  
   var y     =($('#harga').val());          
   var qty   =parseInt($('#qty').val());
@@ -703,21 +736,24 @@ function tambahEdit() {
   //length : menghitung array
   if ( res.length != 0 ){         
     tableDetail.row.add([
-        '<input type="hidden" name="sd_sales[]" class="kode" >'+
-        '<input type="hidden" name="sd_detailid[]" class="kode" >'+
+
       nama+'<input type="hidden" name="kode_item[]" class="kode_item kode" value="'+kode+'"><input type="hidden" name="nama_item[]" class="nama_item" value="'+nama+'"> ',
-      '<input size="30" style="text-align:right" type="number"  name="sd_qty[]" class="sd_qty form-control qty-'+kode+'" value="'+qty+'" onkeyup="UpdateHarga(\''+kode+'\'); qtyInput(\''+stok+'\', \''+kode+'\')" onchange="qtyInput(\''+stok+'\', \''+kode+'\')">',
+
+      '<input size="30" style="text-align:right" type="number"  name="sd_qty[]" class="sd_qty form-control qty-'+kode+'" value="'+qty+'" onkeyup="UpdateHarga(\''+kode+'\'); qtyInput(\''+type+'\',\''+stok+'\', \''+kode+'\')" onchange="qtyInput(\''+type+'\',\''+stok+'\', \''+kode+'\')">',
+
       satuan+'<input type="hidden" name="satuan[]" class="satuan" value="'+satuan+'"> ',
+
       '<input type="text" size="10" readonly style="text-align:right" name="harga_item[]" class="harga_item form-control harga-'+kode+'" value="'+harga+'">',
+
       '<div class="input-group"><input type="text" size="11"  style="text-align:right" name="sd_disc_percent[]" class="form-control discpercent discpercent-'+kode+'" value="" onkeyup="discpercent(this, event)"><span class="input-group-addon">%</span></div> ',
+
       '<input type="text" size="10"  style="text-align:right" name="sd_disc_percent[]" class="form-control discvalue" value="" onkeyup="discvalue(this, event)" >',
+
       '<input type="text" size="200" readonly style="text-align:right" name="hasil[]" id="hasil" class="form-control hasil hasil-'+kode+'" value="'+x+'"><input type="hidden" size="200" readonly style="text-align:right" name="" id="hasil2" class="hasil2 form-control" value="">',          
       Hapus
       ]);
     tableDetail.draw();
-    discpercent();
-    discvalue();
-    totalPenjualan();
+
   }else{
   var qtyLawas= parseInt($(".qty-"+kode).val());
   $(".qty-"+kode).val(qtyLawas+qty);
@@ -736,31 +772,52 @@ function tambahEdit() {
   autoJumValPercent();
 }
 
-// $('#qty').keypress(function(e){
-//     var charCode;
-//     if ((e.which && e.which == 13)) {
-//       charCode = e.which;
-//     }else if (window.event) {
-//         e = window.event;
-//         charCode = e.keyCode;
-//     }
-//     if ((e.which && e.which == 13)){
-//       var isi   = $('#qty').val();
-//       var jumlah= $('#detailnama').val();
-//       var stok  = $('#s_qty').val();
-//       if(isi == '' || jumlah == ''){
-//         toastr.warning('Item Jumlah Stok tidak boleh kosong');
-//         return false;
-//     }
-//       tambahEdit();
-//       $("input[name='item']").val('');
-//       $("input[name='s_qty']").val('');
-//       $("input[name='qty']").val('');
-//       $("input[name='item']").focus(); 
-//          return false;
+  $('#qty').keypress(function(e){
+    var charCode;
+    if ((e.which && e.which == 13)) {
+    charCode = e.which;
+    }else if (window.event) {
+      e = window.event;
+      charCode = e.keyCode;
+    }
+    if ((e.which && e.which == 13)){
 
-//     }
-//  });
+      var isi   = parseInt($('#qty').val());
+      var jumlah= $('#detailnama').val();
+      var stok  = parseInt($('#s_qty').val());
+      var data1 = $('#nama-customer').val();
+      var data2 = $('#c-class').val();
+      var itype = $('#i-type').val();
+      var c = isi > stok;
+    if(itype == 'BP'){
+      if(isi == '' || jumlah == '' || stok == '' || data1 == '' || data2 == ''){
+        toastr.warning('Item Jumlah Stok dan Nama Pelanggan tidak boleh kosong!');
+        return false;
+      }
+      var kode = $('#kode').val();
+      tambahEdit();
+      qtyInput(stok, kode);
+        $("input[name='item']").val('');
+        $("input[name='s_qty']").val('');
+        $("input[name='qty']").val('');
+        $("input[name='item']").focus(); 
+        return false;
+     }else{
+      if(isi == '' || jumlah == '' || stok == '' || data1 == '' || data2 == '' || c ){
+        toastr.warning('Pembelian Barang jual melebihi stok!');
+        return false;
+      }
+      var kode = $('#kode').val();
+      tambahEdit();
+      qtyInput(stok, kode);
+        $("input[name='item']").val('');
+        $("input[name='s_qty']").val('');
+        $("input[name='qty']").val('');
+        $("input[name='item']").focus(); 
+        return false;
+     }
+    }
+    });
   
 @endif
 
@@ -945,16 +1002,14 @@ function hapus(a){
       totalPenjualan();
     }  
 
-function qtyInput(stok, kode){
-    var itype = $('#i-type').val();
-    var itype1 = $('.type').val();
-    if(itype == 'BJ' || itype1 == 'BJ'){
+function qtyInput(type, stok, kode){
+    if(type == 'BJ'){
       input = $('.qty-'+kode).val();
       input = parseInt(input);
       stok = parseInt(stok);
       if (input > stok || input < 1) {
-        toastr.warning('Pembelian melebihi stok, nilai set 1!');
-        $('.qty-'+kode).val(1);
+        toastr.warning('Pembelian melebihi stok!');
+        $('.qty-'+kode).val(0);
       }
       UpdateHarga(kode);
     }  
@@ -1484,8 +1539,8 @@ function cariTanggalJual(){
           {"data" : "sDate", "width" : "5%"},
           {"data" : "i_name", "width" : "15%"},
           {"data" : "type", "width" : "20%"},
-          {"data" : "i_group", "width" : "10%"},
-          {"data" : "jumlah", "width" : "10%"},
+          {"data" : "m_gname", "width" : "10%"},
+          {"data" : "jumlah", "width" : "10%","className" : "right"},
         ],
         "language": {
             "searchPlaceholder": "Cari Data",
@@ -1525,8 +1580,8 @@ function ubahStatus(idDetail,status){
       {data: 'DT_Row_Index', name: 'DT_Row_Index', orderable: false},
       {data: 'i_name', name: 'i_name'},
       {data: 'i_type', name: 'i_type'},
-      {data: 'i_group', name: 'i_group'},
-      {data: 's_qty', name: 's_qty'},
+      {data: 'm_gname', name: 'm_gname'},
+      {data: 's_qty', name: 's_qty',"className" : "right"},
       ],
     });
 

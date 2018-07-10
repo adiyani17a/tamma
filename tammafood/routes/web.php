@@ -288,6 +288,12 @@ Route::get('/penjualan/laporanRetail/get-data-laporan/{tgl1}/{tgl2}', 'Penjualan
 Route::get('/penjualan/laporanGrosir/index', 'Penjualan\LaporanGrosirController@index');
 Route::get('/penjualan/laporanGrosir/index', 'Penjualan\LaporanGrosirController@index');
 Route::get('/penjualan/laporanGrosir/get-data-laporan/{tgl1}/{tgl2}', 'Penjualan\LaporanGrosirController@getDataLaporan');
+//Return Penjualan Mahmud
+Route::get('/penjualan/returnpenjualan/tabel', 'Penjualan\ManajemenReturnPenjualanController@tabel');
+Route::get('/penjualan/returnpenjualan/tambahreturn', 'Penjualan\ManajemenReturnPenjualanController@newreturn');
+Route::get('/penjualan/returnpenjualan/carinota', 'Penjualan\ManajemenReturnPenjualanController@cariNotaSales');
+Route::get('/penjualan/returnpenjualan/get-data-nota', 'Penjualan\ManajemenReturnPenjualanController@cariNotaSales');
+//End
 /*HRD*/
 Route::get('/hrd/manajemenkpipegawai/kpi', 'HrdController@kpi');
 Route::get('/hrd/payroll/payroll', 'HrdController@payroll');

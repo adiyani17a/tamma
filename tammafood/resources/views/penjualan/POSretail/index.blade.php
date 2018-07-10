@@ -486,10 +486,22 @@
     endDate: 'today'
     });//datepicker("setDate", "0");
 
+  $( "#nama-customer" ).autocomplete({
+      source: baseUrl+'/penjualan/POSretail/retail/autocomplete',
+      minLength: 1,
+      select: function(event, ui) {
+        $('#id_cus').val(ui.item.id);
+        $('#nama-customer').val(ui.item.label);
+        $('#alamat2').val(ui.item.alamat);
+        $('#c-class').val(ui.item.c_class);
+        }
+    });
+
   discpercentEdit();
   discvalueEdit();
   UpdateTotal();
   updateKembalian();
+  dataInput();
 
   });
 
@@ -555,9 +567,16 @@
     type: 'get',
     data: {x:idDetail},
     success:function(response){
-      $('#buttonDetail').html('<a target="_blank" href="'+ baseUrl +'/penjualan/POSretail/print/'+ idDetail +'" class="btn btn-primary"><i class="fa fa-print"></i>&nbsp;Print Faktur</a>' +
-        '<a target="_blank" href="'+ baseUrl +'/penjualan/POSretail/print_surat_jalan/'+ idDetail +'" class="btn btn-primary"><i class="fa fa-print"></i>&nbsp;Print Surat Jalan</a>' +
-        '<a target="_blank" href="'+ baseUrl +'/penjualan/print_jangan_dibanting/'+ idDetail +'" class="btn btn-primary"><i class="fa fa-print"></i>&nbsp;Print Jangan Di Banting</a>' +
+      $('#buttonDetail').html(
+        '<div class="btn-group" style="margin-right:10px;">'+
+          '<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">'+
+          '<i class="fa fa-print"></i>&nbsp;Print&nbsp;<span class="caret"></span></button>'+
+          '<ul class="dropdown-menu" role="menu" style="text-align:left;">'+
+            '<li><a target="_blank" href="'+ baseUrl +'/penjualan/POSretail/print/'+ idDetail +'"><i class="fa fa-print"></i>&nbsp;Print Faktur</a></li>'+
+            '<li><a target="_blank" href="'+ baseUrl +'/penjualan/POSretail/print_surat_jalan/'+ idDetail +'"><i class="fa fa-print"></i>&nbsp;Print Surat Jalan</a></li>'+
+            '<li><a target="_blank" href="'+ baseUrl +'/penjualan/print_jangan_dibanting/'+ idDetail +'"><i class="fa fa-print"></i>&nbsp;Print Jangan Di Banting</a></li>' +
+          '</ul>'+
+        '</div>'+
         '<button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>');
       $('#xx').html(response);
     }
@@ -604,7 +623,11 @@
         $('#detailnama').val(ui.item.nama);
         $('#namaitem').val(ui.item.label);
         $('#satuan').val(ui.item.satuan);
-        $('#s_qty').val(ui.item.s_qty);
+        if (ui.item.s_qty == null) {
+          $('#s_qty').val('0');
+        }else{
+          $('#s_qty').val(ui.item.s_qty);
+        }
         $('#qty').val(ui.item.qty);
         $('#qty').val('1');
         $("input[name='qty']").focus();
@@ -1001,7 +1024,7 @@
     input = parseInt(input);
     stok = parseInt(stok);
     if (input > stok || input < 1) {
-      $('.qty-'+kode).val(1);
+      $('.qty-'+kode).val('0');
       toastr.warning('Barang yang di beli melebihi stok');
       }
       UpdateHarga(kode);
