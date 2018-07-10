@@ -98,12 +98,44 @@ class POSGrosirController extends Controller
         ->join('m_item', 'm_item.i_id', '=', 'd_stock.s_item')
         ->get();
 
-    $edit = d_sales::join('m_customer', 'm_customer.c_id', '=' , 'd_sales.s_customer')
-    ->join('d_sales_dt','d_sales_dt.sd_sales','=','d_sales.s_id')
-    ->join('m_item','m_item.i_id','=','d_sales_dt.sd_item')
-     ->join('m_price','m_price.m_pitem', '=','d_sales_dt.sd_item')
-    ->where('d_sales.s_id',$id)
-    ->get();
+      $edit = d_sales::select('c_name',
+                              's_customer',
+                              'c_address',
+                              'c_hp',
+                              'c_class',
+                              's_note',
+                              'd_sales.s_id as sales_id',
+                              's_net',
+                              's_disc_value',
+                              'i_name',
+                              'sd_sales',
+                              'sd_detailid',
+                              'i_id',
+                              'i_name',
+                              'i_type',
+                              'sd_qty',
+                              's_qty',
+                              'i_sat1',
+                              'm_psell1',
+                              'm_psell2',
+                              'm_psell3',
+                              'sd_disc_percent',
+                              'sd_disc_value',
+                              'sd_total',
+                              's_status',
+                              'm_sname')
+        ->join('m_customer', 'm_customer.c_id', '=' , 'd_sales.s_customer')
+        ->join('d_sales_dt','d_sales_dt.sd_sales','=','d_sales.s_id')
+        ->join('m_item','m_item.i_id','=','d_sales_dt.sd_item')
+        ->join('m_price','m_price.m_pitem', '=','d_sales_dt.sd_item')
+        ->join('m_satuan','m_satuan.m_sid','=','i_sat1')
+        ->leftjoin('d_stock',function($join){
+          $join->on('i_id', '=', 's_item');        
+          $join->on('s_comp', '=', 's_position');                
+          $join->on('s_comp', '=',DB::raw("'2'"));           
+        })
+        ->where('d_sales.s_id',$id)
+        ->get();
 
       $dataPayment = DB::table('m_paymentmethod')->get();
 
@@ -737,9 +769,13 @@ class POSGrosirController extends Controller
           return date('d M Y', strtotime($data->s_date));
       })
       ->editColumn('sGross', function ($data) 
-      {
-          return number_format( $data->s_gross ,2,',','.');
-      })
+        {
+            return '<div>Rp.
+                      <span class="pull-right">
+                        '.number_format( $data->s_gross ,2,',','.').'
+                      </span>
+                    </div>';
+        })
       ->editColumn('status', function ($data) 
       {
           if ($data->s_status == "DR") { return 'Draft'; }
@@ -805,7 +841,7 @@ class POSGrosirController extends Controller
                 </div>'; 
       })
       //inisisai column status agar kode html digenerate ketika ditampilkan
-      ->rawColumns(['action', 'action2'])
+      ->rawColumns(['action', 'action2','sGross'])
       ->make(true);
   }
 
