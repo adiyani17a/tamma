@@ -516,70 +516,70 @@ class POSGrosirController extends Controller
   }
 
   public function sal_save_finalUpdate(Request $request){
-    dd($request->all());
-    return DB::transaction(function () use ($request) {
-     $s_id=$request->sd_id;
-      
-     $m = DB::table('d_sales')->where('s_id',$request->sd_id)->first();
+    // dd($request->all());
+    DB::beginTransaction();
+    try {
+    $s_id = $request->s_id;
+    $kodeItem = $request->kode_item;
+    $qtyItem = $request->sd_qty;
+    $m = d_sales::where('s_id',$s_id)->first();
+    // dd($m->s_status);
+     if ($m->s_status == 'DR' || $m->s_status == 'PR') {
+        d_sales::where('s_id',$s_id)
+          ->update([
+            's_channel' => 'GR',
+            's_date' => date('Y-m-d',strtotime($request->s_date)),
+            's_note' => $request->s_nota,
+            's_staff' => $request->s_staff,
+            's_customer' => $request->id_cus,
+            's_disc_percent' => $request->s_disc_percent,
+            's_disc_value' => $request->s_disc_value,
+            's_gross' => ($this->konvertRp($request->s_gross)),
+            's_tax' => $request->s_pajak,
+            's_net' => ($this->konvertRp($request->s_gross)),
+            's_status' => "FN",
+            's_insert' => Carbon::now(),
+            's_update' => $request->s_update
+          ]);
 
-     // if ($m->s_status =='DR') {
+          d_sales_dt::where('sd_sales',$s_id)->delete();
 
-        DB::table('d_sales')->where('s_id',$request->sd_id)
-        ->update([
-          's_channel' =>'GR',
-          's_date' =>date('Y-m-d',strtotime($request->s_date)),
-          's_note' =>$request->s_nota,
-          's_staff' =>$request->s_staff,
-          's_customer' => $request->id_cus,
-          's_disc_percent' => $request->s_disc_percent,
-          's_disc_value' => $request->s_disc_value,
-          's_gross' => ($this->konvertRp($request->s_gross)),
-          's_tax' => $request->s_pajak,
-          's_net' => ($this->konvertRp($request->s_gross)),
-          's_status' => 'FN',
-          's_insert' => Carbon::now(),
-          's_update' => $request->s_update
-          
-        ]);
+          for ($i=0; $i < count($kodeItem); $i++) {
 
-    for ($i=0; $i < count($request->kode_item); $i++) {
-
-          if ($request->sd_sales[$i] == null ){ 
-            
-      $sd_detailid=DB::table('d_sales_dt')->where('sd_sales',$s_id)->max('sd_detailid');
-
-      $d_sales_dt = DB::table('d_sales_dt')
-          ->where('sd_sales',$s_id)
-          ->insert([
-            'sd_sales' =>$s_id,
-            'sd_detailid'=>$sd_detailid+1,
-            'sd_qty'=>$request->sd_qty[$i],
-            'sd_price'=>($this->konvertRp($request->harga_item[$i])),
-            'sd_item'=>$request->kode_item[$i],
-            'sd_disc_percent'=>$request->sd_disc_percent[$i],
-            'sd_disc_value'=>$request->sd_disc_value[$i],
-            'sd_total'=>($this->konvertRp($request->hasil[$i]))
-
-        ]);
-               
-          }else{
-
-      $d_sales_dt = DB::table('d_sales_dt')
-          ->where('sd_sales',$s_id)
-          ->where('sd_detailid',$request->sd_detailid[$i])
-            ->update([                        
-            'sd_item'=>$request->kode_item[$i],
-            'sd_qty'=>$request->sd_qty[$i],
-            'sd_price'=>($this->konvertRp($request->harga_item[$i])),
-            'sd_disc_percent'=>$request->sd_disc_percent[$i],
-            'sd_disc_value'=>$request->sd_disc_value[$i],
-            'sd_total'=>($this->konvertRp($request->hasil[$i]))
-        ]);
-          
+            $d_sales_dt = d_sales_dt::insert([
+              'sd_sales' => $s_id,
+              'sd_detailid' => $i + 1,
+              'sd_item' => $kodeItem[$i],
+              'sd_qty' => $qtyItem[$i],
+              'sd_price' => ($this->konvertRp($request->harga_item[$i])),
+              'sd_disc_percent' => $request->sd_disc_percent[$i],
+              'sd_disc_value' => ($this->konvertRp($request->sd_disc_value[$i])),
+              'sd_total' => ($this->konvertRp($request->hasil[$i]))
+            ]);
           }
-      }
-     // }
-   });
+
+        for ($i=0; $i < count($request->sp_method); $i++) {
+
+          $d_sales_payment = DB::table('d_sales_payment')
+              ->insert([
+                  'sp_sales' => $s_id,
+                  'sp_paymentid' => $i+1,
+                  'sp_method' => $request->sp_method[$i],
+                  'sp_nominal' => ($this->konvertRp($request->sp_nominal[$i]))
+              ]);
+            }
+        }
+    DB::commit();
+    return response()->json([
+          'status' => 'sukses'
+      ]);
+    } catch (\Exception $e) {
+    DB::rollback();
+    return response()->json([
+        'status' => 'gagal',
+        'data' => $e
+      ]);
+    }
 
   }
 

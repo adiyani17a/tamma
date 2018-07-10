@@ -1540,7 +1540,7 @@ function cariTanggalJual(){
           {"data" : "i_name", "width" : "15%"},
           {"data" : "type", "width" : "20%"},
           {"data" : "m_gname", "width" : "10%"},
-          {"data" : "jumlah", "width" : "10%"},
+          {"data" : "jumlah", "width" : "10%","className" : "right"},
         ],
         "language": {
             "searchPlaceholder": "Cari Data",
@@ -1581,7 +1581,7 @@ function ubahStatus(idDetail,status){
       {data: 'i_name', name: 'i_name'},
       {data: 'i_type', name: 'i_type'},
       {data: 'm_gname', name: 'm_gname'},
-      {data: 's_qty', name: 's_qty'},
+      {data: 's_qty', name: 's_qty',"className" : "right"},
       ],
     });
 
