@@ -37,31 +37,35 @@
         </select>
       </div> -->
 
-      <div class="col-md-12 col-sm-12 col-xs-12">
-        <div class="table-responsive">
-          <table class="table tabelan table-hover table-bordered" width="100%" cellspacing="0" id="tbl-laporan">
-            <thead>
-              <tr>
-                <th class="wd-15p">Nama Barang</th>
-                <th class="wd-10p">No Bukti</th>
-                <th class="wd-10p">Tanggal</th>
-                <th class="wd-10p">Jatuh Tempo</th>
-                <th class="wd-15p">Customer</th>
-                <th class="wd-5p">Kurs</th>
-                <th class="wd-5p">Sat</th>
-                <th class="wd-5p">Qty</th>
-                <th class="wd-10p">Harga</th>
-                <th class="wd-5p">Diskon</th>
-                <th class="wd-5p">Disc (%)</th>
-                <th class="wd-10p">Total</th>
-              </tr>
-            </thead>
-
-            <tbody>
-            </tbody>
-        </table> 
-        </div>
+      <div class="col-md-3 col-sm-3 col-xs-12" align="right">
+        <button class="btn btn-primary"><i class="fa fa-print"></i>&nbsp;Print</button>
       </div>
+
+      
+      <div class="table-responsive">
+        <table class="table tabelan table-hover table-bordered data-table" width="100%" cellspacing="0" id="tbl-laporan">
+          <thead>
+            <tr>
+              <th class="wd-15p">Nama Barang</th>
+              <th class="wd-10p">No Bukti</th>
+              <th class="wd-10p">Tanggal</th>
+              <th class="wd-10p">Jatuh Tempo</th>
+              <th class="wd-15p">Customer</th>
+              <th class="wd-5p">Kurs</th>
+              <th class="wd-5p">Sat</th>
+              <th class="wd-5p">Qty</th>
+              <th class="wd-10p">Harga</th>
+              <th class="wd-5p">Diskon</th>
+              <th class="wd-5p">Disc (%)</th>
+              <th class="wd-10p">Total</th>
+            </tr>
+          </thead>
+
+          <tbody>
+          </tbody>
+        </table> 
+      </div>
+      
                 
     </div>
   </div>
