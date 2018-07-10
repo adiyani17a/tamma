@@ -17,8 +17,10 @@ class d_purchasingharian_dt extends Model
         'd_pcshdt_item',
         'd_pcshdt_sat',
         'd_pcshdt_qty',
+        'd_pcshdt_qtyconfirm',
         'd_pcshdt_price',
         'd_pcshdt_pricetotal',
+        'd_pcshdt_isconfirm',
         'd_pcshdt_created',
         'd_pcshdt_updated'
     ];

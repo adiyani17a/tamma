@@ -31,6 +31,7 @@
             <li class="active"><a href="#alert-tab" data-toggle="tab">Daftar Rencana Pembelian</a></li>
             <li><a href="#order-tab" data-toggle="tab" onclick="daftarTabelOrder()">Daftar Order Pembelian</a></li>
             <li><a href="#return-tab" data-toggle="tab" onclick="daftarTabelReturn()">Daftar Return Pembelian</a></li>
+            <li><a href="#belanjaharian-tab" data-toggle="tab" onclick="daftarTabelBelanja()">Daftar Belanja Harian</a></li>
           </ul>
 
           <div id="generalTabContent" class="tab-content responsive">
@@ -40,6 +41,8 @@
             @include('keuangan.konfirmasi_pembelian.tab-order')
             <!-- tab daftar return pembelian -->
             @include('keuangan.konfirmasi_pembelian.tab-return')
+            <!-- tab daftar belanja harian -->
+            @include('keuangan.konfirmasi_pembelian.tab-belanjaharian')
           </div>
         </div>
       </div>
@@ -53,6 +56,8 @@
     @include('keuangan.konfirmasi_pembelian.modal-confirm-order')
     <!--modal confirm return-->
     @include('keuangan.konfirmasi_pembelian.modal-confirm-return')
+    <!--modal confirm belanja harian-->
+    @include('keuangan.konfirmasi_pembelian.modal-confirm-belanjaharian')
   <!-- /modal -->
 </div>
 @endsection
@@ -144,6 +149,15 @@
     });
 
     //event change, apabila status !fn = maka btn_remove disabled
+    $('#status_confirm').change(function(event) {
+      //alert($(this).val());
+      if($(this).val() == "WT")
+      {
+        $('.crfmField').val('0');
+      }
+    });
+
+    //event change, apabila status !fn = maka btn_remove disabled
     $('#status_order_confirm').change(function(event) {
       //alert($(this).val());
       if($(this).val() != "CF")
@@ -157,11 +171,15 @@
     });
 
     //event change, apabila status !fn = maka btn_remove disabled
-    $('#status_confirm').change(function(event) {
+    $('#status_belanja_confirm').change(function(event) {
       //alert($(this).val());
-      if($(this).val() == "WT")
+      if($(this).val() != "CF")
       {
-        $('.crfmField').val('0');
+        $('.btn_remove_row_order').attr('disabled', true);
+      }
+      else
+      {
+        $('.btn_remove_row_order').attr('disabled', false); 
       }
     });
 
@@ -222,7 +240,7 @@
                             +'<input type="hidden" value="'+data.data_isi[key-1].d_pcspdt_id+'" name="fieldIdDt[]" class="form-control"/></td>'
                             +'<td>'+data.data_isi[key-1].m_sname+'</td>'
                             +'<td>'+convertDecimalToRupiah(data.data_isi[key-1].d_pcspdt_prevcost)+'</td>'
-                            +'<td>'+data.data_stok[key-1].qtyStok+'</td>'
+                            +'<td>'+data.data_stok[key-1].qtyStok+' '+data.data_satuan[key-1]+'</td>'
                             +'<td><button name="remove" id="'+i+'" class="btn btn-danger btn_remove_row btn-sm" disabled>X</button></td>'
                             +'</tr>');
             i = randString(5);
@@ -241,7 +259,7 @@
                             +'<input type="hidden" value="'+data.data_isi[key-1].d_pcspdt_id+'" name="fieldIdDt[]" class="form-control"/></td>'
                             +'<td>'+data.data_isi[key-1].m_sname+'</td>'
                             +'<td>'+convertDecimalToRupiah(data.data_isi[key-1].d_pcspdt_prevcost)+'</td>'
-                            +'<td>'+data.data_stok[key-1].qtyStok+'</td>'
+                            +'<td>'+data.data_stok[key-1].qtyStok+' '+data.data_satuan[key-1]+'</td>'
                             +'<td><button name="remove" id="'+i+'" class="btn btn-danger btn_remove_row btn-sm">X</button></td>'
                             +'</tr>');
             i = randString(5);
@@ -290,7 +308,7 @@
                             +'<input type="hidden" value="'+data.data_isi[key-1].d_pcspdt_id+'" name="fieldIdDt[]" class="form-control"/></td>'
                             +'<td>'+data.data_isi[key-1].m_sname+'</td>'
                             +'<td>'+convertDecimalToRupiah(data.data_isi[key-1].d_pcspdt_prevcost)+'</td>'
-                            +'<td>'+data.data_stok[key-1].qtyStok+'</td>'
+                            +'<td>'+data.data_stok[key-1].qtyStok+' '+data.data_satuan[key-1]+'</td>'
                             +'<td><button name="remove" id="'+i+'" class="btn btn-danger btn_remove_row_order btn-sm" disabled>X</button></td>'
                             +'</tr>');
             i = randString(5);
@@ -309,7 +327,7 @@
                             +'<input type="hidden" value="'+data.data_isi[key-1].d_pcspdt_id+'" name="fieldIdDt[]" class="form-control"/></td>'
                             +'<td>'+data.data_isi[key-1].m_sname+'</td>'
                             +'<td>'+convertDecimalToRupiah(data.data_isi[key-1].d_pcspdt_prevcost)+'</td>'
-                            +'<td>'+data.data_stok[key-1].qtyStok+'</td>'
+                            +'<td>'+data.data_stok[key-1].qtyStok+' '+data.data_satuan[key-1]+'</td>'
                             +'<td><button name="remove" id="'+i+'" class="btn btn-danger btn_remove_row_order btn-sm">X</button></td>'
                             +'</tr>');
             i = randString(5);
@@ -399,6 +417,42 @@
     });
   }
 
+  function daftarTabelBelanja() 
+  {
+    $('#tbl-belanjaharian').dataTable({
+        "destroy": true,
+        "processing" : true,
+        "serverside" : true,
+        "ajax" : {
+          url: baseUrl + "/keuangan/konfirmasipembelian/get-data-tabel-belanjaharian",
+          type: 'GET'
+        },
+        "columns" : [
+          {"data" : "DT_Row_Index", orderable: true, searchable: false, "width" : "5%"}, //memanggil column row
+          {"data" : "tglBelanja", "width" : "10%"},
+          {"data" : "d_pcsh_code", "width" : "10%"},
+          {"data" : "d_pcsh_staff", "width" : "10%"},
+          {"data" : "s_company", "width" : "15%"},
+          {"data" : "tglConfirm", "width" : "10%"},
+          {"data" : "hargaTotal", "width" : "15%"},
+          {"data" : "status", "width" : "10%"},
+          {"data" : "action", orderable: false, searchable: false, "width" : "10%"}
+        ],
+        "language": {
+          "searchPlaceholder": "Cari Data",
+          "emptyTable": "Tidak ada data",
+          "sInfo": "Menampilkan _START_ - _END_ Dari _TOTAL_ Data",
+          "sSearch": '<i class="fa fa-search"></i>',
+          "sLengthMenu": "Menampilkan &nbsp; _MENU_ &nbsp; Data",
+          "infoEmpty": "",
+          "paginate": {
+                "previous": "Sebelumnya",
+                "next": "Selanjutnya",
+             }
+        }
+    });
+  }
+
   function konfirmasiOrder(id,type) 
   {
     $.ajax({
@@ -429,11 +483,11 @@
                             +'<td>'+data.data_isi[key-1].d_pcsdt_qty+'</td>'
                             +'<td><input type="text" value="'+data.data_isi[key-1].d_pcsdt_qty+'" name="fieldConfirmOrder[]" id="'+i+'" class="form-control numberinput input-sm field_qty_confirm" readonly/>'
                             +'<input type="hidden" value="'+data.data_isi[key-1].d_pcsdt_id+'" name="fieldIdDtOrder[]" class="form-control input-sm"/></td>'
-                            +'<td>'+data.data_isi[key-1].i_sat1+'</td>'
+                            +'<td>'+data.data_isi[key-1].m_sname+'</td>'
                             +'<td>'+convertDecimalToRupiah(data.data_isi[key-1].d_pcsdt_prevcost)+'</td>'
                             +'<td id="price_'+i+'">'+convertDecimalToRupiah(data.data_isi[key-1].d_pcsdt_price)+'</td>'
                             +'<td id="total_'+i+'">'+convertDecimalToRupiah(data.data_isi[key-1].d_pcsdt_total)+'</td>'
-                            +'<td>'+data.data_stok[key-1].qtyStok+'</td>'
+                            +'<td>'+data.data_stok[key-1].qtyStok+' '+data.data_satuan[key-1]+'</td>'
                             +'<td><button name="remove" id="'+i+'" class="btn btn-danger btn_remove_row_order btn-sm" disabled>X</button></td>'
                             +'</tr>');
             i = randString(5);
@@ -450,11 +504,11 @@
                             +'<td>'+data.data_isi[key-1].d_pcsdt_qty+'</td>'
                             +'<td><input type="text" value="'+data.data_isi[key-1].d_pcsdt_qty+'" name="fieldConfirmOrder[]" id="'+i+'" class="form-control numberinput input-sm field_qty_confirm" readonly/>'
                             +'<input type="hidden" value="'+data.data_isi[key-1].d_pcsdt_id+'" name="fieldIdDtOrder[]" class="form-control input-sm"/></td>'
-                            +'<td>'+data.data_isi[key-1].i_sat1+'</td>'
+                            +'<td>'+data.data_isi[key-1].m_sname+'</td>'
                             +'<td>'+convertDecimalToRupiah(data.data_isi[key-1].d_pcsdt_prevcost)+'</td>'
                             +'<td id="price_'+i+'">'+convertDecimalToRupiah(data.data_isi[key-1].d_pcsdt_price)+'</td>'
                             +'<td id="total_'+i+'">'+convertDecimalToRupiah(data.data_isi[key-1].d_pcsdt_total)+'</td>'
-                            +'<td>'+data.data_stok[key-1].qtyStok+'</td>'
+                            +'<td>'+data.data_stok[key-1].qtyStok+' '+data.data_satuan[key-1]+'</td>'
                             +'<td><button name="remove" id="'+i+'" class="btn btn-danger btn_remove_row_order btn-sm">X</button></td>'
                             +'</tr>');
             i = randString(5);
@@ -535,6 +589,79 @@
         }
         
         $('#modal-confirm-return').modal('show');
+      },
+      error: function (jqXHR, textStatus, errorThrown)
+      {
+          alert('Error get data from ajax');
+      }
+    });
+  }
+
+  function konfirmasiBelanjaHarian(id,type) 
+  {
+    $.ajax({
+      url : baseUrl + "/keuangan/konfirmasipembelian/confirm-belanjaharian/"+id+"/"+type,
+      type: "GET",
+      dataType: "JSON",
+      success: function(data)
+      {
+        var key = 1;
+        var i = randString(5);
+        $('#txt_span_status_belanja_confirm').text(data.spanTxt);
+        $("#txt_span_status_belanja_confirm").addClass('label'+' '+data.spanClass);
+        $("#id_belanja").val(data.header[0].d_pcsh_id);
+        $("#status_belanja_confirm").val(data.header[0].d_pcsh_status);
+        $('#lblCodeBelanjaConfirm').text(data.header[0].d_pcsh_code);
+        $('#lblTglBelanjaConfirm').text(data.header[0].d_pcsh_date);
+        $('#lblStaffBelanjaConfirm').text(data.header[0].d_pcsh_staff);
+        $('#lblSupplierBelanjaConfirm').text(data.header[0].s_company);
+        $('#lblTotalBelanjaConfirm').text(convertDecimalToRupiah(data.header[0].d_pcsh_totalprice));
+        $('#lblTotalBayarConfirm').text(convertDecimalToRupiah(data.header[0].d_pcsh_totalpaid));
+        
+        if ($("#status_belanja_confirm").val() != "CF") 
+        {
+          //loop data
+          Object.keys(data.data_isi).forEach(function(){
+            $('#tabel-belanja-confirm').append('<tr class="tbl_modal_detail_row" id="row'+i+'">'
+                            +'<td>'+key+'</td>'
+                            +'<td>'+data.data_isi[key-1].i_code+' | '+data.data_isi[key-1].i_name+'</td>'
+                            +'<td>'+data.data_isi[key-1].d_pcshdt_qty+'</td>'
+                            +'<td>'+data.data_isi[key-1].d_pcshdt_qty
+                            +'<input type="hidden" value="'+data.data_isi[key-1].d_pcshdt_qty+'" name="fieldConfirmBelanja[]" id="'+i+'" class="form-control numberinput input-sm field_qty_confirm">'
+                            +'<input type="hidden" value="'+data.data_isi[key-1].d_pcshdt_id+'" name="fieldIdDtBelanja[]" class="form-control input-sm"/></td>'
+                            +'<td>'+data.data_isi[key-1].m_sname+'</td>'
+                            +'<td id="price_'+i+'">'+convertDecimalToRupiah(data.data_isi[key-1].d_pcshdt_price)+'</td>'
+                            +'<td id="total_'+i+'">'+convertDecimalToRupiah(data.data_isi[key-1].d_pcshdt_pricetotal)+'</td>'
+                            +'<td>'+data.data_stok[key-1].qtyStok+' '+data.data_satuan[key-1]+'</td>'
+                            +'<td><button name="remove" id="'+i+'" class="btn btn-danger btn_remove_row_order btn-sm" disabled>X</button></td>'
+                            +'</tr>');
+            i = randString(5);
+            key++;
+          });
+        }
+        else
+        {
+          //loop data
+          Object.keys(data.data_isi).forEach(function(){
+            $('#tabel-belanja-confirm').append('<tr class="tbl_modal_detail_row" id="row'+i+'">'
+                            +'<td>'+key+'</td>'
+                            +'<td>'+data.data_isi[key-1].i_code+' | '+data.data_isi[key-1].i_name+'</td>'
+                            +'<td>'+data.data_isi[key-1].d_pcshdt_qty+'</td>'
+                            +'<td>'+data.data_isi[key-1].d_pcshdt_qty
+                            +'<input type="hidden" value="'+data.data_isi[key-1].d_pcshdt_qty+'" name="fieldConfirmBelanja[]" id="'+i+'" class="form-control numberinput input-sm field_qty_confirm">'
+                            +'<input type="hidden" value="'+data.data_isi[key-1].d_pcshdt_id+'" name="fieldIdDtBelanja[]" class="form-control input-sm"/></td>'
+                            +'<td>'+data.data_isi[key-1].m_sname+'</td>'
+                            +'<td id="price_'+i+'">'+convertDecimalToRupiah(data.data_isi[key-1].d_pcshdt_price)+'</td>'
+                            +'<td id="total_'+i+'">'+convertDecimalToRupiah(data.data_isi[key-1].d_pcshdt_pricetotal)+'</td>'
+                            +'<td>'+data.data_stok[key-1].qtyStok+' '+data.data_satuan[key-1]+'</td>'
+                            +'<td><button name="remove" id="'+i+'" class="btn btn-danger btn_remove_row_order btn-sm">X</button></td>'
+                            +'</tr>');
+            i = randString(5);
+            key++;
+          });
+        }
+        
+        $('#modal-confirm-belanjaharian').modal('show');
       },
       error: function (jqXHR, textStatus, errorThrown)
       {
@@ -647,6 +774,44 @@
                 $('#button_confirm_return').text('Konfirmasi'); //change button text
                 $('#button_confirm_return').attr('disabled',false); //set button enable 
                 $('#tbl-return').DataTable().ajax.reload();
+            }
+          },
+          error: function (jqXHR, textStatus, errorThrown)
+          {
+            alert('Error updating data');
+          }
+      });
+    }
+  }
+
+  function submitBelanjaConfirm(id)
+  {
+    if(confirm('Anda yakin konfirmasi Belanja Harian ?'))
+    {
+      $('#button_confirm_belanja').text('Proses...'); //change button text
+      $('#button_confirm_belanja').attr('disabled',true); //set button disable 
+      $.ajax({
+          url : baseUrl + "/keuangan/konfirmasipembelian/confirm-belanjaharian-submit",
+          type: "post",
+          dataType: "JSON",
+          data: $('#form-confirm-belanjaharian').serialize(),
+          success: function(response)
+          {
+            if(response.status == "sukses")
+            {
+                alert(response.pesan);
+                $('#modal-confirm-belanjaharian').modal('hide');
+                $('#button_confirm_belanja').text('Konfirmasi'); //change button text
+                $('#button_confirm_belanja').attr('disabled',false); //set button enable 
+                $('#tbl-belanjaharian').DataTable().ajax.reload();
+            }
+            else
+            {
+                alert(response.pesan);
+                $('#modal-confirm-belanjaharian').modal('hide');
+                $('#button_confirm_belanja').text('Konfirmasi'); //change button text
+                $('#button_confirm_belanja').attr('disabled',false); //set button enable 
+                $('#tbl-belanjaharian').DataTable().ajax.reload();
             }
           },
           error: function (jqXHR, textStatus, errorThrown)
