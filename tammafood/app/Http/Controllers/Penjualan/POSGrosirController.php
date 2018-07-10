@@ -1054,7 +1054,7 @@ class POSGrosirController extends Controller
   }
 
   public function print($id){
-    $sales = d_sales::select( 'c_name',
+   $sales = d_sales::select( 'c_name',
                               'c_address',
                               's_date',
                               's_note')
@@ -1065,13 +1065,14 @@ class POSGrosirController extends Controller
 
     $data = d_sales_dt::select( 'i_code',
                                 'i_name',
-                                'i_sat1',
+                                'm_sname',
                                 'sd_price',
                                 'sd_total',
                                 'sd_disc_value',
                                 'sd_qty',
                                 'sd_disc_percent')
       ->join('m_item','i_id','=','sd_item')
+      ->join('m_satuan','m_satuan.m_sid','=','i_sat1')
       ->where('sd_sales',$id)->get();
 
       $dataTotal = d_sales_dt::select(DB::raw('SUM(sd_total) as total'))
@@ -1113,17 +1114,17 @@ class POSGrosirController extends Controller
 
     $data = d_sales_dt::select( 'i_code',
                                 'i_name',
-                                'i_sat1',
+                                'm_sname',
                                 'sd_price',
                                 'sd_total',
                                 'sd_disc_value',
                                 'sd_qty',
                                 'sd_disc_percent')
       ->join('m_item','i_id','=','sd_item')
+      ->join('m_satuan','m_satuan.m_sid','=','m_item.i_sat1')
       ->where('sd_sales',$id)->get();
 
-      $dataTotal = d_sales_dt::select(DB::raw('SUM(sd_total) as total'))
-      ->join('m_item','i_id','=','sd_item')
+      $dataTotal = d_sales_dt::select(DB::raw('SUM(sd_qty) as total'))
       ->where('sd_sales',$id)->get();
       $count = count($data);
       $tes = 15 - $count;
@@ -1134,7 +1135,7 @@ class POSGrosirController extends Controller
           array_push($array, 'a');
         }
       }
-      return view('penjualan.POSgrosir.print_surat_jalan', compact('data', 'dataTotal', 'sales', 'array'));
+      return view('penjualan.POSGrosir.print_surat_jalan', compact('data', 'dataTotal', 'sales', 'array'));
   }
 
   public function print_awas_barang_panas($id){

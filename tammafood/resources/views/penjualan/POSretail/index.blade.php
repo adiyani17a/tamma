@@ -555,9 +555,16 @@
     type: 'get',
     data: {x:idDetail},
     success:function(response){
-      $('#buttonDetail').html('<a target="_blank" href="'+ baseUrl +'/penjualan/POSretail/print/'+ idDetail +'" class="btn btn-primary"><i class="fa fa-print"></i>&nbsp;Print Faktur</a>' +
-        '<a target="_blank" href="'+ baseUrl +'/penjualan/POSretail/print_surat_jalan/'+ idDetail +'" class="btn btn-primary"><i class="fa fa-print"></i>&nbsp;Print Surat Jalan</a>' +
-        '<a target="_blank" href="'+ baseUrl +'/penjualan/print_jangan_dibanting/'+ idDetail +'" class="btn btn-primary"><i class="fa fa-print"></i>&nbsp;Print Jangan Di Banting</a>' +
+      $('#buttonDetail').html(
+        '<div class="btn-group" style="margin-right:10px;">'+
+          '<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">'+
+          '<i class="fa fa-print"></i>&nbsp;Print&nbsp;<span class="caret"></span></button>'+
+          '<ul class="dropdown-menu" role="menu" style="text-align:left;">'+
+            '<li><a target="_blank" href="'+ baseUrl +'/penjualan/POSretail/print/'+ idDetail +'"><i class="fa fa-print"></i>&nbsp;Print Faktur</a></li>'+
+            '<li><a target="_blank" href="'+ baseUrl +'/penjualan/POSretail/print_surat_jalan/'+ idDetail +'"><i class="fa fa-print"></i>&nbsp;Print Surat Jalan</a></li>'+
+            '<li><a target="_blank" href="'+ baseUrl +'/penjualan/print_jangan_dibanting/'+ idDetail +'"><i class="fa fa-print"></i>&nbsp;Print Jangan Di Banting</a></li>' +
+          '</ul>'+
+        '</div>'+
         '<button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>');
       $('#xx').html(response);
     }

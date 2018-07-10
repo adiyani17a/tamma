@@ -118,7 +118,7 @@
 				<td class="text-center">{{ $index+1 }}</td>
 				<td>{{ $item->i_code }}</td>
             	<td>{{ $item->i_name }}</td>
-				<td class="text-center">{{ $item->i_sat1 }}</td>
+				<td class="text-right">{{$item->sd_qty}}&nbsp;{{ $item->m_sname }}</td>
 				<td class="text-right">{{ number_format($item->sd_price,2,'.',',') }}</td>
 				<td class="text-right" width="10%">{{ number_format($item->sd_total,2,'.',',') }}</td>
 				<td class="text-right" width="10%">
@@ -152,27 +152,44 @@
 			<tr>
 				<td colspan="5" class="vertical-baseline border-none-right" style="position: relative;">
 					<?php
-					function terbilang($x) {
-					  $angka = ["", "Satu", "Dua", "Tiga", "Empat", "Lima", "Enam", "Tujuh", "Delapan", "Sembilan", "Sepuluh", "Sebelas"];
-					  if ($x < 12)
-					    return " " . $angka[$x];
-					  elseif ($x < 20)
-					    return terbilang($x - 10) . " Belas";
-					  elseif ($x < 100)
-					    return terbilang($x / 10) . " Puluh" . terbilang($x % 10);
-					  elseif ($x < 200)
-					    return "Seratus" . terbilang($x - 100);
-					  elseif ($x < 1000)
-					    return terbilang($x / 100) . " Ratus" . terbilang($x % 100);
-					  elseif ($x < 2000)
-					    return "Seribu" . terbilang($x - 1000);
-					  elseif ($x < 1000000)
-					    return terbilang($x / 1000) . " Ribu" . terbilang($x % 1000);
-					  elseif ($x < 1000000000)
-					    return terbilang($x / 1000000) . " Juta" . terbilang($x % 1000000);
+					function penyebut($nilai) {
+						$nilai = abs($nilai);
+						$huruf = array("", "Satu", "Dua", "Tiga", "Empat", "Lima", "Enam", "Tujuh", "Delapan", "Sembilan", "Sepuluh", "Sebelas");
+						$temp = "";
+						if ($nilai < 12) {
+							$temp = " ". $huruf[$nilai];
+						} else if ($nilai <20) {
+							$temp = penyebut($nilai - 10). " Belas";
+						} else if ($nilai < 100) {
+							$temp = penyebut($nilai/10)." Puluh". penyebut($nilai % 10);
+						} else if ($nilai < 200) {
+							$temp = " Seratus" . penyebut($nilai - 100);
+						} else if ($nilai < 1000) {
+							$temp = penyebut($nilai/100) . " Ratus" . penyebut($nilai % 100);
+						} else if ($nilai < 2000) {
+							$temp = " Seribu" . penyebut($nilai - 1000);
+						} else if ($nilai < 1000000) {
+							$temp = penyebut($nilai/1000) . " Ribu" . penyebut($nilai % 1000);
+						} else if ($nilai < 1000000000) {
+							$temp = penyebut($nilai/1000000) . " Juta" . penyebut($nilai % 1000000);
+						} else if ($nilai < 1000000000000) {
+							$temp = penyebut($nilai/1000000000) . " Milyar" . penyebut(fmod($nilai,1000000000));
+						} else if ($nilai < 1000000000000000) {
+							$temp = penyebut($nilai/1000000000000) . " Trilyun" . penyebut(fmod($nilai,1000000000000));
+						}     
+						return $temp;
+					}
+				 
+					function terbilang($nilai) {
+						if($nilai<0) {
+							$hasil = "Minus ". trim(penyebut($nilai));
+						} else {
+							$hasil = trim(penyebut($nilai));
+						}     		
+						return $hasil;
 					}
 					?>
-					<div class="top s16">Terbilang : <?php echo ucwords(terbilang($dataTotal[0]->total)); ?> Rupiah</div>
+					<div class="top s16">Terbilang : <?php echo terbilang($dataTotal[0]->total); ?> Rupiah</div>
 					<div class="float-left" style="width: 40vw;">
 						<ul style="padding-left: -15px;">
 							<li>Barang yang sudah dibeli tidak bisa dikembalikan lagi kecuali ada perjanjian</li>
