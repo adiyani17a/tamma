@@ -116,7 +116,7 @@ class POSGrosirController extends Controller
     $detalis = DB::table('d_sales_dt')
       ->select( 'i_name',
                 'sd_qty',
-                'i_sat1',
+                'm_sname',
                 'm_psell1',
                 'm_psell2',
                 'm_psell3',
@@ -126,6 +126,7 @@ class POSGrosirController extends Controller
       ->join('d_sales', 'd_sales_dt.sd_sales', '=', 'd_sales.s_id' )
       ->join('m_item', 'm_item.i_id', '=' , 'd_sales_dt.sd_item')
       ->join('m_price','m_price.m_pitem', '=','d_sales_dt.sd_item')
+      ->join('m_satuan','m_satuan.m_sid','=','i_sat1')
       ->where('sd_sales','=',$request->x)
       ->get();
 
@@ -159,7 +160,14 @@ class POSGrosirController extends Controller
     $term = $request->term;
     $results = array();
     if ($id == 'A') {
-      $queries = DB::select('select i_id, i_code,i_name,m_psell1,i_sat1,s_qty,i_type from m_item left join d_stock on i_id = s_item join m_price on i_id = m_pitem where ( i_name like "%'.$term.'%" or i_code like "%'.$term.'%" ) and ( i_type = "BP" or i_type = "BJ" ) and ( s_comp = 2 and s_position = 2 or s_comp is null or s_position is null ) limit 50');
+      $queries = DB::select('select i_id, i_code,i_name,m_psell1,m_sname,s_qty,i_type 
+                            from m_item left join d_stock on i_id = s_item 
+                            join m_price on i_id = m_pitem 
+                            join m_satuan on m_sid = i_sat1 
+                            where ( i_name like "%'.$term.'%" or i_code like "%'.$term.'%" ) 
+                            and ( i_type = "BP" or i_type = "BJ" ) 
+                            and ( s_comp = 2 and s_position = 2 or s_comp is null or s_position is null ) 
+                            limit 50');
 
       if ($queries == null) {
         $results[] = [ 'i_id' => null, 'label' =>'tidak di temukan data terkait'];
@@ -171,14 +179,21 @@ class POSGrosirController extends Controller
                          'harga' => $query->m_psell1, 
                          'kode' => $query->i_id, 
                          'nama' => $query->i_name, 
-                         'satuan' => $query->i_sat1, 
+                         'satuan' => $query->m_sname, 
                          's_qty'=>$query->s_qty,
                          'i_type'=>$query->i_type
                        ];
         }
       }
     }else if ($id == 'B') {
-      $queries = DB::select('select i_id, i_code,i_name,m_psell2,i_sat1,s_qty from m_item left join d_stock on i_id = s_item join m_price on i_id = m_pitem where ( i_name like "%'.$term.'%" or i_code like "%'.$term.'%" ) and ( i_type = "BP" or i_type = "BJ" ) and ( s_comp = 2 and s_position = 2 or s_comp is null or s_position is null ) limit 50');
+      $queries = DB::select('select i_id, i_code,i_name,m_psell2,m_sname,s_qty,i_type
+                            from m_item left join d_stock on i_id = s_item 
+                            join m_price on i_id = m_pitem 
+                            join m_satuan on m_sid = i_sat1 
+                            where ( i_name like "%'.$term.'%" or i_code like "%'.$term.'%" ) 
+                            and ( i_type = "BP" or i_type = "BJ" ) 
+                            and ( s_comp = 2 and s_position = 2 or s_comp is null or s_position is null ) 
+                            limit 50');
 
       if ($queries == null) {
         $results[] = [ 'i_id' => null, 'label' =>'tidak di temukan data terkait'];
@@ -190,13 +205,21 @@ class POSGrosirController extends Controller
                          'harga' => $query->m_psell2, 
                          'kode' => $query->i_id, 
                          'nama' => $query->i_name, 
-                         'satuan' => $query->i_sat1, 
-                         's_qty'=>$query->s_qty 
+                         'satuan' => $query->m_sname, 
+                         's_qty'=>$query->s_qty,
+                         'i_type'=>$query->i_type 
                        ];
         }
       }
     }else{
-      $queries = DB::select('select i_id, i_code,i_name,m_psell3,i_sat1,s_qty from m_item left join d_stock on i_id = s_item join m_price on i_id = m_pitem where ( i_name like "%'.$term.'%" or i_code like "%'.$term.'%" ) and ( i_type = "BP" or i_type = "BJ" ) and ( s_comp = 2 and s_position = 2 or s_comp is null or s_position is null ) limit 50');
+      $queries = DB::select('select i_id, i_code,i_name,m_psell3,m_sname,s_qty,i_type
+                            from m_item left join d_stock on i_id = s_item 
+                            join m_price on i_id = m_pitem 
+                            join m_satuan on m_sid = i_sat1 
+                            where ( i_name like "%'.$term.'%" or i_code like "%'.$term.'%" ) 
+                            and ( i_type = "BP" or i_type = "BJ" ) 
+                            and ( s_comp = 2 and s_position = 2 or s_comp is null or s_position is null ) 
+                            limit 50');
 
       if ($queries == null) {
         $results[] = [ 'i_id' => null, 'label' =>'tidak di temukan data terkait'];
@@ -208,8 +231,9 @@ class POSGrosirController extends Controller
                          'harga' => $query->m_psell3, 
                          'kode' => $query->i_id, 
                          'nama' => $query->i_name, 
-                         'satuan' => $query->i_sat1, 
-                         's_qty'=>$query->s_qty 
+                         'satuan' => $query->m_sname, 
+                         's_qty'=>$query->s_qty,
+                         'i_type'=>$query->i_type
                        ];
         }
       }
@@ -217,6 +241,7 @@ class POSGrosirController extends Controller
 
     return Response::json($results); 
   }
+
 
   public function store(Request $request){
     DB::beginTransaction();
@@ -795,9 +820,14 @@ class POSGrosirController extends Controller
     $d2 = substr($tgl2,0,2);
     $tgl2 = $y2.'-'.$m2.'-'.$d2;
 
-    $leagues = DB::table('d_sales_dt')
-      ->select('sd_item','s_date','i_name','i_type','i_group', DB::raw("sum(sd_qty) as jumlah"))
+    $leagues = d_sales_dt::select('sd_item',
+                                  's_date',
+                                  'i_name',
+                                  'm_gname',
+                                  'i_type', 
+                                  DB::raw("sum(sd_qty) as jumlah"))
       ->join('m_item', 'm_item.i_id', '=' , 'd_sales_dt.sd_item')
+      ->join('m_group','m_group.m_gcode','=','m_item.i_code_group')
       ->join('d_sales', 'd_sales.s_id', '=' , 'd_sales_dt.sd_sales')
       ->where('s_channel','GR')
       ->where(function($status){
