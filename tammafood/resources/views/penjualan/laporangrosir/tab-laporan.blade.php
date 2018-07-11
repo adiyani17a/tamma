@@ -36,10 +36,12 @@
           <option value="confirm" class="form-control">Tampilkan Data : Disetujui</option>
         </select>
       </div> -->
+      <div id="btn_print" class="col-md-3 col-sm-3 col-xs-12" align="right">
 
+      </div>
       <div class="col-md-12 col-sm-12 col-xs-12">
         <div class="table-responsive">
-          <table class="table tabelan table-hover table-bordered" width="100%" cellspacing="0" id="tbl-laporan">
+          <table class="table tabelan table-hover table-bordered data-table" width="100%" cellspacing="0" id="tbl-laporan">
             <thead>
               <tr>
                 <th class="wd-15p">Nama Barang</th>

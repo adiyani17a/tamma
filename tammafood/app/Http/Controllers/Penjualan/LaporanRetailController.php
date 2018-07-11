@@ -53,7 +53,10 @@ class LaporanRetailController extends Controller
     })
     ->make(true);
   }
-
+  public function print_laporan_penjualan($tgl1, $tgl2)
+  {
+    return view('penjualan/laporanretail/print_laporan_penjualan');
+  }
 }
 
 

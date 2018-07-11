@@ -850,14 +850,14 @@ class POSRetailController extends Controller
       ->join('m_item','i_id','=','sd_item')
       ->where('sd_sales',$id)->get();
       $count = count($data);
-      $tes = 15 - $count;
+      $tes = 10 - $count;
       $array = [];
-
       if ($tes > 0) {
         for ($i=0; $i < $tes; $i++) { 
           array_push($array, 'a');
         }
       }
+      
       return view('penjualan.POSRetail.print_faktur', compact('data', 'dataTotal', 'sales', 'array'));
   }
   public function print_surat_jalan($id){
@@ -885,7 +885,7 @@ class POSRetailController extends Controller
       $dataTotal = d_sales_dt::select(DB::raw('SUM(sd_qty) as total'))
       ->where('sd_sales',$id)->get();
       $count = count($data);
-      $tes = 15 - $count;
+      $tes = 10 - $count;
       $array = [];
 
       if ($tes > 0) {
@@ -893,6 +893,7 @@ class POSRetailController extends Controller
           array_push($array, 'a');
         }
       }
+
       return view('penjualan.POSRetail.print_surat_jalan', compact('data', 'dataTotal', 'sales', 'array'));
   }
 }

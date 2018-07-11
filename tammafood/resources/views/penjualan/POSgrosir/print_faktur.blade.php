@@ -75,6 +75,12 @@
 			.button-group{
 				display: none;
 			}
+			@page {
+				size: portrait;
+			}
+		}
+		@page { 
+			margin: 0; 
 		}
 	</style>
 </head>
@@ -197,9 +203,9 @@
 							<li>Klaim dilayani 1x24 jam setelah barang diterima</li>
 						</ul>
 					</div>
-					<div class="float-right text-center" style="margin-top: 15px;height: 60px;width: 40%;position: absolute;right: 0;bottom: 20px;">
+					<div class="float-right text-center" style="margin-top: 15px;height: 60px;width: 40%;position: absolute;right: 0;bottom: 35px;">
 						<div>Hormat Kami</div>
-						<div style="margin:auto;border-bottom: 1px solid black;width: 150px;height: 45px;"></div>
+						<div style="margin:auto;border-bottom: 1px solid black;width: 150px;height: 65px;"></div>
 						<div>Accounting</div>
 					</div>
 				</td>

@@ -37,8 +37,8 @@
         </select>
       </div> -->
 
-      <div class="col-md-3 col-sm-3 col-xs-12" align="right">
-        <button class="btn btn-primary"><i class="fa fa-print"></i>&nbsp;Print</button>
+      <div id="btn_print" class="col-md-3 col-sm-3 col-xs-12" align="right">
+        
       </div>
 
       
