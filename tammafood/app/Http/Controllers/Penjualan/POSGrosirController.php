@@ -1145,7 +1145,7 @@ class POSGrosirController extends Controller
       ->join('m_item','i_id','=','sd_item')
       ->where('sd_sales',$id)->get();
       $count = count($data);
-      $tes = 15 - $count;
+      $tes = 10 - $count;
       $array = [];
 
       if ($tes > 0) {
@@ -1193,7 +1193,7 @@ class POSGrosirController extends Controller
       $dataTotal = d_sales_dt::select(DB::raw('SUM(sd_qty) as total'))
       ->where('sd_sales',$id)->get();
       $count = count($data);
-      $tes = 15 - $count;
+      $tes = 10 - $count;
       $array = [];
 
       if ($tes > 0) {

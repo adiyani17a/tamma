@@ -176,6 +176,8 @@
   function lihatLaporanByTgl(){
     var tgl1 = $('#tanggal1').val();
     var tgl2 = $('#tanggal2').val();
+    $('#btn_print').html('<a class="btn btn-primary" href="'+ baseUrl +'/penjualan/print_laporan_penjualan/'+ tgl1 +'/'+ tgl2 +'" '+ 
+      'target="_blank"><i class="fa fa-print"></i>&nbsp;Print</a>');
     $('#tbl-laporan').dataTable({
         "destroy": true,
         "processing" : true,
@@ -201,6 +203,7 @@
         "rowsGroup": [
           'first:name'
         ],
+        "lengthMenu": [[10, 20, 50, - 1], [10, 20, 50, "All"]],
         "language": {
           "searchPlaceholder": "Cari Data",
           "emptyTable": "Tidak ada data",
