@@ -90,74 +90,9 @@
 		<button onclick="prints()">Print</button>
 	</div>
 	<div class="div-width">
-		<table class="border-none" width="100%" cellspacing="0" cellpadding="0">
-			<tr>
-				<td class="s16 italic bold" width="35%">TAMMA ROBAH INDONESIA</td>
-				<td class="s16" width="30%"><p class="underline text-center">FAKTUR</p></td>
-				<td class="s16" width="35%">Surabaya, <text class="bold">{{ $sales->s_date }}</text></td>
-			</tr>
-			<tr>
-				<td>Jl. Raya Randu no.74<br>
-					Sidotopo Wetan - Surabaya 60123<br>
-					Telp. 031-51165528<br>
-					Fax. 081331100028-081234561066
-				</td>
-				<td class="text-center">{{ $sales->s_note }}</td>
-				<td>Kepada Yth,<br>
-					{{$sales->c_name}}<br>
-					{{$sales->c_address}}
-				</td>
-			</tr>
-		</table>
-		<table width="100%" cellspacing="0" class="tabel" border="1px">
-			<tr class="text-center">
-				<td>No</td>
-				<td>Kode Barang</td>
-				<td>Nama Barang</td>
-				<td>Unit</td>
-				<td>Harga</td>
-				<td>Total</td>
-				<td>Discount</td>
-			</tr>
-			<?php $totalDis = 0 ?>
-			@foreach ($data as $index => $item)
-			<tr>
-				<td class="text-center">{{ $index+1 }}</td>
-				<td>{{ $item->i_code }}</td>
-            	<td>{{ $item->i_name }}</td>
-				<td class="text-right">{{$item->sd_qty}}&nbsp;{{ $item->m_sname }}</td>
-				<td class="text-right">{{ number_format($item->sd_price,2,'.',',') }}</td>
-				<td class="text-right" width="10%">{{ number_format($item->sd_total,2,'.',',') }}</td>
-				<td class="text-right" width="10%">
-				@if ($item->sd_disc_percent == '0')
-                  {{ number_format($item->sd_disc_value,2,'.',',')}}
-                  <?php $totalDis += $item->sd_disc_value ?>
-                @else
-                  {{ number_format(($item->sd_qty*$item->sd_price)*($item->sd_disc_percent/100),2,'.',',') }}
-                  <?php $totalDis += ($item->sd_qty*$item->sd_price)*($item->sd_disc_percent/100) ?>
-                @endif
-            	</td>
-			</tr>
-			@endforeach
-			@foreach($array as $a)
-			<tr>
-				<td class="text-center empty"></td>
-				<td></td>
-				<td></td>
-				<td class="text-right"></td>
-				<td class="text-right"></td>
-				<td class="text-right" width="10%"></td>
-				<td class="text-right" width="10%"></td>
-			</tr>
-			@endforeach
-			<tr>
-				<td colspan="5" class="border-none-right">Keterangan :</td>
-				<td class="border-none-right border-none-left">Jumlah</td>
-				<td class="border-none-left text-right">{{ number_format($dataTotal[0]->total,2,'.',',')}}</td>
-			</tr>
-			<tr>
-				<td colspan="5" class="vertical-baseline border-none-right" style="position: relative;">
-					<?php
+		<?php $totalDis = 0 ?>
+
+		<?php
 					function penyebut($nilai) {
 						$nilai = abs($nilai);
 						$huruf = array("", "Satu", "Dua", "Tiga", "Empat", "Lima", "Enam", "Tujuh", "Delapan", "Sembilan", "Sepuluh", "Sebelas");
@@ -195,6 +130,124 @@
 						return $hasil;
 					}
 					?>
+			
+			@for($i=0; $i < count($data); $i++)
+
+				<table class="border-none" width="100%" cellspacing="0" cellpadding="0">
+					<tr>
+						<td class="s16 italic bold" width="35%">TAMMA ROBAH INDONESIA</td>
+						<td class="s16" width="30%"><p class="underline text-center">FAKTUR</p></td>
+						<td class="s16" width="35%">Surabaya, <text class="bold">{{ $sales->s_date }}</text></td>
+					</tr>
+					<tr>
+						<td>Jl. Raya Randu no.74<br>
+							Sidotopo Wetan - Surabaya 60123<br>
+							Telp. 031-51165528<br>
+							Fax. 081331100028-081234561066
+						</td>
+						<td class="text-center">{{ $sales->s_note }}</td>
+						<td>Kepada Yth,<br>
+							{{$sales->c_name}}<br>
+							{{$sales->c_address}}
+						</td>
+					</tr>
+				</table>
+				<table width="100%" cellspacing="0" class="tabel" border="1px">
+					<tr class="text-center">
+						<td>No</td>
+						<td>Kode Barang</td>
+						<td>Nama Barang</td>
+						<td>Unit</td>
+						<td>Harga</td>
+						<td>Total</td>
+						<td>Discount</td>
+					</tr>
+				@for ($j=0; $j < count($data[$i]); $j++) 
+					@if(count($data[$i])==10)
+						
+						<tr>
+							<td>{{$j+1}}</td>
+							<td>{{$data[$i][$j]->i_code}}</td>
+							<td>{{ $data[$i][$j]->i_name }}</td>
+							<td class="text-right">{{$data[$i][$j]->sd_qty}}&nbsp;{{ $data[$i][$j]->m_sname }}</td>
+							<td class="text-right">{{ number_format($data[$i][$j]->sd_price,2,'.',',') }}</td>
+							<td class="text-right" width="10%">{{ number_format($data[$i][$j]->sd_total,2,'.',',') }}</td>
+							<td class="text-right" width="10%">
+							@if ($data[$i][$j]->sd_disc_percent == '0')
+			                  {{ number_format($data[$i][$j]->sd_disc_value,2,'.',',')}}
+			                  <?php $totalDis += $data[$i][$j]->sd_disc_value ?>
+			                @else
+			                  {{ number_format(($data[$i][$j]->sd_qty*$data[$i][$j]->sd_price)*($data[$i][$j]->sd_disc_percent/100),2,'.',',') }}
+			                  <?php $totalDis += ($data[$i][$j]->sd_qty*$data[$i][$j]->sd_price)*($data[$i][$j]->sd_disc_percent/100) ?>
+			                @endif
+			            	</td>
+						</tr>
+					@else
+						<tr>
+							<td>{{$j+1}}</td>
+							<td>{{$data[$i][$j]->i_code}}</td>
+							<td>{{ $data[$i][$j]->i_name }}</td>
+							<td class="text-right">{{$data[$i][$j]->sd_qty}}&nbsp;{{ $data[$i][$j]->m_sname }}</td>
+							<td class="text-right">{{ number_format($data[$i][$j]->sd_price,2,'.',',') }}</td>
+							<td class="text-right" width="10%">{{ number_format($data[$i][$j]->sd_total,2,'.',',') }}</td>
+							<td class="text-right" width="10%">
+							@if ($data[$i][$j]->sd_disc_percent == '0')
+			                  {{ number_format($data[$i][$j]->sd_disc_value,2,'.',',')}}
+			                  <?php $totalDis += $data[$i][$j]->sd_disc_value ?>
+			                @else
+			                  {{ number_format(($data[$i][$j]->sd_qty*$data[$i][$j]->sd_price)*($data[$i][$j]->sd_disc_percent/100),2,'.',',') }}
+			                  <?php $totalDis += ($data[$i][$j]->sd_qty*$data[$i][$j]->sd_price)*($data[$i][$j]->sd_disc_percent/100) ?>
+			                @endif
+			            	</td>
+						</tr>
+						
+					@endif
+					
+
+
+				@endfor
+				
+				<?php
+					$jumlah = count($data[$i]);
+					$tes = 10 - $jumlah;
+				    $array1 = [];
+
+				    if ($tes > 0) {
+				        for ($k=0; $k < $tes; $k++) { 
+				          array_push($array1, 'b');
+				        }
+				    }
+
+
+				?>
+			
+				@if(count($data[$i])>=1)
+					@foreach($array1 as $b)
+						<tr>
+							<td class="text-center empty"></td>
+							<td></td>
+							<td></td>
+							<td class="text-right"></td>
+							<td class="text-right"></td>
+							<td class="text-right" width="10%"></td>
+							<td class="text-right" width="10%"></td>
+						</tr>
+					@endforeach
+				@endif
+				
+
+				
+						
+				
+
+				<tr>
+				<td colspan="5" class="border-none-right">Keterangan :</td>
+				<td class="border-none-right border-none-left">Jumlah</td>
+				<td class="border-none-left text-right">{{ number_format($dataTotal[0]->total,2,'.',',')}}</td>
+			</tr>
+			<tr>
+				<td colspan="5" class="vertical-baseline border-none-right" style="position: relative;">
+					
 					<div class="top s16">Terbilang : <?php echo terbilang($dataTotal[0]->total); ?> Rupiah</div>
 					<div class="float-left" style="width: 40vw;">
 						<ul style="padding-left: -15px;">
@@ -209,6 +262,7 @@
 						<div>Accounting</div>
 					</div>
 				</td>
+
 				<td colspan="2" class="vertical-baseline border-none-left">
 					<div class="top">
 						<table class="border-none" width="100%" cellspacing="0">
@@ -233,7 +287,15 @@
 				</td>
 			</tr>
 		</table>
+
+			@endfor
+		
+		
+			
+			
+			
 	</div>
+	@include('layouts._scripts')
 	<script type="text/javascript">
 		function prints()
 		{
