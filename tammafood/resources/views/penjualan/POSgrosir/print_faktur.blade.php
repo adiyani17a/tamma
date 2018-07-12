@@ -162,131 +162,131 @@
 						<td>Total</td>
 						<td>Discount</td>
 					</tr>
-				@for ($j=0; $j < count($data[$i]); $j++) 
-					@if(count($data[$i])==10)
+					@for ($j=0; $j < count($data[$i]); $j++) 
+						@if(count($data[$i])==10)
+							
+							<tr>
+								<td>{{$j+1}}</td>
+								<td>{{$data[$i][$j]->i_code}}</td>
+								<td>{{ $data[$i][$j]->i_name }}</td>
+								<td class="text-right">{{$data[$i][$j]->sd_qty}}&nbsp;{{ $data[$i][$j]->m_sname }}</td>
+								<td class="text-right">{{ number_format($data[$i][$j]->sd_price,2,'.',',') }}</td>
+								<td class="text-right" width="10%">{{ number_format($data[$i][$j]->sd_total,2,'.',',') }}</td>
+								<td class="text-right" width="10%">
+								@if ($data[$i][$j]->sd_disc_percent == '0')
+				                  {{ number_format($data[$i][$j]->sd_disc_value,2,'.',',')}}
+				                  <?php $totalDis += $data[$i][$j]->sd_disc_value ?>
+				                @else
+				                  {{ number_format(($data[$i][$j]->sd_qty*$data[$i][$j]->sd_price)*($data[$i][$j]->sd_disc_percent/100),2,'.',',') }}
+				                  <?php $totalDis += ($data[$i][$j]->sd_qty*$data[$i][$j]->sd_price)*($data[$i][$j]->sd_disc_percent/100) ?>
+				                @endif
+				            	</td>
+							</tr>
+						@else
+							<tr>
+								<td>{{$j+1}}</td>
+								<td>{{$data[$i][$j]->i_code}}</td>
+								<td>{{ $data[$i][$j]->i_name }}</td>
+								<td class="text-right">{{$data[$i][$j]->sd_qty}}&nbsp;{{ $data[$i][$j]->m_sname }}</td>
+								<td class="text-right">{{ number_format($data[$i][$j]->sd_price,2,'.',',') }}</td>
+								<td class="text-right" width="10%">{{ number_format($data[$i][$j]->sd_total,2,'.',',') }}</td>
+								<td class="text-right" width="10%">
+								@if ($data[$i][$j]->sd_disc_percent == '0')
+				                  {{ number_format($data[$i][$j]->sd_disc_value,2,'.',',')}}
+				                  <?php $totalDis += $data[$i][$j]->sd_disc_value ?>
+				                @else
+				                  {{ number_format(($data[$i][$j]->sd_qty*$data[$i][$j]->sd_price)*($data[$i][$j]->sd_disc_percent/100),2,'.',',') }}
+				                  <?php $totalDis += ($data[$i][$j]->sd_qty*$data[$i][$j]->sd_price)*($data[$i][$j]->sd_disc_percent/100) ?>
+				                @endif
+				            	</td>
+							</tr>
+							
+						@endif
 						
-						<tr>
-							<td>{{$j+1}}</td>
-							<td>{{$data[$i][$j]->i_code}}</td>
-							<td>{{ $data[$i][$j]->i_name }}</td>
-							<td class="text-right">{{$data[$i][$j]->sd_qty}}&nbsp;{{ $data[$i][$j]->m_sname }}</td>
-							<td class="text-right">{{ number_format($data[$i][$j]->sd_price,2,'.',',') }}</td>
-							<td class="text-right" width="10%">{{ number_format($data[$i][$j]->sd_total,2,'.',',') }}</td>
-							<td class="text-right" width="10%">
-							@if ($data[$i][$j]->sd_disc_percent == '0')
-			                  {{ number_format($data[$i][$j]->sd_disc_value,2,'.',',')}}
-			                  <?php $totalDis += $data[$i][$j]->sd_disc_value ?>
-			                @else
-			                  {{ number_format(($data[$i][$j]->sd_qty*$data[$i][$j]->sd_price)*($data[$i][$j]->sd_disc_percent/100),2,'.',',') }}
-			                  <?php $totalDis += ($data[$i][$j]->sd_qty*$data[$i][$j]->sd_price)*($data[$i][$j]->sd_disc_percent/100) ?>
-			                @endif
-			            	</td>
-						</tr>
-					@else
-						<tr>
-							<td>{{$j+1}}</td>
-							<td>{{$data[$i][$j]->i_code}}</td>
-							<td>{{ $data[$i][$j]->i_name }}</td>
-							<td class="text-right">{{$data[$i][$j]->sd_qty}}&nbsp;{{ $data[$i][$j]->m_sname }}</td>
-							<td class="text-right">{{ number_format($data[$i][$j]->sd_price,2,'.',',') }}</td>
-							<td class="text-right" width="10%">{{ number_format($data[$i][$j]->sd_total,2,'.',',') }}</td>
-							<td class="text-right" width="10%">
-							@if ($data[$i][$j]->sd_disc_percent == '0')
-			                  {{ number_format($data[$i][$j]->sd_disc_value,2,'.',',')}}
-			                  <?php $totalDis += $data[$i][$j]->sd_disc_value ?>
-			                @else
-			                  {{ number_format(($data[$i][$j]->sd_qty*$data[$i][$j]->sd_price)*($data[$i][$j]->sd_disc_percent/100),2,'.',',') }}
-			                  <?php $totalDis += ($data[$i][$j]->sd_qty*$data[$i][$j]->sd_price)*($data[$i][$j]->sd_disc_percent/100) ?>
-			                @endif
-			            	</td>
-						</tr>
-						
-					@endif
-					
 
 
-				@endfor
+					@endfor
 				
-				<?php
-					$jumlah = count($data[$i]);
-					$tes = 10 - $jumlah;
-				    $array1 = [];
+					<?php
+						$jumlah = count($data[$i]);
+						$tes = 10 - $jumlah;
+					    $array1 = [];
 
-				    if ($tes > 0) {
-				        for ($k=0; $k < $tes; $k++) { 
-				          array_push($array1, 'b');
-				        }
-				    }
+					    if ($tes > 0) {
+					        for ($k=0; $k < $tes; $k++) { 
+					          array_push($array1, 'b');
+					        }
+					    }
 
 
-				?>
+					?>
 			
-				@if(count($data[$i])>=1)
-					@foreach($array1 as $b)
-						<tr>
-							<td class="text-center empty"></td>
-							<td></td>
-							<td></td>
-							<td class="text-right"></td>
-							<td class="text-right"></td>
-							<td class="text-right" width="10%"></td>
-							<td class="text-right" width="10%"></td>
-						</tr>
-					@endforeach
-				@endif
+					@if(count($data[$i])>=1)
+						@foreach($array1 as $b)
+							<tr>
+								<td class="text-center empty"></td>
+								<td></td>
+								<td></td>
+								<td class="text-right"></td>
+								<td class="text-right"></td>
+								<td class="text-right" width="10%"></td>
+								<td class="text-right" width="10%"></td>
+							</tr>
+						@endforeach
+					@endif
 				
 
 				
 						
 				
 
-				<tr>
-				<td colspan="5" class="border-none-right">Keterangan :</td>
-				<td class="border-none-right border-none-left">Jumlah</td>
-				<td class="border-none-left text-right">{{ number_format($dataTotal[0]->total,2,'.',',')}}</td>
-			</tr>
-			<tr>
-				<td colspan="5" class="vertical-baseline border-none-right" style="position: relative;">
-					
-					<div class="top s16">Terbilang : <?php echo terbilang($dataTotal[0]->total); ?> Rupiah</div>
-					<div class="float-left" style="width: 40vw;">
-						<ul style="padding-left: -15px;">
-							<li>Barang yang sudah dibeli tidak bisa dikembalikan lagi kecuali ada perjanjian</li>
-							<li>Keterlambatan, kehilangan atau kerusakan barang selama pengiriman tidak menjadi tanggung jawab kami.</li>
-							<li>Klaim dilayani 1x24 jam setelah barang diterima</li>
-						</ul>
-					</div>
-					<div class="float-right text-center" style="margin-top: 15px;height: 60px;width: 40%;position: absolute;right: 0;bottom: 35px;">
-						<div>Hormat Kami</div>
-						<div style="margin:auto;border-bottom: 1px solid black;width: 150px;height: 65px;"></div>
-						<div>Accounting</div>
-					</div>
-				</td>
+					<tr>
+						<td colspan="5" class="border-none-right">Keterangan :</td>
+						<td class="border-none-right border-none-left">Jumlah</td>
+						<td class="border-none-left text-right">{{ number_format($dataTotal[0]->total,2,'.',',')}}</td>
+					</tr>
+					<tr>
+						<td colspan="5" class="vertical-baseline border-none-right" style="position: relative;">
+							
+							<div class="top s16">Terbilang : <?php echo terbilang($dataTotal[0]->total); ?> Rupiah</div>
+							<div class="float-left" style="width: 40vw;">
+								<ul style="padding-left: -15px;">
+									<li>Barang yang sudah dibeli tidak bisa dikembalikan lagi kecuali ada perjanjian</li>
+									<li>Keterlambatan, kehilangan atau kerusakan barang selama pengiriman tidak menjadi tanggung jawab kami.</li>
+									<li>Klaim dilayani 1x24 jam setelah barang diterima</li>
+								</ul>
+							</div>
+							<div class="float-right text-center" style="margin-top: 15px;height: 60px;width: 40%;position: absolute;right: 0;bottom: 35px;">
+								<div>Hormat Kami</div>
+								<div style="margin:auto;border-bottom: 1px solid black;width: 150px;height: 65px;"></div>
+								<div>Accounting</div>
+							</div>
+						</td>
 
-				<td colspan="2" class="vertical-baseline border-none-left">
-					<div class="top">
-						<table class="border-none" width="100%" cellspacing="0">
-							<tr>
-								<td width="50%">Total Diskon</td>
-								<td width="50%" class="text-right">{{ $totalDis }}</td>
-							</tr>
-							<tr>
-								<td width="50%">Sub Total</td>
-								<td width="50%" class="text-right">{{ number_format($dataTotal[0]->total,2,'.',',')}}</td>
-							</tr>
-							<tr>
-								<td width="50%">PPN</td>
-								<td width="50%" class="text-right">0.00</td>
-							</tr>
-							<tr>
-								<td width="50%">Total</td>
-								<td width="50%" class="text-right">{{ number_format($dataTotal[0]->total,2,'.',',')}}</td>
-							</tr>
-						</table>
-					</div>
-				</td>
-			</tr>
-		</table>
+						<td colspan="2" class="vertical-baseline border-none-left">
+							<div class="top">
+								<table class="border-none" width="100%" cellspacing="0">
+									<tr>
+										<td width="50%">Total Diskon</td>
+										<td width="50%" class="text-right">{{ $totalDis }}</td>
+									</tr>
+									<tr>
+										<td width="50%">Sub Total</td>
+										<td width="50%" class="text-right">{{ number_format($dataTotal[0]->total,2,'.',',')}}</td>
+									</tr>
+									<tr>
+										<td width="50%">PPN</td>
+										<td width="50%" class="text-right">0.00</td>
+									</tr>
+									<tr>
+										<td width="50%">Total</td>
+										<td width="50%" class="text-right">{{ number_format($dataTotal[0]->total,2,'.',',')}}</td>
+									</tr>
+								</table>
+							</div>
+						</td>
+					</tr>
+				</table>
 
 			@endfor
 		
