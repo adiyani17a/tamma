@@ -88,7 +88,31 @@
 	<div class="button-group">
 		<button onclick="prints()">Print</button>
 	</div>
+
 	<div class="div-width">
+		<?php
+			$item = [];
+	        $note = [];
+		    $arr  = [];
+		    $cus  = [];
+		    $tanggal = [];
+
+	        foreach ($data as $index => $ini_data) {
+	        
+		        array_push($note, $ini_data->s_note);
+		        array_push($item, $ini_data->i_name);
+		        array_push($tanggal, $ini_data->s_date);
+		        array_push($cus, $ini_data->c_name);
+
+				if (!isset($arr[$ini_data->i_name])) {
+	                $arr[$ini_data->i_name]['rowspan'] = 0;
+	            }
+	            $arr[$ini_data->i_name]['printed'] = 'no';
+	            $arr[$ini_data->i_name]['rowspan'] += 1;
+
+	        }
+	        
+		?>
 		<table class="border-none" width="100%" cellspacing="0" cellpadding="0">
 			<tr>
 				<td class="s16 bold" width="35%">TAMMA ROBAH INDONESIA</td>
@@ -105,7 +129,7 @@
 				<td class="bold">
 					Laporan : Penjualan Per Barang - Detail <br>
 					Pembayaran : Kredit PPn : Gabungan <br>
-					Periode : 04-06-2018 s/d 04-06-2018
+					Periode : {{$tgl1}} s/d {{$tgl2}}
 				</td>
 			</tr>
 		</table>
@@ -129,24 +153,36 @@
 					
 				</tr>
 			</thead>
-			<?php $totalDis = 0 ?>
+
 			<tbody>
-				<tr>
-					<td>1</td>
-					<td></td>
-	            	<td></td>
-					<td></td>
-	            	<td></td>
-					<td></td>
-	            	<td></td>
-					<td></td>
-	            	<td></td>
-					<td></td>
-	            	<td></td>
-					<td></td>
-					<td></td>
-				</tr>
-				
+
+
+		<?php 
+
+
+			for($i=0; $i < sizeof($note); $i++) {
+            	$empName = $item[$i];
+            echo "<tr>";
+
+
+
+            # If this row is not printed then print.
+            # and make the printed value to "yes", so that
+            # next time it will not printed.
+            	if ($arr[$empName]['printed'] == 'no') {
+	                echo "<td rowspan='".$arr[$empName]['rowspan']."'>".$empName."</td>";
+	                $arr[$empName]['printed'] = 'yes';
+            	}
+            echo "<td>".$note[$i]."</td>".
+            "<td>".$tanggal[$i]."</td>".
+            "<td></td>".
+            "<td>".$cus[$i]."</td>"
+            ;
+            echo "</tr>";
+        	}
+        	echo "</table>";
+        ?>
+
 				<tr>
 					<td class="empty"></td>
 					<td></td>

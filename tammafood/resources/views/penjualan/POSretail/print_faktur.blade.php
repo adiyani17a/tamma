@@ -6,6 +6,7 @@
 
 		*{
 			font-size: 12px;
+			font-style: kitfont;
 		}
 		.s16{
 			font-size: 14px !important;
@@ -209,7 +210,7 @@
 				
 					<?php
 						$jumlah = count($data[$i]);
-						$tes = 10 - $jumlah;
+						$tes = 12- $jumlah;
 					    $array1 = [];
 
 					    if ($tes > 0) {
@@ -259,7 +260,7 @@
 							<div class="float-right text-center" style="margin-top: 15px;height: 60px;width: 40%;position: absolute;right: 0;bottom: 35px;">
 								<div>Hormat Kami</div>
 								<div style="margin:auto;border-bottom: 1px solid black;width: 150px;height: 65px;"></div>
-								<div>Accounting</div>
+								<div>Admin</div>
 							</div>
 						</td>
 

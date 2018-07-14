@@ -1141,7 +1141,7 @@ class POSGrosirController extends Controller
       ->join('m_satuan','m_satuan.m_sid','=','i_sat1')
       ->where('sd_sales',$id)->get()->toArray();
 
-      $data = array_chunk($data_chunk, 10);
+      $data = array_chunk($data_chunk, 12);
       // return $chunk;
       // return $data;
 
@@ -1183,7 +1183,7 @@ class POSGrosirController extends Controller
       ->join('m_satuan','m_satuan.m_sid','=','m_item.i_sat1')
       ->where('sd_sales',$id)->get()->toArray();
 
-      $data = array_chunk($data_chunk, 10);
+      $data = array_chunk($data_chunk, 12);
 
       $dataTotal = d_sales_dt::select(DB::raw('SUM(sd_qty) as total'))
       ->where('sd_sales',$id)->get();

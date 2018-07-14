@@ -147,7 +147,7 @@
 				@endfor
 				<?php
 				$hitung = count($data[$i]);
-				$total = 10 - $hitung;
+				$total = 12 - $hitung;
 				$array = [];
 
 					for ($l=0; $l < $total; $l++) { 
@@ -164,7 +164,7 @@
 				@endforeach
 
 			<tr>
-				<td colspan="3" class="border-none-right">Keterangan :</td>
+				<td colspan="3" class="border-none-right">Koli :</td>
 				
 				<td class="border-none-right border-none-left">Jumlah</td>
 				<td class="border-none-left text-right">{{ number_format($dataTotal[0]->total,2,'.',',')}}</td>
@@ -182,7 +182,7 @@
 					<div class="float-right text-center" style="margin-top: 15px;height: 60px;width: 40%;position: absolute;right: 0;bottom: 25px;">
 						<div>Hormat Kami</div>
 						<div style="margin:auto;border-bottom: 1px solid black;width: 150px;height: 55px;"></div>
-						<div>Accounting</div>
+						<div>Admin</div>
 					</div>
 				</td>
 				<td colspan="2" class="border-none-left">
