@@ -164,7 +164,7 @@
 						<td>Discount</td>
 					</tr>
 					@for ($j=0; $j < count($data[$i]); $j++) 
-						@if(count($data[$i])==10)
+						
 							
 							<tr>
 								<td>{{$j+1}}</td>
@@ -183,26 +183,7 @@
 				                @endif
 				            	</td>
 							</tr>
-						@else
-							<tr>
-								<td>{{$j+1}}</td>
-								<td>{{$data[$i][$j]->i_code}}</td>
-								<td>{{ $data[$i][$j]->i_name }}</td>
-								<td class="text-right">{{$data[$i][$j]->sd_qty}}&nbsp;{{ $data[$i][$j]->m_sname }}</td>
-								<td class="text-right">{{ number_format($data[$i][$j]->sd_price,2,'.',',') }}</td>
-								<td class="text-right" width="10%">{{ number_format($data[$i][$j]->sd_total,2,'.',',') }}</td>
-								<td class="text-right" width="10%">
-								@if ($data[$i][$j]->sd_disc_percent == '0')
-				                  {{ number_format($data[$i][$j]->sd_disc_value,2,'.',',')}}
-				                  <?php $totalDis += $data[$i][$j]->sd_disc_value ?>
-				                @else
-				                  {{ number_format(($data[$i][$j]->sd_qty*$data[$i][$j]->sd_price)*($data[$i][$j]->sd_disc_percent/100),2,'.',',') }}
-				                  <?php $totalDis += ($data[$i][$j]->sd_qty*$data[$i][$j]->sd_price)*($data[$i][$j]->sd_disc_percent/100) ?>
-				                @endif
-				            	</td>
-							</tr>
-							
-						@endif
+						
 						
 
 
