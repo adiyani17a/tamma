@@ -78,7 +78,7 @@ class LaporanRetailController extends Controller
     
         $data = array_chunk($chunk_data, 20);
 
-        // return $data;
+        // dd($data);
 
 
     return view('penjualan/laporanretail/print_laporan_penjualan', compact('data', 'tgl1', 'tgl2'));

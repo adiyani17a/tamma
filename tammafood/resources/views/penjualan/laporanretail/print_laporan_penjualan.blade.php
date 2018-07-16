@@ -79,6 +79,8 @@
 		@media print {
 			.button-group{
 				display: none;
+				padding: 0;
+				margin: 0;
 			}
 			@page {
 				size: landscape
@@ -146,6 +148,8 @@
 			<tbody>
 			<?php
 
+			//dd($data)
+
 				$arr  = [];
 				$item = [];
 		        $note = [];
@@ -181,6 +185,9 @@
 
 		            
 		        }
+
+		        //dd(array_count_values($item));
+
 			?>
 
 				@for($j=0;$j<count($data[$i]);$j++)
@@ -194,7 +201,7 @@
 			            # and make the printed value to "yes", so that
 			            # next time it will not printed.
 			            	if ($arr[$empName]['printed'] == 'no') {
-				                echo "<td rowspan='".$arr[$empName]['rowspan']."'>".$empName." - ".$code[$j]."</td>";
+				                echo "<td class='item_".$i.'_'.$code[$j]."' rowspan='".$arr[$empName]['rowspan']."'>".$empName." - ".$code[$j]."</td>";
 				                $arr[$empName]['printed'] = 'yes';
 			            	}
 			            echo "<td>".$note[$j]."</td>".
@@ -203,7 +210,7 @@
 			            "<td>".$cus[$j]."</td>".
 			            "<td class='text-right'></td>".
 			            "<td>".$satuan[$j]."</td>".
-			            "<td class='text-right'>".$qty[$j]."</td>".
+			            "<td class='text-right qty_".$i.'_'.$code[$j]."'>".$qty[$j]."</td>".
 			            "<td>".
 			            "<div class='float-left'>Rp.</div>".
 			            "<div class='float-right'>".
@@ -211,13 +218,12 @@
 			            "</div>".
 			            "</td>".
 			            "<td class='text-right'>".number_format($disc[$j],2,',','.')."</td>".
-			            "<td class='text-right'>".number_format($total[$j],2,',','.')."</td>".
+			            "<td class='text-right total_".$i.'_'.$code[$j]."'>".number_format($total[$j],2,',','.')."</td>".
 			            "<td></td>".
 			            "<td class='text-right'>".number_format($total[$j],2,',','.')."</td>"
 
 			            ;
 			            echo "</tr>";
-			        	
 			        	
 			        ?>
 					
@@ -236,6 +242,7 @@
 		{
 			window.print();
 		}
+
 	</script>
 </body>
 </html>
