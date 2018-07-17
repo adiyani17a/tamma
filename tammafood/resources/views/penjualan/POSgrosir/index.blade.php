@@ -633,15 +633,16 @@ function tambah() {
       ]);
     tableDetail.draw();
 
-  index++;
-  tamp.push(kode);
-      }else{
+    index++;
+    tamp.push(kode);
+  }else{
       var qtyLawas= parseInt($(".qty-"+kode).val());
       $(".qty-"+kode).val(qtyLawas+qty);
       var q = parseInt(qtyLawas+qty);
       var l = parseFloat(q * y).toFixed(2);;
       var k = SetFormRupiah(l);
       $(".hasil-"+kode).val(k);
+      UpdateHarga(+kode)
       }
 
       $(function(){
@@ -654,7 +655,7 @@ function tambah() {
       autoJumValPercent();
   }
 
-    $('#qty').keypress(function(e){
+$('#qty').keypress(function(e){
     var charCode;
     if ((e.which && e.which == 13)) {
     charCode = e.which;
@@ -673,7 +674,7 @@ function tambah() {
       var c = isi > stok;
     if(itype == 'BP'){
       if(isi == '' || jumlah == '' || data1 == '' || data2 == ''){
-        toastr.warning('Item Jumlah Stok dan Nama Pelanggan tidak boleh kosong!');
+        toastr.warning('Nama Customer tidak boleh kosong!');
         return false;
       }
       var kode = $('#kode').val();
@@ -699,68 +700,71 @@ function tambah() {
         return false;
      }
     }
-    });
+  });
 
 @else
 $("input[name='item']").focus();
-function tambahEdit() { 
-  var kode  = [];
-  kode [0] = $('#kode').val();    
-  var nama  =$('#detailnama').val(); 
-  var type  =$('#i-type').val();            
-  var harga =SetFormRupiah($('#harga').val());  
-  var y     =($('#harga').val());          
-  var qty   =parseInt($('#qty').val());
-  var satuan=$('#satuan').val();
-  var hasil = parseFloat(qty * y).toFixed(2);
-  var x = SetFormRupiah(hasil);
-  // var b = angkaDesimal(x);
-  var stok = $('#s_qty').val();
-  var Hapus = '<button type="button" class="btn btn-danger hapus" onclick="hapus(this)"><i class="fa fa-trash-o"></i></button>';
+  function tambahEdit(){ 
+    var kode  = [];
+    kode [0] = $('#kode').val();     
+    var nama  =$('#detailnama').val();   
+    var type  =$('#i-type').val();          
+    var harga =SetFormRupiah($('#harga').val());  
+    var y     =($('#harga').val());          
+    var qty   =parseInt($('#qty').val());
+    var satuan=$('#satuan').val();
+    var hasil = parseFloat(qty * y).toFixed(2);
+    var x     = SetFormRupiah(hasil);
+    var b     = angkaDesimal(x);
+    var stok  = $('#s_qty').val();
+    var pricevalue ='pricevalue-'+kode+'';
+    var Hapus = '<button type="button" class="btn btn-danger hapus" onclick="hapus(this)"><i class="fa fa-trash-o"></i></button>';
+    var inputs = document.getElementsByClassName( 'kode_item' ),
+      idItem  = [].map.call(inputs, function( input ) {
+          return input.value;
+      });
 
-  var inputs = document.getElementsByClassName( 'kode_item' ),
-  idItem  = [].map.call(inputs, function( input ) {
-      return input.value;
-  });
-  var res = kode.filter( function(n) { return !this.has(n) }, new Set(idItem) );
-  //length : menghitung array
-  if ( res.length != 0 ){         
-    tableDetail.row.add([
+    var res = kode.filter( function(n) { return !this.has(n) }, new Set(idItem) );
+      //length : menghitung array
+      if ( res.length != 0 ){  
 
+        tableDetail.row.add([
       nama+'<input type="hidden" name="kode_item[]" class="kode_item kode" value="'+kode+'"><input type="hidden" name="nama_item[]" class="nama_item" value="'+nama+'"> ',
 
-      '<input size="30" style="text-align:right" type="number"  name="sd_qty[]" class="sd_qty form-control qty-'+kode+'" value="'+qty+'" onkeyup="UpdateHarga(\''+kode+'\'); qtyInput(\''+type+'\',\''+stok+'\', \''+kode+'\')" onchange="qtyInput(\''+type+'\',\''+stok+'\', \''+kode+'\')">',
+      '<input size="30" style="text-align:right" type="number"  name="sd_qty[]" class="sd_qty form-control qty-'+kode+'" value="'+qty+'" onkeyup="UpdateHarga(\''+kode+'\');qtyInput(\''+type+'\',\''+stok+'\', \''+kode+'\');totalPenjualan()" onclick="UpdateHarga(\''+kode+'\')" onchange="qtyInput(\''+type+'\',\''+stok+'\', \''+kode+'\')"> ',
 
       satuan+'<input type="hidden" name="satuan[]" class="satuan" value="'+satuan+'"> ',
 
-      '<input type="text" size="10" readonly style="text-align:right" name="harga_item[]" class="harga_item form-control harga-'+kode+'" value="'+harga+'">',
+      '<input type="text" size="10" readonly style="text-align:right" name="harga_item[]" class="harga_item form-control harga-'+kode+'" value="'+harga+'"> ',
 
-      '<div class="input-group"><input type="text" size="11"  style="text-align:right" name="sd_disc_percent[]" class="form-control discpercent discpercent-'+kode+'" value="" onkeyup="discpercent(this, event)"><span class="input-group-addon">%</span></div> ',
+      '<div class="input-group"><input type="text" size="11"  style="text-align:right" name="sd_disc_percent[]" class="form-control discpercent discpercent-'+kode+'" value="0" onkeyup="discpercent(this, event);autoJumValPercent()"><span class="input-group-addon">%</span></div> <input name="totalValuePercent[]" type="text" value="0" style="display:none" class="form-control totalValuePercent jumTotValuePercent totalValuePercent-'+kode+'">',
 
-      '<input type="text" size="10"  style="text-align:right" name="sd_disc_percent[]" class="form-control discvalue" value="" onkeyup="discvalue(this, event)" >',
+      '<input type="text" size="10"  id="discmasmoney" style="text-align:right" name="sd_disc_value[]" class="form-control discvalue hasildiscvalue pricevalue-'+kode+'" value="0" onkeyup="discvalue(this, event);autoJumValValue();rege(event,\''+pricevalue+'\')"  onblur="setRupiah(event,\''+pricevalue+'\')" onclick="setAwal(\''+event+'\',\''+pricevalue+'\')" >',
 
       '<input type="text" size="200" readonly style="text-align:right" name="hasil[]" id="hasil" class="form-control hasil hasil-'+kode+'" value="'+x+'"><input type="hidden" size="200" readonly style="text-align:right" name="" id="hasil2" class="hasil2 form-control" value="">',          
       Hapus
-      ]);
-    tableDetail.draw();
+      
+          ]);
+        tableDetail.draw();
+      }else{
 
-  }else{
-  var qtyLawas= parseInt($(".qty-"+kode).val());
-  $(".qty-"+kode).val(qtyLawas+qty);
-  var q = parseInt(qtyLawas+qty);
-  var l = parseFloat(q * y).toFixed(2);;
-  var k = SetFormRupiah(l);
-  $(".hasil-"+kode).val(k);
-  }
+        var qtyLawas= parseInt($(".qty-"+kode).val());
+          $(".qty-"+kode).val(qtyLawas+qty);
+        var q = parseInt(qtyLawas+qty);
+        var l = parseFloat(q * y).toFixed(2);;
+        var k = SetFormRupiah(l);
+          $(".hasil-"+kode).val(k);
+      }
 
-  $(function(){
-  var values = $("input[name='sd_qty[]']")
-  .map(function(){return $(this).val();}).get();
-  });
+      $(function(){
+        var values = $("input[name='sd_qty[]']")
+        .map(function(){return $(this).val();}).get();
+      });
 
-  UpdateTotal();
-  autoJumValPercent();
-}
+      UpdateTotal();
+      UpdateSubTotal();
+      autoJumValPercent();
+    }
 
   $('#qty').keypress(function(e){
     var charCode;
@@ -780,8 +784,8 @@ function tambahEdit() {
       var itype = $('#i-type').val();
       var c = isi > stok;
     if(itype == 'BP'){
-      if(isi == '' || jumlah == '' || stok == '' || data1 == '' || data2 == ''){
-        toastr.warning('Item Jumlah Stok dan Nama Pelanggan tidak boleh kosong!');
+      if(isi == '' || jumlah == '' || data1 == '' || data2 == ''){
+        toastr.warning('Nama Customer tidak boleh kosong!');
         return false;
       }
       var kode = $('#kode').val();
@@ -803,7 +807,7 @@ function tambahEdit() {
         $("input[name='item']").val('');
         $("input[name='s_qty']").val('');
         $("input[name='qty']").val('');
-        $("input[name='item']").focus(); 
+        $("input[name='item']").focus();
         return false;
      }
     }
@@ -812,8 +816,14 @@ function tambahEdit() {
 @endif
 
 var hpercent = 0;
-function discpercent(inField, e){
-    var getIndex = $('input.discpercent:text').index(inField);        
+  function discpercent(inField, e){
+    var getIndex = $('input.discpercent:text').index(inField);
+    var dataInput = $('input.discpercent:text:eq('+getIndex+')').val();
+    if (dataInput == '' || dataInput == '0') {
+      $('input.discvalue:text:eq('+getIndex+')').attr("readonly",false);
+    }else{
+      $('input.discvalue:text:eq('+getIndex+')').attr("readonly",true);
+    }      
     var diskon = $('input.discpercent:text:eq('+getIndex+')').val();
     var harga = $('input.harga_item:text:eq('+getIndex+')').val();
     var qty = $('input.sd_qty:eq('+getIndex+')').val();
@@ -833,34 +843,39 @@ function discpercent(inField, e){
     $('input.totalValuePercent:text:eq('+getIndex+')').val(hpercent);
     hasill = hasill - (hasill * diskon/100);
     hasill = convertToRupiah(hasill);
-    var dispercent = $('input.hasil:text:eq('+getIndex+')').val(hasill);
-    UpdateTotal();  
-}
-
-function discvalue(inField, e){
-  var getIndex = $('input.discvalue:text').index(inField);   
-  var diskon = $('input.discvalue:text:eq('+getIndex+')').val();
-  var harga = $('input.harga_item:text:eq('+getIndex+')').val();
-  var qty = $('input.sd_qty:eq('+getIndex+')').val();
-
-  harga = convertToAngka(harga);
-  harga = parseInt(harga);
-  diskon = parseInt(diskon);
-  qty = parseInt(qty);
-  qty = parseInt(qty);
-  if (isNaN(diskon)) {
-    diskon=0;
+    var dispercent = $('input.hasil:text:eq('+getIndex+')').val(hasill); 
+    UpdateTotal(); 
+    autoJumValPercent();
   }
-  hasil = harga * qty;
-  if (diskon > hasil) {
+
+  function discvalue(inField, e){
+    var getIndex = $('input.discvalue:text').index(inField);  
+    var dataInput = $('input.discvalue:text:eq('+getIndex+')').val();
+      if (dataInput == '' || dataInput == '0') {
+        $('input.discpercent:text:eq('+getIndex+')').attr("readonly",false);
+      }else{
+        $('input.discpercent:text:eq('+getIndex+')').attr("readonly",true);
+      }
+    var diskon = $('input.discvalue:text:eq('+getIndex+')').val();
+    var harga = $('input.harga_item:text:eq('+getIndex+')').val();
+    var qty = $('input.sd_qty:eq('+getIndex+')').val();
+      harga = convertToAngka(harga);
+      harga = parseInt(harga);
+      diskon = parseInt(diskon);
+      qty = parseInt(qty);
+      if (isNaN(diskon)) {
+        diskon=0;
+      }
+      hasil = harga * qty;
+      if (diskon > hasil) {
         diskon = 0;
         $('input.discvalue:text:eq('+getIndex+')').val(0);
       }
-  hasil = hasil - hpercent - diskon;
-  hasil = convertToRupiah(hasil);
-  $('input.hasil:text:eq('+getIndex+')').val(hasil);
-  UpdateTotal();
-  // UpdateDiscont();
+      hasil = hasil - diskon;
+      hasil = convertToRupiah(hasil);
+      $('input.hasil:text:eq('+getIndex+')').val(hasil);
+      UpdateTotal();
+      autoJumValValue(); 
   }
 
 function autoJumValPercent(){
@@ -983,13 +998,14 @@ function hapus(a){
     var hasilRp = convertToRupiah(hasil);
       $('.hasil-'+kode).val(hasilRp);
       $('.pricevalue-'+kode).val('0');
-      $('.discpercent-'+kode).val('0');
+      $('.discpercent-'+kode).val('');
       $('.totalValuePercent-'+kode).val('0');
       autoJumValPercent();
       UpdateTotal(); 
       autoJumValValue();
       totalPercentValue();
       totalPenjualan();
+      dataInput();
     }  
 
 function qtyInput(type, stok, kode){
@@ -1584,6 +1600,29 @@ function ubahStatus(idDetail,status){
       cariTanggal();
     }
    });
+  }
+
+  function dataInput(inField, e){
+    var a = 0;
+    $('input.discpercent:text').each(function(evt){
+      var getIndex = a;
+      var dataInput = $('input.discpercent:text:eq('+getIndex+')').val();
+      var dataInput1 = $('input.discvalue:text:eq('+getIndex+')').val();
+      if (dataInput == '' || dataInput1 == '0') {
+        if (dataInput == '' && dataInput1 == 'Rp. 0,00  ') {
+          $('input.discvalue:text:eq('+getIndex+')').attr("readonly",false);
+          $('input.discpercent:text:eq('+getIndex+')').attr("readonly",false);
+          getIndex+=1;
+        }else{
+          $('input.discvalue:text:eq('+getIndex+')').attr("readonly",false);
+          getIndex+=1;
+        }
+      }else{
+        $('input.discvalue:text:eq('+getIndex+')').attr("readonly",true);
+        getIndex+=1;
+      }
+    a++;
+    })
   }
 </script>
 @endsection()

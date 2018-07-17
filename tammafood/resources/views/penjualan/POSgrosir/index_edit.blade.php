@@ -43,7 +43,7 @@
                   <label class="control-label tebal" for="no_faktur" >Nomor Faktur</label>
                   <div class="input-group input-group-sm" style="width: 100%;">
                     <input type="text" id="no_faktur" name="s_nota" class="form-control" readonly="true" value="{{$edit[0]->s_note}}">
-                    <input type="hidden" id="no_faktur" name="s_id" class="form-control" readonly="true" value="{{$edit[0]->sales_id}}">
+                    <input type="hidden" id="no_fakturId" name="s_id" class="form-control" readonly="true" value="{{$edit[0]->sales_id}}">
                   </div>
                 </div>    
               </form>
@@ -66,7 +66,7 @@
                           <div class="form-group">
                             <label class="control-label tebal" for="penjualan">Total Penjualan</label>
                             <div class="input-group input-group-sm" style="width: 100%;">
-                                <input type="text" name="s_gross" readonly="true" id="totalMapPenjualan" class="form-control" style="text-align: right;" value="Rp. {{ number_format( $edit[0]->s_net ,2,',','.')}}">
+                                <input type="text" name="s_gross" readonly="true" id="totalMapPenjualan" class="form-control" style="text-align: right;" value="Rp. {{ number_format( $edit[0]->s_gross ,2,',','.')}}">
                               </div>
                           </div>
                           <input type="hidden" name="s_disc_percent" readonly="true" id="" class="form-control TotDisPercent totalPercentValue" style="text-align: right;" value="0">
@@ -112,7 +112,7 @@
                               <table class="table">
                                 <tbody>
                                   <tr>
-                                    <td>Proses</td>
+                                    <td>Total Penjualan</td>
                                     <td>
                                       <input type="text" name="s_net" readonly="true" id="totalPayment" 
                                       class="form-control total" style="text-align: right;" value="0">
