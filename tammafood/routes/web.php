@@ -25,10 +25,24 @@ Route::get('/home', 'HomeController@home');
 Route::get('/master/datasuplier/suplier', 'MasterController@suplier')->name('suplier');
 /* ari */
 /*---------*/
-Route::get('/master/datapegawai/pegawai', 'MasterController@pegawai');
-Route::get('/master/datasuplier/tambah_suplier', 'MasterController@tambah_suplier');
-Route::get('/master/datatransaksi/tambah_transaksi', 'MasterController@tambah_transaksi');
-Route::get('/master/datapegawai/tambah_pegawai', 'MasterController@tambah_pegawai');
+//huda
+Route::get('/hrd/datajabatan', 'Hrd\JabatanController@index');
+Route::get('/hrd/datajabatan/data-jabatan', 'Hrd\JabatanController@jabatanData');
+Route::get('/hrd/datajabatan/edit-jabatan/{id}', 'Hrd\JabatanController@editJabatan');
+Route::get('/hrd/datajabatan/datatable-pegawai/{id}', 'Hrd\JabatanController@pegawaiData');
+Route::post('/hrd/datajabatan/simpan-jabatan', 'Hrd\JabatanController@simpanJabatan');
+Route::get('/hrd/datajabatan/tambah-jabatan', 'Hrd\JabatanController@tambahJabatan');
+//pegawai
+Route::get('/master/datapegawai/pegawai', 'Master\PegawaiController@pegawai')->name('pegawai');
+Route::get('/master/datapegawai/edit-pegawai/{id}', 'Master\PegawaiController@editPegawai');
+Route::put('/master/datapegawai/update-pegawai/{id}', 'Master\PegawaiController@updatePegawai');
+Route::get('/master/datapegawai/datatable-pegawai', 'Master\PegawaiController@pegawaiData');
+Route::get('/master/datapegawai/tambah-pegawai', 'Master\PegawaiController@tambahPegawai');
+Route::get('/master/datapegawai/data-jabatan/{id}', 'Master\PegawaiController@jabatanData');
+Route::post('/master/datapegawai/simpan-pegawai', 'Master\PegawaiController@simpanPegawai');
+Route::delete('/master/datapegawai/delete-pegawai/{id}', 'Master\PegawaiController@deletePegawai');
+Route::post('/master/datapegawai/import', 'Master\PegawaiController@importPegawai');
+Route::get('/master/datapegawai/master-import', 'Master\PegawaiController@getFile');
 /*Purchasing*/
 //rizky
 //order pembelian
@@ -322,8 +336,6 @@ Route::get('/hrd/payroll/payroll', 'HrdController@payroll');
 Route::get('/hrd/payroll/tambah_payroll', 'HrdController@tambah_payroll');
 Route::get('/hrd/payroll/table', 'HrdController@table');
 Route::get('/hrd/recruitment/rekrut', 'HrdController@rekrut');
-Route::get('/hrd/datajabatan/datajabatan', 'HrdController@datajabatan');
-Route::get('/hrd/datajabatan/tambah_jabatan', 'HrdController@tambah_jabatan');
 Route::get('/hrd/datajabatan/edit_jabatan', 'HrdController@edit_jabatan');
 Route::get('/hrd/dataadministrasi/admin', 'HrdController@admin');
 Route::get('/hrd/datalembur/lembur', 'HrdController@lembur');
@@ -478,14 +490,6 @@ Route::get('/master/datagroup/edit_group', 'master\groupController@edit_group')-
 Route::get('/master/datagroup/update_group', 'master\groupController@update_group')->name('update_group');
 Route::get('/master/datagroup/datatable_group', 'master\groupController@datatable_group')->name('datatable_group');
 //-[]-belum-[]-//
-//pegawai
-Route::get('/master/datapegawai/pegawai', 'master\pegawaiController@pegawai')->name('pegawai');
-Route::get('/master/datapegawai/tambah_pegawai', 'master\pegawaiController@tambah_pegawai')->name('tambah_pegawai');
-Route::get('/master/datapegawai/simpan_pegawai', 'master\pegawaiController@simpan_pegawai')->name('simpan_pegawai');
-Route::get('/master/datapegawai/hapus_pegawai', 'master\pegawaiController@hapus_pegawai')->name('hapus_pegawai');
-Route::get('/master/datapegawai/edit_pegawai', 'master\pegawaiController@edit_pegawai')->name('edit_pegawai');
-Route::get('/master/datapegawai/update_pegawai', 'master\pegawaiController@update_pegawai')->name('update_pegawai');
-//end
 }); // End Route Groub middleware auth
 
 // route Keuangan (Dirga)

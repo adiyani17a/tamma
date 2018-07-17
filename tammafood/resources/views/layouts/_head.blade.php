@@ -33,7 +33,7 @@
     <link type="text/css" rel="stylesheet" href="{{ asset ('assets/styles/timepicker.min.css') }}">
     <link type="text/css" rel="stylesheet" href="{{ asset ('assets/styles/css/ladda-themeless.min.css') }}">
 {{--     <link type="text/css" rel="stylesheet" href="{{ asset ('assets/styles/css/prism.css') }}"> --}}
-
+<link href="{{ asset('css/iziToast.css') }}" rel="stylesheet">
     <style type="text/css">
         .center{
             text-align: center
