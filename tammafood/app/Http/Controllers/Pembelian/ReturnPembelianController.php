@@ -172,7 +172,8 @@ class ReturnPembelianController extends Controller
 
     $dataIsi = d_purchasingreturn_dt::join('d_purchasingreturn', 'd_purchasingreturn_dt.d_pcsrdt_idpcsr', '=', 'd_purchasingreturn.d_pcsr_id')
             ->join('m_item', 'd_purchasingreturn_dt.d_pcsrdt_item', '=', 'm_item.i_id')
-            ->select('d_purchasingreturn_dt.*', 'm_item.*', 'd_purchasingreturn.d_pcsr_code')
+            ->join('m_satuan', 'd_purchasingreturn_dt.d_pcsrdt_sat', '=', 'm_satuan.m_sid')
+            ->select('d_purchasingreturn_dt.*', 'm_item.*', 'd_purchasingreturn.d_pcsr_code', 'm_satuan.m_sid', 'm_satuan.m_sname')
             ->where('d_purchasingreturn_dt.d_pcsrdt_idpcsr', '=', $id)
             ->orderBy('d_purchasingreturn_dt.d_pcsrdt_created', 'DESC')
             ->get();
@@ -181,27 +182,14 @@ class ReturnPembelianController extends Controller
     foreach ($dataIsi as $val) 
     {
       $itemType[] = DB::table('m_item')->select('i_type', 'i_id')->where('i_id','=', $val->i_id)->first();
+      //get satuan utama
+      $sat1[] = $val->i_sat1;
     }
 
+    //variabel untuk count array
+    $counter = 0;
     //ambil value stok by item type
-    foreach ($itemType as $val) 
-    {
-      if ($val->i_type == "BP") //brg produksi
-      {
-          $query = DB::select(DB::raw("SELECT IFNULL( (SELECT s_qty FROM d_stock where s_item = '$val->i_id' AND s_comp = '6' AND s_position = '6' limit 1) ,'0') as qtyStok"));
-          $stok[] = $query[0];
-      }
-      elseif ($val->i_type == "BJ") //brg jual
-      {
-          $query = DB::select(DB::raw("SELECT IFNULL( (SELECT s_qty FROM d_stock where s_item = '$val->i_id' AND s_comp = '7' AND s_position = '7' limit 1) ,'0') as qtyStok"));
-          $stok[] = $query[0];
-      }
-      elseif ($val->i_type == "BB") //bahan baku
-      {
-          $query = DB::select(DB::raw("SELECT IFNULL( (SELECT s_qty FROM d_stock where s_item = '$val->i_id' AND s_comp = '3' AND s_position = '3' limit 1) ,'0') as qtyStok"));
-          $stok[] = $query[0];
-      }
-    }
+    $dataStok = $this->getStokByType($itemType, $sat1, $counter);
 
     return response()->json([
         'status' => 'sukses',
@@ -211,7 +199,8 @@ class ReturnPembelianController extends Controller
         'spanTxt' => $spanTxt,
         'spanClass' => $spanClass,
         'lblMethod' => $lblMethod,
-        'data_stok' => $stok
+        'data_stok' => $dataStok['val_stok'],
+        'data_satuan' => $dataStok['txt_satuan'],
     ]);
   }
 
@@ -270,8 +259,9 @@ class ReturnPembelianController extends Controller
                 ->get();
 
     $dataIsi = DB::table('d_purchasing_dt')
-          ->select('d_purchasing_dt.*', 'm_item.i_name', 'm_item.i_code', 'm_item.i_sat1', 'm_item.i_id')
+          ->select('d_purchasing_dt.*', 'm_item.i_name', 'm_item.i_code', 'm_item.i_sat1', 'm_item.i_id', 'm_satuan.m_sname', 'm_satuan.m_sid')
           ->leftJoin('m_item','d_purchasing_dt.i_id','=','m_item.i_id')
+          ->leftJoin('m_satuan','d_purchasing_dt.d_pcsdt_sat','=','m_satuan.m_sid')
           ->where('d_purchasing_dt.d_pcs_id', '=', $id)
           // ->where('d_purchasing_dt.d_pcsdt_isconfirm', '=', "TRUE")
           ->get();
@@ -280,33 +270,21 @@ class ReturnPembelianController extends Controller
     {
       //cek item type
       $itemType[] = DB::table('m_item')->select('i_type', 'i_id')->where('i_id','=', $val->i_id)->first();
+      //get satuan utama
+      $sat1[] = $val->i_sat1;
     }
 
+    //variabel untuk count array
+    $counter = 0;
     //ambil value stok by item type
-    foreach ($itemType as $val) 
-    {
-      if ($val->i_type == "BP") //brg produksi
-      {
-          $query = DB::select(DB::raw("SELECT IFNULL( (SELECT s_qty FROM d_stock where s_item = '$val->i_id' AND s_comp = '6' AND s_position = '6' limit 1) ,'0') as qtyStok"));
-          $stok[] = $query[0];
-      }
-      elseif ($val->i_type == "BJ") //brg jual
-      {
-          $query = DB::select(DB::raw("SELECT IFNULL( (SELECT s_qty FROM d_stock where s_item = '$val->i_id' AND s_comp = '7' AND s_position = '7' limit 1) ,'0') as qtyStok"));
-          $stok[] = $query[0];
-      }
-      elseif ($val->i_type == "BB") //bahan baku
-      {
-          $query = DB::select(DB::raw("SELECT IFNULL( (SELECT s_qty FROM d_stock where s_item = '$val->i_id' AND s_comp = '3' AND s_position = '3' limit 1) ,'0') as qtyStok"));
-          $stok[] = $query[0];
-      }
-    }
+    $dataStok = $this->getStokByType($itemType, $sat1, $counter);
 
     return response()->json([
         'status' => 'sukses',
         'data_header' => $dataHeader,
         'data_isi' => $dataIsi,
-        'data_stok' => $stok,
+        'data_stok' => $dataStok['val_stok'],
+        'data_satuan' => $dataStok['txt_satuan'],
     ]);
   }
 
@@ -358,8 +336,25 @@ class ReturnPembelianController extends Controller
       //update d_stock, insert d_stock_mutation & insert d_purchasingreturn_dt
       for ($i=0; $i < $hitung_field; $i++) 
       {
+        //variabel u/ cek primary satuan
+        $primary_sat = DB::table('m_item')->select('m_item.*')->where('i_id', $request->fieldItemId[$i])->first();
+        
+        //cek satuan primary, convert ke primary apabila beda satuan
+        if ($primary_sat->i_sat1 == $request->fieldSatuanId[$i]) 
+        {
+          $hasilConvert = (int)$request->fieldQty[$i] * (int)$primary_sat->i_sat_isi1;
+        }
+        elseif ($primary_sat->i_sat2 == $request->fieldSatuanId[$i])
+        {
+          $hasilConvert = (int)$request->fieldQty[$i] * (int)$primary_sat->i_sat_isi2;
+        }
+        else
+        {
+          $hasilConvert = (int)$request->fieldQty[$i] * (int)$primary_sat->i_sat_isi3;
+        }
+
         $grup = $this->getGroupGudang($request->fieldItemId[$i]);
-        $stokAkhir = (int)$request->fieldStok[$i] - (int)$request->fieldQty[$i];
+        $stokAkhir = (int)$request->fieldStokVal[$i] - (int)$hasilConvert;
         DB::table('d_stock')
           ->where('s_item', $request->fieldItemId[$i])
           ->where('s_comp', $grup)
@@ -393,9 +388,9 @@ class ReturnPembelianController extends Controller
           'sm_detailid' => $hasil_id,
           'sm_date' => Carbon::now(),
           'sm_comp' => $grup,
-          'sm_mutcat' => '12',
+          'sm_mutcat' => '13',
           'sm_item' => $request->fieldItemId[$i],
-          'sm_qty' => $request->fieldQty[$i],
+          'sm_qty' => $hasilConvert,
           'sm_detail' => "PENGURANGAN",
           'sm_hpp' => $this->konvertRp($request->fieldHargaTotal[$i]),
           'sm_reff' => $request->kodeReturn,
@@ -407,8 +402,9 @@ class ReturnPembelianController extends Controller
         $dataIsi->d_pcsrdt_idpcsr = $lastId;
         $dataIsi->d_pcsrdt_smdetail = $hasil_id;
         $dataIsi->d_pcsrdt_item = $request->fieldItemId[$i];
+        $dataIsi->d_pcsrdt_sat = $request->fieldSatuanId[$i];
         $dataIsi->d_pcsrdt_qty = $request->fieldQty[$i];
-        $dataIsi->d_pcsrdt_price = $this->konvertRp($request->fieldHarga[$i]);
+        $dataIsi->d_pcsrdt_price = $request->fieldHargaRaw[$i];
         $dataIsi->d_pcsrdt_pricetotal = $this->konvertRp($request->fieldHargaTotal[$i]);
         $dataIsi->d_pcsrdt_created = Carbon::now();
         $dataIsi->save();
@@ -463,17 +459,49 @@ class ReturnPembelianController extends Controller
       for ($i=0; $i < $hitung_field_edit; $i++) 
       { 
         //mengembalikan stok sebelum return
+        //variabel u/ cek primary satuan
+        $primary_sat = DB::table('m_item')->select('m_item.*')->where('i_id', $request->fieldIdItem[$i])->first();
+
+        //cek satuan primary, convert ke primary apabila beda satuan
+        //konversi stok lalu
+        if ($primary_sat->i_sat1 == $request->fieldSatuanId[$i]) 
+        {
+          $hasilConvertLalu = (int)$request->fieldQtyLalu[$i] * (int)$primary_sat->i_sat_isi1;
+        }
+        elseif ($primary_sat->i_sat2 == $request->fieldSatuanId[$i])
+        {
+          $hasilConvertLalu = (int)$request->fieldQtyLalu[$i] * (int)$primary_sat->i_sat_isi2;
+        }
+        else
+        {
+          $hasilConvertLalu = (int)$request->fieldQtyLalu[$i] * (int)$primary_sat->i_sat_isi3;
+        }
+
         $grup = $this->getGroupGudang($request->fieldIdItem[$i]);
-        $stokAkhir = (int)$request->fieldStokItem[$i] + (int)$request->fieldQtyLalu[$i];
+        $stokAkhir = (int)$request->fieldStokVal[$i] + (int)$hasilConvertLalu;
         DB::table('d_stock')
           ->where('s_item', $request->fieldIdItem[$i])
           ->where('s_comp', $grup)
           ->where('s_position', $grup)
           ->update(['s_qty' => $stokAkhir]);
 
+        //konversi stok setelah update
+        if ($primary_sat->i_sat1 == $request->fieldSatuanId[$i]) 
+        {
+          $hasilConvert = (int)$request->fieldQty[$i] * (int)$primary_sat->i_sat_isi1;
+        }
+        elseif ($primary_sat->i_sat2 == $request->fieldSatuanId[$i])
+        {
+          $hasilConvert = (int)$request->fieldQty[$i] * (int)$primary_sat->i_sat_isi2;
+        }
+        else
+        {
+          $hasilConvert = (int)$request->fieldQty[$i] * (int)$primary_sat->i_sat_isi3;
+        }
+
         //update d_stock
         $grup2 = $this->getGroupGudang($request->fieldIdItem[$i]);
-        $stokAkhir2 = (int)$stokAkhir - (int)$request->fieldQty[$i];
+        $stokAkhir2 = (int)$stokAkhir - (int)$hasilConvert;
         DB::table('d_stock')
           ->where('s_item', $request->fieldIdItem[$i])
           ->where('s_comp', $grup2)
@@ -508,7 +536,7 @@ class ReturnPembelianController extends Controller
           ->where('sm_detailid', $sm_detailid->d_pcsrdt_smdetail)
           ->where('sm_item', $request->fieldIdItem[$i])
           ->update([
-            'sm_qty' => $request->fieldQty[$i],
+            'sm_qty' => $hasilConvert,
             'sm_hpp' => $this->konvertRp($request->fieldHargaTotal[$i]),
             'sm_update' => Carbon::now(),
           ]);
@@ -517,7 +545,7 @@ class ReturnPembelianController extends Controller
     DB::commit();
     return response()->json([
           'status' => 'sukses',
-          'pesan' => 'Data Belanja Harian Berhasil Diupdate'
+          'pesan' => 'Data Retur Pembelian Berhasil Diupdate'
       ]);
     } 
     catch (\Exception $e) 
@@ -536,7 +564,7 @@ class ReturnPembelianController extends Controller
     DB::beginTransaction();
     try {
       //cari item & qty purchasingreturn_dt
-      $query = DB::table('d_purchasingreturn_dt')->select('d_pcsrdt_item', 'd_pcsrdt_qty', 'd_pcsrdt_smdetail')->where('d_pcsrdt_idpcsr', $request->id)->get();
+      $query = DB::table('d_purchasingreturn_dt')->select('d_pcsrdt_item', 'd_pcsrdt_qty', 'd_pcsrdt_smdetail', 'd_pcsrdt_sat')->where('d_pcsrdt_idpcsr', $request->id)->get();
 
       foreach ($query as $value) 
       {
@@ -546,6 +574,8 @@ class ReturnPembelianController extends Controller
         $qty_return[] = $value->d_pcsrdt_qty;
         //array variabel sm_detailid
         $id_smdetail[] = $value->d_pcsrdt_smdetail;
+        //array variabel satuanid
+        $id_satuan[] = $value->d_pcsrdt_sat;
       }
 
       $hitung_row = count($item);
@@ -566,9 +596,26 @@ class ReturnPembelianController extends Controller
       }
 
       for ($i=0; $i < $hitung_row ; $i++) 
-      { 
+      {
+        //variabel u/ cek primary satuan
+        $primary_sat = DB::table('m_item')->select('m_item.*')->where('i_id', $item[$i])->first();
+        //konversi qty
+        if ($primary_sat->i_sat1 == $id_satuan[$i]) 
+        {
+          $hasilConvert = (int)$qty_return[$i] * (int)$primary_sat->i_sat_isi1;
+        }
+        elseif ($primary_sat->i_sat2 == $id_satuan[$i])
+        {
+          $hasilConvert = (int)$qty_return[$i] * (int)$primary_sat->i_sat_isi2;
+        }
+        else
+        {
+          $hasilConvert = (int)$qty_return[$i] * (int)$primary_sat->i_sat_isi3;
+        }
+
         $grup2 = $this->getGroupGudang($item[$i]);
-        $stokAkhir = (int)$qty_return[$i] + (int)$qty_stock[$i];
+        //kembalikan stok sebelum retur
+        $stokAkhir = (int)$hasilConvert + (int)$qty_stock[$i];
         // update d_stock
         DB::table('d_stock')
           ->where('s_id', $id_stock[$i])
@@ -589,7 +636,7 @@ class ReturnPembelianController extends Controller
       DB::commit();
       return response()->json([
           'status' => 'sukses',
-          'pesan' => 'Data Belanja Harian Berhasil Dihapus'
+          'pesan' => 'Data Retur Pembelian Berhasil Dihapus'
       ]);
     } 
     catch (\Exception $e) 
@@ -625,5 +672,42 @@ class ReturnPembelianController extends Controller
     }
     return $idGroupGdg;
   }
+
+  public function getStokByType($arrItemType, $arrSatuan, $counter)
+    {
+      foreach ($arrItemType as $val) 
+      {
+          if ($val->i_type == "BP") //brg produksi
+          {
+              $query = DB::select(DB::raw("SELECT IFNULL( (SELECT s_qty FROM d_stock where s_item = '$val->i_id' AND s_comp = '6' AND s_position = '6' limit 1) ,'0') as qtyStok"));
+              $satUtama = DB::table('m_item')->join('m_satuan', 'm_item.i_sat1', '=', 'm_satuan.m_sid')->select('m_satuan.m_sname')->where('m_item.i_sat1', '=', $arrSatuan[$counter])->first();
+              
+              $stok[] = $query[0];
+              $satuan[] = $satUtama->m_sname;
+              $counter++;
+          }
+          elseif ($val->i_type == "BJ") //brg jual
+          {
+              $query = DB::select(DB::raw("SELECT IFNULL( (SELECT s_qty FROM d_stock where s_item = '$val->i_id' AND s_comp = '7' AND s_position = '7' limit 1) ,'0') as qtyStok"));
+              $satUtama = DB::table('m_item')->join('m_satuan', 'm_item.i_sat1', '=', 'm_satuan.m_sid')->select('m_satuan.m_sname')->where('m_item.i_sat1', '=', $arrSatuan[$counter])->first();
+
+              $stok[] = $query[0];
+              $satuan[] = $satUtama->m_sname;
+              $counter++;
+          }
+          elseif ($val->i_type == "BB") //bahan baku
+          {
+              $query = DB::select(DB::raw("SELECT IFNULL( (SELECT s_qty FROM d_stock where s_item = '$val->i_id' AND s_comp = '3' AND s_position = '3' limit 1) ,'0') as qtyStok"));
+              $satUtama = DB::table('m_item')->join('m_satuan', 'm_item.i_sat1', '=', 'm_satuan.m_sid')->select('m_satuan.m_sname')->where('m_item.i_sat1', '=', $arrSatuan[$counter])->first();
+
+              $stok[] = $query[0];
+              $satuan[] = $satUtama->m_sname;
+              $counter++;
+          }
+      }
+
+      $data = array('val_stok' => $stok, 'txt_satuan' => $satuan);
+      return $data;
+    }
 
 }

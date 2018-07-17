@@ -143,11 +143,11 @@
                                 <th style="text-align: center;" width="5%">No</th>
                                 <th width="25%">Kode | Barang</th>
                                 <th width="7%">Qty</th>
-                                <th width="10%">Satuan</th>
+                                <th width="5%">Satuan</th>
                                 <th width="13%">Harga Prev</th>
-                                <th width="15%">Harga</th>
+                                <th width="15%">Harga Satuan</th>
                                 <th width="15%">Total</th>
-                                <th width="5%">Stok Gudang</th>
+                                <th width="10%">Stok Gudang</th>
                                 <th style="text-align: center;" width="5%">Aksi</th>
                               </tr>
                             </thead>
@@ -368,11 +368,12 @@
                             +'<input type="hidden" value="'+data.data_isi[key-1].i_id+'" name="fieldItemId[]" class="form-control input-sm"/>'
                             +'<input type="hidden" value="'+data.data_isi[key-1].d_pcspdt_id+'" name="fieldidPlanDt[]" class="form-control input-sm"/></td>'
                             +'<td><input type="text" value="'+qtyCost+'" name="fieldQty[]" class="form-control numberinput input-sm" id="qty_'+i+'" readonly/></td>'
-                            +'<td><input type="text" value="'+data.data_isi[key-1].i_sat1+'" name="fieldSatuan[]" class="form-control input-sm" readonly/></td>'
+                            +'<td><input type="text" value="'+data.data_isi[key-1].m_sname+'" name="fieldSatuan[]" class="form-control input-sm" readonly/>'
+                            +'<input type="hidden" value="'+data.data_isi[key-1].m_sid+'" name="fieldIdSatuan[]" class="form-control input-sm" readonly/></td>'
                             +'<td><input type="text" value="'+convertDecimalToRupiah(data.data_isi[key-1].d_pcspdt_prevcost)+'" name="fieldHargaPrev[]" class="form-control input-sm" readonly/></td>'
                             +'<td><input type="text" value="'+convertDecimalToRupiah(data.data_isi[key-1].d_pcspdt_prevcost)+'" name="fieldHarga[]" id="'+i+'" class="form-control input-sm field_harga numberinput"/></td>'
                             +'<td><input type="text" value="'+convertDecimalToRupiah(data.data_isi[key-1].d_pcspdt_prevcost * qtyCost)+'" name="fieldHargaTotal[]" class="form-control input-sm hargaTotalItem" id="total_'+i+'" readonly/></td>'
-                            +'<td><input type="text" value="'+data.data_stok[key-1].qtyStok+'" name="fieldStok[]" class="form-control input-sm" readonly/></td>'
+                            +'<td><input type="text" value="'+data.data_stok[key-1].qtyStok+' '+data.data_satuan[key-1]+'" name="fieldStok[]" class="form-control input-sm" readonly/></td>'
                             +'<td><button name="remove" id="'+i+'" class="btn btn-danger btn_remove btn-sm">X</button></td>'
                             +'</tr>');
             i = randString(5);
@@ -588,4 +589,4 @@
   }
 
 </script>
-@endsection                            
+@endsection

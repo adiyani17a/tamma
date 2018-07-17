@@ -91,4 +91,8 @@ class HrdController extends Controller
         return view('hrd/datajabatan/edit_jabatan');
 
     }
+    public function manajemensurat()
+    {
+        return view('hrd/manajemensurat/manajemensurat');
+    }
 }
