@@ -61,7 +61,7 @@
 													<th class="wd-15p">NIK</th>
 													<th class="wd-15p">Nama Pegawai</th>
 													<th class="wd-15p">Tahun Masuk</th>
-													<th class="wd-15p">Tugas</th>
+													<th class="wd-15p">Jabatan</th>
 													<th class="wd-15p">Aksi</th>
 												</tr>
 											</thead>
@@ -125,9 +125,9 @@
                   "columns": [
                   { "data": "c_code" },
                   { "data": "c_nik" },
-                  { "data": "c_name" },
-                  { "data": "c_year" },
-                  { "data": "c_section" },
+                  { "data": "c_nama" },
+                  { "data": "c_tahun_masuk" },
+                  { "data": "c_posisi" },
                   { "data": "action" },
                   ],
                   "responsive":true,

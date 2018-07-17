@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTugasTable extends Migration
+class CreateShiftTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,11 @@ class CreateTugasTable extends Migration
      */
     public function up()
     {
-        Schema::create('m_tugas', function (Blueprint $table) {
-            $table->integer('c_id')->unsigned();
-            $table->primary('c_id');
-            $table->string('c_section');
+        Schema::create('m_shift', function (Blueprint $table) {
+            $table->increments('c_id');
+            $table->string('c_name');
+            $table->string('c_start');
+            $table->string('c_end');
             $table->timestamps();
         });
     }
@@ -28,6 +29,6 @@ class CreateTugasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('m_tugas');
+        Schema::dropIfExists('m_shift');
     }
 }

@@ -26,11 +26,19 @@ Route::get('/master/datasuplier/suplier', 'MasterController@suplier')->name('sup
 /* ari */
 /*---------*/
 //huda
+Route::get('/hrd/datajabatan', 'Hrd\JabatanController@index');
+Route::get('/hrd/datajabatan/data-jabatan', 'Hrd\JabatanController@jabatanData');
+Route::get('/hrd/datajabatan/edit-jabatan/{id}', 'Hrd\JabatanController@editJabatan');
+Route::get('/hrd/datajabatan/datatable-pegawai/{id}', 'Hrd\JabatanController@pegawaiData');
+Route::post('/hrd/datajabatan/simpan-jabatan', 'Hrd\JabatanController@simpanJabatan');
+Route::get('/hrd/datajabatan/tambah-jabatan', 'Hrd\JabatanController@tambahJabatan');
+//pegawai
 Route::get('/master/datapegawai/pegawai', 'Master\PegawaiController@pegawai')->name('pegawai');
 Route::get('/master/datapegawai/edit-pegawai/{id}', 'Master\PegawaiController@editPegawai');
 Route::put('/master/datapegawai/update-pegawai/{id}', 'Master\PegawaiController@updatePegawai');
 Route::get('/master/datapegawai/datatable-pegawai', 'Master\PegawaiController@pegawaiData');
 Route::get('/master/datapegawai/tambah-pegawai', 'Master\PegawaiController@tambahPegawai');
+Route::get('/master/datapegawai/data-jabatan/{id}', 'Master\PegawaiController@jabatanData');
 Route::post('/master/datapegawai/simpan-pegawai', 'Master\PegawaiController@simpanPegawai');
 Route::delete('/master/datapegawai/delete-pegawai/{id}', 'Master\PegawaiController@deletePegawai');
 Route::post('/master/datapegawai/import', 'Master\PegawaiController@importPegawai');
@@ -282,8 +290,6 @@ Route::get('/hrd/payroll/payroll', 'HrdController@payroll');
 Route::get('/hrd/payroll/tambah_payroll', 'HrdController@tambah_payroll');
 Route::get('/hrd/payroll/table', 'HrdController@table');
 Route::get('/hrd/recruitment/rekrut', 'HrdController@rekrut');
-Route::get('/hrd/datajabatan/datajabatan', 'HrdController@datajabatan');
-Route::get('/hrd/datajabatan/tambah_jabatan', 'HrdController@tambah_jabatan');
 Route::get('/hrd/datajabatan/edit_jabatan', 'HrdController@edit_jabatan');
 Route::get('/hrd/dataadministrasi/admin', 'HrdController@admin');
 Route::get('/hrd/datalembur/lembur', 'HrdController@lembur');
