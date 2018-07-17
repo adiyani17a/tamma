@@ -27,7 +27,6 @@ Route::get('/master/datasuplier/suplier', 'MasterController@suplier')->name('sup
 /*---------*/
 Route::get('/master/datapegawai/pegawai', 'MasterController@pegawai');
 Route::get('/master/datasuplier/tambah_suplier', 'MasterController@tambah_suplier');
-Route::get('/master/datatransaksi/tambah_transaksi', 'MasterController@tambah_transaksi');
 Route::get('/master/datapegawai/tambah_pegawai', 'MasterController@tambah_pegawai');
 /*Purchasing*/
 //rizky
@@ -490,8 +489,12 @@ Route::get('/master/datakeuangan/edit_akun', 'keuangan\akunController@edit_akun'
 Route::post('/master/datakeuangan/update', 'Keuangan\akunController@update_akun')->name('update_akun');
 Route::get('/master/datakeuangan/hapus_akun', 'keuangan\akunController@hapus_akun')->name('hapus_akun');
 // akun keuangan route end
+
 // transaksi keuangan
 Route::get('/master/datatransaksi/transaksi', 'Keuangan\transaksiController@index');
+Route::get('/master/datatransaksi/tambah_transaksi', 'Keuangan\transaksiController@tambah_transaksi');
+Route::post('/master/datatransaksi/simpan', 'Keuangan\transaksiController@simpan_transaksi');
+Route::get('/master/datatransaksi/edit', 'Keuangan\transaksiController@edit');
 // transaksi keuangan end
 // Route Keuangan End
 
