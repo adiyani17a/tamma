@@ -1121,15 +1121,16 @@ class POSGrosirController extends Controller
   }
 
   public function print($id){
-   $sales = d_sales::select( 'c_name',
+    $sales = d_sales::select( 'c_name',
                               'c_address',
                               's_date',
                               's_note')
       ->join('m_customer','c_id','=','s_customer')
       ->where('s_id',$id)
       ->first();
+    // dd($sales);
 
-    $data = d_sales_dt::select( 'i_code',
+    $data_chunk = DB::table('d_sales_dt')->select( 'i_code',
                                 'i_name',
                                 'm_sname',
                                 'sd_price',
@@ -1139,23 +1140,20 @@ class POSGrosirController extends Controller
                                 'sd_disc_percent')
       ->join('m_item','i_id','=','sd_item')
       ->join('m_satuan','m_satuan.m_sid','=','i_sat1')
-      ->where('sd_sales',$id)->get();
+      ->where('sd_sales',$id)->get()->toArray();
+
+      $data = array_chunk($data_chunk, 12);
+      // return $chunk;
+      // return $data;
 
       $dataTotal = d_sales_dt::select(DB::raw('SUM(sd_total) as total'))
       ->join('m_item','i_id','=','sd_item')
       ->where('sd_sales',$id)->get();
-      $count = count($data);
-      $tes = 15 - $count;
-      $array = [];
 
-      if ($tes > 0) {
-        for ($i=0; $i < $tes; $i++) { 
-          array_push($array, 'a');
-        }
-      }
-
-      return view('penjualan.POSGrosir.print_faktur', compact('data', 'dataTotal', 'sales', 'array'));
-    }
+  
+      
+      return view('penjualan.POSGrosir.print_faktur', compact('data', 'dataTotal', 'sales'));
+  }
 
   public function suratjalan(){
     return view('penjualan.POSGrosir.suratjalan');
@@ -1172,9 +1170,9 @@ class POSGrosirController extends Controller
       ->join('m_customer','c_id','=','s_customer')
       ->where('s_id',$id)
       ->first();
+    // dd($sales);
 
-
-    $data = d_sales_dt::select( 'i_code',
+    $data_chunk = DB::table('d_sales_dt')->select( 'i_code',
                                 'i_name',
                                 'm_sname',
                                 'sd_price',
@@ -1184,20 +1182,15 @@ class POSGrosirController extends Controller
                                 'sd_disc_percent')
       ->join('m_item','i_id','=','sd_item')
       ->join('m_satuan','m_satuan.m_sid','=','m_item.i_sat1')
-      ->where('sd_sales',$id)->get();
+      ->where('sd_sales',$id)->get()->toArray();
+
+      $data = array_chunk($data_chunk, 12);
 
       $dataTotal = d_sales_dt::select(DB::raw('SUM(sd_qty) as total'))
       ->where('sd_sales',$id)->get();
-      $count = count($data);
-      $tes = 15 - $count;
-      $array = [];
+      
 
-      if ($tes > 0) {
-        for ($i=0; $i < $tes; $i++) { 
-          array_push($array, 'a');
-        }
-      }
-      return view('penjualan.POSGrosir.print_surat_jalan', compact('data', 'dataTotal', 'sales', 'array'));
+      return view('penjualan.POSGrosir.print_surat_jalan', compact('data', 'dataTotal', 'sales'));
   }
 
   public function print_awas_barang_panas($id){
