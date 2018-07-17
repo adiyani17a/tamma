@@ -70,10 +70,10 @@
 		}
 		table.border-none ,.border-none td{
 			border:none !important;
-			page-break-inside: avoid;
+			/*page-break-inside: avoid;*/
 		}
 		.tabel{
-			page-break-inside: avoid;
+			/*page-break-inside: avoid;*/
 
 		}
 		@media print {
@@ -107,8 +107,10 @@
 	</div>
 	
 		<div class="div-width">
+
+
 		
-		
+		@for($i=0;$i<count($penjualan);$i++)
 
 		<table width="100%" cellpadding="2px" class="tabel" border="1px" style="margin-bottom: 10px;">
 			<thead>
@@ -147,33 +149,45 @@
 			</thead>
 			<tbody>
 
-				@for($i=0;$i<count($penjualan);$i++)
-					@for($a=0;$a<count($penjualan[$i]);$a++)
+			
+
+				
+					@for($j=0;$j<count($penjualan[$i]);$j++)
+
+				
 						<tr>
-							@if($a == 0)
-							<td rowspan="{{count($penjualan[$i])}}">{{$penjualan[$i][$a]->i_code}} - {{$penjualan[$i][$a]->i_name}}</td>
+							@if($j == 0)
+							<td rowspan="{{count($penjualan[$i])}}">{{$penjualan[$i][$j]->i_code}} - {{$penjualan[$i][$j]->i_name}}</td>
 							@endif
-							<td>{{$penjualan[$i][$a]->s_note}}</td>
-							<td>{{$penjualan[$i][$a]->i_code}}</td>
-							<td>{{$penjualan[$i][$a]->i_code}}</td>
-							<td>{{$penjualan[$i][$a]->i_code}}</td>
-							<td>{{$penjualan[$i][$a]->i_code}}</td>
-							<td>{{$penjualan[$i][$a]->i_code}}</td>
-							<td>{{$penjualan[$i][$a]->i_code}}</td>
-							<td>{{$penjualan[$i][$a]->i_code}}</td>
-							<td>{{$penjualan[$i][$a]->i_code}}</td>
-							<td>{{$penjualan[$i][$a]->i_code}}</td>
-							<td>{{$penjualan[$i][$a]->i_code}}</td>
-							<td>{{$penjualan[$i][$a]->i_code}}</td>
+							<td class="text-center">{{$penjualan[$i][$j]->s_note}}</td>
+							<td class="text-center">{{$penjualan[$i][$j]->s_date}}</td>
+							<td></td>
+							<td>{{$penjualan[$i][$j]->c_name}}</td>
+							<td class="text-right">{{number_format(1,2,',','.')}}</td>
+							<td class="text-center">{{$penjualan[$i][$j]->m_sname}}</td>
+							<td class="text-center">{{$penjualan[$i][$j]->sd_qty}}</td>
+							<td>
+								<div class="float-left">
+									Rp. 
+								</div>
+								<div class="float-right"> 
+									{{number_format($penjualan[$i][$j]->sd_price,2,',','.')}}
+								</div>
+							</td>
+							<td class="text-right">{{$penjualan[$i][$j]->sd_disc_percent}}</td>
+							<td class="text-right">{{$penjualan[$i][$j]->sd_total}}</td>
+							<td class="text-right">{{number_format(0,2,',','.')}}</td>
+							<td class="text-right">{{$penjualan[$i][$j]->sd_total}}</td>
 						</tr>
 					@endfor
-				@endfor
 
+				
 
 			</tbody>
 
 		</table>
 		
+		@endfor
 		
 		
 	</div>
