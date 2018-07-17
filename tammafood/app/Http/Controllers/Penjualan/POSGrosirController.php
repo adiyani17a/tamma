@@ -105,6 +105,7 @@ class POSGrosirController extends Controller
                               'c_class',
                               's_note',
                               'd_sales.s_id as sales_id',
+                              's_gross',
                               's_net',
                               's_disc_value',
                               'i_name',
@@ -401,7 +402,7 @@ class POSGrosirController extends Controller
             's_disc_value' => $request->s_disc_value,
             's_gross' => ($this->konvertRp($request->s_gross)),
             's_tax' => $request->s_pajak,
-            's_net' => ($this->konvertRp($request->s_gross)),
+            's_net' => ($this->konvertRp($request->s_net)),
             's_status' => 'PR',
             's_insert' => Carbon::now(),
             's_update' => $request->s_update
@@ -536,7 +537,7 @@ class POSGrosirController extends Controller
             's_disc_value' => $request->s_disc_value,
             's_gross' => ($this->konvertRp($request->s_gross)),
             's_tax' => $request->s_pajak,
-            's_net' => ($this->konvertRp($request->s_gross)),
+            's_net' => ($this->konvertRp($request->s_net)),
             's_status' => "FN",
             's_insert' => Carbon::now(),
             's_update' => $request->s_update
@@ -603,7 +604,7 @@ class POSGrosirController extends Controller
           's_disc_value' => $request->s_disc_value,
           's_gross' => ($this->konvertRp($request->s_gross)),
           's_tax' => $request->s_pajak,
-          's_net' => ($this->konvertRp($request->s_gross)),
+          's_net' => ($this->konvertRp($request->s_net)),
           's_status' => 'PR',
           's_insert' => Carbon::now(),
           's_update' => $request->s_update

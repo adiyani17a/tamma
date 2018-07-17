@@ -25,9 +25,24 @@ Route::get('/home', 'HomeController@home');
 Route::get('/master/datasuplier/suplier', 'MasterController@suplier')->name('suplier');
 /* ari */
 /*---------*/
-Route::get('/master/datapegawai/pegawai', 'MasterController@pegawai');
-Route::get('/master/datasuplier/tambah_suplier', 'MasterController@tambah_suplier');
-Route::get('/master/datapegawai/tambah_pegawai', 'MasterController@tambah_pegawai');
+//huda
+Route::get('/hrd/datajabatan', 'Hrd\JabatanController@index');
+Route::get('/hrd/datajabatan/data-jabatan', 'Hrd\JabatanController@jabatanData');
+Route::get('/hrd/datajabatan/edit-jabatan/{id}', 'Hrd\JabatanController@editJabatan');
+Route::get('/hrd/datajabatan/datatable-pegawai/{id}', 'Hrd\JabatanController@pegawaiData');
+Route::post('/hrd/datajabatan/simpan-jabatan', 'Hrd\JabatanController@simpanJabatan');
+Route::get('/hrd/datajabatan/tambah-jabatan', 'Hrd\JabatanController@tambahJabatan');
+//pegawai
+Route::get('/master/datapegawai/pegawai', 'Master\PegawaiController@pegawai')->name('pegawai');
+Route::get('/master/datapegawai/edit-pegawai/{id}', 'Master\PegawaiController@editPegawai');
+Route::put('/master/datapegawai/update-pegawai/{id}', 'Master\PegawaiController@updatePegawai');
+Route::get('/master/datapegawai/datatable-pegawai', 'Master\PegawaiController@pegawaiData');
+Route::get('/master/datapegawai/tambah-pegawai', 'Master\PegawaiController@tambahPegawai');
+Route::get('/master/datapegawai/data-jabatan/{id}', 'Master\PegawaiController@jabatanData');
+Route::post('/master/datapegawai/simpan-pegawai', 'Master\PegawaiController@simpanPegawai');
+Route::delete('/master/datapegawai/delete-pegawai/{id}', 'Master\PegawaiController@deletePegawai');
+Route::post('/master/datapegawai/import', 'Master\PegawaiController@importPegawai');
+Route::get('/master/datapegawai/master-import', 'Master\PegawaiController@getFile');
 /*Purchasing*/
 //rizky
 //order pembelian
@@ -109,6 +124,24 @@ Route::get('/inventory/p_hasilproduksi/get_tabel_data/{id}', 'Inventory\Penerima
 Route::get('/inventory/p_hasilproduksi/ubah_status_transaksi/{id}/{id2}', 'Inventory\PenerimaanBrgProdController@ubah_status_transaksi');
 Route::get('/inventory/p_hasilproduksi/get_penerimaan_by_tgl/{tgl1}/{tgl2}/{akses}', 'Inventory\PenerimaanBrgProdController@get_penerimaan_by_tgl');
 Route::get('/inventory/p_hasilproduksi/get_list_waiting_by_tgl/{tgl1}/{tgl2}', 'Inventory\PenerimaanBrgProdController@get_list_waiting_by_tgl');
+//p_hasilsupplier
+Route::get('/inventory/datagudang/gudang', 'inventory\stock_gudangController@gudang')->name('gudang');
+Route::get('/inventory/datagudang/datatable_gudang', 'inventory\stock_gudangController@datatable_gudang')->name('datatable_gudang');
+Route::get('/inventory/datagudang/cari_gudang', 'inventory\stock_gudangController@cari_gudang')->name('cari_gudang');
+Route::get('/inventory/p_suplier/suplier', 'Inventory\PenerimaanBrgSupController@suplier');
+// ============
+Route::get('/inventory/p_suplier/lookup-data-pembelian', 'Inventory\PenerimaanBrgSupController@lookupDataPembelian');
+Route::get('/inventory/p_suplier/get-data-form/{id}', 'Inventory\PenerimaanBrgSupController@getDataForm');
+Route::post('/inventory/p_suplier/simpan-penerimaan', 'Inventory\PenerimaanBrgSupController@simpanPenerimaan');
+// ============
+Route::get('/inventory/p_suplier/create_suplier', 'Inventory\penerimaanbarang_supController@create_suplier');
+Route::get('/inventory/p_suplier/save_pensuplier', 'Inventory\penerimaanbarang_supController@save_pensuplier')->name('save_pensuplier');
+Route::get('/inventory/p_suplier/datatable_pensuplier', 'Inventory\penerimaanbarang_supController@datatable_pensuplier')->name('datatable_pensuplier');
+Route::get('/inventory/p_suplier/edit_pensuplier', 'Inventory\penerimaanbarang_supController@edit_pensuplier')->name('edit_pensuplier');
+Route::get('/inventory/p_suplier/cari_nota', 'Inventory\penerimaanbarang_supController@cari_nota_sup');
+Route::get('/inventory/p_suplier/get_data_po', 'Inventory\PenerimaanBrgSupController@get_data_po');
+Route::get('/inventory/p_suplier/list_po', 'Inventory\PenerimaanBrgSupController@list_po');
+Route::get('/inventory/p_suplier/get_tabel_data/{id}', 'Inventory\PenerimaanBrgSupController@get_tabel_data');
 //end rizky
 /*Produksi*/
 Route::get('/produksi/spk/spk', 'ProduksiController@spk');
@@ -294,7 +327,8 @@ Route::get('/penjualan/print_laporan_penjualan/{tgl1}/{tgl2}', 'Penjualan\Lapora
 Route::get('/penjualan/returnpenjualan/tabel', 'Penjualan\ManajemenReturnPenjualanController@tabel');
 Route::get('/penjualan/returnpenjualan/tambahreturn', 'Penjualan\ManajemenReturnPenjualanController@newreturn');
 Route::get('/penjualan/returnpenjualan/carinota', 'Penjualan\ManajemenReturnPenjualanController@cariNotaSales');
-Route::get('/penjualan/returnpenjualan/get-data-nota', 'Penjualan\ManajemenReturnPenjualanController@cariNotaSales');
+Route::get('/penjualan/returnpenjualan/get-data/{id}', 'Penjualan\ManajemenReturnPenjualanController@getNota');
+Route::get('/penjualan/returnpenjualan/tabelpnota/{id}', 'Penjualan\ManajemenReturnPenjualanController@tabelPotNota');
 //End
 /*HRD*/
 Route::get('/hrd/manajemenkpipegawai/kpi', 'HrdController@kpi');
@@ -302,8 +336,6 @@ Route::get('/hrd/payroll/payroll', 'HrdController@payroll');
 Route::get('/hrd/payroll/tambah_payroll', 'HrdController@tambah_payroll');
 Route::get('/hrd/payroll/table', 'HrdController@table');
 Route::get('/hrd/recruitment/rekrut', 'HrdController@rekrut');
-Route::get('/hrd/datajabatan/datajabatan', 'HrdController@datajabatan');
-Route::get('/hrd/datajabatan/tambah_jabatan', 'HrdController@tambah_jabatan');
 Route::get('/hrd/datajabatan/edit_jabatan', 'HrdController@edit_jabatan');
 Route::get('/hrd/dataadministrasi/admin', 'HrdController@admin');
 Route::get('/hrd/datalembur/lembur', 'HrdController@lembur');
@@ -458,27 +490,8 @@ Route::get('/master/datagroup/edit_group', 'master\groupController@edit_group')-
 Route::get('/master/datagroup/update_group', 'master\groupController@update_group')->name('update_group');
 Route::get('/master/datagroup/datatable_group', 'master\groupController@datatable_group')->name('datatable_group');
 //-[]-belum-[]-//
-//pegawai
-Route::get('/master/datapegawai/pegawai', 'master\pegawaiController@pegawai')->name('pegawai');
-Route::get('/master/datapegawai/tambah_pegawai', 'master\pegawaiController@tambah_pegawai')->name('tambah_pegawai');
-Route::get('/master/datapegawai/simpan_pegawai', 'master\pegawaiController@simpan_pegawai')->name('simpan_pegawai');
-Route::get('/master/datapegawai/hapus_pegawai', 'master\pegawaiController@hapus_pegawai')->name('hapus_pegawai');
-Route::get('/master/datapegawai/edit_pegawai', 'master\pegawaiController@edit_pegawai')->name('edit_pegawai');
-Route::get('/master/datapegawai/update_pegawai', 'master\pegawaiController@update_pegawai')->name('update_pegawai');
-//end
 }); // End Route Groub middleware auth
-//inven
-//gudang
-Route::get('/inventory/datagudang/gudang', 'inventory\stock_gudangController@gudang')->name('gudang');
-Route::get('/inventory/datagudang/datatable_gudang', 'inventory\stock_gudangController@datatable_gudang')->name('datatable_gudang');
-Route::get('/inventory/datagudang/cari_gudang', 'inventory\stock_gudangController@cari_gudang')->name('cari_gudang');
-Route::get('/inventory/p_suplier/suplier', 'Inventory\penerimaanbarang_supController@suplier')->name('pensuplier');
-Route::get('/inventory/p_suplier/create_suplier', 'Inventory\penerimaanbarang_supController@create_suplier');
-Route::get('/inventory/p_suplier/save_pensuplier', 'Inventory\penerimaanbarang_supController@save_pensuplier')->name('save_pensuplier');
-Route::get('/inventory/p_suplier/datatable_pensuplier', 'Inventory\penerimaanbarang_supController@datatable_pensuplier')->name('datatable_pensuplier');
-Route::get('/inventory/p_suplier/edit_pensuplier', 'Inventory\penerimaanbarang_supController@edit_pensuplier')->name('edit_pensuplier');
-Route::get('/inventory/p_suplier/cari_nota', 'Inventory\penerimaanbarang_supController@cari_nota_sup');
-//end
+
 // route Keuangan (Dirga)
 // akun keuangan route
 Route::get('/master/datakeuangan/keuangan', 'Keuangan\akunController@index');

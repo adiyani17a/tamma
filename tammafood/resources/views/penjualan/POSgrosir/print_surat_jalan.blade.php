@@ -114,9 +114,6 @@
 						{{$sales->c_address}}
 					</td>
 				</tr>
-				<tr>
-					<td colspan="3" class="bold">*) Setelah Transfer Mohon di Info : 08573190-0003 "SMS PROMO" DAFAFOOD</td>
-				</tr>
 			</table>
 			<table width="100%" cellspacing="0" class="tabel" border="1px">
 				<tr class="text-center">

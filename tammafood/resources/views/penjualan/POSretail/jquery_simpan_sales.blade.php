@@ -60,9 +60,9 @@ function sal_save_final(){
         $("input[name='hasil[]']").val('');
             var id = $('#idfatkur').val();
         if (confirm("Berhasil!, Ingin langsung cetak nota?")) {
+            window.location.href = baseUrl+"/penjualan/POSretail/index";
             window.open(baseUrl+"/penjualan/POSretail/print/"+id, "_blank");
             window.location.href = baseUrl+"/penjualan/POSretail/index";
-            
         } else {
             window.location.href = baseUrl+"/penjualan/POSretail/index";
         }
@@ -105,6 +105,8 @@ function sal_save_finalUpdate(){
           var id = $('#no_faktur').val();
         if (confirm("Berhasil!, Ingin langsung cetak nota?")) {
           window.open(baseUrl+"/penjualan/POSretail/print/"+id, "_blank");
+          window.location.href = baseUrl+"/penjualan/POSretail/index";
+          
         } else {
           window.location.href = baseUrl+"/penjualan/POSretail/index";
         }

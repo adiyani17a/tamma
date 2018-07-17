@@ -588,7 +588,7 @@
                             <ul class="nav nav-second-level">
 
                                 @if(Auth::user()->punyaAkses('Data Karyawan','ma_read'))
-                                <li class="{{ Request::is('hrd/datajabatan/datajabatan') ? 'active' : '' || Request::is('hrd/datajabatan/*') ? 'active' : '' }}"><a href="{{ url('/hrd/datajabatan/datajabatan')}}"><span class="submenu-title">Data Jabatan</span><span class="hidden">HRD</span></a>
+                                <li class="{{ Request::is('hrd/datajabatan') ? 'active' : '' || Request::is('hrd/datajabatan/*') ? 'active' : '' }}"><a href="{{ url('/hrd/datajabatan')}}"><span class="submenu-title">Data Jabatan</span><span class="hidden">HRD</span></a>
                                 </li>
                                 @endif
                                 @if(Auth::user()->punyaAkses('Data Administrasi Pegawai','ma_read'))

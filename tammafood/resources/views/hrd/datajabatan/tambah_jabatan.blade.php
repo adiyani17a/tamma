@@ -45,38 +45,29 @@
 
                          <div class="col-md-12 col-sm-12 col-xs-12" style="margin-top: 15px;">
 
-              <form method="post" class="form" action="" enctype="multipart/form-data" style="font-family:Arial;">
-               <input type="hidden" name="_token" value="sHfj297y11VKUYddbP4GYdcPrVM3MvRuVSWTCuwX">
+              <form method="POST" class="form" action="{{ url('hrd/datajabatan/simpan-jabatan') }}" enctype="multipart/form-data" style="font-family:Arial;">
+              {{ csrf_field() }}
                <table class="table">
                <tr>
                    <td class="col-sm-2"><label>Kode</label></td>
                    <td class="col-sm-1"><label>:</label></td>
-                   <td> <div class="col-sm-12"><input type="text" name="kode" placeholder="Kode Jabatan" class="form-control"></div></td>
+                   <td> <div class="col-sm-12"><input type="text" name="c_id" placeholder="Kode Jabatan" class="form-control"></div></td>
+               </tr>
+               <tr>
+                   <td><label>Divisi</label></td>
+                   <td><label>:</label></td>
+                   <td><div class="col-sm-12"><select id="divisi" name="c_divisi_id" class="form-control input-sm">
+                            <option>--pilih divisi--</option>
+                            <?php foreach($divisi as $div){ ?>
+                              <option value="{{ $div->c_id }}">{{ $div->c_divisi }}</option>
+                            <?php } ?>
+                        </select></div>
+                    </td>
                </tr>
                <tr>
                    <td><label>Nama Jabatan</label></td>
                    <td><label>:</label></td>
-                   <td> <div class="col-sm-12"><input type="text" name="nama" placeholder="Nama" class="form-control"></div></td>
-               </tr>
-               <tr>
-                   <td><label>Gaji Pokok</label></td>
-                   <td><label>:</label></td>
-                   <td> <div class="col-sm-12"><input type="text" name="gaji" id="gaji" placeholder="Gaji Pokok" class="form-control" data-prefix="Rp. " onblur="hitung()"></div></td>
-               </tr>
-               <tr>
-                   <td><label>Tunjangan Jabatan</label></td>
-                   <td><label>:</label></td>
-                   <td> <div class="col-sm-12"><input type="text" name="jbtn" id="jbtn" placeholder="Tunjangan Jabatan" class="form-control" data-prefix="Rp. " value="" readonly=""></div></td>
-               </tr>
-               <tr>
-                   <td><label>Tunjangan Kehadiran</label></td>
-                   <td><label>:</label></td>
-                   <td> <div class="col-sm-12"><input type="text" name="khdrn" id="khdrn"  placeholder="Tunjangan Kehadiran" class="form-control" data-prefix="Rp. " readonly=""></div></td>
-               </tr>
-               <tr>
-                   <td><label  >Tunjangan Makan</label></td>
-                   <td><label  >:</label></td>
-                   <td> <div class="col-sm-12"><input type="text" name="makan" id="makan" placeholder="Tunjangan Makan" class="form-control" data-prefix="Rp. "></div></td>
+                   <td> <div class="col-sm-12"><input type="text" name="c_posisi" placeholder="Nama" class="form-control"></div></td>
                </tr>
                </table>
                <div class="col-sm-12">

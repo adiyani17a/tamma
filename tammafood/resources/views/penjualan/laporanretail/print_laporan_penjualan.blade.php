@@ -106,9 +106,9 @@
 		<button onclick="prints()">Print</button>
 	</div>
 	
-	<div class="div-width">
+		<div class="div-width">
 		
-		@for($i=0;$i<count($data);$i++)
+		
 
 		<table width="100%" cellpadding="2px" class="tabel" border="1px" style="margin-bottom: 10px;">
 			<thead>
@@ -129,7 +129,7 @@
 					</td>
 				</tr>
 				<tr>
-					<th width="150px">Nama Barang</th>
+					<th width="175px !important">Nama Barang</th>
 					<th>No Bukti</th>
 					<th>Tanggal</th>
 					<th>Jatuh Tempo</th>
@@ -146,94 +146,44 @@
 				</tr>
 			</thead>
 			<tbody>
-			<?php
 
-			//dd($data)
+			
 
-				$arr  = [];
-				$item = [];
-		        $note = [];
-			    $cus  = [];
-			    $tanggal = [];
-			    $satuan = [];
-			    $code = [];
-			    $qty = [];
-			    $price = [];
-			    $disc = [];
-			    $total = [];
-
-		        foreach ($data[$i] as $index => $ini_data) {
-		        
-			        array_push($note, $ini_data->s_note);
-			        array_push($item, $ini_data->i_name);
-			        array_push($tanggal, $ini_data->s_date);
-			        array_push($cus, $ini_data->c_name);
-			        array_push($satuan, $ini_data->m_sname);
-			        array_push($code, $ini_data->i_code);
-			        array_push($qty, $ini_data->sd_qty);
-			        array_push($price, $ini_data->sd_price);
-			        array_push($disc, $ini_data->sd_disc_percent);
-			        array_push($total, $ini_data->sd_total);
-
-
-
-					if (!isset($arr[$ini_data->i_name])) {
-		                $arr[$ini_data->i_name]['rowspan'] = 0;
-		            }
-		            $arr[$ini_data->i_name]['printed'] = 'no';
-		            $arr[$ini_data->i_name]['rowspan'] += 1;
-
-		            
-		        }
-
-		        //dd(array_count_values($item));
-
-			?>
-
-				@for($j=0;$j<count($data[$i]);$j++)
-
-					<?php 
-
-			            $empName = $item[$j];
-			            echo "<tr>";
-
-			            # If this row is not printed then print.
-			            # and make the printed value to "yes", so that
-			            # next time it will not printed.
-			            	if ($arr[$empName]['printed'] == 'no') {
-				                echo "<td class='item_".$i.'_'.$code[$j]."' rowspan='".$arr[$empName]['rowspan']."'>".$empName." - ".$code[$j]."</td>";
-				                $arr[$empName]['printed'] = 'yes';
-			            	}
-			            echo "<td>".$note[$j]."</td>".
-			            "<td>".$tanggal[$j]."</td>".
-			            "<td></td>".
-			            "<td>".$cus[$j]."</td>".
-			            "<td class='text-right'></td>".
-			            "<td>".$satuan[$j]."</td>".
-			            "<td class='text-right qty_".$i.'_'.$code[$j]."'>".$qty[$j]."</td>".
-			            "<td>".
-			            "<div class='float-left'>Rp.</div>".
-			            "<div class='float-right'>".
-			            number_format($price[$j],2,',','.').
-			            "</div>".
-			            "</td>".
-			            "<td class='text-right'>".number_format($disc[$j],2,',','.')."</td>".
-			            "<td class='text-right total_".$i.'_'.$code[$j]."'>".number_format($total[$j],2,',','.')."</td>".
-			            "<td></td>".
-			            "<td class='text-right'>".number_format($total[$j],2,',','.')."</td>"
-
-			            ;
-			            echo "</tr>";
-			        	
-			        ?>
-					
+				@for($i=0;$i<count($penjualan);$i++)
+					@for($j=0;$j<count($penjualan[$i]);$j++)
+						<tr>
+							@if($j == 0)
+							<td rowspan="{{count($penjualan[$i])}}">{{$penjualan[$i][$j]->i_code}} - {{$penjualan[$i][$j]->i_name}}</td>
+							@endif
+							<td class="text-center">{{$penjualan[$i][$j]->s_note}}</td>
+							<td class="text-center">{{$penjualan[$i][$j]->s_date}}</td>
+							<td></td>
+							<td>{{$penjualan[$i][$j]->c_name}}</td>
+							<td class="text-right">{{number_format(1,2,',','.')}}</td>
+							<td class="text-center">{{$penjualan[$i][$j]->m_sname}}</td>
+							<td class="text-center">{{$penjualan[$i][$j]->sd_qty}}</td>
+							<td>
+								<div class="float-left">
+									Rp. 
+								</div>
+								<div class="float-right"> 
+									{{number_format($penjualan[$i][$j]->sd_price,2,',','.')}}
+								</div>
+							</td>
+							<td class="text-right">{{$penjualan[$i][$j]->sd_disc_percent}}</td>
+							<td class="text-right">{{number_format($penjualan[$i][$j]->sd_total,2,',','.')}}</td>
+							<td class="text-right">{{number_format(0,2,',','.')}}</td>
+							<td class="text-right">{{number_format($penjualan[$i][$j]->sd_total,2,',','.')}}</td>
+						</tr>
+					@endfor
 				@endfor
 
+				
 
 			</tbody>
 
 		</table>
-		@endfor
+		
 		
 		
 	</div>
