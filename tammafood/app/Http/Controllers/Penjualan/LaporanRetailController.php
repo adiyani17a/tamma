@@ -107,7 +107,7 @@ class LaporanRetailController extends Controller
 
 
     }
-            // dd($penjualan);
+            dd($penjualan);
 
     return view('penjualan/laporanretail/print_laporan_penjualan', compact('data', 'tgl1', 'tgl2', 'penjualan', 'nama_array'));
   }
