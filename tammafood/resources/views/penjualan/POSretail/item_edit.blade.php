@@ -7,6 +7,7 @@
                   <input type="hidden" id="harga" name="sd_sell" class="form-control">
                   <input type="hidden" id="detailnama" name="nama" class="form-control">
                   <input type="hidden" id="satuan" name="satuan" class="form-control" >
+                  <input type="hidden" id="i-type" name="i-type" class="form-control" >
               </div>
           </div>      
           <div class="col-md-3">
