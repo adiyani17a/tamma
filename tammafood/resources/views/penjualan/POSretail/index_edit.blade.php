@@ -43,7 +43,7 @@
                           <label class="control-label tebal" for="no_faktur" >Nomor Faktur</label>
                           <div class="input-group input-group-sm" style="width: 100%;">
                             <input type="text" id="no_faktur" name="s_nota" class="form-control" readonly="true" value="{{$edit[0]->s_note}}">
-                            <input type="text" id="no_faktur" name="s_id" class="form-control" readonly="true" value="{{$edit[0]->sales_id}}">
+                            <input type="hidden" id="no_faktur" name="s_id" class="form-control" readonly="true" value="{{$edit[0]->sales_id}}">
                           </div>
                         </div>    
                       </form>
