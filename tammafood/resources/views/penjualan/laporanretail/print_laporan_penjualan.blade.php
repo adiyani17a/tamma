@@ -70,10 +70,10 @@
 		}
 		table.border-none ,.border-none td{
 			border:none !important;
-			/*page-break-inside: avoid;*/
+			page-break-inside: avoid;
 		}
 		.tabel{
-			/*page-break-inside: avoid;*/
+			page-break-inside: avoid;
 
 		}
 		@media print {
@@ -107,10 +107,8 @@
 	</div>
 	
 		<div class="div-width">
-
-
 		
-		@for($i=0;$i<count($penjualan);$i++)
+		
 
 		<table width="100%" cellpadding="2px" class="tabel" border="1px" style="margin-bottom: 10px;">
 			<thead>
@@ -131,7 +129,7 @@
 					</td>
 				</tr>
 				<tr>
-					<th width="150px">Nama Barang</th>
+					<th width="175px !important">Nama Barang</th>
 					<th>No Bukti</th>
 					<th>Tanggal</th>
 					<th>Jatuh Tempo</th>
@@ -151,10 +149,8 @@
 
 			
 
-				
+				@for($i=0;$i<count($penjualan);$i++)
 					@for($j=0;$j<count($penjualan[$i]);$j++)
-
-				
 						<tr>
 							@if($j == 0)
 							<td rowspan="{{count($penjualan[$i])}}">{{$penjualan[$i][$j]->i_code}} - {{$penjualan[$i][$j]->i_name}}</td>
@@ -175,11 +171,12 @@
 								</div>
 							</td>
 							<td class="text-right">{{$penjualan[$i][$j]->sd_disc_percent}}</td>
-							<td class="text-right">{{$penjualan[$i][$j]->sd_total}}</td>
+							<td class="text-right">{{number_format($penjualan[$i][$j]->sd_total,2,',','.')}}</td>
 							<td class="text-right">{{number_format(0,2,',','.')}}</td>
-							<td class="text-right">{{$penjualan[$i][$j]->sd_total}}</td>
+							<td class="text-right">{{number_format($penjualan[$i][$j]->sd_total,2,',','.')}}</td>
 						</tr>
 					@endfor
+				@endfor
 
 				
 
@@ -187,7 +184,6 @@
 
 		</table>
 		
-		@endfor
 		
 		
 	</div>
