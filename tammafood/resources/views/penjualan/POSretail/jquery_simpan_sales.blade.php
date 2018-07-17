@@ -62,6 +62,7 @@ function sal_save_final(){
         if (confirm("Berhasil!, Ingin langsung cetak nota?")) {
             window.location.href = baseUrl+"/penjualan/POSretail/index";
             window.open(baseUrl+"/penjualan/POSretail/print/"+id, "_blank");
+            window.location.href = baseUrl+"/penjualan/POSretail/index";
         } else {
             window.location.href = baseUrl+"/penjualan/POSretail/index";
         }
