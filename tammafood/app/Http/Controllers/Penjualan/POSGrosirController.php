@@ -105,6 +105,7 @@ class POSGrosirController extends Controller
                               'c_class',
                               's_note',
                               'd_sales.s_id as sales_id',
+                              's_gross',
                               's_net',
                               's_disc_value',
                               'i_name',
@@ -401,7 +402,7 @@ class POSGrosirController extends Controller
             's_disc_value' => $request->s_disc_value,
             's_gross' => ($this->konvertRp($request->s_gross)),
             's_tax' => $request->s_pajak,
-            's_net' => ($this->konvertRp($request->s_gross)),
+            's_net' => ($this->konvertRp($request->s_net)),
             's_status' => 'PR',
             's_insert' => Carbon::now(),
             's_update' => $request->s_update
@@ -536,7 +537,7 @@ class POSGrosirController extends Controller
             's_disc_value' => $request->s_disc_value,
             's_gross' => ($this->konvertRp($request->s_gross)),
             's_tax' => $request->s_pajak,
-            's_net' => ($this->konvertRp($request->s_gross)),
+            's_net' => ($this->konvertRp($request->s_net)),
             's_status' => "FN",
             's_insert' => Carbon::now(),
             's_update' => $request->s_update
@@ -603,7 +604,7 @@ class POSGrosirController extends Controller
           's_disc_value' => $request->s_disc_value,
           's_gross' => ($this->konvertRp($request->s_gross)),
           's_tax' => $request->s_pajak,
-          's_net' => ($this->konvertRp($request->s_gross)),
+          's_net' => ($this->konvertRp($request->s_net)),
           's_status' => 'PR',
           's_insert' => Carbon::now(),
           's_update' => $request->s_update
@@ -1127,7 +1128,6 @@ class POSGrosirController extends Controller
       ->join('m_customer','c_id','=','s_customer')
       ->where('s_id',$id)
       ->first();
-    // dd($sales);
 
     $data = d_sales_dt::select( 'i_code',
                                 'i_name',
@@ -1145,7 +1145,7 @@ class POSGrosirController extends Controller
       ->join('m_item','i_id','=','sd_item')
       ->where('sd_sales',$id)->get();
       $count = count($data);
-      $tes = 10 - $count;
+      $tes = 15 - $count;
       $array = [];
 
       if ($tes > 0) {
@@ -1153,13 +1153,9 @@ class POSGrosirController extends Controller
           array_push($array, 'a');
         }
       }
-    //print biasa  
-    // return view('penjualan.POSGrosir.print',compact('data','dataTotal','sales'));
-    //print kertas ncr
+
       return view('penjualan.POSGrosir.print_faktur', compact('data', 'dataTotal', 'sales', 'array'));
-    // print kertas ncr
-    // return view('penjualan.POSGrosir.dist180.sample',compact('data','dataTotal','sales'));
-  }
+    }
 
   public function suratjalan(){
     return view('penjualan.POSGrosir.suratjalan');
@@ -1176,7 +1172,7 @@ class POSGrosirController extends Controller
       ->join('m_customer','c_id','=','s_customer')
       ->where('s_id',$id)
       ->first();
-    // dd($sales);
+
 
     $data = d_sales_dt::select( 'i_code',
                                 'i_name',
@@ -1193,7 +1189,7 @@ class POSGrosirController extends Controller
       $dataTotal = d_sales_dt::select(DB::raw('SUM(sd_qty) as total'))
       ->where('sd_sales',$id)->get();
       $count = count($data);
-      $tes = 10 - $count;
+      $tes = 15 - $count;
       $array = [];
 
       if ($tes > 0) {

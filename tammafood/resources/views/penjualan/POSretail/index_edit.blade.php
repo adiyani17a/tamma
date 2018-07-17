@@ -66,7 +66,7 @@
                           <div class="form-group">
                             <label class="control-label tebal" for="penjualan">Total Penjualan</label>
                             <div class="input-group input-group-sm" style="width: 100%;">
-                                <input type="text" name="s_gross" readonly="true" id="totalMapPenjualan" class="form-control" style="text-align: right;" value="Rp. {{ number_format( $edit[0]->s_net ,2,',','.')}}">
+                                <input type="text" name="s_gross" readonly="true" id="totalMapPenjualan" class="form-control" style="text-align: right;" value="Rp. {{ number_format( $edit[0]->s_gross ,2,',','.')}}">
                               </div>
                           </div>
                           <input type="hidden" name="s_disc_percent" readonly="true" id="" class="form-control TotDisPercent totalPercentValue" style="text-align: right;" value="0">

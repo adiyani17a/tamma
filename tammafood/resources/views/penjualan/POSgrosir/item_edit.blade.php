@@ -13,7 +13,7 @@
           <div class="col-md-3">
            <label class="control-label tebal" name="qty">Masukan Jumlah</label>
               <div class="input-group input-group-sm" style="width: 100%;">
-                 <input type="number" id="qty" name="qty" class="form-control" onkeyup="setQty()">
+                 <input type="number" id="qty" name="qty" class="form-control" >
               </div>
           </div>
           <div class="col-md-3">
@@ -38,7 +38,7 @@
           </tr>
         </thead> 
         <tbody>
-        @foreach ($edit as $x)
+          @foreach ($edit as $x)
           <tr>
             <td>
               {{ $x->i_name }}
@@ -49,7 +49,7 @@
               <input type="hidden" name="nama_item[]" class="nama_item" value="{{ $x->i_name }}">
             </td>
             <td>
-              <input size="30" style="text-align:right" type="number"  name="sd_qty[]" class="sd_qty form-control qty-{{$x->i_id }}" value="{{$x->sd_qty }}" onkeyup="UpdateHarga('{{ $x->i_id }}'); qtyInput('{{ $x->i_type }}','{{ $x->s_qty }}','{{ $x->i_id }}')" onchange="qtyInput('{{ $x->i_type }}','{{ $x->s_qty }}','{{ $x->i_id }}')" onclick="UpdateHarga('{{ $x->i_id }}')">
+              <input size="30" style="text-align:right" type="number"  name="sd_qty[]" class="sd_qty form-control qty-{{$x->i_id }}" value="{{$x->sd_qty }}" onkeyup="UpdateHarga('{{ $x->i_id }}'); qtyInput('{{ $x->s_qty }}','{{ $x->i_id }}')" onchange="qtyInput('{{ $x->s_qty }}','{{ $x->i_id }}')" onclick="UpdateHarga('{{ $x->i_id }}')" onchange="qtyInput('{{ $x->i_type }}','{{ $x->s_qty }}','{{ $x->i_id }}')">
             </td>
             <td>
               {{ $x->m_sname }}<input type="hidden" name="satuan[]" class="satuan" value="{{ $x->m_sname }}">
@@ -61,12 +61,7 @@
             <td>
               <div class="input-group">
                 <input type="text" style="text-align:right" onkeyup="discpercent(this, event);autoJumValPercent();dataInput(this, event)" name="sd_disc_percent[]"
-                @if($x->sd_disc_percent == '0') 
-                  readonly="true"
-                @else
-
-                @endif
-       {{--          @if($x->sd_disc_percent == '0' || $x->sd_disc_value == '0')  --}}
+                @if($x->sd_disc_percent == '0') readonly="true" @else @endif
                 class="form-control discpercent hasildiscpercent discpercent-{{ $x->i_id }}"   
                 value="@if($x->sd_disc_percent == '0')@else{{ $x->sd_disc_percent }}@endif">
                 <span class="input-group-addon">%</span>
@@ -91,29 +86,8 @@
       </table>
     </div>
 
+
 <script type="text/javascript">
-  function dataInput(inField, e){
-    var a = 0;
-    $('input.discpercent:text').each(function(evt){
-      var getIndex = a;
-      var dataInput = $('input.discpercent:text:eq('+getIndex+')').val();
-      var dataInput1 = $('input.discvalue:text:eq('+getIndex+')').val();
-      if (dataInput == '' || dataInput1 == '0') {
-        if (dataInput == '' && dataInput1 == 'Rp. 0,00  ') {
-          $('input.discvalue:text:eq('+getIndex+')').attr("readonly",false);
-          $('input.discpercent:text:eq('+getIndex+')').attr("readonly",false);
-          getIndex+=1;
-        }else{
-          $('input.discvalue:text:eq('+getIndex+')').attr("readonly",false);
-          getIndex+=1;
-        }
-      }else{
-        $('input.discvalue:text:eq('+getIndex+')').attr("readonly",true);
-        getIndex+=1;
-      }
-    a++;
-    })
-  }
 
     var hpercent = 0;
   function discpercentEdit(inField, e){

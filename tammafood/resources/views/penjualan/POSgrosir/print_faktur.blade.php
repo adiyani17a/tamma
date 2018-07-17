@@ -75,12 +75,6 @@
 			.button-group{
 				display: none;
 			}
-			@page {
-				size: portrait;
-			}
-		}
-		@page { 
-			margin: 0; 
 		}
 	</style>
 </head>
@@ -128,7 +122,7 @@
 				<td class="text-right">{{ number_format($item->sd_price,2,'.',',') }}</td>
 				<td class="text-right" width="10%">{{ number_format($item->sd_total,2,'.',',') }}</td>
 				<td class="text-right" width="10%">
-				@if ($item->sd_disc_percent == '0')
+				@if ($item->sd_disc_percent == '0' || $item->sd_disc_percent == null)
                   {{ number_format($item->sd_disc_value,2,'.',',')}}
                   <?php $totalDis += $item->sd_disc_value ?>
                 @else
@@ -203,9 +197,9 @@
 							<li>Klaim dilayani 1x24 jam setelah barang diterima</li>
 						</ul>
 					</div>
-					<div class="float-right text-center" style="margin-top: 15px;height: 60px;width: 40%;position: absolute;right: 0;bottom: 35px;">
+					<div class="float-right text-center" style="margin-top: 15px;height: 60px;width: 40%;position: absolute;right: 0;bottom: 20px;">
 						<div>Hormat Kami</div>
-						<div style="margin:auto;border-bottom: 1px solid black;width: 150px;height: 65px;"></div>
+						<div style="margin:auto;border-bottom: 1px solid black;width: 150px;height: 45px;"></div>
 						<div>Accounting</div>
 					</div>
 				</td>
