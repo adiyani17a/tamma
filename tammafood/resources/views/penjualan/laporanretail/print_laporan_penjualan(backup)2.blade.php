@@ -70,10 +70,10 @@
 		}
 		table.border-none ,.border-none td{
 			border:none !important;
-					}
-		.tabel table, .tabel td{
-			border:1px solid black;
-			
+			page-break-inside: avoid;
+		}
+		.tabel{
+			page-break-inside: avoid;
 
 		}
 		@media print {
@@ -94,12 +94,9 @@
 			width: 1%;
 		}
 		.no-border-head{
-			border-top:hidden !important;
-			border-left: hidden !important;
-			border-right: hidden !important;
-		}
-		.tabel table , .table tr {
-			page-break-inside: auto;
+			border-top:hidden;
+			border-left: hidden;
+			border-right: hidden;
 		}
 
 	</style>
@@ -178,7 +175,6 @@
 							<td class="text-right">{{number_format(0,2,',','.')}}</td>
 							<td class="text-right">{{number_format($penjualan[$i][$j]->sd_total,2,',','.')}}</td>
 						</tr>
-
 						@if($j == count($penjualan[$i]) - 1)
 							<tr>
 								<td class="text-right bold" colspan="4">Total</td>
@@ -189,7 +185,6 @@
 								<td class="text-right bold">{{number_format($data_sum[$i]->total_penjualan,2,',','.')}}</td>
 							</tr>
 						@endif
-						
 					@endfor
 				@endfor
 
@@ -199,30 +194,7 @@
 
 		</table>
 		
-		<div class="float-left" style="width: 30vw;">
-			<table class="border-none" width="100%">
-				<tr>
-					<td>Diskon</td>
-					<td>:</td>
-					<td>{{number_format(0,2,',','.')}}</td>
-				</tr>
-				<tr>
-					<td>DPP</td>
-					<td>:</td>
-					<td>{{number_format($data_sum_all[0]->total_semua_penjualan,2,',','.')}}</td>
-				</tr>
-				<tr>
-					<td>Diskon</td>
-					<td>:</td>
-					<td>{{number_format(0,2,',','.')}}</td>
-				</tr>
-				<tr>
-					<td>Grand Total</td>
-					<td>:</td>
-					<td>{{number_format($data_sum_all[0]->total_semua_penjualan,2,',','.')}}</td>
-				</tr>
-			</table>
-		</div>
+		
 		
 	</div>
 	<script type="text/javascript">
