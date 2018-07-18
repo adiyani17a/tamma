@@ -740,6 +740,70 @@ class POSRetailController extends Controller
 
     return Response::json($data); 
   }
+  public function print($id){
+    $sales = d_sales::select( 'c_name',
+                              'c_address',
+                              's_date',
+                              's_note')
+      ->join('m_customer','c_id','=','s_customer')
+      ->where('s_id',$id)
+      ->first();
+    // dd($sales);
+
+    $data_chunk = DB::table('d_sales_dt')->select( 'i_code',
+                                'i_name',
+                                'm_sname',
+                                'sd_price',
+                                'sd_total',
+                                'sd_disc_value',
+                                'sd_qty',
+                                'sd_disc_percent')
+      ->join('m_item','i_id','=','sd_item')
+      ->join('m_satuan','m_satuan.m_sid','=','i_sat1')
+      ->where('sd_sales',$id)->get()->toArray();
+
+      $data = array_chunk($data_chunk, 12);
+      // return $chunk;
+      // return $data;
+
+      $dataTotal = d_sales_dt::select(DB::raw('SUM(sd_total) as total'))
+      ->join('m_item','i_id','=','sd_item')
+      ->where('sd_sales',$id)->get();
+
+  
+      
+      return view('penjualan.POSRetail.print_faktur', compact('data', 'dataTotal', 'sales'));
+  }
+  public function print_surat_jalan($id){
+    $sales = d_sales::select( 'c_name',
+                              'c_address',
+                              's_date',
+                              's_note')
+      ->join('m_customer','c_id','=','s_customer')
+      ->where('s_id',$id)
+      ->first();
+    // dd($sales);
+
+    $data_chunk = DB::table('d_sales_dt')->select( 'i_code',
+                                'i_name',
+                                'm_sname',
+                                'sd_price',
+                                'sd_total',
+                                'sd_disc_value',
+                                'sd_qty',
+                                'sd_disc_percent')
+      ->join('m_item','i_id','=','sd_item')
+      ->join('m_satuan','m_satuan.m_sid','=','m_item.i_sat1')
+      ->where('sd_sales',$id)->get()->toArray();
+
+      $data = array_chunk($data_chunk, 12);
+
+      $dataTotal = d_sales_dt::select(DB::raw('SUM(sd_qty) as total'))
+      ->where('sd_sales',$id)->get();
+      
+
+      return view('penjualan.POSRetail.print_surat_jalan', compact('data', 'dataTotal', 'sales'));
+  }
 }
 
 

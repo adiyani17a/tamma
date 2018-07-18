@@ -50,31 +50,28 @@
                                         <table class="table tabelan table-hover table-bordered" width="100%" cellspacing="0" id="data">
                                           <thead>
                                             <tr>
-                                              <th class="wd-15p text-center" width="5%">No.Transaksi</th>
-                                              <th class="wd-15p text-center">Nama</th>
-                                              <th class="wd-15p text-center">Keterangan</th>
-                                              <th class="wd-15p text-center" width="12%">Cashtype</th>
-                                              <th class="wd-15p text-center">Akun</th>
-                                              <th class="wd-15p text-center">Aksi</th>
+                                              <th class="wd-15p">Nomor Transaksi</th>
+                                              <th class="wd-15p">Nama Transaksi</th>
+                                              <th class="wd-15p">Keterangan Transaksi</th>
+                                              <th class="wd-15p">Tanggal Transaksi</th>
+                                              <th class="wd-15p">Total Transaksi</th>
+                                              <th class="wd-15p">Aksi</th>
                                             </tr>
                                           </thead>
 
                                           <tbody>
-                                            <tr>
-                                              <td class="text-center">1111</td>
-                                              <td class="text-center">Penjualan Alpha</td>
-                                              <td class="text-center"></td>
-                                              <td class="text-center">OCF</td>
-                                              <td class="text-center">
-                                                <span>Tampilkan Akun</span>
-                                              </td>
-                                              <td class="text-center">
-                                               <div class="">    
-                                               <a href="#" class="btn btn-warning btn-sm" title="Edit"><i class="glyphicon glyphicon-pencil"></i></a>
-                                               <a href="#" class="btn btn-danger btn-sm" title="Hapus"><i class="glyphicon glyphicon-trash"></i></a>
-                                              </div>                              
-                                              </td>
-                                            </tr>
+                                            @foreach($data as $transaksi)
+                                              <tr>
+                                                <td>{{ $transaksi->nomor_transaksi }}</td>
+                                                <td>{{ $transaksi->nama_transaksi }}</td>
+                                                <td>{{ $transaksi->keterangan }}</td>
+                                                <td>{{ date('d-m-Y', strtotime($transaksi->tanggal_transaksi)) }}</td>
+                                                <td class="text-right">{{ number_format($transaksi->total_transaksi) }}</td>
+                                                <td class="text-center">
+                                                  <a id="edit" href="{{ url('/master/datatransaksi/edit').'?id='.$transaksi->id_transaksi }}" class="btn btn-warning btn-sm" title="Edit"><i class="glyphicon glyphicon-pencil"></i></a>
+                                                </td>
+                                              </tr>
+                                            @endforeach
                                             
                                           </tbody>         
                                         </table> 

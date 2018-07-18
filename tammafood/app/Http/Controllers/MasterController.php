@@ -166,7 +166,10 @@ class MasterController extends Controller
 
      public function transaksi()
     {
-        return view('/master/datatransaksi/transaksi');
+        $dta = DB::table("d_transaksi_keuangan")->orderBy("created_at", "desc")->get();
+
+        return json_encode($data);
+        // return view('/master/datatransaksi/transaksi');
     }
     public function tambah_suplier()
     {
@@ -216,10 +219,42 @@ class MasterController extends Controller
 
         return redirect('/master/datacust/cust');
     }
+
     public function tambah_transaksi()
-    {
-        return view('/master/datatransaksi/tambah_transaksi');
+    {   
+        $data = DB::table('d_akun')->where('type_akun', "detail")->orderBy("id_akun", 'asc')->select("id_akun", "nama_akun")->get();
+        return view('/master/datatransaksi/tambah_transaksi', compact("data"));
     }
+
+    public function simpan_transaksi(Request $request)
+    {   
+        // return $request->all();
+
+        if(count(DB::table('d_transaksi_keuangan')->where("nomor_transaksi", $request->nomor_transaksi)->get()) != 0){
+            return json_encode([
+                "status"    => "exist_key"
+            ]);
+        }
+
+        $data = [
+            "id_transaksi"      => (DB::table("d_transaksi_keuangan")->max("id_transaksi") + 1),
+            "nomor_transaksi"   => $request->nomor_transaksi,
+            "nama_transaksi"    => $request->nama_transaksi,
+            "tanggal_transaksi" => date("Y-m-d"),
+            "keterangan"        => $request->Keterangan,
+            "cash_type"         => $request->Cash_Type,
+            "total_transaksi"   => str_replace('.', '', explode(',', $request->total)[0])
+        ];
+
+        // DB::table('d_transaksi_keuangan')->insert($data);
+
+        return json_encode([
+            "status"    => "sukses"
+        ]);
+
+        // return view('/master/datatransaksi/tambah_transaksi');
+    }
+
     public function tambah_pegawai()
     {
         return view('/master/datapegawai/tambah_pegawai');

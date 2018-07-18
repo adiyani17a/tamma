@@ -176,7 +176,7 @@
   function lihatLaporanByTgl(){
     var tgl1 = $('#tanggal1').val();
     var tgl2 = $('#tanggal2').val();
-    $('#btn_print').html('<a class="btn btn-primary" href="'+ baseUrl +'/penjualan/print_laporan_penjualan/'+ tgl1 +'/'+ tgl2 +'" '+ 
+    $('#btn_print').html('<a class="btn btn-primary" href="'+ baseUrl +'/penjualan/grosir/print_laporan_penjualan/'+ tgl1 +'/'+ tgl2 +'" '+ 
       'target="_blank"><i class="fa fa-print"></i>&nbsp;Print</a>');
     $('#tbl-laporan').dataTable({
         "destroy": true,

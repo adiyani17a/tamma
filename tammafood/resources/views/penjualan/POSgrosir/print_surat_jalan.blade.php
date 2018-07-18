@@ -75,6 +75,12 @@
 			.button-group{
 				display: none;
 			}
+			@page {
+				size: portrait;
+			}
+		}
+		@page { 
+			margin: 0; 
 		}
 	</style>
 </head>
@@ -82,133 +88,81 @@
 	<div class="button-group">
 		<button onclick="prints()">Print</button>
 	</div>
+
+	<?php $totalDis = 0 ?>
+
 	<div class="div-width">
-		<table class="border-none" width="100%" cellspacing="0" cellpadding="0">
+
+		@for($i=0;$i < count($data);$i++)
+
+			<table class="border-none" width="100%" cellspacing="0" cellpadding="0">
+				<tr>
+					<td class="s16 italic bold" width="35%">TAMMA ROBAH INDONESIA</td>
+					<td class="s16" width="30%"><p class="underline text-center">Surat Jalan</p></td>
+					<td class="s16" width="35%">Surabaya, <text class="bold">{{$sales->s_date}}</text></td>
+				</tr>
+				<tr>
+					<td>Jl. Raya Randu no.74<br>
+						Sidotopo Wetan - Surabaya 60123<br>
+						Telp. 031-51165528<br>
+						Fax. 081331100028-081234561066<br>
+						http:://www.tammafood.com
+					</td>
+					<td class="text-center">{{ $sales->s_note }}</td>
+					<td>Kepada Yth,<br>
+						{{$sales->c_name}}<br>
+						{{$sales->c_address}}
+					</td>
+				</tr>
+			</table>
+			<table width="100%" cellspacing="0" class="tabel" border="1px">
+				<tr class="text-center">
+					<td width="1%">No</td>
+					<td>Kode Barang</td>
+					<td>Nama Barang</td>
+					<td colspan="2">Unit</td>
+				</tr>
+
+				@for($j=0;$j < count($data[$i]);$j++)
+
+					@if(count($data[$i])==10)
+						<tr>
+							<td class="text-center">{{ $j+1 }}</td>
+							<td>{{ $data[$i][$j]->i_code }}</td>
+			            	<td>{{ $data[$i][$j]->i_name }}</td>
+							<td class="text-right" colspan="2">{{$data[$i][$j]->sd_qty}}&nbsp;{{ $data[$i][$j]->m_sname }}</td>
+						</tr>
+					@else
+						<tr>
+							<td class="text-center">{{ $j+1 }}</td>
+							<td>{{ $data[$i][$j]->i_code }}</td>
+			            	<td>{{ $data[$i][$j]->i_name }}</td>
+							<td class="text-right" colspan="2">{{$data[$i][$j]->sd_qty}}&nbsp;{{ $data[$i][$j]->m_sname }}</td>
+						</tr>
+					@endif
+
+				@endfor
+				<?php
+				$hitung = count($data[$i]);
+				$total = 12 - $hitung;
+				$array = [];
+
+					for ($l=0; $l < $total; $l++) { 
+						array_push($array, 'b');
+					}
+				?>
+				@foreach($array as $a)
+					<tr>
+						<td class="text-center empty"></td>
+						<td></td>
+						<td></td>
+						<td class="text-right" colspan="2"></td>
+					</tr>
+				@endforeach
+
 			<tr>
-				<td class="s16 italic bold" width="35%">TAMMA ROBAH INDONESIA</td>
-				<td class="s16" width="30%"><p class="underline text-center">Surat Jalan</p></td>
-				<td class="s16" width="35%">Surabaya, <text class="bold">{{date('d/m/Y')}}</text></td>
-			</tr>
-			<tr>
-				<td>Jl. Raya Randu no.74<br>
-					Sidotopo Wetan - Surabaya 60123<br>
-					Telp. 031-51165528<br>
-					Fax. 081331100028-081234561066<br>
-					http:://www.tammafood.com
-				</td>
-				<td class="text-center">01180525040-PJ</td>
-				<td>Kepada Yth,<br>
-					Fitrah Kebab<br>
-					Jl. Wonosari km.8 sekarsuli no.23 RT 04 RW Sendangtirto Berbah Sleman Yogyakarta
-				</td>
-			</tr>
-			<tr>
-				<td colspan="3" class="bold">*) Setelah Transfer Mohon di Info : 08573190-0003 "SMS PROMO" DAFAFOOD</td>
-			</tr>
-		</table>
-		<table width="100%" cellspacing="0" class="tabel" border="1px">
-			<tr class="text-center">
-				<td>No</td>
-				<td>Kode Barang</td>
-				<td>Nama Barang</td>
-				<td>Unit</td>
-				<td>Harga</td>
-				<td>Total</td>
-				<td>Discount</td>
-			</tr>
-			<tr>
-				<td class="text-center">1</td>
-				<td>005000018</td>
-				<td>Tortilla Catering</td>
-				<td class="text-right">100,00 PAK</td>
-				<td class="text-right">16,000.00</td>
-				<td class="text-right" width="10%">1,600,000.00</td>
-				<td class="text-right" width="10%">0.00</td>
-			</tr>
-			<tr>
-				<td class="text-center empty"></td>
-				<td></td>
-				<td></td>
-				<td class="text-right"></td>
-				<td class="text-right"></td>
-				<td class="text-right" width="10%"></td>
-				<td class="text-right" width="10%"></td>
-			</tr>
-			<tr>
-				<td class="text-center empty"></td>
-				<td></td>
-				<td></td>
-				<td class="text-right"></td>
-				<td class="text-right"></td>
-				<td class="text-right" width="10%"></td>
-				<td class="text-right" width="10%"></td>
-			</tr>
-			<tr>
-				<td class="text-center empty"></td>
-				<td></td>
-				<td></td>
-				<td class="text-right"></td>
-				<td class="text-right"></td>
-				<td class="text-right" width="10%"></td>
-				<td class="text-right" width="10%"></td>
-			</tr>
-			<tr>
-				<td class="text-center empty"></td>
-				<td></td>
-				<td></td>
-				<td class="text-right"></td>
-				<td class="text-right"></td>
-				<td class="text-right" width="10%"></td>
-				<td class="text-right" width="10%"></td>
-			</tr>
-			<tr>
-				<td class="text-center empty"></td>
-				<td></td>
-				<td></td>
-				<td class="text-right"></td>
-				<td class="text-right"></td>
-				<td class="text-right" width="10%"></td>
-				<td class="text-right" width="10%"></td>
-			</tr>
-			<tr>
-				<td class="text-center empty"></td>
-				<td></td>
-				<td></td>
-				<td class="text-right"></td>
-				<td class="text-right"></td>
-				<td class="text-right" width="10%"></td>
-				<td class="text-right" width="10%"></td>
-			</tr>
-			<tr>
-				<td class="text-center empty"></td>
-				<td></td>
-				<td></td>
-				<td class="text-right"></td>
-				<td class="text-right"></td>
-				<td class="text-right" width="10%"></td>
-				<td class="text-right" width="10%"></td>
-			</tr>
-			<tr>
-				<td class="text-center empty"></td>
-				<td></td>
-				<td></td>
-				<td class="text-right"></td>
-				<td class="text-right"></td>
-				<td class="text-right" width="10%"></td>
-				<td class="text-right" width="10%"></td>
-			</tr>
-			<tr>
-				<td class="text-center empty"></td>
-				<td></td>
-				<td></td>
-				<td class="text-right"></td>
-				<td class="text-right"></td>
-				<td class="text-right" width="10%"></td>
-				<td class="text-right" width="10%"></td>
-			</tr>
-			<tr>
-				<td colspan="2" class="border-none-right">Keterangan :</td>
-				<td colspan="3" class="border-none-left border-none-right"></td>
+				<td colspan="3" class="border-none-right">Koli :</td>
+				
 				<td class="border-none-right border-none-left">Jumlah</td>
 				<td class="border-none-left text-right">1,600,000.00</td>
 			</tr>
@@ -222,10 +176,10 @@
 							<li>Klaim dilayani 1x24 jam setelah barang diterima</li>
 						</ul>
 					</div>
-					<div class="float-right text-center" style="margin-top: 15px;height: 60px;width: 40%;position: absolute;right: 0;bottom: 20px;">
+					<div class="float-right text-center" style="margin-top: 15px;height: 60px;width: 40%;position: absolute;right: 0;bottom: 25px;">
 						<div>Hormat Kami</div>
-						<div style="margin:auto;border-bottom: 1px solid black;width: 150px;height: 45px;"></div>
-						<div>Accounting</div>
+						<div style="margin:auto;border-bottom: 1px solid black;width: 150px;height: 55px;"></div>
+						<div>Admin</div>
 					</div>
 				</td>
 				<td colspan="2" class="border-none-left">
@@ -233,6 +187,11 @@
 				</td>
 			</tr>
 		</table>
+
+		@endfor
+
+			
+			
 	</div>
 	<script type="text/javascript">
 		function prints()
