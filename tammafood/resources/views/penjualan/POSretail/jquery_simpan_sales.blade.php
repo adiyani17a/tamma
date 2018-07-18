@@ -18,7 +18,7 @@ function simpan(){
         $("input[name='no_hp']").val('');
         $("textarea[name='alamat']").val('');
         alert('Data Tersimpan');
-        window.location.reload();
+        window.location.href = baseUrl+"/penjualan/POSretail/index";
       }else{
         alert('Mohon melengkapi data!!!');
        $('.simpanCus').removeAttr('disabled','disabled');
@@ -68,13 +68,14 @@ function sal_save_final(){
         }
       }else{
         alert('Mohon melengkapi data!!!');
-       $('.simpanFinal').removeAttr('disabled','disabled');;
+       $('.simpanFinal').removeAttr('disabled','disabled');
       }
       }         
     })
   }
 
 function sal_save_finalUpdate(){
+  $('.simpanFinal').attr('disabled','disabled');
   var bb = $('#save_sform :input').serialize();
   var cc = $('#save_item :input').serialize();
   var data=tableDetail.$('input').serialize();
@@ -142,6 +143,7 @@ function sal_save_draft(){
         $("input[name='s_kembalian']").val('');
         $("input[name='sd_disc_percent[]']").val('');
         $("input[name='sd_disc_value[]']").val('');
+        $("input[name='hasil[]']").val('');
         alert('di simpan sebagai draft');
         window.location.reload();
       }else{

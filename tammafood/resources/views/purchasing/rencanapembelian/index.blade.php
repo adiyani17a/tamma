@@ -174,9 +174,10 @@
           $('#tabel-detail').append('<tr class="tbl_modal_detail_row">'
                           +'<td>'+key+'</td>'
                           +'<td>'+data.data_isi[key-1].i_code+' '+data.data_isi[key-1].i_name+'</td>'
+                          +'<td>'+data.data_isi[key-1].m_sname+'</td>'
                           +'<td>'+data.data_isi[key-1].d_pcspdt_qty+'</td>'
                           +'<td>'+data.data_isi[key-1].d_pcspdt_qtyconfirm+'</td>'
-                          +'<td>'+data.data_stok[key-1].qtyStok+'</td>'
+                          +'<td>'+data.data_stok[key-1].qtyStok+' '+data.data_satuan[key-1]+'</td>'
                           +'</tr>');
           key++;
         });
@@ -210,9 +211,10 @@
           $('#tabel-detail').append('<tr class="tbl_modal_detail_row">'
                           +'<td>'+key+'</td>'
                           +'<td>'+data.data_isi[key-1].i_code+' '+data.data_isi[key-1].i_name+'</td>'
+                          +'<td>'+data.data_isi[key-1].m_sname+'</td>'
                           +'<td>'+data.data_isi[key-1].d_pcspdt_qty+'</td>'
                           +'<td>'+data.data_isi[key-1].d_pcspdt_qtyconfirm+'</td>'
-                          +'<td>'+data.data_stok[key-1].qtyStok+'</td>'
+                          +'<td>'+data.data_stok[key-1].qtyStok+' '+data.data_satuan[key-1]+'</td>'
                           +'</tr>');
           key++;
         });
@@ -247,12 +249,13 @@
           $('#tabel-edit').append('<tr class="tbl_modal_edit_row">'
                           +'<td>'+key+'</td>'
                           +'<td>'+data.data_isi[key-1].i_code+' '+data.data_isi[key-1].i_name+'</td>'
+                          +'<td>'+data.data_isi[key-1].m_sname
+                          +'<input type="hidden" value="'+data.data_isi[key-1].m_sid+'" name="fieldIdSat[]" class="form-control"/></td>'
                           +'<td><input type="text" value="'+data.data_isi[key-1].d_pcspdt_qty+'" name="fieldQty[]" class="form-control numberinput input-sm"/>'
                           +'<input type="hidden" value="'+data.data_isi[key-1].d_pcspdt_id+'" name="fieldIdDt[]" class="form-control"/></td>'
                           +'<td>'+data.data_isi[key-1].d_pcspdt_qtyconfirm+'</td>'
-                          +'<td>'+data.data_isi[key-1].i_sat1+'</td>'
                           +'<td>'+convertDecimalToRupiah(data.data_isi[key-1].d_pcspdt_prevcost)+'</td>'
-                          +'<td>'+data.data_stok[key-1].qtyStok+'</td>'
+                          +'<td>'+data.data_stok[key-1].qtyStok+' '+data.data_satuan[key-1]+'</td>'
                           +'</tr>');
           key++;
         });
@@ -286,12 +289,13 @@
           $('#tabel-edit').append('<tr class="tbl_modal_edit_row">'
                           +'<td>'+key+'</td>'
                           +'<td>'+data.data_isi[key-1].i_code+' '+data.data_isi[key-1].i_name+'</td>'
+                          +'<td>'+data.data_isi[key-1].m_sname
+                          +'<input type="hidden" value="'+data.data_isi[key-1].m_sid+'" name="fieldIdSat[]" class="form-control"/></td>'
                           +'<td><input type="text" value="'+data.data_isi[key-1].d_pcspdt_qty+'" name="fieldQty[]" class="form-control numberinput input-sm"/>'
                           +'<input type="hidden" value="'+data.data_isi[key-1].d_pcspdt_id+'" name="fieldIdDt[]" class="form-control"/></td>'
                           +'<td>'+data.data_isi[key-1].d_pcspdt_qtyconfirm+'</td>'
-                          +'<td>'+data.data_isi[key-1].i_sat1+'</td>'
                           +'<td>'+convertDecimalToRupiah(data.data_isi[key-1].d_pcspdt_prevcost)+'</td>'
-                          +'<td>'+data.data_stok[key-1].qtyStok+'</td>'
+                          +'<td>'+data.data_stok[key-1].qtyStok+' '+data.data_satuan[key-1]+'</td>'
                           +'</tr>');
           key++;
         });
@@ -388,6 +392,7 @@
         {"data" : "DT_Row_Index", orderable: true, searchable: false, "width" : "5%"}, //memanggil column row
         {"data" : "d_pcsp_code", "width" : "10%"},
         {"data" : "i_name", "width" : "15%"},
+        {"data" : "m_sname", "width" : "10%"},
         {"data" : "s_company", "width" : "15%"},
         {"data" : "tglBuat", "width" : "10%"},
         {"data" : "d_pcspdt_qty", "width" : "5%"},
@@ -395,6 +400,9 @@
         {"data" : "d_pcspdt_qtyconfirm", "width" : "5%"},
         {"data" : "status", "width" : "10%"}
       ],
+      /*"rowsGroup": [
+        'first:name'
+      ],*/
       "language": {
         "searchPlaceholder": "Cari Data",
         "emptyTable": "Tidak ada data",

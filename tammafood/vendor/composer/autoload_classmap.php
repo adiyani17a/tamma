@@ -80,7 +80,6 @@ return array(
     'App\\Http\\Middleware\\TrustProxies' => $baseDir . '/app/Http/Middleware/TrustProxies.php',
     'App\\Http\\Middleware\\VerifyCsrfToken' => $baseDir . '/app/Http/Middleware/VerifyCsrfToken.php',
     'App\\Jabatan' => $baseDir . '/app/Jabatan.php',
-    'App\\ManajemenSurat' => $baseDir . '/app/ManajemenSurat.php',
     'App\\Pegawai' => $baseDir . '/app/Pegawai.php',
     'App\\Providers\\AppServiceProvider' => $baseDir . '/app/Providers/AppServiceProvider.php',
     'App\\Providers\\AuthServiceProvider' => $baseDir . '/app/Providers/AuthServiceProvider.php',

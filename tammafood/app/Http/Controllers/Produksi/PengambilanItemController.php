@@ -143,19 +143,19 @@ class PengambilanItemController extends Controller
         ]);
     }
     
-    d_delivery_orderdt::insert($dodt);
+      d_delivery_orderdt::insert($dodt);
 
-  DB::commit();
-  return response()->json([
-        'status' => 'sukses'
+      DB::commit();
+      return response()->json([
+            'status' => 'sukses'
       ]);
     } catch (\Exception $e) {
-  DB::rollback();
-  return response()->json([
-      'status' => 'gagal',
-      'data' => $e
-      ]);
-    }
+      DB::rollback();
+      return response()->json([
+          'status' => 'gagal',
+          'data' => $e
+          ]);
+        }
   }
 
   public function tabelKirim($tgl1, $tgl2){
