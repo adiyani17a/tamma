@@ -12,14 +12,16 @@
 |
 */
 
+Route::group(['middleware' => 'guest'], function () {
 Route::get('/', function () {
     return view('auth.login');
 })->name('index');
 Route::get('login', 'loginController@authenticate');
 Route::post('login', 'loginController@authenticate');
 Route::get('not-allowed', 'mMemberController@notAllowed');
-Route::get('logout', 'mMemberController@logout');
+});
 Route::group(['middleware' => 'auth'], function () {
+Route::get('logout', 'mMemberController@logout');
 Route::get('/home', 'HomeController@home');
 /*Master*/
 Route::get('/master/datasuplier/suplier', 'MasterController@suplier')->name('suplier');
@@ -490,7 +492,7 @@ Route::get('/master/datagroup/edit_group', 'master\groupController@edit_group')-
 Route::get('/master/datagroup/update_group', 'master\groupController@update_group')->name('update_group');
 Route::get('/master/datagroup/datatable_group', 'master\groupController@datatable_group')->name('datatable_group');
 //-[]-belum-[]-//
-}); // End Route Groub middleware auth
+
 
 // route Keuangan (Dirga)
 // akun keuangan route
@@ -511,3 +513,4 @@ Route::get('/master/datatransaksi/edit', 'Keuangan\transaksiController@edit');
 // transaksi keuangan end
 // Route Keuangan End
 
+}); // End Route Groub middleware auth
