@@ -506,18 +506,8 @@
                                 </li>
                                 @endif
 
-                                @if(Auth::user()->punyaAkses('Laporan POS Penjualan Retail','ma_read'))
-                                <li class="{{ Request::is('penjualan/laporanRetail/index') ? 'active' : ''}}"><a href="{{ url('/penjualan/laporanRetail/index') }}"><span class="submenu-title">Laporan Penjualan Retail</span><span class="hidden">Penjualan</span></a>
-                                </li>
-                                @endif
-
                                 @if(Auth::user()->punyaAkses('POS Penjualan Grosir / Online','ma_read'))
                                 <li class="{{ Request::is('penjualan/POSgrosir/index') ? 'active' : ''}}"><a href="{{ url('/penjualan/POSgrosir/index') }}"><span class="submenu-title">POS Penjualan Grosir / Online</span><span class="hidden">Penjualan</span></a>
-                                </li>
-                                @endif
-
-                                 @if(Auth::user()->punyaAkses('Laporan POS Penjualan Grosir / Online','ma_read'))
-                                <li class="{{ Request::is('penjualan/laporanGrosir/index') ? 'active' : ''}}"><a href="{{ url('/penjualan/laporanGrosir/index') }}"><span class="submenu-title">Laporan Penjualan Grosir / Online</span><span class="hidden">Penjualan</span></a>
                                 </li>
                                 @endif
 
@@ -525,10 +515,10 @@
                                 <li class="{{ Request::is('penjualan/monitoringorder/monitoring') ? 'active' : '' || Request::is('penjualan/monitoringorder/*') ? 'active' : '' }}"><a href="{{ url('/penjualan/monitoringorder/monitoring') }}"><span class="submenu-title">Monitoring Order & Stock</span><span class="hidden">Penjualan</span></a>
                                 </li>
                                 @endif
-                                @if(Auth::user()->punyaAkses('Manajemen Return Penjualan','ma_read'))
+{{--                                 @if(Auth::user()->punyaAkses('Manajemen Return Penjualan','ma_read'))
                                 <li class="{{ Request::is('penjualan/manajemenreturn/r_penjualan') ? 'active' : '' || Request::is('penjualan/manajemenreturn/*') ? 'active' : '' }}"><a href="{{ url('/penjualan/manajemenreturn/r_penjualan') }}"><span class="submenu-title">Manajemen Return Penjualan</span><span class="hidden">Penjualan</span></a>
                                 </li>
-                                @endif
+                                @endif --}}
 {{--                                 @if(Auth::user()->punyaAkses('Monitoring Progress Penjualan','ma_read'))
                                 <li class="{{ Request::is('penjualan/monitorprogress/progress') ? 'active' : '' || Request::is('penjualan/monitorprogress/*') ? 'active' : '' }}"><a href="{{ url('/penjualan/monitorprogress/progress') }}"><span class="submenu-title">Monitoring Progress Penjualan</span><span class="hidden">Penjualan</span></a>
                                 </li>
@@ -579,10 +569,7 @@
                                 @if(Auth::user()->punyaAkses('Recruitment','ma_read'))
                                     Recruitment
                                 @endif
-
-                                @if(Auth::user()->punyaAkses('Manajemen Surat','ma_read'))
-                                    Manajemen Surat
-                                @endif                                
+                                
                             </span>
                         </a>
                             <ul class="nav nav-second-level">
@@ -620,7 +607,7 @@
                                 </li>
                                 @endif
                                 @if(Auth::user()->punyaAkses('Manajemen Surat','ma_read'))
-                                <li class="{{ Request::is('hrd/manajemensurat/*') ? 'active' : '' }}"><a href="{{ url('/hrd/manajemensurat/manajemensurat') }}"><span class="submenu-title">Manajemen Surat</span><span class="hidden">HRD</span></a>
+                                <li class="{{ Request::is('hrd/manajemensurat') ? 'active' : '' || Request::is('hrd/manajemensurat/*') ? 'active' : '' }}"><a href="{{ url('/hrd/manajemensurat') }}"><span class="submenu-title">Manajemen surat</span><span class="hidden">HRD</span></a>
                                 </li>
                                 @endif
 

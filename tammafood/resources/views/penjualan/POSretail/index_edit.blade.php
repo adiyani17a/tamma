@@ -43,7 +43,6 @@
                           <label class="control-label tebal" for="no_faktur" >Nomor Faktur</label>
                           <div class="input-group input-group-sm" style="width: 100%;">
                             <input type="text" id="no_faktur" name="s_nota" class="form-control" readonly="true" value="{{$edit[0]->s_note}}">
-                            <input type="hidden" id="no_faktur" name="s_id" class="form-control" readonly="true" value="{{$edit[0]->sales_id}}">
                           </div>
                         </div>    
                       </form>
@@ -65,16 +64,15 @@
                 
                           <div class="form-group">
                             <label class="control-label tebal" for="penjualan">Total Penjualan</label>
-                            <div class="input-group input-group-sm" style="width: 100%;">
-                                <input type="text" name="s_gross" readonly="true" id="totalMapPenjualan" class="form-control" style="text-align: right;" value="Rp. {{ number_format( $edit[0]->s_gross ,2,',','.')}}">
-                              </div>
+                            <div class="input-group input-group-sm " style="width: 100%;">
+                              <input type="text" name="mapPenjualan" readonly="true" id="totalMapPenjualan"" class="form-control total" style="text-align: right;" value="Rp. {{ number_format( $edit[0]->s_net ,2,',','.')}}">
+                            </div>
                           </div>
-                          <input type="hidden" name="s_disc_percent" readonly="true" id="" class="form-control TotDisPercent totalPercentValue" style="text-align: right;" value="0">
-                            <input type="hidden" name="s_disc_value" readonly="true" id="" class="form-control TotDisValue i_priceValue totalPercentValue" style="text-align: right;" value="0" onkeyup="rege(event,'i_priceValue');" onblur="setRupiah(event,'i_priceValue')" onclick="setAwal('event','i_priceValue')">
+
                           <div class="form-group">
                             <label class="control-label tebal" for="discount">Total Discount</label>
                             <div class="input-group input-group-sm" style="width: 100%;">
-                              <input type="text" name="s_disc_value" readonly="true" id="Total_Discount" class="form-control totalPenjualan" style="text-align: right;" value="Rp. {{ number_format( $edit[0]->s_disc_value ,2,',','.')}}">
+                              <input type="text" name="s_disc_value" readonly="true" id="Total_Discount" class="form-control" style="text-align: right;" value="Rp. {{ number_format( $edit[0]->s_disc_value ,2,',','.')}}">
                             </div>
                           </div>
 
@@ -88,7 +86,7 @@
                           <div class="form-group">
                             <label class="control-label tebal" for="discount">Total Amount</label>
                             <div class="input-group input-group-sm " style="width: 100%;">
-                              <input type="text" name="s_net" readonly="true" id="total" class="form-control totalAmount totalPenjualan" style="text-align: right;"  value="Rp. {{ number_format( $edit[0]->s_net ,2,',','.')}}">
+                              <input type="text" name="s_net" readonly="true" id="total" class="form-control totalAmount" style="text-align: right;"  value="Rp. {{ number_format( $edit[0]->s_net ,2,',','.')}}">
                             </div>
                           </div>
 
@@ -105,12 +103,12 @@
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                             <h4 class="modal-title" style="color: white;">Proses Form Penjualan Retail</h4>
                           </div>
-                          <!-- modal pembayaran final -->
+
                           @include('penjualan.POSretail.pembayaran')
-                          <!-- End modal pembayaran final -->
+                            
                           <div class="modal-footer">
                             <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
-                            <button class="btn btn-primary simpanFinal" type="button" onclick="sal_save_finalUpdate()">Proses</button>
+                            <button class="btn btn-primary" type="button" onclick="sal_save_finalUpdate()">Proses</button>
                           </div>
                         </div>
                       </div>

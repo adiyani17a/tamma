@@ -50,8 +50,6 @@
     <script src="{{asset('assets/script/jquery.maskMoney.js')}}"></script>
     <script src="{{asset('assets/script/accounting.min.js')}}"></script>
     <script src="{{ asset('js/iziToast.js') }}"></script>
-    <script src="{{asset('assets/script/jquery.rowspanizer.js')}}"></script>
-    <script src="{{asset('assets/script/dataTables.rowsGroup.js')}}"></script>
     <script type="text/javascript">
         var baseUrl = '{{url('/')}}';
 

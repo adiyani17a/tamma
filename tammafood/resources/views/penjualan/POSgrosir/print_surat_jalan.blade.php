@@ -87,7 +87,7 @@
 			<tr>
 				<td class="s16 italic bold" width="35%">TAMMA ROBAH INDONESIA</td>
 				<td class="s16" width="30%"><p class="underline text-center">Surat Jalan</p></td>
-				<td class="s16" width="35%">Surabaya, <text class="bold">{{$sales->s_date}}</text></td>
+				<td class="s16" width="35%">Surabaya, <text class="bold">{{date('d/m/Y')}}</text></td>
 			</tr>
 			<tr>
 				<td>Jl. Raya Randu no.74<br>
@@ -96,10 +96,10 @@
 					Fax. 081331100028-081234561066<br>
 					http:://www.tammafood.com
 				</td>
-				<td class="text-center">{{ $sales->s_note }}</td>
+				<td class="text-center">01180525040-PJ</td>
 				<td>Kepada Yth,<br>
-					{{$sales->c_name}}<br>
-					{{$sales->c_address}}
+					Fitrah Kebab<br>
+					Jl. Wonosari km.8 sekarsuli no.23 RT 04 RW Sendangtirto Berbah Sleman Yogyakarta
 				</td>
 			</tr>
 			<tr>
@@ -108,40 +108,116 @@
 		</table>
 		<table width="100%" cellspacing="0" class="tabel" border="1px">
 			<tr class="text-center">
-				<td width="1%">No</td>
+				<td>No</td>
 				<td>Kode Barang</td>
 				<td>Nama Barang</td>
-				<td colspan="2">Unit</td>
+				<td>Unit</td>
+				<td>Harga</td>
+				<td>Total</td>
+				<td>Discount</td>
 			</tr>
-			<?php $totalDis = 0 ?>
-			@foreach ($data as $index => $item)
 			<tr>
-				<td class="text-center">{{ $index+1 }}</td>
-				<td>{{ $item->i_code }}</td>
-            	<td>{{ $item->i_name }}</td>
-				<td class="text-right" colspan="2">{{$item->sd_qty}}&nbsp;{{ $item->m_sname }}</td>
+				<td class="text-center">1</td>
+				<td>005000018</td>
+				<td>Tortilla Catering</td>
+				<td class="text-right">100,00 PAK</td>
+				<td class="text-right">16,000.00</td>
+				<td class="text-right" width="10%">1,600,000.00</td>
+				<td class="text-right" width="10%">0.00</td>
 			</tr>
-			@endforeach
-			@foreach($array as $a)
 			<tr>
 				<td class="text-center empty"></td>
 				<td></td>
 				<td></td>
-				<td class="text-right" colspan="2"></td>
+				<td class="text-right"></td>
+				<td class="text-right"></td>
+				<td class="text-right" width="10%"></td>
+				<td class="text-right" width="10%"></td>
 			</tr>
-			@endforeach
 			<tr>
-				<td class="border-none-right">Keterangan :</td>
-				<td colspan="2" class="border-none-left border-none-right"></td>
+				<td class="text-center empty"></td>
+				<td></td>
+				<td></td>
+				<td class="text-right"></td>
+				<td class="text-right"></td>
+				<td class="text-right" width="10%"></td>
+				<td class="text-right" width="10%"></td>
+			</tr>
+			<tr>
+				<td class="text-center empty"></td>
+				<td></td>
+				<td></td>
+				<td class="text-right"></td>
+				<td class="text-right"></td>
+				<td class="text-right" width="10%"></td>
+				<td class="text-right" width="10%"></td>
+			</tr>
+			<tr>
+				<td class="text-center empty"></td>
+				<td></td>
+				<td></td>
+				<td class="text-right"></td>
+				<td class="text-right"></td>
+				<td class="text-right" width="10%"></td>
+				<td class="text-right" width="10%"></td>
+			</tr>
+			<tr>
+				<td class="text-center empty"></td>
+				<td></td>
+				<td></td>
+				<td class="text-right"></td>
+				<td class="text-right"></td>
+				<td class="text-right" width="10%"></td>
+				<td class="text-right" width="10%"></td>
+			</tr>
+			<tr>
+				<td class="text-center empty"></td>
+				<td></td>
+				<td></td>
+				<td class="text-right"></td>
+				<td class="text-right"></td>
+				<td class="text-right" width="10%"></td>
+				<td class="text-right" width="10%"></td>
+			</tr>
+			<tr>
+				<td class="text-center empty"></td>
+				<td></td>
+				<td></td>
+				<td class="text-right"></td>
+				<td class="text-right"></td>
+				<td class="text-right" width="10%"></td>
+				<td class="text-right" width="10%"></td>
+			</tr>
+			<tr>
+				<td class="text-center empty"></td>
+				<td></td>
+				<td></td>
+				<td class="text-right"></td>
+				<td class="text-right"></td>
+				<td class="text-right" width="10%"></td>
+				<td class="text-right" width="10%"></td>
+			</tr>
+			<tr>
+				<td class="text-center empty"></td>
+				<td></td>
+				<td></td>
+				<td class="text-right"></td>
+				<td class="text-right"></td>
+				<td class="text-right" width="10%"></td>
+				<td class="text-right" width="10%"></td>
+			</tr>
+			<tr>
+				<td colspan="2" class="border-none-right">Keterangan :</td>
+				<td colspan="3" class="border-none-left border-none-right"></td>
 				<td class="border-none-right border-none-left">Jumlah</td>
-				<td class="border-none-left text-right">{{ number_format($dataTotal[0]->total,2,'.',',')}}</td>
+				<td class="border-none-left text-right">1,600,000.00</td>
 			</tr>
 			<tr>
-				<td colspan="3" class="vertical-baseline border-none-right" style="position: relative;">
+				<td colspan="5" class="vertical-baseline border-none-right" style="position: relative;">
 					
 					<div class="float-left" style="width: 40vw;">
 						<ul style="padding-left: -15px;">
-							<li>Barang yang sudah dibeli tidak bisa dikembalikan lagi kecuali ada perjanjian</li>
+							<li>Barang yang sudah dibeli tidak bisa dikemblikan lagi kecuali ada perjanjian</li>
 							<li>Keterlambatan, kehilangan atau kerusakan barang selama pengiriman tidak menjadi tanggung jawab kami.</li>
 							<li>Klaim dilayani 1x24 jam setelah barang diterima</li>
 						</ul>

@@ -87,7 +87,7 @@
 			<tr>
 				<td class="s16 italic bold" width="35%">TAMMA ROBAH INDONESIA</td>
 				<td class="s16" width="30%"><p class="underline text-center">FAKTUR</p></td>
-				<td class="s16" width="35%">Surabaya, <text class="bold">{{ $sales->s_date }}</text></td>
+				<td class="s16" width="35%">Surabaya, <text class="bold">{{date('d/m/Y')}}</text></td>
 			</tr>
 			<tr>
 				<td>Jl. Raya Randu no.74<br>
@@ -95,10 +95,10 @@
 					Telp. 031-51165528<br>
 					Fax. 081331100028-081234561066
 				</td>
-				<td class="text-center">{{ $sales->s_note }}</td>
+				<td class="text-center">01180525040-PJ</td>
 				<td>Kepada Yth,<br>
-					{{$sales->c_name}}<br>
-					{{$sales->c_address}}
+					Fitrah Kebab<br>
+					Jl. Wonosari km.8 sekarsuli no.23 RT 04 RW Sendangtirto Berbah Sleman Yogyakarta
 				</td>
 			</tr>
 		</table>
@@ -112,27 +112,15 @@
 				<td>Total</td>
 				<td>Discount</td>
 			</tr>
-			<?php $totalDis = 0 ?>
-			@foreach ($data as $index => $item)
 			<tr>
-				<td class="text-center">{{ $index+1 }}</td>
-				<td>{{ $item->i_code }}</td>
-            	<td>{{ $item->i_name }}</td>
-				<td class="text-right">{{$item->sd_qty}}&nbsp;{{ $item->m_sname }}</td>
-				<td class="text-right">{{ number_format($item->sd_price,2,'.',',') }}</td>
-				<td class="text-right" width="10%">{{ number_format($item->sd_total,2,'.',',') }}</td>
-				<td class="text-right" width="10%">
-				@if ($item->sd_disc_percent == '0' || $item->sd_disc_percent == null)
-                  {{ number_format($item->sd_disc_value,2,'.',',')}}
-                  <?php $totalDis += $item->sd_disc_value ?>
-                @else
-                  {{ number_format(($item->sd_qty*$item->sd_price)*($item->sd_disc_percent/100),2,'.',',') }}
-                  <?php $totalDis += ($item->sd_qty*$item->sd_price)*($item->sd_disc_percent/100) ?>
-                @endif
-            	</td>
+				<td class="text-center">1</td>
+				<td>005000018</td>
+				<td>Tortilla Catering</td>
+				<td class="text-right">100,00 PAK</td>
+				<td class="text-right">16,000.00</td>
+				<td class="text-right" width="10%">1,600,000.00</td>
+				<td class="text-right" width="10%">0.00</td>
 			</tr>
-			@endforeach
-			@foreach($array as $a)
 			<tr>
 				<td class="text-center empty"></td>
 				<td></td>
@@ -142,57 +130,90 @@
 				<td class="text-right" width="10%"></td>
 				<td class="text-right" width="10%"></td>
 			</tr>
-			@endforeach
+			<tr>
+				<td class="text-center empty"></td>
+				<td></td>
+				<td></td>
+				<td class="text-right"></td>
+				<td class="text-right"></td>
+				<td class="text-right" width="10%"></td>
+				<td class="text-right" width="10%"></td>
+			</tr>
+			<tr>
+				<td class="text-center empty"></td>
+				<td></td>
+				<td></td>
+				<td class="text-right"></td>
+				<td class="text-right"></td>
+				<td class="text-right" width="10%"></td>
+				<td class="text-right" width="10%"></td>
+			</tr>
+			<tr>
+				<td class="text-center empty"></td>
+				<td></td>
+				<td></td>
+				<td class="text-right"></td>
+				<td class="text-right"></td>
+				<td class="text-right" width="10%"></td>
+				<td class="text-right" width="10%"></td>
+			</tr>
+			<tr>
+				<td class="text-center empty"></td>
+				<td></td>
+				<td></td>
+				<td class="text-right"></td>
+				<td class="text-right"></td>
+				<td class="text-right" width="10%"></td>
+				<td class="text-right" width="10%"></td>
+			</tr>
+			<tr>
+				<td class="text-center empty"></td>
+				<td></td>
+				<td></td>
+				<td class="text-right"></td>
+				<td class="text-right"></td>
+				<td class="text-right" width="10%"></td>
+				<td class="text-right" width="10%"></td>
+			</tr>
+			<tr>
+				<td class="text-center empty"></td>
+				<td></td>
+				<td></td>
+				<td class="text-right"></td>
+				<td class="text-right"></td>
+				<td class="text-right" width="10%"></td>
+				<td class="text-right" width="10%"></td>
+			</tr>
+			<tr>
+				<td class="text-center empty"></td>
+				<td></td>
+				<td></td>
+				<td class="text-right"></td>
+				<td class="text-right"></td>
+				<td class="text-right" width="10%"></td>
+				<td class="text-right" width="10%"></td>
+			</tr>
+			<tr>
+				<td class="text-center empty"></td>
+				<td></td>
+				<td></td>
+				<td class="text-right"></td>
+				<td class="text-right"></td>
+				<td class="text-right" width="10%"></td>
+				<td class="text-right" width="10%"></td>
+			</tr>
 			<tr>
 				<td colspan="2" class="border-none-right">Keterangan :</td>
 				<td colspan="3" class="border-none-left border-none-right"></td>
 				<td class="border-none-right border-none-left">Jumlah</td>
-				<td class="border-none-left text-right">{{ number_format($dataTotal[0]->total,2,'.',',')}}</td>
+				<td class="border-none-left text-right">1,600,000.00</td>
 			</tr>
 			<tr>
 				<td colspan="5" class="vertical-baseline border-none-right" style="position: relative;">
-					<?php
-					function penyebut($nilai) {
-						$nilai = abs($nilai);
-						$huruf = array("", "Satu", "Dua", "Tiga", "Empat", "Lima", "Enam", "Tujuh", "Delapan", "Sembilan", "Sepuluh", "Sebelas");
-						$temp = "";
-						if ($nilai < 12) {
-							$temp = " ". $huruf[$nilai];
-						} else if ($nilai <20) {
-							$temp = penyebut($nilai - 10). " Belas";
-						} else if ($nilai < 100) {
-							$temp = penyebut($nilai/10)." Puluh". penyebut($nilai % 10);
-						} else if ($nilai < 200) {
-							$temp = " Seratus" . penyebut($nilai - 100);
-						} else if ($nilai < 1000) {
-							$temp = penyebut($nilai/100) . " Ratus" . penyebut($nilai % 100);
-						} else if ($nilai < 2000) {
-							$temp = " Seribu" . penyebut($nilai - 1000);
-						} else if ($nilai < 1000000) {
-							$temp = penyebut($nilai/1000) . " Ribu" . penyebut($nilai % 1000);
-						} else if ($nilai < 1000000000) {
-							$temp = penyebut($nilai/1000000) . " Juta" . penyebut($nilai % 1000000);
-						} else if ($nilai < 1000000000000) {
-							$temp = penyebut($nilai/1000000000) . " Milyar" . penyebut(fmod($nilai,1000000000));
-						} else if ($nilai < 1000000000000000) {
-							$temp = penyebut($nilai/1000000000000) . " Trilyun" . penyebut(fmod($nilai,1000000000000));
-						}     
-						return $temp;
-					}
-				 
-					function terbilang($nilai) {
-						if($nilai<0) {
-							$hasil = "Minus ". trim(penyebut($nilai));
-						} else {
-							$hasil = trim(penyebut($nilai));
-						}     		
-						return $hasil;
-					}
-					?>
-					<div class="top s16">Terbilang : <?php echo terbilang($dataTotal[0]->total); ?> Rupiah</div>
+					<div class="top s16">Terbilang : Satu Juta Enam Ratus Ribu Rupiah</div>
 					<div class="float-left" style="width: 40vw;">
 						<ul style="padding-left: -15px;">
-							<li>Barang yang sudah dibeli tidak bisa dikembalikan lagi kecuali ada perjanjian</li>
+							<li>Barang yang sudah dibeli tidak bisa dikemblikan lagi kecuali ada perjanjian</li>
 							<li>Keterlambatan, kehilangan atau kerusakan barang selama pengiriman tidak menjadi tanggung jawab kami.</li>
 							<li>Klaim dilayani 1x24 jam setelah barang diterima</li>
 						</ul>
@@ -208,11 +229,11 @@
 						<table class="border-none" width="100%" cellspacing="0">
 							<tr>
 								<td width="50%">Total Diskon</td>
-								<td width="50%" class="text-right">{{ $totalDis }}</td>
+								<td width="50%" class="text-right">0.00</td>
 							</tr>
 							<tr>
 								<td width="50%">Sub Total</td>
-								<td width="50%" class="text-right">{{ number_format($dataTotal[0]->total,2,'.',',')}}</td>
+								<td width="50%" class="text-right">1,600,000.00</td>
 							</tr>
 							<tr>
 								<td width="50%">PPN</td>
@@ -220,7 +241,7 @@
 							</tr>
 							<tr>
 								<td width="50%">Total</td>
-								<td width="50%" class="text-right">{{ number_format($dataTotal[0]->total,2,'.',',')}}</td>
+								<td width="50%" class="text-right">1,600,000.00</td>
 							</tr>
 						</table>
 					</div>

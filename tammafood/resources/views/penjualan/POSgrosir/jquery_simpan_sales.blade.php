@@ -17,7 +17,6 @@ function simpan(){
         $("input[name='no_hp']").val('');
         $("textarea[name='alamat']").val('');
         alert('Data Tersimpan');
-        window.location.href = baseUrl+"/penjualan/POSgrosir/index";
         }else{
         alert('Mohon melengkapi data!!!');
        $('.simpanCus').removeAttr('disabled','disabled');
@@ -57,13 +56,10 @@ function sal_save_final(){
             $("input[name='sp_nominal[]']").val('');
             var id = $('#idfatkur').val();
             if (confirm("Berhasil!, Ingin langsung cetak nota?")) {
-              window.open(baseUrl+"/penjualan/POSgrosir/print/"+id,"_blank");
-              window.open(baseUrl+"/penjualan/POSgrosir/print_surat_jalan/"+id,"_blank");
-              window.location.href = baseUrl+"/penjualan/POSgrosir/index";
-
-            } else {
-              window.location.href = baseUrl+"/penjualan/POSgrosir/index";
+              window.location.href = "/tammalocal/penjualan/POSgrosir/print/"+id;
             }
+              // alert('Berhasil');
+              // window.location.reload();
           }else{
             alert('Mohon melengkapi data penjualan!!!');
             $('.simpanFinal').removeAttr('disabled','disabled');
@@ -93,7 +89,7 @@ function sal_save_onProgres(){
           $("input[name='sd_disc_percent[]']").val('');
           $("input[name='sd_disc_value[]']").val('');
           alert('Berhasil Menyimpan On_Progres');
-          window.location.href = baseUrl+"/penjualan/POSgrosir/index";
+          window.location.reload();
         }else{
           alert('Mohon melengkapi data penjualan!!!');
           $('.simpanProgres').removeAttr('disabled','disabled');
@@ -128,7 +124,7 @@ function sal_save_draft(){
         $("input[name='sd_disc_percent[]']").val('');
         $("input[name='sd_disc_value[]']").val('');
         alert('di simpan sebagai draft');
-        window.location.href = baseUrl+"/penjualan/POSgrosir/index";
+        window.location.reload();
       }else{
         alert('Mohon melengkapi data penjualan!!!');
         $('.simpanDraft').removeAttr('disabled','disabled');;
@@ -163,17 +159,11 @@ function sal_save_finalUpdate(){
           $("input[name='s_kembalian']").val('');
           $("input[name='sd_disc_percent[]']").val('');
           $("input[name='sd_disc_value[]']").val('');
-          var id = $('#no_fakturId').val();
-          if (confirm("Berhasil!, Ingin langsung cetak nota?")) {
-              window.open(baseUrl+"/penjualan/POSgrosir/print/"+id,"_blank");
-              window.open(baseUrl+"/penjualan/POSgrosir/print_surat_jalan/"+id,"_blank");
-              window.location.href = baseUrl+"/penjualan/POSgrosir/index";
-          } else {
-              window.location.href = baseUrl+"/penjualan/POSgrosir/index";
-            }
+          alert('Berhasil');
+          window.location.href = "/tamma/penjualan/POSgrosir/index";
         }else{
           alert('Mohon melengkapi data penjualan!!!');
-          $('.simpanFinal').removeAttr('disabled','disabled');;
+          $('.simpanDraft').removeAttr('disabled','disabled');;
         }        
     }
   });
@@ -206,7 +196,7 @@ function sal_save_onProgresUpdate(){
           $("input[name='sd_disc_percent[]']").val('');
           $("input[name='sd_disc_value[]']").val('');
           alert('Berhasil');
-          window.location.href = baseUrl+"/penjualan/POSgrosir/index";
+          window.location.href = "/tamma/penjualan/POSgrosir/index";
         }else{
           alert('Mohon melengkapi data penjualan!!!');
           $('.simpanProgres').removeAttr('disabled','disabled');

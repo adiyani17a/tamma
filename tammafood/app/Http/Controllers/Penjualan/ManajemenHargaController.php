@@ -17,14 +17,13 @@ class ManajemenHargaController extends Controller
 	public function tabelHarga(){
 		$data = m_price::select(  'm_pid',
                               'i_code',
-                              'm_gname',
+                              'i_group',
                               'm_psell1',
                               'm_psell2',
                               'm_psell3',
                               'i_type',
                               'i_name')
 			->join('m_item','i_id','=','m_pitem')
-      ->join('m_group','m_group.m_gcode','=','i_code_group')
       ->orWhere('i_type','BJ')
       ->orWhere('i_type','BP')
 			->get();

@@ -423,6 +423,7 @@ class ComposerStaticInit75db98b3b9ff0a46f4b3e4622572f25e
         'App\\Http\\Middleware\\TrustProxies' => __DIR__ . '/../..' . '/app/Http/Middleware/TrustProxies.php',
         'App\\Http\\Middleware\\VerifyCsrfToken' => __DIR__ . '/../..' . '/app/Http/Middleware/VerifyCsrfToken.php',
         'App\\Jabatan' => __DIR__ . '/../..' . '/app/Jabatan.php',
+        'App\\ManajemenSurat' => __DIR__ . '/../..' . '/app/ManajemenSurat.php',
         'App\\Pegawai' => __DIR__ . '/../..' . '/app/Pegawai.php',
         'App\\Providers\\AppServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AppServiceProvider.php',
         'App\\Providers\\AuthServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AuthServiceProvider.php',
