@@ -16,7 +16,6 @@ class d_purchasingreturn_dt extends Model
         'd_pcsrdt_idpcsr',
         'd_pcsrdt_smdetail',
         'd_pcsrdt_item',
-        'd_pcsrdt_sat',
         'd_pcsrdt_qty',
         'd_pcsrdt_qtyconfirm',
         'd_pcsrdt_price',

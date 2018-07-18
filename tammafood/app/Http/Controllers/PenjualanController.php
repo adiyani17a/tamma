@@ -102,7 +102,7 @@ class PenjualanController extends Controller
 
     public function r_penjualan()
     {
-        return view('/penjualan/manajemenreturn/index');
+        return view('/penjualan/manajemenreturn/r_penjualan');
     }
 
     public function progress()

@@ -85,7 +85,19 @@ class JabatanController extends Controller
     }
     public function editJabatan($id){
         $jabatan = DB::table('m_jabatan')->where('c_id', $id)->first();
+        $divisi = DB::table('m_divisi')->get();
+        // dd($jabatan);
+        return view('hrd/datajabatan/edit_jabatan', ['jabatan' => $jabatan, 'divisi' => $divisi]);
+    }
+    public function updateJabatan(Request $request, $id){
+        $input = $request->except('_token', '_method');
+        $data = Jabatan::where('c_id', $id)->update($input);
 
-        return view('hrd/datajabatan/edit_jabatan', ['jabatan' => $jabatan]);
+        return redirect('hrd/datajabatan');
+    }
+    public function deleteJabatan($id){
+        $data = DB::table('m_jabatan')->where('c_id', $id)->delete();
+
+        return redirect('hrd/datajabatan');
     }
 }
