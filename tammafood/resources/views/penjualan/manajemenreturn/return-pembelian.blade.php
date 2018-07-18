@@ -72,7 +72,7 @@
                   <div class="col-md-12 col-sm-12 col-xs-12" style="margin-top:15px;" id="header_form">
                     <form method="post" id="form_return_pembelian">
                       {{ csrf_field() }}
-                      <div class="col-md-12 col-sm-12 col-xs-12 tamma-bg" style="margin-bottom: 10px; padding-top:10px;padding-bottom:20px;" id="appending-form">
+                      <div class="col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 10px; padding-top:10px;padding-bottom:20px;" id="appending-form">
                       </div>
                     </form>
                   </div>
@@ -242,7 +242,8 @@
       {
         //remove child div inside appending-form before appending
         $('#appending-form div').remove();
-        $('#appending-form').append('<div class="col-md-2 col-sm-3 col-xs-12">'
+        $('#appending-form').append('<div class="col-md-12 col-sm-12 col-xs-12 tamma-bg"            style="margin-bottom: 10px; padding-top:25px;padding-bottom:20px;">'
+                                    +'<div class="col-md-2 col-sm-3 col-xs-12">'
                                       +'<label class="tebal">Nota Penjualan</label>'
                                     +'</div>'
                                     +'<div class="col-md-4 col-sm-9 col-xs-12">'
@@ -278,7 +279,7 @@
                                       +'</div>'
                                     +'</div>'
                                     +'<div class="col-md-2 col-sm-3 col-xs-12">'
-                                      +'<label class="tebal">Nama Pelanggan</label>'
+                                      +'<label class="tebal">Detail Pelanggan</label>'
                                     +'</div>'
                                     +'<div class="col-md-4 col-sm-9 col-xs-12">'
                                       +'<div class="form-group">'
@@ -295,14 +296,6 @@
                                       +'</div>'
                                     +'</div>'
                                     +'<div class="col-md-2 col-sm-3 col-xs-12">'
-                                      +'<label class="tebal">E Mail Pelanggan</label>'
-                                    +'</div>'
-                                    +'<div class="col-md-4 col-sm-9 col-xs-12">'
-                                      +'<div class="form-group">'
-                                        +'<input type="text" name="c_email" readonly="" class="form-control input-sm" id="c_email">'
-                                      +'</div>'
-                                    +'</div>'
-                                    +'<div class="col-md-2 col-sm-3 col-xs-12">'
                                       +'<label class="tebal">S Gross</label>'
                                     +'</div>'
                                     +'<div class="col-md-4 col-sm-9 col-xs-12">'
@@ -310,29 +303,12 @@
                                         +'<input type="text" name="s_gross" readonly="" class="form-control input-sm" id="s_gross">'
                                       +'</div>'
                                     +'</div>'
-                                    
-                                    +'<div class="col-md-2 col-sm-3 col-xs-12">'
-                                      +'<label class="tebal">Nomor Hp</label>'
-                                    +'</div>'
-                                    +'<div class="col-md-4 col-sm-9 col-xs-12">'
-                                      +'<div class="form-group">'
-                                        +'<input type="text" name="c_hp" readonly="" class="form-control input-sm" id="c_hp">'
-                                      +'</div>'
-                                    +'</div>'
                                     +'<div class="col-md-2 col-sm-3 col-xs-12">'
                                       +'<label class="tebal">Total Diskon</label>'
                                     +'</div>'
                                     +'<div class="col-md-4 col-sm-9 col-xs-12">'
                                       +'<div class="form-group">'
-                                        +'<input type="text" name="total_diskon" readonly="" class="form-control input-sm" id="total_diskon">'
-                                      +'</div>'
-                                    +'</div>'
-                                    +'<div class="col-md-2 col-sm-3 col-xs-12">'
-                                      +'<label class="tebal">Alamat Pelanggan</label>'
-                                    +'</div>'
-                                    +'<div class="col-md-4 col-sm-9 col-xs-12">'
-                                      +'<div class="form-group">'
-                                        +'<input type="text" name="c_address" readonly="" class="form-control input-sm" id="c_address">'
+                                        +'<input type="text" name="total_diskon" readonly="" class="form-control input-sm totalGross" id="total_diskon">'
                                       +'</div>'
                                     +'</div>'
                                     +'<div class="col-md-2 col-sm-3 col-xs-12">'
@@ -340,15 +316,7 @@
                                     +'</div>'
                                     +'<div class="col-md-4 col-sm-9 col-xs-12">'
                                       +'<div class="form-group">'
-                                        +'<input type="text" name="s_net" readonly="" class="form-control input-sm" id="s_net">'
-                                      +'</div>'
-                                    +'</div>'
-                                    +'<div class="col-md-2 col-sm-3 col-xs-12">'
-                                      +'<label class="tebal">Kelas Pelanggan</label>'
-                                    +'</div>'
-                                    +'<div class="col-md-4 col-sm-9 col-xs-12">'
-                                      +'<div class="form-group">'
-                                        +'<input type="text" name="c_class" readonly="" class="form-control input-sm" id="c_class">'
+                                        +'<input type="text" name="s_net" readonly="" class="form-control input-sm totalGross" id="s_net">'
                                       +'</div>'
                                     +'</div>'
                                     +'<div class="col-md-2 col-sm-3 col-xs-12">'
@@ -359,6 +327,8 @@
                                         +'<input type="text" name="pm_name" readonly="" class="form-control input-sm" id="pm_name">'
                                       +'</div>'
                                     +'</div>'
+                                    +'</div>'
+
                                     +'<div class="table-responsive">'
                                       +'<table class="table tabelan table-bordered" id="tabel-return-sales" width="100%">'
                                         +'<form method="GET" id="form_create">'
@@ -423,17 +393,13 @@
           type: "GET",
           dataType: "JSON",
           success: function(response){
-            $('#c_name').val(response[0].c_name);
-            $('#c_email').val(response[0].c_email);
-            $('#c_hp').val(response[0].c_hp);
-            $('#c_address').val(response[0].c_address);
-            $('#c_class').val(response[0].c_class);
-              if (response[0].c_type == 'RT') {
-                $('#c_type').val('Retail');
-              }else{
-                $('#c_type').val('Grosir / Online');
-              }
-            $('#c_address').val(response[0].c_address);
+            var c_name =  response[0].c_name;
+            var c_hp = response[0].c_hp;
+            var c_address = response[0].c_address;
+            if (c_address == null) {
+              c_address = '';
+            }
+            $('#c_name').val( c_name +'. '+ c_hp +'. '+ c_address);
               var s_gross = parseInt(response[0].s_gross);
               s_gross = convertToRupiah(s_gross);
             $('#s_gross').val(s_gross); 
@@ -518,6 +484,7 @@
         $('input.qtyreturn:text:eq('+getIndex+')').val(0);
       a++;
       }) 
+      autoJumlahNet();
   }
 
   function discvalue(inField, e){
@@ -532,20 +499,22 @@
         hargaItem = convertToAngka(hargaItem);
         x = hargaItem * qty;
         hasil = x - dValue;
-        if (dValue >= hasil) {
+        if (dValue >= x) {
           dValue = 0;
           $('input.discvalue:text:eq('+getIndex+')').val(0);
         }
-        if (dValue == '') {
+        if (dValue == '' || dValue == '0') {
           $('input.discpercent:text:eq('+getIndex+')').attr("readonly",false);
         }else{
           $('input.discpercent:text:eq('+getIndex+')').attr("readonly",true);
         }
-        qtyReturn = $('input.qtyreturn:text:eq('+getIndex+')').val(0);
+        $('input.qtyreturn:text:eq('+getIndex+')').val(0);
         hasil = convertToRupiah(hasil);
         $('input.totalHarga:text:eq('+getIndex+')').val(hasil);
+        $('input.hasilReturn:text:eq('+getIndex+')').val(0);
       a++;
       }) 
+      autoJumlahNet();
   }
 
   function qtyReturn(inField, e){
@@ -554,27 +523,133 @@
     var qty = $('input.qty-item:text:eq('+getIndex+')').val();
     var totalHarga = $('input.totalHarga:text:eq('+getIndex+')').val();
     totalHarga = convertToAngka(totalHarga);
+    var hargaItem = $('input.harga-item:text:eq('+getIndex+')').val();
+    hargaItem = convertToAngka(hargaItem);
+    var valuePersen = $('input.value-persen:text:eq('+getIndex+')').val();
+    var dValue = $('input.dValue-item:text:eq('+getIndex+')').val();
+    dValue = convertToAngka(dValue);
     var x = qty - dataInput;
     if (x < 0 ) {
-      $('input.qty-return:text:eq('+getIndex+')').val(qty);
       $('input.qtyreturn:text:eq('+getIndex+')').val(0);
       $('input.hasilReturn:text:eq('+getIndex+')').val(0);
-      
+      var hasilA = $('input.qty-return:text:eq('+getIndex+')').val(qty);
+      //discpercent(inField, e)
+        var dataInput = $('input.discpercent:text:eq('+getIndex+')').val();
+        var dPersen =$('input.dPersen-item:text:eq('+getIndex+')').val();
+        x = hargaItem * qty;
+        if (dPersen >= 100) {
+          dPersen = 0;
+          $('input.discpercent:text:eq('+getIndex+')').val(0);
+        }
+        hasil = x * dPersen/100;
+        $('input.value-persen:text:eq('+getIndex+')').val(hasil);
+        //end discpercent(inField, e)
+      dataInput = $('input.qtyreturn:text:eq('+getIndex+')').val();
+        if (isNaN(dValue)) {
+          dValue=0;
+        }
+      hasilC = (qty * hargaItem - hasil - dValue) / qty * dataInput;
+      totalAkhir = (qty * hargaItem - hasil - dValue) - hasilC;
+      hasilC = convertToRupiah(hasilC);
+      totalAkhir = convertToRupiah(totalAkhir);
+      $('input.hasilReturn:text:eq('+getIndex+')').val(hasilC);
+      $('input.totalHarga:text:eq('+getIndex+')').val(totalAkhir);
     }else if (x == 10) {
-      $('input.qty-return:text:eq('+getIndex+')').val(qty);
-      
+      var hasilB = $('input.qty-return:text:eq('+getIndex+')').val(qty);
+      //discpercent(inField, e)
+        var dataInput = $('input.discpercent:text:eq('+getIndex+')').val();
+        var dPersen =$('input.dPersen-item:text:eq('+getIndex+')').val();
+        x = hargaItem * qty;
+        if (dPersen >= 100) {
+          dPersen = 0;
+          $('input.discpercent:text:eq('+getIndex+')').val(0);
+        }
+        hasil = x * dPersen/100;
+        $('input.value-persen:text:eq('+getIndex+')').val(hasil);
+        //end discpercent(inField, e)
+      dataInput = $('input.qtyreturn:text:eq('+getIndex+')').val();
+        if (isNaN(dValue)) {
+          dValue=0;
+        }
+      hasilC = (qty * hargaItem - hasil - dValue) / qty * dataInput;
+      totalAkhir = (qty * hargaItem - hasil - dValue) - hasilC;
+      hasilC = convertToRupiah(hasilC);
+      totalAkhir = convertToRupiah(totalAkhir);
+      $('input.hasilReturn:text:eq('+getIndex+')').val(hasilC);
+      $('input.totalHarga:text:eq('+getIndex+')').val(totalAkhir);
     }else{
-      $('input.qty-return:text:eq('+getIndex+')').val(x);
-      hargaReturn = dataInput * totalHarga * qty / 100;
-      hargaReturn = convertToRupiah(hargaReturn);
-      $('input.hasilReturn:text:eq('+getIndex+')').val(hargaReturn);
-      hargaReturn = convertToAngka(hargaReturn);
-      totalHarga = totalHarga - hargaReturn;
-      totalHarga = convertToRupiah(totalHarga);
-      alert(totalHarga);
-      $('input.totalHarga:text:eq('+getIndex+')').val(totalHarga);
+      var Return = $('input.qty-return:text:eq('+getIndex+')').val(x);
+        //discpercent(inField, e)
+        var dataInput = $('input.discpercent:text:eq('+getIndex+')').val();
+        var dPersen =$('input.dPersen-item:text:eq('+getIndex+')').val();
+        x = hargaItem * qty;
+        if (dPersen >= 100) {
+          dPersen = 0;
+          $('input.discpercent:text:eq('+getIndex+')').val(0);
+        }
+        hasil = x * dPersen/100;
+        $('input.value-persen:text:eq('+getIndex+')').val(hasil);
+        //end discpercent(inField, e)
+        dataInput = $('input.qtyreturn:text:eq('+getIndex+')').val();
+        if (isNaN(dValue)) {
+          dValue=0;
+        }
+      hasilC = (qty * hargaItem - hasil - dValue) / qty * dataInput;
+      totalAkhir = (qty * hargaItem - hasil - dValue) - hasilC;
+      hasilC = convertToRupiah(hasilC);
+      totalAkhir = convertToRupiah(totalAkhir);
+      $('input.hasilReturn:text:eq('+getIndex+')').val(hasilC);
+      $('input.totalHarga:text:eq('+getIndex+')').val(totalAkhir);
     }    
   }
+
+function autoJumlahNet(){
+  var inputs = document.getElementsByClassName( 'totalNet' ),
+  hasil  = [].map.call(inputs, function( input ) {
+      return input.value;
+  });
+  var total = 0;
+  for (var i = hasil.length - 1; i >= 0; i--) {
+    hasil[i] = convertToAngka(hasil[i]);
+    hasil[i] = parseInt(hasil[i]);
+    total = total + hasil[i];
+  }
+  total = convertToRupiah(total);
+  $('#s_net').val(total);
+  autoTotalGross();
+  }  
+
+function autoJumlahDiskon(){
+  var inputs = document.getElementsByClassName( 'totalPersen' ),
+  hasil  = [].map.call(inputs, function( input ) {
+    if(input.value == '') input.value = 0;
+      return input.value;
+  });
+  var total = 0;
+  for (var i = hasil.length - 1; i >= 0; i--) {
+    hasil[i] = convertToAngka(hasil[i]);
+    hasil[i] = parseInt(hasil[i]);
+    total = total + hasil[i];
+  }
+  total = convertToRupiah(total);
+  $('#total_diskon').val(total);
+  autoTotalGross();
+  } 
+
+function autoTotalGross(){
+  var inputs = document.getElementsByClassName( 'totalGross' ),
+  hasil  = [].map.call(inputs, function( input ) {
+      return input.value;
+  });
+  var total = 0;
+  for (var i = hasil.length - 1; i >= 0; i--) {
+    hasil[i] = convertToAngka(hasil[i]);
+    hasil[i] = parseInt(hasil[i]);
+    total = total + hasil[i];
+  }
+  total = convertToRupiah(total);
+  $('#s_gross').val(total);
+  } 
 
   function convertToRupiah(angka) {
     var rupiah = '';        
@@ -592,6 +667,9 @@
   $(document).on('focus', '.field_harga',  function(e){
       var harga = convertToAngka($(this).val());
       if (isNaN(harga)) {
+        harga = 0;
+      }
+      if (harga == 0) {
         harga = 0;
       }
       $(this).val(harga);
