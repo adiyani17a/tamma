@@ -323,7 +323,9 @@ Route::get('/penjualan/laporanGrosir/index', 'Penjualan\LaporanGrosirController@
 Route::get('/penjualan/laporanGrosir/index', 'Penjualan\LaporanGrosirController@index');
 Route::get('/penjualan/laporanGrosir/get-data-laporan/{tgl1}/{tgl2}', 'Penjualan\LaporanGrosirController@getDataLaporan');
 // Ari
-Route::get('/penjualan/print_laporan_penjualan/{tgl1}/{tgl2}', 'Penjualan\LaporanRetailController@print_laporan_penjualan');
+Route::get('/penjualan/retail/print_laporan_penjualan/{tgl1}/{tgl2}', 'Penjualan\LaporanRetailController@print_laporan_penjualan');
+Route::get('/penjualan/grosir/print_laporan_penjualan/{tgl1}/{tgl2}', 'Penjualan\LaporanGrosirController@print_laporan_penjualan');
+
 // End irA
 //Return Penjualan Mahmud
 Route::get('/penjualan/returnpenjualan/tabel', 'Penjualan\ManajemenReturnPenjualanController@tabel');

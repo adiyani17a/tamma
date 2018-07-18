@@ -76,6 +76,9 @@
 			
 
 		}
+		.button-group{
+			position: fixed;
+		}
 		@media print {
 			.button-group{
 				display: none;
@@ -99,8 +102,8 @@
 			border-right: hidden !important;
 		}
 		table.tabel tr {
-			page-break-inside:avoid; 
-			page-break-after:auto;
+			page-break-inside:auto; 
+			page-break-after:avoid;
 		}
 		table.tabel {
 			page-break-inside:auto;
@@ -116,12 +119,6 @@
 	
 		<div class="div-width">
 		
-		
-
-		<table width="100%" cellpadding="2px" class="tabel" border="1px" style="margin-bottom: 10px;">
-			<thead>
-				<tr>
-					<td colspan="13" class="no-border-head">
 						<div class="s16 bold">
 							TAMMA ROBAH INDONESIA
 						</div>
@@ -131,13 +128,15 @@
 						</div>
 						<div class="bold" style="margin-top: 15px;">
 							Laporan : Penjualan Per Barang - Detail <br>
-							Pembayaran : Kredit PPn : Gabungan <br>
-							Periode : {{$tgl1}} s/d {{$tgl2}}
+							Pembayaran : Kredit &nbsp;&nbsp;&nbsp; PPn : Gabungan <br>
+							Periode : {{date('d M Y', strtotime($tgl1))}} s/d {{date('d M Y', strtotime($tgl2))}}
 						</div>
-					</td>
-				</tr>
+		
+
+		<table width="100%" cellpadding="2px" class="tabel" border="1px" style="margin-bottom: 10px;">
+			<thead>
 				<tr>
-					<th>Nama Barang</th>
+					<th width="100px">Nama Barang</th>
 					<th>No Bukti</th>
 					<th>Tanggal</th>
 					<th>Jatuh Tempo</th>
@@ -186,11 +185,12 @@
 
 						@if($j == count($penjualan[$i]) - 1)
 							<tr>
-								<td class="text-right bold" colspan="4">Total</td>
-								<td class="text-right bold">{{number_format(1,2,',','.')}}</td>
-								<td colspan="4" class="text-right bold">Total</td>
-								<td class="text-right bold">{{number_format($data_sum[$i]->total_penjualan,2,',','.')}}</td>
+								<td class="text-right bold" colspan="6">Total</td>
+								<td class="text-right bold">{{number_format($data_sum[$i]->total_qty,2,',','.')}}</td>
 								<td class="text-right bold">Total</td>
+								<td class="text-right bold">{{number_format(0,2,',','.')}}</td>
+								<td class="text-right bold">{{number_format($data_sum[$i]->total_penjualan,2,',','.')}}</td>
+								<td class="text-right bold">{{number_format(0,2,',','.')}}</td>
 								<td class="text-right bold">{{number_format($data_sum[$i]->total_penjualan,2,',','.')}}</td>
 							</tr>
 						@endif
