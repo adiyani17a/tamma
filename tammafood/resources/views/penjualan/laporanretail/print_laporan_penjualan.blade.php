@@ -89,18 +89,23 @@
 		@page { 
 			margin:0; 
 		}
-		.tabel th{
+		table.tabel th{
 			white-space: nowrap;
-			width: 1%;
+			width: auto;
 		}
 		.no-border-head{
 			border-top:hidden !important;
 			border-left: hidden !important;
 			border-right: hidden !important;
 		}
-		.tabel table , .table tr {
-			page-break-inside: auto;
+		table.tabel tr {
+			page-break-inside:avoid; 
+			page-break-after:auto;
 		}
+		table.tabel {
+			page-break-inside:auto;
+		}
+
 
 	</style>
 </head>
@@ -132,7 +137,7 @@
 					</td>
 				</tr>
 				<tr>
-					<th width="175px !important">Nama Barang</th>
+					<th>Nama Barang</th>
 					<th>No Bukti</th>
 					<th>Tanggal</th>
 					<th>Jatuh Tempo</th>
@@ -156,7 +161,7 @@
 					@for($j=0;$j<count($penjualan[$i]);$j++)
 						<tr>
 							@if($j == 0)
-							<td rowspan="{{count($penjualan[$i]) + 1}}">{{$penjualan[$i][$j]->i_code}} - {{$penjualan[$i][$j]->i_name}}</td>
+							<td class="border-none" rowspan="{{count($penjualan[$i]) + 1}}">{{$penjualan[$i][$j]->i_code}} - {{$penjualan[$i][$j]->i_name}}</td>
 							@endif
 							<td class="text-center">{{$penjualan[$i][$j]->s_note}}</td>
 							<td class="text-center">{{$penjualan[$i][$j]->s_date}}</td>
