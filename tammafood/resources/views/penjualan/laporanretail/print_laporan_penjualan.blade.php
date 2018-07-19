@@ -89,9 +89,7 @@
 				size: landscape
 			}
 		}
-		@page { 
-			margin:0; 
-		}
+		
 		table.tabel th{
 			white-space: nowrap;
 			width: auto;
@@ -133,7 +131,7 @@
 						</div>
 		
 
-		<table width="100%" cellpadding="2px" class="tabel" border="1px" style="margin-bottom: 10px;">
+		<table width="100%" cellpadding="3px" class="tabel" border="1px" style="margin-bottom: 10px;">
 			<thead>
 				<tr>
 					<th width="100px">Nama Barang</th>
@@ -188,7 +186,7 @@
 								<td class="text-right bold" colspan="6">Total</td>
 								<td class="text-right bold">{{number_format($data_sum[$i]->total_qty,2,',','.')}}</td>
 								<td class="text-right bold">Total</td>
-								<td class="text-right bold">{{number_format(0,2,',','.')}}</td>
+								<td class="text-right bold">{{number_format($data_sum[$i]->total_disc,2,',','.')}}</td>
 								<td class="text-right bold">{{number_format($data_sum[$i]->total_penjualan,2,',','.')}}</td>
 								<td class="text-right bold">{{number_format(0,2,',','.')}}</td>
 								<td class="text-right bold">{{number_format($data_sum[$i]->total_penjualan,2,',','.')}}</td>
@@ -209,7 +207,7 @@
 				<tr>
 					<td>Diskon</td>
 					<td>:</td>
-					<td>{{number_format(0,2,',','.')}}</td>
+					<td>{{number_format($data_sum_all[0]->total_semua_disc_penjualan,2,',','.')}}</td>
 				</tr>
 				<tr>
 					<td>DPP</td>
@@ -217,7 +215,7 @@
 					<td>{{number_format($data_sum_all[0]->total_semua_penjualan,2,',','.')}}</td>
 				</tr>
 				<tr>
-					<td>Diskon</td>
+					<td>PPn</td>
 					<td>:</td>
 					<td>{{number_format(0,2,',','.')}}</td>
 				</tr>
