@@ -14,6 +14,7 @@ class d_sales_dt extends Model
       						 'sd_qty', 
       						 'sd_price',
       						 'sd_disc_percent',
+                   'sd_disc_vpercent',
       						 'sd_disc_value',
       						 'sd_total'];
 		public $timestamps = false;
