@@ -142,7 +142,7 @@
 					<th>Sat</th>
 					<th>Qty</th>
 					<th>Harga</th>
-					<th>Diskon %</th>
+					<th colspan="2">Diskon %</th>
 					<th>Diskon Rp</th>
 					<th>DPP</th>
 					<th>PPN</th>
@@ -174,7 +174,8 @@
 									{{number_format($penjualan[$i][$j]->sd_price,2,',','.')}}
 								</div>
 							</td>
-							<td class="text-right">{{number_format($penjualan[$i][$j]->sd_disc_percent,2,',','.')}}</td>
+							<td class="text-right">{{$penjualan[$i][$j]->sd_disc_percent}} %</td>
+							<td class="text-right">{{number_format($penjualan[$i][$j]->sd_disc_vpercent,2,',','.')}}</td>
 							<td class="text-right">{{number_format($penjualan[$i][$j]->sd_disc_value,2,',','.')}}</td>
 							<td class="text-right">{{number_format($penjualan[$i][$j]->sd_total,2,',','.')}}</td>
 							<td class="text-right">{{number_format(0,2,',','.')}}</td>
@@ -185,8 +186,8 @@
 							<tr>
 								<td class="text-right bold" colspan="5">Total</td>
 								<td class="text-right bold">{{number_format($data_sum[$i]->total_qty,2,',','.')}}</td>
-								<td class="text-right bold" colspan="2">Total</td>
-								
+								<td class="text-right bold"></td>
+								<td class="text-right bold" colspan="2">{{number_format($data_sum[$i]->total_disc_per,2,',','.')}}</td>
 								<td class="text-right bold">{{number_format($data_sum[$i]->total_disc_val,2,',','.')}}</td>
 								<td class="text-right bold">{{number_format($data_sum[$i]->total_penjualan,2,',','.')}}</td>
 								<td class="text-right bold">{{number_format(0,2,',','.')}}</td>
