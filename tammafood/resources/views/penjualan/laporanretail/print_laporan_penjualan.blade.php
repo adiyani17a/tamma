@@ -185,8 +185,8 @@
 							<tr>
 								<td class="text-right bold" colspan="5">Total</td>
 								<td class="text-right bold">{{number_format($data_sum[$i]->total_qty,2,',','.')}}</td>
-								<td class="text-right bold">Total</td>
-								<td class="text-right bold">{{number_format($data_sum[$i]->total_disc,2,',','.')}}</td>
+								<td class="text-right bold" colspan="2">Total</td>
+								
 								<td class="text-right bold">{{number_format($data_sum[$i]->total_disc_val,2,',','.')}}</td>
 								<td class="text-right bold">{{number_format($data_sum[$i]->total_penjualan,2,',','.')}}</td>
 								<td class="text-right bold">{{number_format(0,2,',','.')}}</td>
@@ -206,14 +206,14 @@
 		<div class="float-left" style="width: 30vw;">
 			<table class="border-none" width="100%">
 				<tr>
-					<td>Diskon %</td>
-					<td>:</td>
-					<td>{{number_format($data_sum_all[0]->total_semua_disc_penjualan,2,',','.')}}</td>
-				</tr>
-				<tr>
 					<td>Diskon Rp.</td>
 					<td>:</td>
 					<td>{{number_format($data_sum_all[0]->total_semua_disc_val_penjualan,2,',','.')}}</td>
+				</tr>
+				<tr>
+					<td>Diskon</td>
+					<td>:</td>
+					<td>{{number_format($data_sum_all[0]->total_semua_vdisc_penjualan,2,',','.')}}</td>
 				</tr>
 				<tr>
 					<td>DPP</td>
