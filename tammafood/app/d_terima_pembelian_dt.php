@@ -12,8 +12,9 @@ class d_terima_pembelian_dt extends Model
     const UPDATED_AT = 'd_tbdt_updated';
     
     protected $fillable = [
-        'd_tbdt_id', 
+        'd_tbdt_id',
         'd_tbdt_idtb', 
+        'd_tbdt_smdetail', 
         'd_tbdt_item',
         'd_tbdt_sat',
         'd_tbdt_idpcsdt',
@@ -21,7 +22,6 @@ class d_terima_pembelian_dt extends Model
         'd_tbdt_price',
         'd_tbdt_pricetotal',
         'd_tbdt_date_received',
-        'd_tbdt_time_received',
         'd_tbdt_created',
         'd_tbdt_updated'
     ];

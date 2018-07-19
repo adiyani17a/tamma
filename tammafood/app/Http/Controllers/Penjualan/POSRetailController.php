@@ -331,6 +331,7 @@ class POSRetailController extends Controller
               'sd_qty' => $qtyItem[$i],
               'sd_price' => ($this->konvertRp($request->harga_item[$i])),
               'sd_disc_percent' => $request->sd_disc_percent[$i],
+              'sd_disc_vpercent' => $request->totalValuePercent[$i],
               'sd_disc_value' => ($this->konvertRp($request->sd_disc_value[$i])),
               'sd_total' => ($this->konvertRp($request->hasil[$i]))
             ]);
@@ -451,6 +452,7 @@ class POSRetailController extends Controller
               'sd_qty' => $request->sd_qty[$i],
               'sd_price' => ($this->konvertRp($request->harga_item[$i])),
               'sd_disc_percent' => $request->sd_disc_percent[$i],
+              'sd_disc_vpercent' => $request->totalValuePercent[$i],
               'sd_disc_value' => ($this->konvertRp($request->sd_disc_value[$i])),
               'sd_total' => ($this->konvertRp($request->hasil[$i]))
           ]);
@@ -512,6 +514,7 @@ class POSRetailController extends Controller
               'sd_qty' => $qtyItem[$i],
               'sd_price' => ($this->konvertRp($request->harga_item[$i])),
               'sd_disc_percent' => $request->sd_disc_percent[$i],
+              'sd_disc_vpercent' => $request->totalValuePercent[$i],
               'sd_disc_value' => ($this->konvertRp($request->sd_disc_value[$i])),
               'sd_total' => ($this->konvertRp($request->hasil[$i]))
             ]);
@@ -772,7 +775,7 @@ class POSRetailController extends Controller
 
   
       
-      return view('penjualan.POSRetail.print_faktur', compact('data', 'dataTotal', 'sales'));
+      return view('penjualan.POSretail.print_faktur', compact('data', 'dataTotal', 'sales'));
   }
   public function print_surat_jalan($id){
     $sales = d_sales::select( 'c_name',
@@ -802,7 +805,7 @@ class POSRetailController extends Controller
       ->where('sd_sales',$id)->get();
       
 
-      return view('penjualan.POSRetail.print_surat_jalan', compact('data', 'dataTotal', 'sales'));
+      return view('penjualan.POSretail.print_surat_jalan', compact('data', 'dataTotal', 'sales'));
   }
 }
 

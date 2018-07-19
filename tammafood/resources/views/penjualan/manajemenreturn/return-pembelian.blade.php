@@ -288,11 +288,11 @@
                                       +'</div>'
                                     +'</div>'
                                     +'<div class="col-md-2 col-sm-3 col-xs-12">'
-                                      +'<label class="tebal">Jenis Pelanggan</label>'
+                                      +'<label class="tebal">Total Return</label>'
                                     +'</div>'
                                     +'<div class="col-md-4 col-sm-9 col-xs-12">'
                                       +'<div class="form-group">'
-                                        +'<input type="text" name="c_type" readonly="" class="form-control input-sm" id="c_type" value="">'
+                                        +'<input type="text" name="t_return" readonly="" class="form-control input-sm" id="t_return" value="">'
                                       +'</div>'
                                     +'</div>'
                                     +'<div class="col-md-2 col-sm-3 col-xs-12">'
@@ -515,6 +515,7 @@
       a++;
       }) 
       autoJumlahNet();
+      autoTotalReturn();
   }
 
   function qtyReturn(inField, e){
@@ -600,7 +601,8 @@
       totalAkhir = convertToRupiah(totalAkhir);
       $('input.hasilReturn:text:eq('+getIndex+')').val(hasilC);
       $('input.totalHarga:text:eq('+getIndex+')').val(totalAkhir);
-    }    
+    }
+    autoTotalReturn();    
   }
 
 function autoJumlahNet(){
@@ -617,6 +619,7 @@ function autoJumlahNet(){
   total = convertToRupiah(total);
   $('#s_net').val(total);
   autoTotalGross();
+  autoTotalReturn();
   }  
 
 function autoJumlahDiskon(){
@@ -634,6 +637,7 @@ function autoJumlahDiskon(){
   total = convertToRupiah(total);
   $('#total_diskon').val(total);
   autoTotalGross();
+  autoTotalReturn();
   } 
 
 function autoTotalGross(){
@@ -650,6 +654,21 @@ function autoTotalGross(){
   total = convertToRupiah(total);
   $('#s_gross').val(total);
   } 
+
+function autoTotalReturn(){
+  var inputs = document.getElementsByClassName( 'hasilReturn' ),
+  hasil  = [].map.call(inputs, function( input ) {
+      return input.value;
+  });
+  var total = 0;
+  for (var i = hasil.length - 1; i >= 0; i--) {
+    hasil[i] = convertToAngka(hasil[i]);
+    hasil[i] = parseInt(hasil[i]);
+    total = total + hasil[i];
+  }
+  total = convertToRupiah(total);
+  $('#t_return').val(total);
+  }
 
   function convertToRupiah(angka) {
     var rupiah = '';        

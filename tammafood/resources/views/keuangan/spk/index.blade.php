@@ -90,7 +90,6 @@
         {data: 'f_scale', name: 'f_scale'},
         {data: '-', name: '-', orderable: false},
         {data: '-', name: '-', orderable: false},
-        // {data: 'action', name: 'action', orderable: false, searchable: false},
         ],
       });
   }

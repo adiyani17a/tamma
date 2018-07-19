@@ -1,4 +1,4 @@
-<div id="report-tab" class="tab-pane fade in active">
+<div id="draft-tab" class="tab-pane fade">
   <div class="panel-body">
     <div class="row">
 
@@ -17,7 +17,7 @@
       </div>
 
       <div class="col-md-3 col-sm-3 col-xs-12" align="center">
-        <button class="btn btn-primary btn-sm btn-flat autoCari" type="button" onclick="lihatLaporanByTgl()">
+        <button class="btn btn-primary btn-sm btn-flat autoCari" type="button" onclick="lihatLaporanByTglDraft()">
           <strong>
             <i class="fa fa-search" aria-hidden="true"></i>
           </strong>
@@ -36,33 +36,32 @@
           <option value="confirm" class="form-control">Tampilkan Data : Disetujui</option>
         </select>
       </div> -->
-      <div id="btn_print" class="col-md-3 col-sm-3 col-xs-12" align="right">
 
-      </div>
+
       
-        <div class="table-responsive">
-          <table class="table tabelan table-hover table-bordered data-table" width="100%" cellspacing="0" id="tbl-laporan">
-            <thead>
-              <tr>
-                <th class="wd-15p">Nama Barang</th>
-                <th class="wd-10p">No Bukti</th>
-                <th class="wd-10p">Tanggal</th>
-                <th class="wd-10p">Jatuh Tempo</th>
-                <th class="wd-15p">Customer</th>
-                <th class="wd-5p">Kurs</th>
-                <th class="wd-5p">Sat</th>
-                <th class="wd-5p">Qty</th>
-                <th class="wd-10p">Harga</th>
-                <th class="wd-5p">Diskon</th>
-                <th class="wd-5p">Disc (%)</th>
-                <th class="wd-10p">Total</th>
-              </tr>
-            </thead>
+      <div class="table-responsive">
+        <table class="table tabelan table-hover table-bordered data-table" width="100%" cellspacing="0" id="tbl-draft">
+          <thead>
+            <tr>
+              <th class="wd-15p">Nama Barang</th>
+              <th class="wd-10p">No Bukti</th>
+              <th class="wd-10p">Tanggal</th>
+              <th class="wd-10p">Jatuh Tempo</th>
+              <th class="wd-15p">Customer</th>
+              <th class="wd-5p">Kurs</th>
+              <th class="wd-5p">Sat</th>
+              <th class="wd-5p">Qty</th>
+              <th class="wd-10p">Harga</th>
+              <th class="wd-5p">Diskon</th>
+              <th class="wd-5p">Disc (%)</th>
+              <th class="wd-10p">Total</th>
+            </tr>
+          </thead>
 
-            <tbody>
-            </tbody>
-          </table> 
-        </div>
+          <tbody>
+          </tbody>
+        </table> 
+      </div>
       
                 
     </div>

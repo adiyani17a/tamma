@@ -296,6 +296,7 @@ class POSGrosirController extends Controller
               'sd_qty' => $request->sd_qty[$i],
               'sd_price' => ($this->konvertRp($request->harga_item[$i])),
               'sd_disc_percent' => $request->sd_disc_percent[$i],
+              'sd_disc_vpercent' => $request->totalValuePercent[$i],
               'sd_disc_value' => ($this->konvertRp($request->sd_disc_value[$i])),
               'sd_total' => ($this->konvertRp($request->hasil[$i]))
             ]); 
@@ -364,6 +365,7 @@ class POSGrosirController extends Controller
               'sd_price'=>($this->konvertRp($request->harga_item[$i])),
               'sd_total'=>($this->konvertRp($request->hasil[$i])),
               'sd_disc_percent'=>$request->sd_disc_percent[$i],
+              'sd_disc_vpercent' => $request->totalValuePercent[$i],
               'sd_disc_value'=> ($this->konvertRp($request->sd_disc_value[$i]))
 
           ]);
@@ -430,6 +432,7 @@ class POSGrosirController extends Controller
             'sd_qty' => $request->sd_qty[$i],
             'sd_price' => ($this->konvertRp($request->harga_item[$i])),
             'sd_disc_percent' => $request->sd_disc_percent[$i],
+            'sd_disc_vpercent' => $request->totalValuePercent[$i],
             'sd_disc_value' => ($this->konvertRp($request->sd_disc_value[$i])),
             'sd_total' => ($this->konvertRp($request->hasil[$i]))
         ]);
@@ -485,7 +488,18 @@ class POSGrosirController extends Controller
           
         ]);
 
-    for ($i=0; $i < count($request->kode_item); $i++) {
+            $d_sales_dt = d_sales_dt::insert([
+              'sd_sales' => $s_id,
+              'sd_detailid' => $i + 1,
+              'sd_item' => $kodeItem[$i],
+              'sd_qty' => $qtyItem[$i],
+              'sd_price' => ($this->konvertRp($request->harga_item[$i])),
+              'sd_disc_percent' => $request->sd_disc_percent[$i],
+              'sd_disc_vpercent' => $request->totalValuePercent[$i],
+              'sd_disc_value' => ($this->konvertRp($request->sd_disc_value[$i])),
+              'sd_total' => ($this->konvertRp($request->hasil[$i]))
+            ]);
+          
 
           if ($request->sd_sales[$i] == null ){ 
             
@@ -520,7 +534,7 @@ class POSGrosirController extends Controller
         ]);
           
           }
-      }
+      
      // }
    });
 
@@ -563,6 +577,7 @@ class POSGrosirController extends Controller
           'sd_qty' => $qtyItem[$i],
           'sd_price' => ($this->konvertRp($request->harga_item[$i])),
           'sd_disc_percent' => $request->sd_disc_percent[$i],
+          'sd_disc_vpercent' => $request->totalValuePercent[$i],
           'sd_disc_value' => ($this->konvertRp($request->sd_disc_value[$i])),
           'sd_total' => ($this->konvertRp($request->hasil[$i]))
         ]);
@@ -1085,15 +1100,15 @@ class POSGrosirController extends Controller
 
   
       
-      return view('penjualan.POSGrosir.print_faktur', compact('data', 'dataTotal', 'sales'));
+      return view('penjualan.POSgrosir.print_faktur', compact('data', 'dataTotal', 'sales'));
   }
 
   public function suratjalan(){
-    return view('penjualan.POSGrosir.suratjalan');
+    return view('penjualan.POSgrosir.suratjalan');
   }
 
   public function lpacking(){
-    return view('penjualan.POSGrosir.lpacking');
+    return view('penjualan.POSgrosir.lpacking');
   }
   public function print_surat_jalan($id){
     $sales = d_sales::select( 'c_name',
@@ -1123,7 +1138,7 @@ class POSGrosirController extends Controller
       ->where('sd_sales',$id)->get();
       
 
-      return view('penjualan.POSGrosir.print_surat_jalan', compact('data', 'dataTotal', 'sales'));
+      return view('penjualan.POSgrosir.print_surat_jalan', compact('data', 'dataTotal', 'sales'));
   }
 
   public function print_awas_barang_panas($id){

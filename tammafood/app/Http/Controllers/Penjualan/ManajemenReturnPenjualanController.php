@@ -46,7 +46,9 @@ class ManajemenReturnPenjualanController extends Controller
   	$formatted_tags = array();
     $term = trim($request->q);
     if (empty($term)) {
-      $sup = d_sales::where('s_status','=','FN')->limit(5)->get();
+      $sup = d_sales::where('s_status','=','FN')
+        ->limit(50)
+        ->get();
       foreach ($sup as $val) {
           $formatted_tags[] = [ 'id' => $val->s_id, 
                                 'text' => $val->s_note .'-'. 
@@ -57,7 +59,14 @@ class ManajemenReturnPenjualanController extends Controller
     }
     else
     {
-      $sup = d_sales::where('s_status','=','FN')->where('s_note', 'LIKE', '%'.$term.'%')->limit(5)->get();
+      $sup = d_sales::where('s_status','=','FN')
+        ->where(function ($b) use ($term) {
+                $b->orWhere('s_note', 'LIKE', '%'.$term.'%')
+                  ->orWhere('s_channel', 'LIKE', '%'.$term.'%')
+                  ->orWhere('s_date', 'LIKE', '%'.$term.'%');
+            })
+        ->limit(50)
+        ->get();
       foreach ($sup as $val) {
           $formatted_tags[] = [ 'id' => $val->s_id, 
                                 'text' => $val->s_note .'-'. 
@@ -74,9 +83,7 @@ class ManajemenReturnPenjualanController extends Controller
     $data = d_sales::select('c_name',
                             'c_hp',
                             'c_address',
-                            'c_class',
                             'c_type',
-                            'c_email',
                             's_gross',
                             's_disc_percent',
                             's_disc_value',
@@ -111,10 +118,10 @@ class ManajemenReturnPenjualanController extends Controller
                       class="form-control text-right qtyreturn" 
                       value="0"
                       type="text"
-                      onkeyup="qtyReturn(this, event);">
+                      onkeyup="qtyReturn(this, event);autoJumlahNet();">
               <input  name="sd_qty-return[]"  
                       class="form-control text-right qty-return"
-                      style="display:" 
+                      style="display:none" 
                       value="0">';
     })
     ->editColumn('sd_price', function ($data) {
@@ -128,12 +135,12 @@ class ManajemenReturnPenjualanController extends Controller
                 <input  name="sd_disc_percent[]" 
                         class="form-control text-right dPersen-item discpercent" 
                         value="'.$data->sd_disc_percent.'" 
-                        onkeyup="discpercent(this, event);">
+                        onkeyup="discpercent(this, event);autoJumlahDiskon()">
                         <span class="input-group-addon" id="basic-addon1">%</span>
               </div>
                 <input  name="value_disc_percent[]" 
-                        class="form-control value-persen" 
-                        style="display:"
+                        class="form-control value-persen totalPersen" 
+                        style="display:none"
                         value="0">';
       }else if ($data->sd_disc_percent == 0) {
         return '<div class="input-group">
@@ -141,24 +148,24 @@ class ManajemenReturnPenjualanController extends Controller
                         class="form-control text-right dPersen-item discpercent" 
                         value="'.$data->sd_disc_percent.'" 
                         readonly
-                        onkeyup="discpercent(this, event);">
+                        onkeyup="discpercent(this, event);autoJumlahDiskon()">
                         <span class="input-group-addon" id="basic-addon1">%</span>
               </div>
                 <input  name="value_disc_percent[]" 
-                        class="form-control value-persen" 
-                        style="display:"
+                        class="form-control value-persen totalPersen" 
+                        style="display:none"
                         value="0">';
       }else{
         return '<div class="input-group">
                 <input  name="sd_disc_percent[]" 
                         class="form-control text-right dPersen-item discpercent" 
                         value="'.$data->sd_disc_percent.'" 
-                        onkeyup="discpercent(this, event);">
+                        onkeyup="discpercent(this, event);autoJumlahDiskon()">
                         <span class="input-group-addon" id="basic-addon1">%</span>
               </div>
                 <input  name="value_disc_percent[]" 
-                        class="form-control value-persen" 
-                        style="display:"
+                        class="form-control value-persen totalPersen" 
+                        style="display:none"
                         value="0">';
       }
       
@@ -166,21 +173,24 @@ class ManajemenReturnPenjualanController extends Controller
     ->editColumn('sd_disc_value', function ($data) {
       if ($data->sd_disc_value == 0.00 && $data->sd_disc_percent == 0) {
         return '<input  name="sd_disc_value[]" 
-                      class="form-control text-right field_harga discvalue dValue-item" 
-                      onkeyup="discvalue(this, event);"
+                      type="text"
+                      class="form-control text-right field_harga discvalue dValue-item totalPersen" 
+                      onkeyup="discvalue(this, event);autoJumlahDiskon()"
                       value="Rp. '.number_format($data->sd_disc_value,2,',','.').'">';
 
       }else if($data->sd_disc_value == 0.00 ) {
         return '<input  name="sd_disc_value[]" 
-                      class="form-control text-right field_harga discvalue dValue-item" 
-                      onkeyup="discvalue(this, event);"
+                      type="text"
+                      class="form-control text-right field_harga discvalue dValue-item totalPersen" 
+                      onkeyup="discvalue(this, event);autoJumlahDiskon()"
                       readonly
                       value="Rp. '.number_format($data->sd_disc_value,2,',','.').'">';
 
       }else{
         return '<input  name="sd_disc_value[]" 
-                      class="form-control text-right field_harga discvalue dValue-item" 
-                      onkeyup="discvalue(this, event);"
+                      type="text"
+                      class="form-control text-right field_harga discvalue dValue-item totalPersen" 
+                      onkeyup="discvalue(this, event);autoJumlahDiskon()"
                       value="Rp. '.number_format($data->sd_disc_value,2,',','.').'">';
       }
       
@@ -188,11 +198,11 @@ class ManajemenReturnPenjualanController extends Controller
     ->editColumn('sd_return', function ($data) {
       return '<input  name="sd_return[]" readonly 
                       class="form-control text-right hasilReturn" 
-                      value="">';
+                      value="0">';
     })
     ->editColumn('sd_total', function ($data) {
       return '<input  name="sd_total[]" readonly 
-                      class="form-control text-right totalHarga" 
+                      class="form-control text-right totalHarga totalNet" 
                       value="Rp. '.number_format($data->sd_total,2,',','.').'">';
     })
     ->rawColumns([  'sd_qty',
