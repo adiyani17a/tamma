@@ -589,6 +589,7 @@ class POSRetailController extends Controller
               'sd_qty' => $qtyItem[$i],
               'sd_price' => ($this->konvertRp($request->harga_item[$i])),
               'sd_disc_percent' => $request->sd_disc_percent[$i],
+              'sd_disc_vpercent' => $request->totalValuePercent[$i],
               'sd_disc_value' => ($this->konvertRp($request->sd_disc_value[$i])),
               'sd_total' => ($this->konvertRp($request->hasil[$i]))
             ]);
