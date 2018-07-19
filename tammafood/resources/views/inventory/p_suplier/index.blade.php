@@ -130,6 +130,7 @@
           $('#head_supplier_id').val(data.data_header[0].s_id);
           $('#head_total_gross').val(convertDecimalToRupiah(totalPembelianGross));
           $('#head_total_disc').val(convertDecimalToRupiah(totalDisc));
+          $('#head_total_tax').val(taxPercent+' %');
           $('#head_total_nett').val(convertDecimalToRupiah(totalPembelianNett));
           $('#head_total_terima').val(convertDecimalToRupiah(totalPembelianNett));
           //persentase diskon berdasarkan total harga bruto
@@ -149,7 +150,7 @@
                             +'<td style="text-align:center">'+key+'</td>'
                             +'<td><input type="text" value="'+data.data_isi[key-1].i_code+' | '+data.data_isi[key-1].i_name+'" name="fieldNamaItem[]" class="form-control input-sm" readonly/>'
                             +'<input type="hidden" value="'+data.data_isi[key-1].i_id+'" name="fieldItemId[]" class="form-control input-sm"/>'
-                            +'<input type="hidden" value="'+data.data_isi[key-1].d_pcsdt_id+'" name="fieldIdTerimaDet[]" class="form-control input-sm"/></td>'
+                            +'<input type="hidden" value="'+data.data_isi[key-1].d_pcsdt_id+'" name="fieldIdPurchaseDet[]" class="form-control input-sm"/></td>'
                             +'<td><input type="text" value="'+qtyCost+'" name="fieldQty[]" class="form-control numberinput input-sm field_qty" readonly/></td>'
                             +'<td><input type="text" value="'+qtyCost+'" name="fieldQtyterima[]" class="form-control numberinput input-sm field_qty_terima" id="'+i+'"/></td>'
                             +'<td><input type="text" value="'+data.data_isi[key-1].m_sname+'" name="fieldSatuanTxt[]" class="form-control input-sm" readonly/>'
@@ -174,22 +175,22 @@
       });
     });
 
-    /*$('#tabel-modal-terima').dataTable({
+    $('#tbl-daftar').dataTable({
         "destroy": true,
         "processing" : true,
         "serverside" : true,
         "ajax" : {
-          url: baseUrl + "/inventory/p_suplier/tabel-modal-terima",
+          url: baseUrl + "/inventory/p_suplier/get-datatable-index",
           type: 'GET'
         },
         "columns" : [
           {"data" : "DT_Row_Index", orderable: true, searchable: false, "width" : "5%"}, //memanggil column row
           {"data" : "tglBuat", "width" : "10%"},
-          {"data" : "d_pcsp_code", "width" : "10%"},
-          {"data" : "d_pcsp_staff", "width" : "10%"},
+          {"data" : "d_tb_code", "width" : "10%"},
+          {"data" : "m_name", "width" : "10%"},
           {"data" : "s_company", "width" : "15%"},
-          {"data" : "tglConfirm", "width" : "10%"},
-          {"data" : "status", "width" : "10%"},
+          {"data" : "d_pcs_code", "width" : "10%"},
+          {"data" : "d_pcs_date_created", "width" : "10%"},
           {"data" : "action", orderable: false, searchable: false, "width" : "13%"}
         ],
         "language": {
@@ -204,7 +205,7 @@
                 "next": "Selanjutnya",
              }
         }
-    });*/
+    });
 
     //force integer input in textfield
     $('input.numberinput').bind('keypress', function (e) {
@@ -455,7 +456,7 @@
         $('#btn_simpan').attr('disabled',true); //set button disable 
         $.ajax({
             url : baseUrl + "/inventory/p_suplier/simpan-penerimaan",
-            type: "post",
+            type: "POST",
             dataType: "JSON",
             data: $('#form-terima-beli').serialize(),
             success: function(response)
@@ -465,15 +466,15 @@
                   alert(response.pesan);
                   $('#btn_simpan').text('Saving...'); //change button text
                   $('#btn_simpan').attr('disabled',false); //set button enable
-                  $('#modal-edit').modal('hide');
+                  $('#modal_terima_beli').modal('hide');
                   $('#tbl-daftar').DataTable().ajax.reload();
               }
               else
               {
                   alert(response.pesan);
-                  $('#btn_simpan').text('Update'); //change button text
+                  $('#btn_simpan').text('Saving...'); //change button text
                   $('#btn_simpan').attr('disabled',false); //set button enable
-                  $('#modal-edit').modal('hide');
+                  $('#modal_terima_beli').modal('hide');
                   $('#tbl-daftar').DataTable().ajax.reload();
               }
             },
@@ -579,6 +580,11 @@
     for(var i = 0; i < angkarev.length; i++) if(i%3 == 0) rupiah += angkarev.substr(i,3)+'.';
     var hasil = 'Rp. '+rupiah.split('',rupiah.length-1).reverse().join('');
     return hasil+',00';
+  }
+
+  function refreshTabelIndex()
+  {
+    $('#tbl-daftar').DataTable().ajax.reload(); 
   }
 
 </script>

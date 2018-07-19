@@ -77,6 +77,51 @@ class PenerimaanBrgSupController extends Controller
         ]);
     }
 
+    public function getDatatableIndex()
+    {
+        $data = d_terima_pembelian::join('d_purchasing','d_terima_pembelian.d_tb_pid','=','d_purchasing.d_pcs_id')
+                ->join('d_supplier','d_terima_pembelian.d_tb_sup','=','d_supplier.s_id')
+                ->join('d_mem','d_terima_pembelian.d_tb_staff','=','d_mem.m_id')
+                ->select('d_terima_pembelian.*', 'd_supplier.s_id', 'd_supplier.s_company', 'd_purchasing.d_pcs_id', 'd_purchasing.d_pcs_code', 'd_purchasing.d_pcs_date_created', 'd_mem.m_name')
+                ->orderBy('d_tb_created', 'DESC')
+                ->get();
+        //dd($data);    
+        return DataTables::of($data)
+        ->addIndexColumn()
+        ->editColumn('tglBuat', function ($data) 
+        {
+            if ($data->d_tb_created == null) 
+            {
+                return '-';
+            }
+            else 
+            {
+                return $data->d_tb_created ? with(new Carbon($data->d_tb_created))->format('d M Y') : '';
+            }
+        })
+        ->editColumn('hargaTotal', function ($data) 
+        {
+          return 'Rp. '.number_format($data->d_tb_totalnett,2,",",".");
+        })
+        ->addColumn('action', function($data)
+        {
+          
+            return '<div class="text-center">
+                        <button class="btn btn-sm btn-success" title="Detail"
+                            onclick=detailPenerimaan("'.$data->d_pcsr_id.'")><i class="fa fa-eye"></i> 
+                        </button>
+                        <button class="btn btn-sm btn-warning" title="Edit"
+                            onclick=editPenerimaan("'.$data->d_pcsr_id.'")><i class="glyphicon glyphicon-edit"></i>
+                        </button>
+                        <button class="btn btn-sm btn-danger" title="Delete"
+                            onclick=deletePenerimaan("'.$data->d_pcsr_id.'")><i class="glyphicon glyphicon-trash"></i>
+                        </button>
+                    </div>';
+        })
+        ->rawColumns(['status', 'action'])
+        ->make(true);
+    }
+
     public function lookupDataPembelian(Request $request)
     {
         $formatted_tags = array();
@@ -126,11 +171,11 @@ class PenerimaanBrgSupController extends Controller
 
     public function simpanPenerimaan(Request $request)
     {
-        dd($request->all());
+        //dd($request->all());
         DB::beginTransaction();
         try 
         {
-            //insert to table d_purchasingreturn
+            //insert to table d_terimapembelian
             $dataHeader = new d_terima_pembelian;
             $dataHeader->d_tb_pid = $request->headNotaPurchase;
             $dataHeader->d_tb_sup = $request->headSupplierId;
@@ -141,8 +186,8 @@ class PenerimaanBrgSupController extends Controller
             $dataHeader->d_tb_created = Carbon::now();
             $dataHeader->save();
                   
-            //get last lastId then insert id to d_purchasingreturn_dt
-            $lastId = d_terima_pembelian::select('d_pcsr_id')->max('d_pcsr_id');
+            //get last lastId then insert id to d_terimapembelian_dt
+            $lastId = d_terima_pembelian::select('d_tb_id')->max('d_tb_id');
             if ($lastId == 0 || $lastId == '') 
             {
                 $lastId  = 1;
@@ -151,7 +196,7 @@ class PenerimaanBrgSupController extends Controller
             //variabel untuk hitung array field
             $hitung_field = count($request->fieldItemId);
 
-            //update d_stock, insert d_stock_mutation & insert d_purchasingreturn_dt
+            //update d_stock, insert d_stock_mutation & insert d_terimapembelian_dt
             for ($i=0; $i < $hitung_field; $i++) 
             {
                 //variabel u/ cek primary satuan
@@ -160,20 +205,21 @@ class PenerimaanBrgSupController extends Controller
                 //cek satuan primary, convert ke primary apabila beda satuan
                 if ($primary_sat->i_sat1 == $request->fieldSatuanId[$i]) 
                 {
-                  $hasilConvert = (int)$request->fieldQty[$i] * (int)$primary_sat->i_sat_isi1;
+                  $hasilConvert = (int)$request->fieldQtyterima[$i] * (int)$primary_sat->i_sat_isi1;
                 }
                 elseif ($primary_sat->i_sat2 == $request->fieldSatuanId[$i])
                 {
-                  $hasilConvert = (int)$request->fieldQty[$i] * (int)$primary_sat->i_sat_isi2;
+                  $hasilConvert = (int)$request->fieldQtyterima[$i] * (int)$primary_sat->i_sat_isi2;
                 }
                 else
                 {
-                  $hasilConvert = (int)$request->fieldQty[$i] * (int)$primary_sat->i_sat_isi3;
+                  $hasilConvert = (int)$request->fieldQtyterima[$i] * (int)$primary_sat->i_sat_isi3;
                 }
 
                 $grup = $this->getGroupGudang($request->fieldItemId[$i]);
-                $stokAkhir = (int)$request->fieldStokVal[$i] - (int)$hasilConvert;
+                $stokAkhir = (int)$request->fieldStokVal[$i] + (int)$hasilConvert;
 
+                //update stock akhir d_stock
                 DB::table('d_stock')
                   ->where('s_item', $request->fieldItemId[$i])
                   ->where('s_comp', $grup)
@@ -207,32 +253,37 @@ class PenerimaanBrgSupController extends Controller
                   'sm_detailid' => $hasil_id,
                   'sm_date' => Carbon::now(),
                   'sm_comp' => $grup,
-                  'sm_mutcat' => '13',
+                  'sm_mutcat' => '14',
                   'sm_item' => $request->fieldItemId[$i],
                   'sm_qty' => $hasilConvert,
-                  'sm_detail' => "PENGURANGAN",
+                  'sm_qty_used' => '0',
+                  'sm_qty_expired' => '0',
+                  'sm_detail' => "PENAMBAHAN",
                   'sm_hpp' => $this->konvertRp($request->fieldHargaTotal[$i]),
-                  'sm_reff' => $request->kodeReturn,
+                  'sm_sell' => '0',
+                  'sm_reff' => $request->headKodeTerima,
                   'sm_insert' => Carbon::now(),
                 ]);
 
-                //insert d_purchasingreturn_dt
-                $dataIsi = new d_purchasingreturn_dt;
-                $dataIsi->d_pcsrdt_idpcsr = $lastId;
-                $dataIsi->d_pcsrdt_smdetail = $hasil_id;
-                $dataIsi->d_pcsrdt_item = $request->fieldItemId[$i];
-                $dataIsi->d_pcsrdt_sat = $request->fieldSatuanId[$i];
-                $dataIsi->d_pcsrdt_qty = $request->fieldQty[$i];
-                $dataIsi->d_pcsrdt_price = $request->fieldHargaRaw[$i];
-                $dataIsi->d_pcsrdt_pricetotal = $this->konvertRp($request->fieldHargaTotal[$i]);
-                $dataIsi->d_pcsrdt_created = Carbon::now();
+                //insert d_terimapembelian_dt
+                $dataIsi = new d_terima_pembelian_dt;
+                $dataIsi->d_tbdt_idtb = $lastId;
+                $dataIsi->d_tbdt_smdetail = $hasil_id;
+                $dataIsi->d_tbdt_item = $request->fieldItemId[$i];
+                $dataIsi->d_tbdt_sat = $request->fieldSatuanId[$i];
+                $dataIsi->d_tbdt_idpcsdt = $request->fieldIdPurchaseDet[$i];
+                $dataIsi->d_tbdt_qty = $request->fieldQtyterima[$i];
+                $dataIsi->d_tbdt_price = $request->fieldHargaRaw[$i];
+                $dataIsi->d_tbdt_pricetotal = $this->konvertRp($request->fieldHargaTotal[$i]);
+                $dataIsi->d_tbdt_date_received = date('Y-m-d',strtotime($request->headTglTerima));
+                $dataIsi->d_tbdt_created = Carbon::now();
                 $dataIsi->save();
             }
 
             DB::commit();
             return response()->json([
                   'status' => 'sukses',
-                  'pesan' => 'Data Return Pembelian Berhasil Disimpan'
+                  'pesan' => 'Data Penerimaan Pembelian Berhasil Disimpan'
               ]);
         } 
         catch (\Exception $e) 
@@ -307,69 +358,6 @@ class PenerimaanBrgSupController extends Controller
     }
 
     // ============================================================================================================== //
-
-    public function get_tabel_data($id)
-    {
-        $query = d_purchasing_dt::select('d_purchasing_dt.*', 'd_purchasing.d_pcs_code', 'd_supplier.*', 'm_item.*')
-            ->join('d_purchasing', 'd_purchasing_dt.d_pcs_id', '=', 'd_purchasing.d_pcs_id')
-            ->join('d_supplier', 'd_purchasing_dt.d_pcsdt_sat', '=', 'd_supplier.s_id')
-            ->join('m_item', 'd_purchasing_dt.i_id', '=', 'm_item.i_id')
-            ->where('d_purchasing.d_pcs_code', '=', $id)
-            ->where('d_purchasing.d_pcs_status', '=', 'CF')
-            ->orderBy('d_purchasing_dt.d_pcsdt_created', 'desc')
-            ->get();
-
-        
-        return DataTables::of($query)
-        ->addIndexColumn()
-        ->addColumn('action', function($data)
-        {
-           return '<div class="text-center">
-                        <a class="btn btn-sm btn-success" href="javascript:void(0)" title="Terima"
-                            onclick=terimaHasilBeli("'.$data->d_pcs_id.'","'.$data->d_pcsdt_id.'")><i class="fa fa-plus"></i> 
-                        </a>&nbsp;
-                        <a class="btn btn-sm btn-info" href="javascript:void(0)" title="Ubah Status"
-                            onclick=ubahStatus("'.$data->d_pcs_id.'","'.$data->d_pcsdt_id.'")><i class="glyphicon glyphicon-ok"></i>
-                        </a>
-                    </div>';
-        })
-        ->editColumn('tanggalTerima', function ($data) 
-        {
-            if ($data->d_tbdt_date_received == null) 
-            {
-                return '-';
-            }
-            else 
-            {
-                return $data->d_tbdt_date_received ? with(new Carbon($data->d_tbdt_date_received))->format('d M Y') : '';
-            }
-        })
-        ->editColumn('jamTerima', function ($data) 
-        {
-            if ($data->d_tbdt_time_received == null) 
-            {
-                return '-';
-            }
-            else 
-            {
-                return $data->d_tbdt_time_received;
-            }
-        })
-        ->editColumn('status', function ($data) 
-        {
-            if ($data->dod_status == "WT") 
-            {
-                return '<span class="label label-info">Waiting</span>';
-            }
-            elseif ($data->dod_status == "FN") 
-            {
-                return '<span class="label label-success">Final</span>';
-            }
-        })
-        //inisisai column status agar kode html digenerate ketika ditampilkan
-        ->rawColumns(['status', 'action'])
-        ->make(true);
-    }
 
     public function get_penerimaan_by_tgl($tgl1,$tgl2,$akses)
     {

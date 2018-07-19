@@ -253,18 +253,19 @@ class ReturnPembelianController extends Controller
   public function getDataForm($id)
   {
     $dataHeader = DB::table('d_purchasing')
-                ->select('d_purchasing.*', 'd_supplier.s_company', 'd_supplier.s_name', 'd_supplier.s_id')
-                ->join('d_supplier','d_purchasing.s_id','=','d_supplier.s_id')
-                ->where('d_pcs_id', '=', $id)
-                ->get();
+                    ->select('d_purchasing.*', 'd_supplier.s_company', 'd_supplier.s_name', 'd_supplier.s_id')
+                    ->join('d_supplier','d_purchasing.s_id','=','d_supplier.s_id')
+                    ->where('d_pcs_id', '=', $id)
+                    ->get();
 
     $dataIsi = DB::table('d_purchasing_dt')
-          ->select('d_purchasing_dt.*', 'm_item.i_name', 'm_item.i_code', 'm_item.i_sat1', 'm_item.i_id', 'm_satuan.m_sname', 'm_satuan.m_sid')
-          ->leftJoin('m_item','d_purchasing_dt.i_id','=','m_item.i_id')
-          ->leftJoin('m_satuan','d_purchasing_dt.d_pcsdt_sat','=','m_satuan.m_sid')
-          ->where('d_purchasing_dt.d_pcs_id', '=', $id)
-          // ->where('d_purchasing_dt.d_pcsdt_isconfirm', '=', "TRUE")
-          ->get();
+                  ->select('d_purchasing_dt.*', 'm_item.i_name', 'm_item.i_code', 'm_item.i_sat1', 'm_item.i_id', 'm_satuan.m_sname', 'm_satuan.m_sid')
+                  ->leftJoin('m_item','d_purchasing_dt.i_id','=','m_item.i_id')
+                  ->leftJoin('m_satuan','d_purchasing_dt.d_pcsdt_sat','=','m_satuan.m_sid')
+                  ->where('d_purchasing_dt.d_pcs_id', '=', $id)
+                  // ->where('d_purchasing_dt.d_pcsdt_isconfirm', '=', "TRUE")
+                  ->get();
+
 
     foreach ($dataIsi as $val) 
     {
@@ -369,33 +370,108 @@ class ReturnPembelianController extends Controller
           ->where('s_position', $grup)
           ->first();
 
-        //get last id stock_mutation
-        $lastIdSm = DB::select(DB::raw("SELECT EXISTS(SELECT sm_detailid FROM d_stock_mutation where sm_stock = '$dstock_id->s_id' ORDER BY sm_detailid DESC LIMIT 1) as zz"));
-        //dd($lastIdSm);
+        $lastIdSm = DB::select(DB::raw("SELECT IFNULL((SELECT sm_detailid FROM d_stock_mutation where sm_stock = '$dstock_id->s_id' ORDER BY sm_detailid DESC LIMIT 1) ,'0') as zz"));
       
-        if ($lastIdSm[0]->zz == 0 || $lastIdSm[0]->zz = '0')
+        if ($lastIdSm[0]->zz == 0 || $lastIdSm[0]->zz == '0')
         {
           $hasil_id = 1;
         }
         else
         {
-          $hasil_id = (int)$lastIdSm[0]->zz + 1;
+          $hasil_id = (int)$lastIdSm[0]->zz + 1 ;
         }
 
         //insert to d_stock_mutation
         DB::table('d_stock_mutation')->insert([
-          'sm_stock' => $dstock_id->s_id,
-          'sm_detailid' => $hasil_id,
-          'sm_date' => Carbon::now(),
-          'sm_comp' => $grup,
-          'sm_mutcat' => '13',
-          'sm_item' => $request->fieldItemId[$i],
-          'sm_qty' => $hasilConvert,
-          'sm_detail' => "PENGURANGAN",
-          'sm_hpp' => $this->konvertRp($request->fieldHargaTotal[$i]),
-          'sm_reff' => $request->kodeReturn,
-          'sm_insert' => Carbon::now(),
+            'sm_stock' => $dstock_id->s_id,
+            'sm_detailid' => $hasil_id,
+            'sm_date' => Carbon::now(),
+            'sm_comp' => $grup,
+            'sm_mutcat' => '13',
+            'sm_item' => $request->fieldItemId[$i],
+            'sm_qty' => $hasilConvert,
+            'sm_qty_used' => '0',
+            'sm_qty_expired' => '0',
+            'sm_detail' => "PENGURANGAN",
+            'sm_hpp' => $this->konvertRp($request->fieldHargaTotal[$i]),
+            'sm_hpptax' => '0',
+            'sm_hppdisc' => '0',
+            'sm_hppnett' => $this->konvertRp($request->fieldHargaTotal[$i]),
+            'sm_reff' => $request->kodeReturn,
+            'sm_insert' => Carbon::now(),
         ]);
+
+        //update d_stock_mutation qty_used (last qty + qty return) + insert
+        $getBarang = DB::table('d_stock_mutation')
+                        ->select('*')
+                        ->where('sm_stock', '=', $dstock_id->s_id)
+                        ->where('sm_qty', '>', 'sm_qty_used')
+                        ->where('sm_detail', '=', 'PENAMBAHAN')
+                        ->orderBy('sm_date')
+                        ->get();
+        //dd($getBarang);
+
+        $sm_hpp = $getBarang[0]->sm_hpp;
+        $total = [];
+        $total[0] = ([
+          'detailid' => 0,
+          'jumlah'   => 0,
+          'hpp'      => 0,
+        ]);
+        //dd(count($getBarang));
+
+        //ambil data, simpan dalam array untuk diolah pada proses update
+        $totalPermintaan = $hasilConvert;
+        for ($k = 0; $k < count($getBarang); $k++) 
+        {
+          $totalQty = $getBarang[$k]->sm_qty - $getBarang[$k]->sm_qty_used;
+          if ($totalPermintaan <= $totalQty) 
+          {
+            $total[$k]['detailid'] = $getBarang[$k]->sm_detailid;
+            $total[$k]['jumlah'] = $totalPermintaan;
+            $total[$k]['hpp'] = $getBarang[$k]->sm_hpp;
+            $k = count($getBarang);
+          } 
+          elseif ($totalPermintaan > $totalQty) 
+          {
+            $total[$k]['detailid'] = $getBarang[$k]->sm_detailid;
+            $total[$k]['jumlah'] = $totalQty;
+            $total[$k]['hpp'] = $getBarang[$k]->sm_hpp;
+            $totalPermintaan = $totalPermintaan - $totalQty;
+          }
+        }
+
+        for ($l = 0; $l < count($total); $l++) 
+        {
+          $getMaxDetail = DB::table('d_stock_mutation')
+              ->where('sm_stock', '=', $dstock_id->s_id)
+              ->select('sm_detailid')
+              ->max('sm_detailid');
+
+          if ($getMaxDetail == null) 
+          {
+            $detailid = 1;
+          } 
+          else 
+          {
+            $detailid = $getMaxDetail + 1;
+          }
+
+          $getSmUse = DB::table('d_stock_mutation')
+              ->select('sm_qty_used')
+              ->where('sm_stock', '=', $dstock_id->s_id)
+              ->where('sm_detailid', '=', $total[$l]['detailid'])
+              ->get();
+
+          $updateQty = $getSmUse[0]->sm_qty_used + $total[$l]['jumlah'];
+
+          DB::table('d_stock_mutation')
+              ->where('sm_stock', '=', $dstock_id->s_id)
+              ->where('sm_detailid', '=', $total[$l]['detailid'])
+              ->update(array(
+                  'sm_qty_used' => $updateQty
+              ));
+        }
 
         //insert d_purchasingreturn_dt
         $dataIsi = new d_purchasingreturn_dt;
@@ -410,8 +486,8 @@ class ReturnPembelianController extends Controller
         $dataIsi->save();
       }
 
-    DB::commit();
-    return response()->json([
+      DB::commit();
+      return response()->json([
           'status' => 'sukses',
           'pesan' => 'Data Return Pembelian Berhasil Disimpan'
       ]);
@@ -540,6 +616,78 @@ class ReturnPembelianController extends Controller
             'sm_hpp' => $this->konvertRp($request->fieldHargaTotal[$i]),
             'sm_update' => Carbon::now(),
           ]);
+
+        $getBarang = DB::table('d_stock_mutation')
+                        ->select('*')
+                        ->where('sm_stock', '=', $dstock_id->s_id)
+                        ->where('sm_qty', '>', 'sm_qty_used')
+                        ->where('sm_detail', '=', 'PENAMBAHAN')
+                        ->orderBy('sm_date')
+                        ->get();
+        //dd($getBarang);
+        
+        $sm_hpp = $getBarang[0]->sm_hpp;
+        $total = [];
+        $total[0] = ([
+          'detailid' => 0,
+          'jumlah'   => 0,
+          'hpp'      => 0,
+        ]);
+        //dd(count($getBarang));
+
+        //ambil data, simpan dalam array untuk diolah pada proses update
+        $totalPermintaan = $hasilConvert;
+        for ($k = 0; $k < count($getBarang); $k++) 
+        {
+          $totalQty = $getBarang[$k]->sm_qty - $getBarang[$k]->sm_qty_used;
+          if ($totalPermintaan <= $totalQty) 
+          {
+            $total[$k]['detailid'] = $getBarang[$k]->sm_detailid;
+            $total[$k]['jumlah'] = $totalPermintaan;
+            $total[$k]['hpp'] = $getBarang[$k]->sm_hpp;
+            $k = count($getBarang);
+          } 
+          elseif ($totalPermintaan > $totalQty) 
+          {
+            $total[$k]['detailid'] = $getBarang[$k]->sm_detailid;
+            $total[$k]['jumlah'] = $totalQty;
+            $total[$k]['hpp'] = $getBarang[$k]->sm_hpp;
+            $totalPermintaan = $totalPermintaan - $totalQty;
+          }
+        }
+
+        for ($l = 0; $l < count($total); $l++) 
+        {
+          $getMaxDetail = DB::table('d_stock_mutation')
+              ->where('sm_stock', '=', $dstock_id->s_id)
+              ->select('sm_detailid')
+              ->max('sm_detailid');
+
+          if ($getMaxDetail == null) 
+          {
+            $detailid = 1;
+          } 
+          else 
+          {
+            $detailid = $getMaxDetail + 1;
+          }
+
+          $getSmUse = DB::table('d_stock_mutation')
+              ->select('sm_qty_used')
+              ->where('sm_stock', '=', $dstock_id->s_id)
+              ->where('sm_detailid', '=', $total[$l]['detailid'])
+              ->get();
+
+          $updateQty = $getSmUse[0]->sm_qty_used + $total[$l]['jumlah'];
+
+          //update sm_qty_used
+          DB::table('d_stock_mutation')
+              ->where('sm_stock', '=', $dstock_id->s_id)
+              ->where('sm_detailid', '=', $total[$l]['detailid'])
+              ->update(array(
+                  'sm_qty_used' => $updateQty
+          ));
+        }
       } 
       
     DB::commit();
@@ -674,40 +822,40 @@ class ReturnPembelianController extends Controller
   }
 
   public function getStokByType($arrItemType, $arrSatuan, $counter)
+  {
+    foreach ($arrItemType as $val) 
     {
-      foreach ($arrItemType as $val) 
-      {
-          if ($val->i_type == "BP") //brg produksi
-          {
-              $query = DB::select(DB::raw("SELECT IFNULL( (SELECT s_qty FROM d_stock where s_item = '$val->i_id' AND s_comp = '6' AND s_position = '6' limit 1) ,'0') as qtyStok"));
-              $satUtama = DB::table('m_item')->join('m_satuan', 'm_item.i_sat1', '=', 'm_satuan.m_sid')->select('m_satuan.m_sname')->where('m_item.i_sat1', '=', $arrSatuan[$counter])->first();
-              
-              $stok[] = $query[0];
-              $satuan[] = $satUtama->m_sname;
-              $counter++;
-          }
-          elseif ($val->i_type == "BJ") //brg jual
-          {
-              $query = DB::select(DB::raw("SELECT IFNULL( (SELECT s_qty FROM d_stock where s_item = '$val->i_id' AND s_comp = '7' AND s_position = '7' limit 1) ,'0') as qtyStok"));
-              $satUtama = DB::table('m_item')->join('m_satuan', 'm_item.i_sat1', '=', 'm_satuan.m_sid')->select('m_satuan.m_sname')->where('m_item.i_sat1', '=', $arrSatuan[$counter])->first();
+        if ($val->i_type == "BP") //brg produksi
+        {
+            $query = DB::select(DB::raw("SELECT IFNULL( (SELECT s_qty FROM d_stock where s_item = '$val->i_id' AND s_comp = '6' AND s_position = '6' limit 1) ,'0') as qtyStok"));
+            $satUtama = DB::table('m_item')->join('m_satuan', 'm_item.i_sat1', '=', 'm_satuan.m_sid')->select('m_satuan.m_sname')->where('m_item.i_sat1', '=', $arrSatuan[$counter])->first();
+            
+            $stok[] = $query[0];
+            $satuan[] = $satUtama->m_sname;
+            $counter++;
+        }
+        elseif ($val->i_type == "BJ") //brg jual
+        {
+            $query = DB::select(DB::raw("SELECT IFNULL( (SELECT s_qty FROM d_stock where s_item = '$val->i_id' AND s_comp = '7' AND s_position = '7' limit 1) ,'0') as qtyStok"));
+            $satUtama = DB::table('m_item')->join('m_satuan', 'm_item.i_sat1', '=', 'm_satuan.m_sid')->select('m_satuan.m_sname')->where('m_item.i_sat1', '=', $arrSatuan[$counter])->first();
 
-              $stok[] = $query[0];
-              $satuan[] = $satUtama->m_sname;
-              $counter++;
-          }
-          elseif ($val->i_type == "BB") //bahan baku
-          {
-              $query = DB::select(DB::raw("SELECT IFNULL( (SELECT s_qty FROM d_stock where s_item = '$val->i_id' AND s_comp = '3' AND s_position = '3' limit 1) ,'0') as qtyStok"));
-              $satUtama = DB::table('m_item')->join('m_satuan', 'm_item.i_sat1', '=', 'm_satuan.m_sid')->select('m_satuan.m_sname')->where('m_item.i_sat1', '=', $arrSatuan[$counter])->first();
+            $stok[] = $query[0];
+            $satuan[] = $satUtama->m_sname;
+            $counter++;
+        }
+        elseif ($val->i_type == "BB") //bahan baku
+        {
+            $query = DB::select(DB::raw("SELECT IFNULL( (SELECT s_qty FROM d_stock where s_item = '$val->i_id' AND s_comp = '3' AND s_position = '3' limit 1) ,'0') as qtyStok"));
+            $satUtama = DB::table('m_item')->join('m_satuan', 'm_item.i_sat1', '=', 'm_satuan.m_sid')->select('m_satuan.m_sname')->where('m_item.i_sat1', '=', $arrSatuan[$counter])->first();
 
-              $stok[] = $query[0];
-              $satuan[] = $satUtama->m_sname;
-              $counter++;
-          }
-      }
-
-      $data = array('val_stok' => $stok, 'txt_satuan' => $satuan);
-      return $data;
+            $stok[] = $query[0];
+            $satuan[] = $satUtama->m_sname;
+            $counter++;
+        }
     }
+
+    $data = array('val_stok' => $stok, 'txt_satuan' => $satuan);
+    return $data;
+  }
 
 }

@@ -22,12 +22,12 @@
           <thead>
             <tr>
               <th class="wd-10p">No</th>
-              <th class="wd-15p">Tgl Dibuat</th>
-              <th class="wd-15p">Kode Rencana</th>
+              <th class="wd-15p">Tgl Terima</th>
+              <th class="wd-15p">Kode Penerimaan</th>
               <th class="wd-15p">Staff</th>
               <th class="wd-20p">Suplier</th>
-              <th class="wd-15p">Tgl Disetujui</th>
-              <th class="wd-15p">Status</th>
+              <th class="wd-15p">Kode Po</th>
+              <th class="wd-15p">Tgl Po</th>
               <th class="wd-15p" style="text-align: center;">Aksi</th>
             </tr>
           </thead>
