@@ -21,7 +21,7 @@
             </span>
         </td>
         <td>
-          {{ $detail->m_sname }}
+          {{ $detail->i_sat1 }}
         </td>
         <td>Rp.
           <span class="pull-right">

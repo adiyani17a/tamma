@@ -19,9 +19,8 @@ class stockGrosirController extends Controller
     $data=m_item::
       select('i_name',
              'i_type',
-             'm_gname',
+             'i_group',
              's_qty')
-      ->join('m_group','m_group.m_gcode','=','i_code_group')
       ->leftjoin('d_stock',function($join){
         $join->on('i_id', '=', 's_item');        
         $join->on('s_comp', '=', 's_position');                

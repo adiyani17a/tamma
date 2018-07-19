@@ -84,7 +84,7 @@
                       <div class="col-md-4 col-sm-8 col-xs-12">
                         <div class="form-group">
                           <select id="divisi" name="c_divisi_id" class="form-control input-sm">
-                            <option>--pilih jabatan--</option>
+                            <option>--pilih divisi--</option>
                             <?php foreach($divisi as $div){ ?>
                               <?php if($div->c_id == $data->c_divisi_id){ ?>
                               <option value="{{ $div->c_id }}" selected="">{{ $div->c_divisi }}</option>

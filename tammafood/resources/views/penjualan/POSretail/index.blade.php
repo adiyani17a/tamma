@@ -139,10 +139,7 @@
                               <div class="form-group">
                                 <div class="input-icon right">
                                   <i class="glyphicon glyphicon-earphone"></i>
-                                  <div class="input-group">
-                                    <span class="input-group-addon" id="basic-addon1">+62</span>
-                                    <input type="text" id="no_hp" name="no_hp" class="form-control input-sm"  value="{{ old('no_hp') }}">
-                                  </div>
+                                  <input type="text" id="no_hp" name="no_hp" class="form-control input-sm"  value="{{ old('no_hp') }}">
                                 </div>                               
                               </div>
                             </div>
@@ -219,7 +216,6 @@
                              <label class="control-label tebal" for="no_faktur" >Nomor Faktur</label>
                               <div class="input-group input-group-sm" style="width: 100%;">
                                 <input type="text" id="no_faktur" name="s_nota" class="form-control" readonly="true" value="{{$fatkur}}">
-                                <input type="hidden" id="idfatkur" class="form-control" name="s_id" readonly="true" value="{{$idfatkur+1}}">
                               </div>
                           </div>
                         </form>
@@ -334,7 +330,7 @@
                         </div>
 
                         <div class="col-md-3 col-sm-3 col-xs-12" align="right">
-                          <select name="tampilData" id="tampil_data" class="form-control input-sm">
+                          <select name="tampilData" id="tampil_data" class="form-control">
                             <option value="semua" class="form-control">Tampilkan Data : Semua</option>
                             <option value="draft" class="form-control">Tampilkan Data : Draft</option>
                             <option value="final" class="form-control">Tampilkan Data : Final</option>
@@ -366,8 +362,8 @@
                           
                         </div>
                       </div>
-                      <div id="buttonDetail" class="modal-footer">
-                        
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
                       </div>
                     </div>
                     
@@ -465,47 +461,6 @@
 
     })
 
-  var date = new Date();
-  var newdate = new Date(date);
-
-  newdate.setDate(newdate.getDate()-3);
-  var nd = new Date(newdate);
-   
-  $('.datepicker').datepicker({
-    format: "mm",
-    viewMode: "months",
-    minViewMode: "months"
-    });
-
-  $('.datepicker1').datepicker({
-    autoclose: true,
-    format:"dd-mm-yyyy",
-    endDate: 'today'
-    }).datepicker("setDate", nd);
-
-  $('.datepicker2').datepicker({
-    autoclose: true,
-    format:"dd-mm-yyyy",
-    endDate: 'today'
-    });//datepicker("setDate", "0");
-
-  $( "#nama-customer" ).autocomplete({
-      source: baseUrl+'/penjualan/POSretail/retail/autocomplete',
-      minLength: 1,
-      select: function(event, ui) {
-        $('#id_cus').val(ui.item.id);
-        $('#nama-customer').val(ui.item.label);
-        $('#alamat2').val(ui.item.alamat);
-        $('#c-class').val(ui.item.c_class);
-        }
-    });
-
-  discpercentEdit();
-  discvalueEdit();
-  UpdateTotal();
-  updateKembalian();
-  dataInput();
-
   });
 
   tableDetail = $('#detail-penjualan').DataTable();
@@ -551,7 +506,31 @@
     total = convertToRupiah(total);
     $('#totalMapPenjualan').val(total);
   }
-            
+             
+  var date = new Date();
+  var newdate = new Date(date);
+
+  newdate.setDate(newdate.getDate()-3);
+  var nd = new Date(newdate);
+   
+  $('.datepicker').datepicker({
+    format: "mm",
+    viewMode: "months",
+    minViewMode: "months"
+    });
+
+  $('.datepicker1').datepicker({
+    autoclose: true,
+    format:"dd-mm-yyyy",
+    endDate: 'today'
+    }).datepicker("setDate", nd);
+
+  $('.datepicker2').datepicker({
+    autoclose: true,
+    format:"dd-mm-yyyy",
+    endDate: 'today'
+    });//datepicker("setDate", "0");
+
   $('#tampil_data').on('change', function() {
     cariTanggal();
   })
@@ -570,17 +549,6 @@
     type: 'get',
     data: {x:idDetail},
     success:function(response){
-      $('#buttonDetail').html(
-        '<div class="btn-group" style="margin-right:10px;">'+
-          '<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">'+
-          '<i class="fa fa-print"></i>&nbsp;Print&nbsp;<span class="caret"></span></button>'+
-          '<ul class="dropdown-menu" role="menu" style="text-align:left;">'+
-            '<li><a target="_blank" href="'+ baseUrl +'/penjualan/POSretail/print/'+ idDetail +'"><i class="fa fa-print"></i>&nbsp;Print Faktur</a></li>'+
-            '<li><a target="_blank" href="'+ baseUrl +'/penjualan/POSretail/print_surat_jalan/'+ idDetail +'"><i class="fa fa-print"></i>&nbsp;Print Surat Jalan</a></li>'+
-            '<li><a target="_blank" href="'+ baseUrl +'/penjualan/print_jangan_dibanting/'+ idDetail +'"><i class="fa fa-print"></i>&nbsp;Print Jangan Di Banting</a></li>' +
-          '</ul>'+
-        '</div>'+
-        '<button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>');
       $('#xx').html(response);
     }
    });  
@@ -626,11 +594,7 @@
         $('#detailnama').val(ui.item.nama);
         $('#namaitem').val(ui.item.label);
         $('#satuan').val(ui.item.satuan);
-        if (ui.item.s_qty == null) {
-          $('#s_qty').val('0');
-        }else{
-          $('#s_qty').val(ui.item.s_qty);
-        }
+        $('#s_qty').val(ui.item.s_qty);
         $('#qty').val(ui.item.qty);
         $('#qty').val('1');
         $("input[name='qty']").focus();
@@ -663,18 +627,12 @@
       if ( index == -1){       
       tableDetail.row.add([
         nama+'<input type="hidden" name="kode_item[]" class="kode_item kode" value="'+kode+'"><input type="hidden" name="nama_item[]" class="nama_item" value="'+nama+'"> ',
-
-        '<input size="30" style="text-align:right" type="number"  name="sd_qty[]" class="sd_qty form-control qty-'+kode+'" value="'+qty+'" onkeyup="UpdateHarga(\''+kode+'\');qtyInput(\''+stok+'\', \''+kode+'\');totalPenjualan()" onchange="qtyInput(\''+stok+'\', \''+kode+'\')"> ',
-
+        '<input size="30" style="text-align:right" type="text"  name="sd_qty[]" class="sd_qty form-control qty-'+kode+'" value="'+qty+'" onkeyup="UpdateHarga(\''+kode+'\'); qtyInput(\''+stok+'\', \''+kode+'\'); totalPenjualan()" onchange="qtyInput(\''+stok+'\', \''+kode+'\')"> ',
         satuan+'<input type="hidden" name="satuan[]" class="satuan" value="'+satuan+'"> ',
-
         '<input type="text" size="10" readonly style="text-align:right" name="harga_item[]" class="harga_item form-control harga-'+kode+'" value="'+harga+'"> ',
-
         '<div class="input-group"><input type="text" size="11"  style="text-align:right" name="sd_disc_percent[]" class="form-control discpercent discpercent-'+kode+'" placeholder="0" onkeyup="discpercent(this, event);autoJumValPercent()"><span class="input-group-addon">%</span></div> <input name="totalValuePercent[]" type="text" value="0" style="display:none" class="form-control totalValuePercent jumTotValuePercent totalValuePercent-'+kode+'">',
-
         '<input type="text" size="10"  style="text-align:right" name="sd_disc_value[]" class="form-control discvalue hasildiscvalue pricevalue-'+kode+'" placeholder="0" onkeyup="discvalue(this, event);autoJumValValue();rege(event,\''+pricevalue+'\')"  onblur="setRupiah(event,\''+pricevalue+'\')" onclick="setAwal(\''+event+'\',\''+pricevalue+'\')">',
-
-        '<input type="text" size="200" readonly style="text-align:right" name="hasil[]" id="hasil" class="form-control hasil hasil-'+kode+'" value="'+x+'">',          
+        '<input type="text" size="200" readonly style="text-align:right" name="hasilplaceholder="0"[]" id="hasil" class="form-control hasil hasil-'+kode+'" value="'+x+'"><input type="hidden" size="200" readonly style="text-align:right" name="" id="hasil2" class="hasil2 form-control" value="'+b+'">',          
         Hapus
 
       ]);
@@ -759,23 +717,17 @@
 
         tableDetail.row.add([
         nama+'<input type="hidden" name="kode_item[]" class="kode_item kode" value="'+kode+'"><input type="hidden" name="nama_item[]" class="nama_item" value="'+nama+'"> ',
-
-        '<input size="30" style="text-align:right" type="number"  name="sd_qty[]" class="sd_qty form-control qty-'+kode+'" value="'+qty+'" onkeyup="UpdateHarga(\''+kode+'\'); qtyInput(\''+stok+'\', \''+kode+'\'); totalPenjualan()" onchange="qtyInput(\''+stok+'\', \''+kode+'\')"> ',
-
+        '<input size="30" style="text-align:right" type="text"  name="sd_qty[]" class="sd_qty form-control qty-'+kode+'" value="'+qty+'" onkeyup="UpdateHarga(\''+kode+'\'); qtyInput(\''+stok+'\', \''+kode+'\'); totalPenjualan()" onchange="qtyInput(\''+stok+'\', \''+kode+'\')"> ',
         satuan+'<input type="hidden" name="satuan[]" class="satuan" value="'+satuan+'"> ',
-
         '<input type="text" size="10" readonly style="text-align:right" name="harga_item[]" class="harga_item form-control harga-'+kode+'" value="'+harga+'"> ',
-
-        '<div class="input-group"><input type="text" size="11"  style="text-align:right" name="sd_disc_percent[]" class="form-control discpercent discpercent-'+kode+'" placeholder="0" onkeyup="discpercent(this, event);autoJumValPercent()"><span class="input-group-addon">%</span></div> <input name="totalValuePercent[]" type="text" value="0" style="display:none" class="form-control totalValuePercent jumTotValuePercent totalValuePercent-'+kode+'">',
-
-        '<input type="text" size="10"  style="text-align:right" name="sd_disc_value[]" class="form-control discvalue hasildiscvalue pricevalue-'+kode+'" placeholder="0" onkeyup="discvalue(this, event);autoJumValValue();rege(event,\''+pricevalue+'\')"  onblur="setRupiah(event,\''+pricevalue+'\')" onclick="setAwal(\''+event+'\',\''+pricevalue+'\')">',
-
-        '<input type="text" size="200" readonly style="text-align:right" name="hasil[]" id="hasil" class="form-control hasil hasil-'+kode+'" value="'+x+'">',     
-         
+        '<div class="input-group"><input type="text" size="11"  style="text-align:right" name="sd_disc_percent[]" class="form-control discpercent discpercent-'+kode+'" value="0" onkeyup="discpercent(this, event);autoJumValPercent()"><span class="input-group-addon">%</span></div><input name="totalValuePercent[]" type="text" value="0" style="display:none" class="form-control totalValuePercent jumTotValuePercent totalValuePercent-'+kode+'">',
+        '<input type="text" size="10" style="text-align:right" name="sd_disc_value[]" class="form-control discvalue hasildiscvalue pricevalue-'+kode+'" value="0" onkeyup="discvalue(this, event);autoJumValValue();rege(event,\''+pricevalue+'\')"  onblur="setRupiah(event,\''+pricevalue+'\')" onclick="setAwal(\''+event+'\',\''+pricevalue+'\')">',
+        '<input type="text" size="200" readonly style="text-align:right" name="hasil[]" id="hasil" class="form-control hasil hasil-'+kode+'" value="'+x+'"><input type="hidden" size="200" readonly style="text-align:right" name="" id="hasil2" class="hasil2 form-control" value="'+b+'">',      
           Hapus
 
           ]);
         tableDetail.draw();
+
       }else{
 
         var qtyLawas= parseInt($(".qty-"+kode).val());
@@ -796,39 +748,35 @@
     }
 
     $('#qty').keypress(function(e){
-    var charCode;
+      var charCode;
     if ((e.which && e.which == 13)) {
-    charCode = e.which;
+      charCode = e.which;
     }else if (window.event) {
-      e = window.event;
-      charCode = e.keyCode;
+        e = window.event;
+        charCode = e.keyCode;
     }
     if ((e.which && e.which == 13)){
       var isi   = $('#qty').val();
       var jumlah= $('#detailnama').val();
       var stok  = $('#s_qty').val();
-      var data1 = $('#nama-customer').val();
-      var data2 = $('#c-class').val();
-    if(isi == '' || jumlah == '' || stok == '' || data1 == '' || data2 == ''){
-      toastr.warning('Item Jumlah Stok dan Nama Pelanggan tidak boleh kosong');
-      return false;
-    }
-      var kode  =$('#kode').val();
-    tambahEdit();
-    qtyInput(stok, kode);
+      if(isi == '' || jumlah == '' || stok == ''){
+        toastr.warning('Item Jumlah Stok tidak boleh kosong');
+        return false;
+      }
+      tambahEdit();
       $("input[name='item']").val('');
       $("input[name='s_qty']").val('');
       $("input[name='qty']").val('');
       $("input[name='item']").focus(); 
-       return false;
-     }
+      return false;
+      }
     });
 
   @endif
 
     var hpercent = 0;
   function discpercent(inField, e){
-    var getIndex = $('input.discpercent:text').index(inField);
+    var getIndex = $('input.discpercent:text').index(inField); 
     var dataInput = $('input.discpercent:text:eq('+getIndex+')').val();
     if (dataInput == '' || dataInput == '0') {
       $('input.discvalue:text:eq('+getIndex+')').attr("readonly",false);
@@ -854,19 +802,18 @@
     $('input.totalValuePercent:text:eq('+getIndex+')').val(hpercent);
     hasill = hasill - (hasill * diskon/100);
     hasill = convertToRupiah(hasill);
-    var dispercent = $('input.hasil:text:eq('+getIndex+')').val(hasill); 
-    UpdateTotal(); 
-    autoJumValPercent();
+    var dispercent = $('input.hasil:text:eq('+getIndex+')').val(hasill);
+    UpdateTotal();  
   }
 
   function discvalue(inField, e){
     var getIndex = $('input.discvalue:text').index(inField);  
     var dataInput = $('input.discvalue:text:eq('+getIndex+')').val();
-      if (dataInput == '' || dataInput == '0') {
-        $('input.discpercent:text:eq('+getIndex+')').attr("readonly",false);
-      }else{
-        $('input.discpercent:text:eq('+getIndex+')').attr("readonly",true);
-      }
+    if (dataInput == '' || dataInput == '0') {
+      $('input.discpercent:text:eq('+getIndex+')').attr("readonly",false);
+    }else{
+      $('input.discpercent:text:eq('+getIndex+')').attr("readonly",true);
+    }
     var diskon = $('input.discvalue:text:eq('+getIndex+')').val();
     var harga = $('input.harga_item:text:eq('+getIndex+')').val();
     var qty = $('input.sd_qty:eq('+getIndex+')').val();
@@ -884,10 +831,10 @@
       }
       hasil = hasil - diskon;
       hasil = convertToRupiah(hasil);
+      console.log(hasil);
       $('input.hasil:text:eq('+getIndex+')').val(hasil);
       UpdateTotal();
-      autoJumValValue(); 
-  }
+    }
 
   function autoJumValPercent(){
     var inputs = document.getElementsByClassName( 'jumTotValuePercent' ),
@@ -964,7 +911,7 @@
     if (hasil <= 0) {
         diskon = 0;
       }
-    $('#kembalian').val(SetFormRupiah(hasil));
+    var kembalian = $('#kembalian').val(SetFormRupiah(hasil));
 
     if (hasil < 0) {
       $('#kembalian').css('background-color','red');
@@ -1027,7 +974,7 @@
     input = parseInt(input);
     stok = parseInt(stok);
     if (input > stok || input < 1) {
-      $('.qty-'+kode).val('0');
+      $('.qty-'+kode).val(1);
       toastr.warning('Barang yang di beli melebihi stok');
       }
       UpdateHarga(kode);
@@ -1222,7 +1169,7 @@
         var event = 'event';
         var Rp = 'rupiah-'+uuid+''; 
         var spm = "'#sp_method'";
-          $html+='</select></td><td><input type="text" name="sp_nominal[]" id="" autocomplete="off" placeholder="Rp. 0,00" value="" class="form-control bandingPayment totPayment rupiah-'+uuid+'" onkeyup="updateKembalian();rege(event,\''+Rp+'\')" style="text-align: right;" onblur="setRupiah(event,\''+Rp+'\')" onclick="setAwal(\''+event+'\',\''+Rp+'\')"></td> <td><button type="button" class="btn btn-info" onclick="tambahPayment()"><i class="glyphicon glyphicon-plus"></i></button> <button type="button" class="btn btn-danger hapus" onclick="hapusPayment(this)"><i class="glyphicon glyphicon-minus"></i></button></td></tr>';
+          $html+='</select></td><td><input type="text" name="sp_nominal[]" id="" value="" class="form-control bandingPayment totPayment rupiah-'+uuid+'" onkeyup="updateKembalian();rege(event,\''+Rp+'\')" style="text-align: right;" onblur="setRupiah(event,\''+Rp+'\')" onclick="setAwal(\''+event+'\',\''+Rp+'\')"></td> <td><button type="button" class="btn btn-info" onclick="tambahPayment()"><i class="glyphicon glyphicon-plus"></i></button> <button type="button" class="btn btn-danger hapus" onclick="hapusPayment(this)"><i class="glyphicon glyphicon-minus"></i></button></td></tr>';
           $(".mc").append($html);
           } 
         });  
@@ -1418,14 +1365,13 @@
               url : baseUrl + "/penjualan/POSretail/get-tanggaljual/"+tgl3+'/'+tgl4,
               type: 'GET'
           },
-
         "columns" : [
-          // {"data" : "DT_Row_Index", orderable: true, searchable: false, "width" : "5%"}, //memanggil column row
+          {"data" : "DT_Row_Index", orderable: true, searchable: false, "width" : "5%"}, //memanggil column row
           {"data" : "sDate", "width" : "5%"},
           {"data" : "i_name", "width" : "20%"},
           {"data" : "type", "width" : "5%"},
-          {"data" : "m_gname", "width" : "5%"},
-          {"data" : "jumlah", "width" : "5%", "className" : "right"},
+          {"data" : "i_group", "width" : "5%"},
+          {"data" : "jumlah", "width" : "5%"},
         ]
       });
     }
@@ -1466,8 +1412,8 @@
       {data: 'DT_Row_Index', name: 'DT_Row_Index', orderable: false},
       {data: 'i_name', name: 'i_name'},
       {data: 'i_type', name: 'i_type'},
-      {data: 'm_gname', name: 'm_gname'},
-      {data: 's_qty', name: 's_qty', "className" : "right"},
+      {data: 'i_group', name: 'i_group'},
+      {data: 's_qty', name: 's_qty'},
       ],
     });
 

@@ -106,7 +106,7 @@
 
 @endsection
 @section("extra_scripts")
-{{-- <script src="{{ asset ('assets/script/icheck.min.js') }}"></script> --}}
+<script src="{{ asset ('assets/script/icheck.min.js') }}"></script>
 <script type="text/javascript">
   $(document).ready(function() {
     var extensions = {
@@ -117,6 +117,25 @@
     $.extend($.fn.dataTableExt.oStdClasses, extensions);
     // Used when bJQueryUI is true
     $.extend($.fn.dataTableExt.oJUIClasses, extensions);
+    $('#data2').dataTable({
+          "responsive":true,
+
+          "pageLength": 10,
+        "lengthMenu": [[10, 20, 50, - 1], [10, 20, 50, "All"]],
+        "language": {
+            "searchPlaceholder": "Cari Data",
+            "emptyTable": "Tidak ada data",
+            "sInfo": "Menampilkan _START_ - _END_ Dari _TOTAL_ Data",
+            "sSearch": '<i class="fa fa-search"></i>',
+            "sLengthMenu": "Menampilkan &nbsp; _MENU_ &nbsp; Data",
+            "infoEmpty": "",
+            "paginate": {
+                    "previous": "Sebelumnya",
+                    "next": "Selanjutnya",
+                 }
+          }
+
+        });
 
     $('.datepicker').datepicker({
       format: "mm",
@@ -140,7 +159,7 @@
       {data: 'DT_Row_Index', name: 'DT_Row_Index'},
       {data: 'i_code', name: 'i_code'},
       {data: 'i_type', name: 'i_type'},
-      {data: 'm_gname', name: 'm_gname'},
+      {data: 'i_group', name: 'i_group'},
       {data: 'i_name', name: 'i_name'},
       {data: 'm_psell1', name: 'm_psell1'},
       {data: 'm_psell2', name: 'm_psell2'},

@@ -86,11 +86,11 @@
                   <th style="text-align: center;" width="5%">No</th>
                   <th width="25%">Kode | Barang</th>
                   <th width="7%">Qty</th>
-                  <th width="5%">Satuan</th>
+                  <th width="10%">Satuan</th>
                   <th width="13%">Harga Prev</th>
                   <th width="15%">Harga</th>
                   <th width="15%">Total</th>
-                  <th width="10%">Stok Gudang</th>
+                  <th width="5%">Stok Gudang</th>
                   <th style="text-align: center;" width="5%">Aksi</th>
                 </tr>
               </thead>
