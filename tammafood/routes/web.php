@@ -362,6 +362,8 @@ Route::get('/system/hakakses/tambah_akses-group/simpan-group-detail', 'groupAkse
 //nota Transfer
 Route::get('transfer/no-nota', 'transferItemController@noNota');
 //transfer retail
+Route::get('transfer/lihat-penerimaan/datatable', 'transferItemController@transferDatatables');
+Route::get('transfer/list-penerimaan/datatable', 'transferItemController@listDatatables');
 Route::get('transfer/data-transfer', 'transferItemController@dataTransfer');
 Route::get('transfer/data-transfer/{id}/edit', 'transferItemController@editTransfer');
 Route::get('transfer/data-transfer/hapus/{id}', 'transferItemController@HapusTransfer');
