@@ -1168,7 +1168,7 @@ function tambahPayment(){
           var event = 'event';
           var Rp = 'rupiah-'+uuid+''; 
           var spm = "'#sp_method'";
-          $html+='</select></td><td><input type="text" name="sp_nominal[]" id="" value="" class="form-control bandingPayment totPayment rupiah-'+uuid+'" autocomplete="off" onkeyup="updateKembalian();rege(event,\''+Rp+'\')" style="text-align: right;" onblur="setRupiah(event,\''+Rp+'\')" onclick="setAwal(\''+event+'\',\''+Rp+'\')"></td> <td><button type="button" class="btn btn-info" onclick="tambahPayment()"><i class="glyphicon glyphicon-plus"></i></button> <button type="button" class="btn btn-danger hapus" onclick="hapusPayment(this)"><i class="glyphicon glyphicon-minus"></i></button></td></tr>';
+          $html+='</select></td><td><input type="text" name="sp_nominal[]" id="" value="" class="form-control bandingPayment totPayment rupiah-'+uuid+'" onkeyup="updateKembalian();rege(event,\''+Rp+'\')" style="text-align: right;" onblur="setRupiah(event,\''+Rp+'\')" onclick="setAwal(\''+event+'\',\''+Rp+'\')"></td> <td><button type="button" class="btn btn-info" onclick="tambahPayment()"><i class="glyphicon glyphicon-plus"></i></button> <button type="button" class="btn btn-danger hapus" onclick="hapusPayment(this)"><i class="glyphicon glyphicon-minus"></i></button></td></tr>';
         $(".mc").append($html);
      } 
   });

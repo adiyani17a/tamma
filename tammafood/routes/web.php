@@ -12,16 +12,14 @@
 |
 */
 
-Route::group(['middleware' => 'guest'], function () {
 Route::get('/', function () {
     return view('auth.login');
 })->name('index');
 Route::get('login', 'loginController@authenticate');
 Route::post('login', 'loginController@authenticate');
 Route::get('not-allowed', 'mMemberController@notAllowed');
-});
-Route::group(['middleware' => 'auth'], function () {
 Route::get('logout', 'mMemberController@logout');
+Route::group(['middleware' => 'auth'], function () {
 Route::get('/home', 'HomeController@home');
 /*Master*/
 Route::get('/master/datasuplier/suplier', 'MasterController@suplier')->name('suplier');
@@ -296,33 +294,6 @@ Route::get('/penjualan/mutasi/stock/penjualan-retail', 'Penjualan\mutasiStokCont
 Route::get('/penjualan/monitoringorder/tabel', 'Penjualan\MonitoringOrderController@tabel');
 Route::get('/penjualan/monitoringorder/nota/{id}', 'Penjualan\MonitoringOrderController@bukaNota');
 Route::get('/penjualan/monitoringorder/nota/tabel/{id}', 'Penjualan\MonitoringOrderController@nota');
-//Laporan Retail
-Route::get('/penjualan/laporanRetail/index', 'Penjualan\LaporanRetailController@index');
-Route::get('/penjualan/laporanRetail/index', 'Penjualan\LaporanRetailController@index');
-Route::get('/penjualan/laporanRetail/get-data-laporan/{tgl1}/{tgl2}', 'Penjualan\LaporanRetailController@getDataLaporan');
-//Laporan Grosir
-Route::get('/penjualan/laporanGrosir/index', 'Penjualan\LaporanGrosirController@index');
-Route::get('/penjualan/laporanGrosir/index', 'Penjualan\LaporanGrosirController@index');
-Route::get('/penjualan/laporanGrosir/get-data-laporan/{tgl1}/{tgl2}', 'Penjualan\LaporanGrosirController@getDataLaporan');
-// Ari
-Route::get('/penjualan/retail/print_laporan_penjualan/{tgl1}/{tgl2}', 'Penjualan\LaporanRetailController@print_laporan_penjualan');
-Route::get('/penjualan/grosir/print_laporan_penjualan/{tgl1}/{tgl2}', 'Penjualan\LaporanGrosirController@print_laporan_penjualan');
-Route::get('/penjualan/semua/print_laporan_penjualan/{tgl1}/{tgl2}', 'Penjualan\LaporanPenjualanController@print_laporan_penjualan');
-
-Route::get('/penjualan/laporan_penjualan/get-data-laporan/{tgl1}/{tgl2}', 'Penjualan\LaporanPenjualanController@get_data');
-Route::get('/penjualan/laporan_penjualan/laporan_penjualan', 'Penjualan\LaporanPenjualanController@laporan_penjualan');
-
-Route::get('/penjualan/laporan_retail/get_data_laporan_draft/{tgl1}/{tgl2}', 'Penjualan\LaporanRetailController@getDataLaporanDraft');
-Route::get('/penjualan/laporan_grosir/get_data_laporan_draft/{tgl1}/{tgl2}', 'Penjualan\LaporanGrosirController@getDataLaporanDraft');
-
-// End irA
-//Return Penjualan Mahmud
-Route::get('/penjualan/returnpenjualan/tabel', 'Penjualan\ManajemenReturnPenjualanController@tabel');
-Route::get('/penjualan/returnpenjualan/tambahreturn', 'Penjualan\ManajemenReturnPenjualanController@newreturn');
-Route::get('/penjualan/returnpenjualan/carinota', 'Penjualan\ManajemenReturnPenjualanController@cariNotaSales');
-Route::get('/penjualan/returnpenjualan/get-data/{id}', 'Penjualan\ManajemenReturnPenjualanController@getNota');
-Route::get('/penjualan/returnpenjualan/tabelpnota/{id}', 'Penjualan\ManajemenReturnPenjualanController@tabelPotNota');
-//End
 /*HRD*/
 Route::get('/hrd/manajemenkpipegawai/kpi', 'HrdController@kpi');
 Route::get('/hrd/payroll/payroll', 'HrdController@payroll');
@@ -477,7 +448,7 @@ Route::get('/master/datagroup/edit_group', 'master\groupController@edit_group')-
 Route::get('/master/datagroup/update_group', 'master\groupController@update_group')->name('update_group');
 Route::get('/master/datagroup/datatable_group', 'master\groupController@datatable_group')->name('datatable_group');
 //-[]-belum-[]-//
-// End Route Groub middleware auth
+}); // End Route Groub middleware auth
 //inven
 //gudang
 Route::get('/inventory/datagudang/gudang', 'inventory\stock_gudangController@gudang')->name('gudang');
@@ -490,8 +461,6 @@ Route::get('/inventory/p_suplier/datatable_pensuplier', 'Inventory\penerimaanbar
 Route::get('/inventory/p_suplier/edit_pensuplier', 'Inventory\penerimaanbarang_supController@edit_pensuplier')->name('edit_pensuplier');
 Route::get('/inventory/p_suplier/cari_nota', 'Inventory\penerimaanbarang_supController@cari_nota_sup');
 //end
-
-
 // route Keuangan (Dirga)
 // akun keuangan route
 Route::get('/master/datakeuangan/keuangan', 'Keuangan\akunController@index');
@@ -502,13 +471,7 @@ Route::get('/master/datakeuangan/edit_akun', 'keuangan\akunController@edit_akun'
 Route::post('/master/datakeuangan/update', 'Keuangan\akunController@update_akun')->name('update_akun');
 Route::get('/master/datakeuangan/hapus_akun', 'keuangan\akunController@hapus_akun')->name('hapus_akun');
 // akun keuangan route end
-
 // transaksi keuangan
 Route::get('/master/datatransaksi/transaksi', 'Keuangan\transaksiController@index');
-Route::get('/master/datatransaksi/tambah_transaksi', 'Keuangan\transaksiController@tambah_transaksi');
-Route::post('/master/datatransaksi/simpan', 'Keuangan\transaksiController@simpan_transaksi');
-Route::get('/master/datatransaksi/edit', 'Keuangan\transaksiController@edit');
 // transaksi keuangan end
 // Route Keuangan End
-
-}); // End Route Groub middleware auth

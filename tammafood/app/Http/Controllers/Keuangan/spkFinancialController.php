@@ -225,41 +225,8 @@ class spkFinancialController extends Controller
     $hasil = d_formula_result::
         where('fr_adonan',$id)
         ->first();
-    if ($hasil == null) {
-      $formula = d_formula::
-        select( 'i_id',
-                'i_name',
-                'f_bb',
-                'f_value')
-                // 'f_scale', DB::raw('(f_value * '.$butuh.') as butuh'))
-        ->join('m_item','m_item.i_id','=','d_formula.f_bb')
-        ->join('d_formula_result','d_formula_result.fr_id','=','f_id')
-        ->where('fr_adonan','=',$id)
-        ->get();
 
-      return DataTables::of($formula)
-      ->editColumn('f_bb', function ($data) {
-        return '<input readonly class="form-control" value="'.$data->i_name.'">
-                <input name="id_formula[]" class="form-control hidden" value="'.$data->f_bb.'">';
-      })
-
-      ->editColumn('f_value', function ($data) {
-        return '<input name="id_value[]" readonly class="form-control" value="0">';
-      })
-
-      ->addColumn('-', function($data){
-          return ''; 
-      })
-
-      ->addColumn('-', function($data){
-          return '0'; 
-      })
-      ->addIndexColumn()
-      ->rawColumns(['f_bb','f_value','-'])
-      ->make(true);
-    }
     $x = $hasil->fr_result;
-
     $butuh = $qty / $x;
 
     $formula = d_formula::
@@ -269,8 +236,7 @@ class spkFinancialController extends Controller
                 'f_value',
                 'f_scale', DB::raw('(f_value * '.$butuh.') as butuh'))
         ->join('m_item','m_item.i_id','=','d_formula.f_bb')
-        ->join('d_formula_result','d_formula_result.fr_id','=','f_id')
-        ->where('fr_adonan','=',$id)
+        ->where('f_adonan','=',$id)
         ->get();
 
     return DataTables::of($formula)
@@ -280,18 +246,13 @@ class spkFinancialController extends Controller
     })
 
     ->editColumn('f_value', function ($data) {
-      return '<input name="id_value[]" readonly class="form-control" value="'.number_format($data->butuh,2,',','.').'">';
+      return '<input name="id_value[]" readonly class="form-control" value="'.$data->butuh.'">';
     })
 
-    ->addColumn('-', function($data){
-        return ''; 
-    })
+    
 
-    ->addColumn('-', function($data){
-        return '0'; 
-    })
     ->addIndexColumn()
-    ->rawColumns(['f_bb','f_value','-'])
+    ->rawColumns(['f_bb','f_value'])
     ->make(true);
   }
 

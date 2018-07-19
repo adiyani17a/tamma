@@ -115,12 +115,12 @@
                                             <select name="group_laba_rugi_detail" id="group_laba_rugi_detail" class="form-control"></select>
                                           </div>
 
-                                          {{-- <div class="col-md-2 col-sm-3 col-xs-12 mb-3"> 
+                                          <div class="col-md-2 col-sm-3 col-xs-12 mb-3"> 
                                             <label class="tebal">Saldo Bulan Ini</label>
                                           </div>
                                           <div class="col-md-4 col-sm-9 col-xs-12 mb-3">
                                             <input type="text" class="form-control currency text-right" name="saldo_bulan_ini" id="saldo_bulan_ini" placeholder="Masukkan Saldo Bulan Ini" value="{{ $akun->saldo }}">
-                                          </div> --}}
+                                          </div>
                                         </div>
 
                                       </div>

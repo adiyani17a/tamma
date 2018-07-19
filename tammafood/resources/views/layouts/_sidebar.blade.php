@@ -502,27 +502,12 @@
                                 </li>
                                 @endif --}}
                                 @if(Auth::user()->punyaAkses('POS Penjualan Retail','ma_read'))
-                                <li class="{{ Request::is('penjualan/POSretail/*') ? 'active' : ''}}"><a href="{{ url('/penjualan/POSretail/index') }}"><span class="submenu-title">POS Penjualan Retail</span><span class="hidden">Penjualan</span></a>
+                                <li class="{{ Request::is('penjualan/POSretail/index') ? 'active' : ''}}"><a href="{{ url('/penjualan/POSretail/index') }}"><span class="submenu-title">POS Penjualan Retail</span><span class="hidden">Penjualan</span></a>
                                 </li>
                                 @endif
 
                                 @if(Auth::user()->punyaAkses('POS Penjualan Grosir / Online','ma_read'))
-                                <li class="{{ Request::is('penjualan/POSgrosir/*') ? 'active' : ''}}"><a href="{{ url('/penjualan/POSgrosir/index') }}"><span class="submenu-title">POS Penjualan Grosir / Online</span><span class="hidden">Penjualan</span></a>
-                                </li>
-                                @endif
-
-                                @if(Auth::user()->punyaAkses('Laporan POS Penjualan Retail','ma_read'))
-                                <li class="{{ Request::is('penjualan/laporanRetail/*') ? 'active' : ''}}"><a href="{{ url('/penjualan/laporanRetail/index') }}"><span class="submenu-title">Laporan Penjualan Retail</span><span class="hidden">Penjualan</span></a>
-                                </li>
-                                @endif
-
-                                 @if(Auth::user()->punyaAkses('Laporan POS Penjualan Grosir / Online','ma_read'))
-                                <li class="{{ Request::is('penjualan/laporanGrosir/*') ? 'active' : ''}}"><a href="{{ url('/penjualan/laporanGrosir/index') }}"><span class="submenu-title">Laporan Penjualan Grosir / Online</span><span class="hidden">Penjualan</span></a>
-                                </li>
-                                @endif
-
-                                @if(Auth::user()->punyaAkses('Laporan POS Penjualan Retail / Grosir','ma_read'))
-                                <li class="{{ Request::is('penjualan/laporan_penjualan/*') ? 'active' : ''}}"><a href="{{ url('/penjualan/laporan_penjualan/laporan_penjualan') }}"><span class="submenu-title">Laporan POS Penjualan Retail / Grosir</span><span class="hidden">Penjualan</span></a>
+                                <li class="{{ Request::is('penjualan/POSgrosir/index') ? 'active' : ''}}"><a href="{{ url('/penjualan/POSgrosir/index') }}"><span class="submenu-title">POS Penjualan Grosir / Online</span><span class="hidden">Penjualan</span></a>
                                 </li>
                                 @endif
 

@@ -20,16 +20,10 @@ class d_stock_mutation extends Model
 							'sm_qty_expired' ,
 							'sm_detail' ,
 							'sm_hpp' ,
-							'sm_hpptax' ,
-							'sm_hppdisc' ,
-							'sm_hppnett' ,
 							'sm_sell' ,
-							'sm_selltax' ,
-							'sm_selldisc' ,
-							'sm_sellnett' ,
 							'sm_reff' ,
 							'sm_insert' ,
-							'sm_update' ];
+							'sm_update'];
 
     public $incrementing = false;
     public $remember_token = false;

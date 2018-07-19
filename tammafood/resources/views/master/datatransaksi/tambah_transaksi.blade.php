@@ -55,27 +55,16 @@
                          
                         <hr>
                          <div class="col-md-12 col-sm-12 col-xs-12">
-                            <form method="post" id="transaksi-form">
-                              <input type="hidden" readonly value="{{ csrf_token() }}" name="_token">
+                            <form method="post">
                               <div class="col-md-12 col-sm-12 col-xs-12 tamma-bg" style="margin-top:15px;margin-bottom: 15px; padding-bottom:5px;padding-top: 15px; ">
 
                                 <div class="col-md-2 col-sm-3 col-xs-12">
                                     <label class="tebal">Nomor Transaksi</label>
                                 </div>
 
-                                <div class="col-md-4 col-sm-9 col-xs-12">
+                                <div class="col-md-10 col-sm-9 col-xs-12">
                                   <div class="form-group">
-                                    <input type="text" class="form-control form_validate" name="nomor_transaksi" placeholder="Masukkan Nomor Transaksi">                                  
-                                  </div>
-                                </div> 
-
-                                <div class="col-md-2 col-sm-3 col-xs-12">
-                                    <label class="tebal">Tanggal Transaksi</label>
-                                </div>
-
-                                <div class="col-md-4 col-sm-9 col-xs-12">
-                                  <div class="form-group">
-                                    <input type="text" class="form-control form_validate" name="tanggal_transaksi" placeholder="Pilih Tanggal Transaksi" value="{{ date("d-m-Y") }}" readonly>                                  
+                                    <input type="text" class="form-control" name="nomor_transaksi" placeholder="Masukkan Nomor Transaksi">                                  
                                   </div>
                                 </div>  
 
@@ -85,7 +74,7 @@
 
                                 <div class="col-md-4 col-sm-9 col-xs-12">
                                   <div class="form-group">
-                                    <input type="text" class="form-control form_validate" name="nama_transaksi" placeholder="Masukkan Nama Transaksi">                        
+                                    <input type="text" class="form-control" name="nama_transaksi" placeholder="Masukkan Nama Transaksi">                        
                                   </div>
                                 </div>
 
@@ -109,7 +98,7 @@
 
                                 <div class="col-md-6 col-sm-9 col-xs-12">
                                   <div class="form-group">
-                                    <textarea class="form-control form_validate" id="Keterangan" name="Keterangan" placeholder="Tulis Keterangan" rows="5" style="resize: none;"></textarea>
+                                    <textarea class="form-control" id="Keterangan" name="Keterangan" placeholder="Tulis Keterangan" rows="5" style="resize: none;"></textarea>
                                   </div>
                                 </div>
                               </div>
@@ -117,10 +106,9 @@
                               <div class="col-md-12 col-sm-12 col-xs-12 tamma-bg" style="margin-top:0px;margin-bottom: 20px;">
 
                                 <div class="row">
-
                                   <div class="col-md-6">
                                     <div class="col-md-12 text-center" style="background: none; padding: 15px 5px 15px 5px; border-bottom: 1px solid #ccc">
-                                      <strong>Akun Debet</strong> <span class="pull-right add_akun" data-for="debet" style="cursor: pointer;"><i class="fa fa-plus"></i></span>
+                                      <strong>Debet</strong> <span class="pull-right add_akun" data-for="debet" style="cursor: pointer;"><i class="fa fa-plus"></i></span>
                                     </div>
 
                                     <div class="col-md-12 akun_row" id="debet_wrap" style="padding: 0px; padding-top: 10px;">
@@ -129,85 +117,34 @@
 
                                         <div class="col-md-6 col-sm-9 col-xs-12" style="padding: 0px;">
                                           <div class="form-group">
-                                            <select class="form-control first_acc" id="cashtype" name="akun_debet[]">                       
-                                               @foreach($data as $akun)
-                                                <option value="{{$akun->id_akun}}">{{ $akun->id_akun }} - {{ $akun->nama_akun }}</option>
-                                              @endforeach
+                                            <select class="form-control" id="cashtype" name="akun_debet[]">                       
+                                              <option>Okee</option>
+                                              <option>Hahhhh</option>
                                             </select>                                
                                           </div>
                                         </div>
 
                                         <div class="col-md-5 col-sm-9 col-xs-12" style="padding: 0px 5px;">
                                           <div class="form-group">
-                                            <input type="text" class="form-control text-right currency debet_input" data-for="debet" value="0" name="debet_value[]">                          
+                                            <input type="text" class="form-control text-right currency debet_input" data-for="debet">                          
                                           </div>
                                         </div>
                                       </div>
 
                                     </div>
 
-                                  </div>
-
-                                  <div class="col-md-6">
-                                    <div class="col-md-12 text-center" style="background: none; padding: 15px 5px 15px 5px; border-bottom: 1px solid #ccc">
-                                      <strong>Akun Kredit</strong> <span class="pull-right add_akun" data-for="kredit" style="cursor: pointer;"><i class="fa fa-plus"></i></span>
-                                    </div>
-
-                                    <div class="col-md-12 akun_row" id="kredit_wrap" style="padding: 0px; padding-top: 10px;">
-
-                                      <div id="row">
-
-                                        <div class="col-md-6 col-sm-9 col-xs-12" style="padding: 0px;">
-                                          <div class="form-group">
-                                            <select class="form-control first_acc" id="cashtype" name="akun_kredit[]">                       
-                                              @foreach($data as $akun)
-                                                <option value="{{$akun->id_akun}}">{{ $akun->id_akun }} - {{ $akun->nama_akun }}</option>
-                                              @endforeach
-                                            </select>                                
-                                          </div>
-                                        </div>
-
-                                        <div class="col-md-5 col-sm-9 col-xs-12" style="padding: 0px 5px;">
-                                          <div class="form-group">
-                                            <input type="text" class="form-control text-right currency kredit_input" data-for="kredit" value="0" name="kredit_value[]">                          
-                                          </div>
-                                        </div>
-                                      </div>
-
-                                    </div>
-                                  </div>
-                                </div>
-
-                                <div class="row">
-                                  <div class="col-md-6">
-                                    <div class="col-md-12 text-center" style="background: none; padding: 10px 0px 0px 0px; border-top: 1px solid #ccc; border-bottom: 1px solid #ccc; margin-bottom: 10px;">
-                                        <div class="col-md-6 col-sm-9 col-xs-12" style="padding: 0px;">
-                                          <strong>Total Debet</strong>
-                                        </div>
-
-                                        <div class="col-md-5 col-sm-9 col-xs-12" style="padding: 0px 5px;">
-                                          <div class="form-group">
-                                            <input type="text" class="form-control text-right currency" id="total_debet" style="border: 0px; background: white;" readonly>             
-                                          </div>
-                                        </div>
-                                    </div>
-                                  </div>
-
-                                  <div class="col-md-6">
                                     <div class="col-md-12 text-center" style="background: none; padding: 10px 0px 0px 0px; border-top: 1px solid #ccc; border-bottom: 1px solid #ccc; margin-bottom: 10px;">
                                       <div class="col-md-6 col-sm-9 col-xs-12" style="padding: 0px;">
-                                        <strong>Total Kredit</strong>
+                                        <strong>Total</strong>
                                       </div>
 
                                       <div class="col-md-5 col-sm-9 col-xs-12" style="padding: 0px 5px;">
                                         <div class="form-group">
-                                          <input type="text" class="form-control text-right currency" id="total_kredit" style="border: 0px; background: white;" readonly name="total">             
+                                          <input type="text" class="form-control text-right currency" id="total_debet" style="border: 0px; background: white;" readonly>             
                                         </div>
                                       </div>
                                     </div>
                                   </div>
-                                </div>
-                                
                                 </div>
                                 
                               </div>
@@ -216,7 +153,7 @@
                             
                         <div class="form-group row">
                           <div class="col-md-2 col-md-offset-10">
-                            <input type="button" name="tambah_data" value="Simpan Data" class="btn btn-danger" id="submit_trasaksi">
+                            <input type="submit" name="tambah_data" value="Simpan Data" class="btn btn-danger">
                           </div>
                         </div>
                              
@@ -229,9 +166,8 @@
                             </div>
 
 <select style="width:90%;display: none;" id="akun_hidden">
-  @foreach($data as $akun)
-    <option value="{{$akun->id_akun}}">{{ $akun->id_akun }} - {{ $akun->nama_akun }}</option>
-  @endforeach
+  <option>Okee</option>
+  <option>Hahhhh</option>
 </select>
                             
 @endsection
@@ -250,7 +186,7 @@
                 autoGroup: true,
                 prefix: '', //Space after $, this will not truncate the first character.
                 rightAlign: false,
-                allowMinus: false
+                oncleared: function () { self.Value(''); }
             });
           }
 
@@ -259,7 +195,7 @@
           $(".add_akun").click(function(evt){
             evt.preventDefault();
             btn = $(this);
-            html = '<div id="'+btn.data("for")+'_row" class="added_row">'+
+            html = '<div id="debet_row">'+
                       '<div class="col-md-6 col-sm-9 col-xs-12" style="padding: 0px;">'+
                         '<div class="form-group">'+
                           '<select class="form-control" id="cashtype" name="akun_'+btn.data("for")+'[]">'                       
@@ -270,7 +206,7 @@
 
                       '<div class="col-md-5 col-sm-9 col-xs-12" style="padding: 0px 5px;">'+
                         '<div class="form-group">'+
-                          '<input type="text" class="form-control text-right currency '+btn.data("for")+'_input" data-for="'+btn.data("for")+'" value="0" name="'+btn.data("for")+'_value[]">'+                          
+                          '<input type="text" class="form-control text-right currency '+btn.data("for")+'_input" data-for="'+btn.data("for")+'">'+                          
                         '</div>'+
                       '</div>'+
 
@@ -298,63 +234,8 @@
             throttle_total(ipt.data("for"));
           })
 
-          $('.currency').keypress(function(key){
-              return false;
-          })
-
-          $("#submit_trasaksi").click(function(event){
-            event.preventDefault();
-
-            if($("#total_debet").val() != $("#total_kredit").val()){
-              alert("not same");
-            }else{
-              btn = $(this);
-              // btn.attr("disabled", "disabled");
-              btn.text("Menyimpan...");
-
-              if(validate_form()){
-                $.ajax(baseUrl+"/master/datatransaksi/simpan",{
-                  type: "post",
-                  timeout: 15000,
-                  data: $("#transaksi-form").serialize(),
-                  dataType: 'json',
-                  success: function(response){
-                    console.log(response);
-
-                    if(response.status == "sukses"){
-                     toastr.success('Data Transaksi Berhasil Disimpan');
-                      reset_form();
-                    }else if(response.status == "exist_key"){
-                     toastr.error('Nomor Transaksi Sudah Digunakan. Gagal Disimpan');
-                    }
-
-                    btn.removeAttr("disabled");
-                    btn.text("Simpan");
-
-                    
-                  },
-                  error: function(request, status, err) {
-                    if (status == "timeout") {
-                      toastr.error('Request Timeout. Data Gagal Disimpan');
-                      btn.removeAttr("disabled");
-                      btn.text("Simpan");
-                    } else {
-                      toastr.error('Internal Server Error. Data Gagal Disimpan');
-                      btn.removeAttr("disabled");
-                      btn.text("Simpan");
-                    }
-                    btn.removeAttr("disabled");
-                  }
-                })
-              }else{
-                btn.removeAttr("disabled");
-                btn.text("Simpan");
-              }
-            }
-          })
-
           function throttle_total(dataFor){
-            tot = 0; 
+            tot = 0;
 
             $("."+dataFor+"_input").each(function(){
               val = $(this).val().split(',')[0].replace(/\./g,"");
@@ -362,48 +243,7 @@
             })
 
             // alert(tot);
-            $("#total_"+dataFor).val(tot);
-          }
-
-          function validate_form(){
-            a = true;
-
-            $("#transaksi-form .form_validate").each(function(i, e){
-              if($(this).val() == "" && $(this).is(':visible')){
-                a = false;
-                $(this).focus();
-                toastr.warning('Tidak Boleh Ada Data Yang Kosong');
-                return false;
-              }
-            })
-
-            // $(".select_validate").each(function(i, e){
-            //   if($(this).val() == "---"){
-            //     a = false;
-            //     $(this).focus();
-            //     toastr.warning('Harap Lengkapi Data Diatas');
-            //     return false;
-            //   }
-            // })
-
-            // if($("#saldo").is(":checked") && $("#DEBET").val() == '0,00' && $("#KREDIT").val() == '0,00'){
-            //   a = false;
-            //   $("#saldo_debet").focus()
-            //   toastr.warning('Jika Akun Ini Memiliki Saldo Maka Saldo Tidak Boleh 0.');
-            // }
-
-            // if($("#saldo").is(":checked")){
-            //   alert($("#DEBET").val());
-            // }
-
-            return a;
-          }
-
-          function reset_form(){
-            // alert("okee");
-            $('.currency').val(0);
-            $(".added_row").remove();
-            $(".first_acc").val($("#akun_hidden").children('option').first().attr('value'));
+            $("#total_debet").val(tot);
           }
 
         })
