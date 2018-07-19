@@ -84,7 +84,7 @@ class LaporanGrosirController extends Controller
                 ->get()->toArray();
     // SUM
     $data_sum = DB::table('d_sales_dt')
-                ->select( (DB::raw('SUM(d_sales_dt.sd_total) as total_penjualan')), DB::raw('SUM(d_sales_dt.sd_qty) as total_qty'), DB::raw('SUM(d_sales_dt.sd_disc_percent) as total_disc') )
+                ->select( (DB::raw('SUM(d_sales_dt.sd_total) as total_penjualan')), DB::raw('SUM(d_sales_dt.sd_qty) as total_qty'), DB::raw('SUM(d_sales_dt.sd_disc_percent) as total_disc'), DB::raw('SUM(d_sales_dt.sd_disc_value) as total_disc_val') )
                 ->join('d_sales','d_sales_dt.sd_sales','=','d_sales.s_id')
                 ->join('m_item','d_sales_dt.sd_item','=','m_item.i_id')
                 ->join('m_satuan','m_item.i_sat1','=','m_satuan.m_sid')
@@ -96,7 +96,7 @@ class LaporanGrosirController extends Controller
                 ->get()->toArray();
 
     $data_sum_all = DB::table('d_sales_dt')
-                ->select( (DB::raw('SUM(d_sales_dt.sd_total) as total_semua_penjualan')),(DB::raw('SUM(d_sales_dt.sd_disc_percent) as total_semua_disc_penjualan')) )
+                ->select( (DB::raw('SUM(d_sales_dt.sd_total) as total_semua_penjualan')),(DB::raw('SUM(d_sales_dt.sd_disc_percent) as total_semua_disc_penjualan')),(DB::raw('SUM(d_sales_dt.sd_disc_value) as total_semua_disc_val_penjualan')) )
                 ->join('d_sales','d_sales_dt.sd_sales','=','d_sales.s_id')
                 ->join('m_item','d_sales_dt.sd_item','=','m_item.i_id')
                 ->join('m_satuan','m_item.i_sat1','=','m_satuan.m_sid')
@@ -142,6 +142,42 @@ class LaporanGrosirController extends Controller
     // return $penjualan;
 
     return view('penjualan/laporanretail/print_laporan_penjualan', compact('data', 'tgl1', 'tgl2', 'penjualan', 'nama_array', 'data_sum', 'data_sum_all'));
+  }
+
+  public function getDataLaporanDraft($tgl1, $tgl2)
+  {
+    $y = substr($tgl1, -4);
+    $m = substr($tgl1, -7,-5);
+    $d = substr($tgl1,0,2);
+    $tanggal1 = $y.'-'.$m.'-'.$d;
+
+    $y2 = substr($tgl2, -4);
+    $m2 = substr($tgl2, -7,-5);
+    $d2 = substr($tgl2,0,2);
+    $tanggal2 = $y2.'-'.$m2.'-'.$d2;
+
+    $data = DB::table('d_sales_dt')
+                ->select('d_sales_dt.*', 'd_sales.*', 'm_item.i_name', 'm_item.i_code', 'm_satuan.m_sname', 'm_customer.c_name')
+                ->join('d_sales','d_sales_dt.sd_sales','=','d_sales.s_id')
+                ->join('m_item','d_sales_dt.sd_item','=','m_item.i_id')
+                ->join('m_satuan','m_item.i_sat1','=','m_satuan.m_sid')
+                ->join('m_customer','d_sales.s_customer','=','m_customer.c_id')
+                ->where('d_sales.s_channel', '=', "GR")
+                ->where('d_sales.s_status', '=', 'DR')
+                ->whereBetween('d_sales.s_date', [$tanggal1, $tanggal2])
+                ->orderBy('d_sales_dt.sd_item', 'DESC')
+                ->get();
+
+    return DataTables::of($data)
+    ->editColumn('nama', function ($data)
+    {
+       return $data->i_code.' - '.$data->i_name;
+    })
+    ->editColumn('kurs', function ($data)
+    {
+       return '1';
+    })
+    ->make(true);
   }
 
 }

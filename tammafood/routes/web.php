@@ -329,6 +329,10 @@ Route::get('/penjualan/semua/print_laporan_penjualan/{tgl1}/{tgl2}', 'Penjualan\
 
 Route::get('/penjualan/laporan_penjualan/get-data-laporan/{tgl1}/{tgl2}', 'Penjualan\LaporanPenjualanController@get_data');
 Route::get('/penjualan/laporan_penjualan/laporan_penjualan', 'Penjualan\LaporanPenjualanController@laporan_penjualan');
+
+Route::get('/penjualan/laporan_retail/get_data_laporan_draft/{tgl1}/{tgl2}', 'Penjualan\LaporanRetailController@getDataLaporanDraft');
+Route::get('/penjualan/laporan_grosir/get_data_laporan_draft/{tgl1}/{tgl2}', 'Penjualan\LaporanGrosirController@getDataLaporanDraft');
+
 // End irA
 //Return Penjualan Mahmud
 Route::get('/penjualan/returnpenjualan/tabel', 'Penjualan\ManajemenReturnPenjualanController@tabel');

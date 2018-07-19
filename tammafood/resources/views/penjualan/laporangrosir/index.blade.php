@@ -13,7 +13,7 @@
     <ol class="breadcrumb page-breadcrumb pull-right" style="font-family: 'Raleway', sans-serif;">
       <li><i class="fa fa-home"></i>&nbsp;<a href="{{ url('/home') }}">Home</a>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
       <li><i></i>&nbsp;Penjualan&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
-      <li class="active">Laporan Penjualan grosir</li>
+      <li class="active">Laporan Penjualan Grosir</li>
     </ol>
       <div class="clearfix"></div>
   </div>
@@ -28,12 +28,15 @@
           </div>
              
           <ul id="generalTab" class="nav nav-tabs">
-            <li class="active"><a href="#report-tab" data-toggle="tab">Daftar Penjualan grosir</a></li>
-            <!-- <li><a href="#note-tab" data-toggle="tab" onclick="lihatLaporanByTgl()">History Rencana Pembelian</a></li> -->
+            <li class="active"><a href="#report-tab" data-toggle="tab">Daftar Penjualan Grosir</a></li>
+            <li><a href="#draft-tab" data-toggle="tab">Daftar Draft Penjualan Grosir</a></li>
           </ul>
 
           <div id="generalTabContent" class="tab-content responsive">            
             @include('penjualan.laporangrosir.tab-laporan')          
+
+            @include('penjualan.laporangrosir.tab-draft')          
+
           </div>
         </div>
       </div>
@@ -219,6 +222,51 @@
     });
   }
   
+  function lihatLaporanByTglDraft(){
+    var tgl1 = $('#tanggal1').val();
+    var tgl2 = $('#tanggal2').val();
+    
+    $('#tbl-draft').dataTable({
+        "destroy": true,
+        "processing" : true,
+        "serverside" : true,
+        "ajax" : {
+          url: baseUrl + "/penjualan/laporan_grosir/get_data_laporan_draft/"+tgl1+"/"+tgl2,
+          type: 'GET'
+        },
+        "columns" : [
+          {"data" : "nama", "width" : "15%", name: 'first'},
+          {"data" : "s_note", "width" : "10%"},
+          {"data" : "s_date", "width" : "10%"},
+          {"data" : "s_date", "width" : "5%"},
+          {"data" : "c_name", "width" : "10%"},
+          {"data" : "kurs", "width" : "5%"},
+          {"data" : "m_sname", "width" : "10%"},
+          {"data" : "sd_qty", "width" : "5%"},
+          {"data" : "sd_price", "width" : "10%"},
+          {"data" : "sd_disc_value", "width" : "10%"},
+          {"data" : "sd_disc_percent", "width" : "5%"},
+          {"data" : "sd_total", "width" : "10%"}
+        ],
+        "rowsGroup": [
+          'first:name'
+        ],
+        "lengthMenu": [[10, 20, 50, - 1], [10, 20, 50, "All"]],
+        "language": {
+          "searchPlaceholder": "Cari Data",
+          "emptyTable": "Tidak ada data",
+          "sInfo": "Menampilkan _START_ - _END_ Dari _TOTAL_ Data",
+          "sSearch": '<i class="fa fa-search"></i>',
+          "sLengthMenu": "Menampilkan &nbsp; _MENU_ &nbsp; Data",
+          "infoEmpty": "",
+          "paginate": {
+                "previous": "Sebelumnya",
+                "next": "Selanjutnya",
+             }
+        }
+    });
+  }
+
   function convertDecimalToRupiah(decimal) 
   {
     var angka = parseInt(decimal);

@@ -139,11 +139,11 @@
 					<th>Tanggal</th>
 					<th>Jatuh Tempo</th>
 					<th>Customer</th>
-					<th>Kurs</th>
 					<th>Sat</th>
 					<th>Qty</th>
 					<th>Harga</th>
-					<th>Diskon</th>
+					<th>Diskon %</th>
+					<th>Diskon Rp</th>
 					<th>DPP</th>
 					<th>PPN</th>
 					<th>Total</th>
@@ -164,7 +164,6 @@
 							<td class="text-center">{{$penjualan[$i][$j]->s_date}}</td>
 							<td></td>
 							<td>{{$penjualan[$i][$j]->c_name}}</td>
-							<td class="text-right">{{number_format(1,2,',','.')}}</td>
 							<td class="text-center">{{$penjualan[$i][$j]->m_sname}}</td>
 							<td class="text-center">{{$penjualan[$i][$j]->sd_qty}}</td>
 							<td>
@@ -175,7 +174,8 @@
 									{{number_format($penjualan[$i][$j]->sd_price,2,',','.')}}
 								</div>
 							</td>
-							<td class="text-right">{{$penjualan[$i][$j]->sd_disc_percent}}</td>
+							<td class="text-right">{{number_format($penjualan[$i][$j]->sd_disc_percent,2,',','.')}}</td>
+							<td class="text-right">{{number_format($penjualan[$i][$j]->sd_disc_value,2,',','.')}}</td>
 							<td class="text-right">{{number_format($penjualan[$i][$j]->sd_total,2,',','.')}}</td>
 							<td class="text-right">{{number_format(0,2,',','.')}}</td>
 							<td class="text-right">{{number_format($penjualan[$i][$j]->sd_total,2,',','.')}}</td>
@@ -183,10 +183,11 @@
 
 						@if($j == count($penjualan[$i]) - 1)
 							<tr>
-								<td class="text-right bold" colspan="6">Total</td>
+								<td class="text-right bold" colspan="5">Total</td>
 								<td class="text-right bold">{{number_format($data_sum[$i]->total_qty,2,',','.')}}</td>
 								<td class="text-right bold">Total</td>
 								<td class="text-right bold">{{number_format($data_sum[$i]->total_disc,2,',','.')}}</td>
+								<td class="text-right bold">{{number_format($data_sum[$i]->total_disc_val,2,',','.')}}</td>
 								<td class="text-right bold">{{number_format($data_sum[$i]->total_penjualan,2,',','.')}}</td>
 								<td class="text-right bold">{{number_format(0,2,',','.')}}</td>
 								<td class="text-right bold">{{number_format($data_sum[$i]->total_penjualan,2,',','.')}}</td>
@@ -205,9 +206,14 @@
 		<div class="float-left" style="width: 30vw;">
 			<table class="border-none" width="100%">
 				<tr>
-					<td>Diskon</td>
+					<td>Diskon %</td>
 					<td>:</td>
 					<td>{{number_format($data_sum_all[0]->total_semua_disc_penjualan,2,',','.')}}</td>
+				</tr>
+				<tr>
+					<td>Diskon Rp.</td>
+					<td>:</td>
+					<td>{{number_format($data_sum_all[0]->total_semua_disc_val_penjualan,2,',','.')}}</td>
 				</tr>
 				<tr>
 					<td>DPP</td>
