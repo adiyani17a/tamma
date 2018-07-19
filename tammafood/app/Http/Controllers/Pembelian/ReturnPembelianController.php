@@ -394,9 +394,9 @@ class ReturnPembelianController extends Controller
             'sm_qty_expired' => '0',
             'sm_detail' => "PENGURANGAN",
             'sm_hpp' => $this->konvertRp($request->fieldHargaTotal[$i]),
-            'sm_hpptax' => '0',
+            /*'sm_hpptax' => '0',
             'sm_hppdisc' => '0',
-            'sm_hppnett' => $this->konvertRp($request->fieldHargaTotal[$i]),
+            'sm_hppnett' => $this->konvertRp($request->fieldHargaTotal[$i]),*/
             'sm_reff' => $request->kodeReturn,
             'sm_insert' => Carbon::now(),
         ]);
