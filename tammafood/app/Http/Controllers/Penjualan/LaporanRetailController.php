@@ -32,7 +32,12 @@ class LaporanRetailController extends Controller
     $tanggal2 = $y2.'-'.$m2.'-'.$d2;
 
     $data = DB::table('d_sales_dt')
-                ->select('d_sales_dt.*', 'd_sales.*', 'm_item.i_name', 'm_item.i_code', 'm_satuan.m_sname', 'm_customer.c_name')
+                ->select(   'd_sales_dt.*', 
+                            'd_sales.*', 
+                            'm_item.i_name', 
+                            'm_item.i_code', 
+                            'm_satuan.m_sname', 
+                            'm_customer.c_name')
                 ->join('d_sales','d_sales_dt.sd_sales','=','d_sales.s_id')
                 ->join('m_item','d_sales_dt.sd_item','=','m_item.i_id')
                 ->join('m_satuan','m_item.i_sat1','=','m_satuan.m_sid')
