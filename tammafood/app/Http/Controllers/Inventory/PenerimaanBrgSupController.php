@@ -32,7 +32,58 @@ class PenerimaanBrgSupController extends Controller
         return view('inventory/p_suplier/index');
     }
 
+
     public function getDataForm($id)
+
+    public function get_data_sj(Request $request)
+
+    public function getDatatableIndex()
+    {
+        $data = d_terima_pembelian::join('d_purchasing','d_terima_pembelian.d_tb_pid','=','d_purchasing.d_pcs_id')
+                ->join('d_supplier','d_terima_pembelian.d_tb_sup','=','d_supplier.s_id')
+                ->join('d_mem','d_terima_pembelian.d_tb_staff','=','d_mem.m_id')
+                ->select('d_terima_pembelian.*', 'd_supplier.s_id', 'd_supplier.s_company', 'd_purchasing.d_pcs_id', 'd_purchasing.d_pcs_code', 'd_purchasing.d_pcs_date_created', 'd_mem.m_name')
+                ->orderBy('d_tb_created', 'DESC')
+                ->get();
+        //dd($data);    
+        return DataTables::of($data)
+        ->addIndexColumn()
+        ->editColumn('tglBuat', function ($data) 
+        {
+            if ($data->d_tb_created == null) 
+            {
+                return '-';
+            }
+            else 
+            {
+                return $data->d_tb_created ? with(new Carbon($data->d_tb_created))->format('d M Y') : '';
+            }
+        })
+        ->editColumn('hargaTotal', function ($data) 
+        {
+          return 'Rp. '.number_format($data->d_tb_totalnett,2,",",".");
+        })
+        ->addColumn('action', function($data)
+        {
+          
+            return '<div class="text-center">
+                        <button class="btn btn-sm btn-success" title="Detail"
+                            onclick=detailPenerimaan("'.$data->d_pcsr_id.'")><i class="fa fa-eye"></i> 
+                        </button>
+                        <button class="btn btn-sm btn-warning" title="Edit"
+                            onclick=editPenerimaan("'.$data->d_pcsr_id.'")><i class="glyphicon glyphicon-edit"></i>
+                        </button>
+                        <button class="btn btn-sm btn-danger" title="Delete"
+                            onclick=deletePenerimaan("'.$data->d_pcsr_id.'")><i class="glyphicon glyphicon-trash"></i>
+                        </button>
+                    </div>';
+        })
+        ->rawColumns(['status', 'action'])
+        ->make(true);
+    }
+
+    public function lookupDataPembelian(Request $request)
+
     {
         //code penerimaan
         $kode = $this->kodeOtomatis(); 
@@ -45,6 +96,7 @@ class PenerimaanBrgSupController extends Controller
                     ->where('d_pcs_id', '=', $id)
                     ->get();
 
+
         $dataIsi = DB::table('d_purchasing_dt')
                   ->select('d_purchasing_dt.*', 'm_item.i_name', 'm_item.i_code', 'm_item.i_sat1', 'm_item.i_id', 'm_satuan.m_sname', 'm_satuan.m_sid')
                   ->leftJoin('m_item','d_purchasing_dt.i_id','=','m_item.i_id')
@@ -52,6 +104,172 @@ class PenerimaanBrgSupController extends Controller
                   ->where('d_purchasing_dt.d_pcs_id', '=', $id)
                   ->where('d_purchasing_dt.d_pcsdt_isreceived', '=', "FALSE")
                   ->get();
+
+            foreach ($do as $val) {
+                $formatted_tags[] = ['id' => $val->dod_do, 'text' => $val->do_nota];
+            }
+            return \Response::json($formatted_tags);
+        }
+        else
+        {
+
+            $do = d_delivery_orderdt::select('d_delivery_order.do_nota', 'd_delivery_orderdt.dod_do', 'd_delivery_orderdt.dod_detailid')
+                    ->join('d_delivery_order', 'd_delivery_orderdt.dod_do', '=', 'd_delivery_order.do_id')
+                    ->where('d_delivery_order.do_nota', 'LIKE', '%'.$term.'%')
+                    ->where('d_delivery_orderdt.dod_status', '=', 'WT')
+                    ->groupBy('d_delivery_orderdt.dod_do')
+                    ->get();
+
+          $kd = "0001";
+        }
+
+        return $codeTerimaBeli = "INB-".date('myd')."-".$kd;
+    }
+
+    public function simpanPenerimaan(Request $request)
+    {
+        //dd($request->all());
+        DB::beginTransaction();
+        try 
+        {
+            //insert to table d_terimapembelian
+            $dataHeader = new d_terima_pembelian;
+            $dataHeader->d_tb_pid = $request->headNotaPurchase;
+            $dataHeader->d_tb_sup = $request->headSupplierId;
+            $dataHeader->d_tb_code = $request->headKodeTerima;
+            $dataHeader->d_tb_staff = $request->headStaffId;
+            $dataHeader->d_tb_date = date('Y-m-d',strtotime($request->headTglTerima));
+            $dataHeader->d_tb_totalnett = $this->konvertRp($request->headTotalTerima);
+            $dataHeader->d_tb_created = Carbon::now();
+            $dataHeader->save();
+                  
+            //get last lastId then insert id to d_terimapembelian_dt
+            $lastId = d_terima_pembelian::select('d_tb_id')->max('d_tb_id');
+            if ($lastId == 0 || $lastId == '') 
+            {
+                $lastId  = 1;
+            }  
+
+            //variabel untuk hitung array field
+            $hitung_field = count($request->fieldItemId);
+
+            //update d_stock, insert d_stock_mutation & insert d_terimapembelian_dt
+            for ($i=0; $i < $hitung_field; $i++) 
+            {
+                //variabel u/ cek primary satuan
+                $primary_sat = DB::table('m_item')->select('m_item.*')->where('i_id', $request->fieldItemId[$i])->first();
+        
+                //cek satuan primary, convert ke primary apabila beda satuan
+                if ($primary_sat->i_sat1 == $request->fieldSatuanId[$i]) 
+                {
+                  $hasilConvert = (int)$request->fieldQtyterima[$i] * (int)$primary_sat->i_sat_isi1;
+                }
+                elseif ($primary_sat->i_sat2 == $request->fieldSatuanId[$i])
+                {
+                  $hasilConvert = (int)$request->fieldQtyterima[$i] * (int)$primary_sat->i_sat_isi2;
+                }
+                else
+                {
+                  $hasilConvert = (int)$request->fieldQtyterima[$i] * (int)$primary_sat->i_sat_isi3;
+                }
+
+                $grup = $this->getGroupGudang($request->fieldItemId[$i]);
+                $stokAkhir = (int)$request->fieldStokVal[$i] + (int)$hasilConvert;
+
+                //update stock akhir d_stock
+                DB::table('d_stock')
+                  ->where('s_item', $request->fieldItemId[$i])
+                  ->where('s_comp', $grup)
+                  ->where('s_position', $grup)
+                  ->update(['s_qty' => $stokAkhir]);
+
+                //get id d_stock
+                $dstock_id = DB::table('d_stock')
+                  ->select('s_id')
+                  ->where('s_item', $request->fieldItemId[$i])
+                  ->where('s_comp', $grup)
+                  ->where('s_position', $grup)
+                  ->first();
+
+                //get last id stock_mutation
+                $lastIdSm = DB::select(DB::raw("SELECT EXISTS(SELECT sm_detailid FROM d_stock_mutation where sm_stock = '$dstock_id->s_id' ORDER BY sm_detailid DESC LIMIT 1) as zz"));
+                //dd($lastIdSm);
+              
+                if ($lastIdSm[0]->zz == 0 || $lastIdSm[0]->zz = '0')
+                {
+                  $hasil_id = 1;
+                }
+                else
+                {
+                  $hasil_id = (int)$lastIdSm[0]->zz + 1;
+                }
+
+                //insert to d_stock_mutation
+                DB::table('d_stock_mutation')->insert([
+                  'sm_stock' => $dstock_id->s_id,
+                  'sm_detailid' => $hasil_id,
+                  'sm_date' => Carbon::now(),
+                  'sm_comp' => $grup,
+                  'sm_mutcat' => '14',
+                  'sm_item' => $request->fieldItemId[$i],
+                  'sm_qty' => $hasilConvert,
+                  'sm_qty_used' => '0',
+                  'sm_qty_expired' => '0',
+                  'sm_detail' => "PENAMBAHAN",
+                  'sm_hpp' => $this->konvertRp($request->fieldHargaTotal[$i]),
+                  'sm_sell' => '0',
+                  'sm_reff' => $request->headKodeTerima,
+                  'sm_insert' => Carbon::now(),
+                ]);
+
+                //insert d_terimapembelian_dt
+                $dataIsi = new d_terima_pembelian_dt;
+                $dataIsi->d_tbdt_idtb = $lastId;
+                $dataIsi->d_tbdt_smdetail = $hasil_id;
+                $dataIsi->d_tbdt_item = $request->fieldItemId[$i];
+                $dataIsi->d_tbdt_sat = $request->fieldSatuanId[$i];
+                $dataIsi->d_tbdt_idpcsdt = $request->fieldIdPurchaseDet[$i];
+                $dataIsi->d_tbdt_qty = $request->fieldQtyterima[$i];
+                $dataIsi->d_tbdt_price = $request->fieldHargaRaw[$i];
+                $dataIsi->d_tbdt_pricetotal = $this->konvertRp($request->fieldHargaTotal[$i]);
+                $dataIsi->d_tbdt_date_received = date('Y-m-d',strtotime($request->headTglTerima));
+                $dataIsi->d_tbdt_created = Carbon::now();
+                $dataIsi->save();
+            }
+
+            DB::commit();
+            return response()->json([
+                  'status' => 'sukses',
+                  'pesan' => 'Data Penerimaan Pembelian Berhasil Disimpan'
+              ]);
+        } 
+        catch (\Exception $e) 
+        {
+          DB::rollback();
+          return response()->json([
+              'status' => 'gagal',
+              'pesan' => $e->getMessage()."\n at file: ".$e->getFile()."\n line: ".$e->getLine()
+          ]);
+        }
+    }
+
+    public function getStokByType($arrItemType, $arrSatuan, $counter)
+    {
+        foreach ($arrItemType as $val) 
+        {
+            if ($val->i_type == "BP") //brg produksi
+            {
+                $query = DB::select(DB::raw("SELECT IFNULL( (SELECT s_qty FROM d_stock where s_item = '$val->i_id' AND s_comp = '6' AND s_position = '6' limit 1) ,'0') as qtyStok"));
+                $satUtama = DB::table('m_item')->join('m_satuan', 'm_item.i_sat1', '=', 'm_satuan.m_sid')->select('m_satuan.m_sname')->where('m_item.i_sat1', '=', $arrSatuan[$counter])->first();
+                  
+                $stok[] = $query[0];
+                $satuan[] = $satUtama->m_sname;
+                $counter++;
+            }
+            elseif ($val->i_type == "BJ") //brg jual
+            {
+                $query = DB::select(DB::raw("SELECT IFNULL( (SELECT s_qty FROM d_stock where s_item = '$val->i_id' AND s_comp = '7' AND s_position = '7' limit 1) ,'0') as qtyStok"));
+                $satUtama = DB::table('m_item')->join('m_satuan', 'm_item.i_sat1', '=', 'm_satuan.m_sid')->select('m_satuan.m_sname')->where('m_item.i_sat1', '=', $arrSatuan[$counter])->first();
 
         foreach ($dataIsi as $val) 
         {
@@ -97,7 +315,12 @@ class PenerimaanBrgSupController extends Controller
         ]);
     }
 
+
     public function getDatatableIndex()
+
+
+    public function get_tabel_data($id)
+
     {
         $data = d_terima_pembelian::join('d_purchasing','d_terima_pembelian.d_tb_pid','=','d_purchasing.d_pcs_id')
                 ->join('d_supplier','d_terima_pembelian.d_tb_sup','=','d_supplier.s_id')
@@ -513,6 +736,9 @@ class PenerimaanBrgSupController extends Controller
         return $data;
     }
 
+    // ============================================================================================================== //
+
+
     public function getGroupGudang($id_item)
     {
         $typeBrg = DB::table('m_item')->select('i_type')->where('i_id','=', $id_item)->first();
@@ -538,42 +764,6 @@ class PenerimaanBrgSupController extends Controller
     }
 
     // ============================================================================================================== //
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     public function get_penerimaan_by_tgl($tgl1,$tgl2,$akses)

@@ -259,6 +259,13 @@ class ReturnPembelianController extends Controller
                     ->get();
 
     $dataIsi = DB::table('d_purchasing_dt')
+
+          ->select('d_purchasing_dt.*', 'm_item.i_name', 'm_item.i_code', 'm_item.i_sat1', 'm_item.i_id')
+          ->leftJoin('m_item','d_purchasing_dt.i_id','=','m_item.i_id')
+          ->where('d_purchasing_dt.d_pcs_id', '=', $id)
+          // ->where('d_purchasing_dt.d_pcsdt_isconfirm', '=', "TRUE")
+          ->get();
+
                   ->select('d_purchasing_dt.*', 'm_item.i_name', 'm_item.i_code', 'm_item.i_sat1', 'm_item.i_id', 'm_satuan.m_sname', 'm_satuan.m_sid')
                   ->leftJoin('m_item','d_purchasing_dt.i_id','=','m_item.i_id')
                   ->leftJoin('m_satuan','d_purchasing_dt.d_pcsdt_sat','=','m_satuan.m_sid')
@@ -383,6 +390,18 @@ class ReturnPembelianController extends Controller
 
         //insert to d_stock_mutation
         DB::table('d_stock_mutation')->insert([
+          'sm_stock' => $dstock_id->s_id,
+          'sm_detailid' => $hasil_id,
+          'sm_date' => Carbon::now(),
+          'sm_comp' => $grup,
+          'sm_mutcat' => '12',
+          'sm_item' => $request->fieldItemId[$i],
+          'sm_qty' => $request->fieldQty[$i],
+          'sm_detail' => "PENGURANGAN",
+          'sm_hpp' => $this->konvertRp($request->fieldHargaTotal[$i]),
+          'sm_reff' => $request->kodeReturn,
+          'sm_insert' => Carbon::now(),
+
             'sm_stock' => $dstock_id->s_id,
             'sm_detailid' => $hasil_id,
             'sm_date' => Carbon::now(),
@@ -399,6 +418,7 @@ class ReturnPembelianController extends Controller
             'sm_hppnett' => $this->konvertRp($request->fieldHargaTotal[$i]),*/
             'sm_reff' => $request->kodeReturn,
             'sm_insert' => Carbon::now(),
+
         ]);
 
         //update d_stock_mutation qty_used (last qty + qty return) + insert
@@ -858,4 +878,3 @@ class ReturnPembelianController extends Controller
     return $data;
   }
 
-}

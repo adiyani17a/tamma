@@ -42,9 +42,19 @@
                 </div>
               </div>
 
-              <div class="col-md-4 col-sm-4 col-xs-12">
-                <label class="tebal">Qty Masuk</label>
+            <div class="col-md-2 col-sm-12 col-xs-12">
+              <label class="tebal">Pajak</label>
+            </div>
+
+            <div class="col-md-4 col-sm-12 col-xs-12">
+              <div class="form-group">
+                <input type="text" name="headTotalTax" id="head_total_tax" readonly="" class="form-control input-sm">
               </div>
+            </div>
+
+            <div class="col-md-2 col-sm-12 col-xs-12">
+              <label class="tebal">Total Pembelian Nett</label>
+            </div>
 
               <div class="col-md-8 col-sm-8 col-xs-12">
                 <div class="form-group">  

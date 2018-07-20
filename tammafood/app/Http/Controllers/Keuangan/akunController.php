@@ -141,11 +141,8 @@ class akunController extends Controller
     public function edit_akun(Request $request){
 
     	$akun = DB::table("d_akun")
-    			->join("d_akun_saldo", "d_akun_saldo.id_akun", "=", "d_akun.id_akun")
     			->where("d_akun.id_akun", $request->id)
-    			->where("d_akun_saldo.bulan", date("m"))
-    			->where("d_akun_saldo.tahun", date("Y"))
-    			->select("d_akun.*", "d_akun_saldo.saldo")->first();
+    			->select("d_akun.*")->first();
 
     	// return json_encode($akun);
 

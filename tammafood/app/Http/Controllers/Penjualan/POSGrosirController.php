@@ -296,6 +296,7 @@ class POSGrosirController extends Controller
               'sd_qty' => $request->sd_qty[$i],
               'sd_price' => ($this->konvertRp($request->harga_item[$i])),
               'sd_disc_percent' => $request->sd_disc_percent[$i],
+              'sd_disc_vpercent' => $request->totalValuePercent[$i],
               'sd_disc_value' => ($this->konvertRp($request->sd_disc_value[$i])),
               'sd_total' => ($this->konvertRp($request->hasil[$i]))
             ]); 
@@ -364,6 +365,7 @@ class POSGrosirController extends Controller
               'sd_price'=>($this->konvertRp($request->harga_item[$i])),
               'sd_total'=>($this->konvertRp($request->hasil[$i])),
               'sd_disc_percent'=>$request->sd_disc_percent[$i],
+              'sd_disc_vpercent' => $request->totalValuePercent[$i],
               'sd_disc_value'=> ($this->konvertRp($request->sd_disc_value[$i]))
 
           ]);
@@ -430,6 +432,7 @@ class POSGrosirController extends Controller
             'sd_qty' => $request->sd_qty[$i],
             'sd_price' => ($this->konvertRp($request->harga_item[$i])),
             'sd_disc_percent' => $request->sd_disc_percent[$i],
+            'sd_disc_vpercent' => $request->totalValuePercent[$i],
             'sd_disc_value' => ($this->konvertRp($request->sd_disc_value[$i])),
             'sd_total' => ($this->konvertRp($request->hasil[$i]))
         ]);
@@ -485,7 +488,18 @@ class POSGrosirController extends Controller
           
         ]);
 
-    for ($i=0; $i < count($request->kode_item); $i++) {
+            $d_sales_dt = d_sales_dt::insert([
+              'sd_sales' => $s_id,
+              'sd_detailid' => $i + 1,
+              'sd_item' => $kodeItem[$i],
+              'sd_qty' => $qtyItem[$i],
+              'sd_price' => ($this->konvertRp($request->harga_item[$i])),
+              'sd_disc_percent' => $request->sd_disc_percent[$i],
+              'sd_disc_vpercent' => $request->totalValuePercent[$i],
+              'sd_disc_value' => ($this->konvertRp($request->sd_disc_value[$i])),
+              'sd_total' => ($this->konvertRp($request->hasil[$i]))
+            ]);
+          
 
           if ($request->sd_sales[$i] == null ){ 
             
@@ -520,7 +534,7 @@ class POSGrosirController extends Controller
         ]);
           
           }
-      }
+      
      // }
    });
 
@@ -563,6 +577,7 @@ class POSGrosirController extends Controller
           'sd_qty' => $qtyItem[$i],
           'sd_price' => ($this->konvertRp($request->harga_item[$i])),
           'sd_disc_percent' => $request->sd_disc_percent[$i],
+          'sd_disc_vpercent' => $request->totalValuePercent[$i],
           'sd_disc_value' => ($this->konvertRp($request->sd_disc_value[$i])),
           'sd_total' => ($this->konvertRp($request->hasil[$i]))
         ]);
@@ -1055,13 +1070,15 @@ class POSGrosirController extends Controller
 
   public function print($id){
     $sales = d_sales::select( 'c_name',
-                              'c_address')
+                              'c_address',
+                              's_date',
+                              's_note')
       ->join('m_customer','c_id','=','s_customer')
       ->where('s_id',$id)
       ->first();
     // dd($sales);
 
-    $data = d_sales_dt::select( 'i_code',
+    $data_chunk = DB::table('d_sales_dt')->select( 'i_code',
                                 'i_name',
                                 'i_sat1',
                                 'sd_price',
@@ -1070,25 +1087,70 @@ class POSGrosirController extends Controller
                                 'sd_qty',
                                 'sd_disc_percent')
       ->join('m_item','i_id','=','sd_item')
-      ->where('sd_sales',$id)->get();
+      ->join('m_satuan','m_satuan.m_sid','=','i_sat1')
+      ->where('sd_sales',$id)->get()->toArray();
+
+      $data = array_chunk($data_chunk, 12);
+      // return $chunk;
+      // return $data;
 
       $dataTotal = d_sales_dt::select(DB::raw('SUM(sd_total) as total'))
       ->join('m_item','i_id','=','sd_item')
       ->where('sd_sales',$id)->get();
-    //print biasa  
-    // return view('penjualan.POSGrosir.print',compact('data','dataTotal','sales'));
-    //print kertas ncr
-      return view('penjualan.POSGrosir.print_faktur', compact('data', 'dataTotal', 'sales'));
-    // print kertas ncr
-    // return view('penjualan.POSGrosir.dist180.sample',compact('data','dataTotal','sales'));
+
+  
+      
+      return view('penjualan.POSgrosir.print_faktur', compact('data', 'dataTotal', 'sales'));
   }
 
   public function suratjalan(){
-    return view('penjualan.POSGrosir.suratjalan');
+    return view('penjualan.POSgrosir.suratjalan');
   }
 
   public function lpacking(){
-    return view('penjualan.POSGrosir.lpacking');
+    return view('penjualan.POSgrosir.lpacking');
+  }
+  public function print_surat_jalan($id){
+    $sales = d_sales::select( 'c_name',
+                              'c_address',
+                              's_date',
+                              's_note')
+      ->join('m_customer','c_id','=','s_customer')
+      ->where('s_id',$id)
+      ->first();
+    // dd($sales);
+
+    $data_chunk = DB::table('d_sales_dt')->select( 'i_code',
+                                'i_name',
+                                'm_sname',
+                                'sd_price',
+                                'sd_total',
+                                'sd_disc_value',
+                                'sd_qty',
+                                'sd_disc_percent')
+      ->join('m_item','i_id','=','sd_item')
+      ->join('m_satuan','m_satuan.m_sid','=','m_item.i_sat1')
+      ->where('sd_sales',$id)->get()->toArray();
+
+      $data = array_chunk($data_chunk, 12);
+
+      $dataTotal = d_sales_dt::select(DB::raw('SUM(sd_qty) as total'))
+      ->where('sd_sales',$id)->get();
+      
+
+      return view('penjualan.POSgrosir.print_surat_jalan', compact('data', 'dataTotal', 'sales'));
+  }
+
+  public function print_awas_barang_panas($id){
+    $sales = d_sales::select( 'c_name',
+                              'c_address',
+                              'c_hp')
+      ->join('m_customer','c_id','=','s_customer')
+      ->where('s_id',$id)
+      ->first();
+
+    
+      return view('penjualan.POSretail.print_awas_barang_panas', compact('sales'));
   }
 }
 
