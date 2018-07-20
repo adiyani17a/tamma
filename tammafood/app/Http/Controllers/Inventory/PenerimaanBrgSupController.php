@@ -33,10 +33,6 @@ class PenerimaanBrgSupController extends Controller
     }
 
 
-    public function getDataForm($id)
-
-    public function get_data_sj(Request $request)
-
     public function getDatatableIndex()
     {
         $data = d_terima_pembelian::join('d_purchasing','d_terima_pembelian.d_tb_pid','=','d_purchasing.d_pcs_id')
@@ -97,14 +93,6 @@ class PenerimaanBrgSupController extends Controller
                     ->get();
 
 
-        $dataIsi = DB::table('d_purchasing_dt')
-                  ->select('d_purchasing_dt.*', 'm_item.i_name', 'm_item.i_code', 'm_item.i_sat1', 'm_item.i_id', 'm_satuan.m_sname', 'm_satuan.m_sid')
-                  ->leftJoin('m_item','d_purchasing_dt.i_id','=','m_item.i_id')
-                  ->leftJoin('m_satuan','d_purchasing_dt.d_pcsdt_sat','=','m_satuan.m_sid')
-                  ->where('d_purchasing_dt.d_pcs_id', '=', $id)
-                  ->where('d_purchasing_dt.d_pcsdt_isreceived', '=', "FALSE")
-                  ->get();
-
             foreach ($do as $val) {
                 $formatted_tags[] = ['id' => $val->dod_do, 'text' => $val->do_nota];
             }
@@ -112,13 +100,6 @@ class PenerimaanBrgSupController extends Controller
         }
         else
         {
-
-            $do = d_delivery_orderdt::select('d_delivery_order.do_nota', 'd_delivery_orderdt.dod_do', 'd_delivery_orderdt.dod_detailid')
-                    ->join('d_delivery_order', 'd_delivery_orderdt.dod_do', '=', 'd_delivery_order.do_id')
-                    ->where('d_delivery_order.do_nota', 'LIKE', '%'.$term.'%')
-                    ->where('d_delivery_orderdt.dod_status', '=', 'WT')
-                    ->groupBy('d_delivery_orderdt.dod_do')
-                    ->get();
 
           $kd = "0001";
         }
@@ -271,6 +252,7 @@ class PenerimaanBrgSupController extends Controller
                 $query = DB::select(DB::raw("SELECT IFNULL( (SELECT s_qty FROM d_stock where s_item = '$val->i_id' AND s_comp = '7' AND s_position = '7' limit 1) ,'0') as qtyStok"));
                 $satUtama = DB::table('m_item')->join('m_satuan', 'm_item.i_sat1', '=', 'm_satuan.m_sid')->select('m_satuan.m_sname')->where('m_item.i_sat1', '=', $arrSatuan[$counter])->first();
 
+
         foreach ($dataIsi as $val) 
         {
           //cek item type
@@ -314,9 +296,6 @@ class PenerimaanBrgSupController extends Controller
             'data_satuan' => $dataStok['txt_satuan'],
         ]);
     }
-
-
-    public function getDatatableIndex()
 
 
     public function get_tabel_data($id)
@@ -764,6 +743,42 @@ class PenerimaanBrgSupController extends Controller
     }
 
     // ============================================================================================================== //
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     public function get_penerimaan_by_tgl($tgl1,$tgl2,$akses)
