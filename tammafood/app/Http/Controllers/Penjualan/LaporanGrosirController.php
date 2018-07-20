@@ -84,7 +84,7 @@ class LaporanGrosirController extends Controller
                 ->get()->toArray();
     // SUM
     $data_sum = DB::table('d_sales_dt')
-                ->select( (DB::raw('SUM(d_sales_dt.sd_total) as total_penjualan')), DB::raw('SUM(d_sales_dt.sd_qty) as total_qty'), DB::raw('SUM(d_sales_dt.sd_disc_value) as total_disc_val'), DB::raw('SUM(d_sales_dt.sd_disc_vpercent) as total_disc_per') )
+                ->select( (DB::raw('SUM(d_sales_dt.sd_total) as total_penjualan')), DB::raw('SUM(d_sales_dt.sd_qty) as total_qty'), DB::raw('SUM(d_sales_dt.sd_disc_value) as total_disc_val') )
                 ->join('d_sales','d_sales_dt.sd_sales','=','d_sales.s_id')
                 ->join('m_item','d_sales_dt.sd_item','=','m_item.i_id')
                 ->join('m_satuan','m_item.i_sat1','=','m_satuan.m_sid')
