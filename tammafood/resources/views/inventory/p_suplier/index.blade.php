@@ -30,8 +30,8 @@
              
           <ul id="generalTab" class="nav nav-tabs">
             <li class="active"><a href="#index-tab" data-toggle="tab">Daftar Penerimaan</a></li>
-            <li><a href="#wait-tab" data-toggle="tab" onclick="lihatHistorybyTgl()">Daftar Tunggu</a></li>
-            <li><a href="#finish-tab" data-toggle="tab" onclick="lihatHistorybyTgl()">Daftar Hasil Penerimaan</a></li>
+            <!-- <li><a href="#wait-tab" data-toggle="tab" onclick="lihatHistorybyTgl()">Daftar Tunggu</a></li> -->
+            <!-- <li><a href="#finish-tab" data-toggle="tab" onclick="lihatHistorybyTgl()">Daftar Hasil Penerimaan</a></li> -->
           </ul>
 
           <div id="generalTabContent" class="tab-content responsive">
@@ -49,6 +49,7 @@
   <!-- modal -->
     <!--modal Tambah Terima-->
     @include('inventory.p_suplier.modal')
+    @include('inventory.p_suplier.modal-detail')
   <!-- /modal -->
 </div>
 @endsection
@@ -152,7 +153,7 @@
                             +'<input type="hidden" value="'+data.data_isi[key-1].i_id+'" name="fieldItemId[]" class="form-control input-sm"/>'
                             +'<input type="hidden" value="'+data.data_isi[key-1].d_pcsdt_id+'" name="fieldIdPurchaseDet[]" class="form-control input-sm"/></td>'
                             +'<td><input type="text" value="'+qtyCost+'" name="fieldQty[]" class="form-control numberinput input-sm field_qty" readonly/></td>'
-                            +'<td><input type="text" value="'+qtyCost+'" name="fieldQtyterima[]" class="form-control numberinput input-sm field_qty_terima" id="'+i+'"/></td>'
+                            +'<td><input type="text" value="'+data.data_qty[key-1]+'" name="fieldQtyterima[]" class="form-control numberinput input-sm field_qty_terima" id="'+i+'"/></td>'
                             +'<td><input type="text" value="'+data.data_isi[key-1].m_sname+'" name="fieldSatuanTxt[]" class="form-control input-sm" readonly/>'
                             +'<input type="hidden" value="'+data.data_isi[key-1].m_sid+'" name="fieldSatuanId[]" class="form-control input-sm" readonly/></td>'
                             +'<td><input type="text" value="'+convertDecimalToRupiah(hargaSatuanItemNet)+'" name="fieldHarga[]" id="cost_'+i+'" class="form-control input-sm field_harga numberinput" readonly/>'
@@ -188,10 +189,10 @@
           {"data" : "tglBuat", "width" : "10%"},
           {"data" : "d_tb_code", "width" : "10%"},
           {"data" : "m_name", "width" : "10%"},
-          {"data" : "s_company", "width" : "15%"},
+          {"data" : "s_company", "width" : "20%"},
           {"data" : "d_pcs_code", "width" : "10%"},
           {"data" : "d_pcs_date_created", "width" : "10%"},
-          {"data" : "action", orderable: false, searchable: false, "width" : "13%"}
+          {"data" : "action", orderable: false, searchable: false, "width" : "10%"}
         ],
         "language": {
           "searchPlaceholder": "Cari Data",
@@ -222,6 +223,7 @@
     // fungsi jika modal hidden
     $(".modal").on("hidden.bs.modal", function(){
       $('tr').remove('.tbl_form_row');
+      $('tr').remove('.tbl_modal_detail_row');
       //reset all input txt field
       $('#form-terima-beli')[0].reset();
       //empty select2 field
@@ -293,153 +295,41 @@
     return text;
   }
 
-  function detailPlan(id) 
+  function detailPenerimaan(id) 
   {
     $.ajax({
-      url : baseUrl + "/purchasing/rencanapembelian/get-detail-plan/"+id+"/confirmed",
+      url : baseUrl + "/inventory/p_suplier/get-detail-penerimaan/" + id,
       type: "GET",
       dataType: "JSON",
       success: function(data)
       {
         var key = 1;
         //ambil data ke json->modal
-        $('#txt_span_status').text(data.spanTxt);
-        $("#txt_span_status").addClass('label'+' '+data.spanClass);
-        $('#lblCodePlan').text(data.header[0].d_pcsp_code);
-        $('#lblTglPlan').text(data.header[0].d_pcsp_datecreated);
-        $('#lblStaff').text(data.header[0].d_pcsp_staff);
+        $('#lblNotaPembelian').text(data.header[0].d_pcs_code);
+        $('#lblNotaPenerimaan').text(data.header[0].d_tb_code);
+        $('#lblTglPenerimaan').text(data.header2.tanggalTerima);
+        $('#lblStaff').text(data.header[0].m_name);
         $('#lblSupplier').text(data.header[0].s_company);
+        $('#lblTotalBeliGross').text(data.header2.hargaTotBeliGross);
+        $('#lblTotalBeliDisc').text(data.header2.hargaTotBeliDisc);
+        $('#lblTotalBeliTax').text(data.header2.hargaTotBeliTax);
+        $('#lblTotalBeliNett').text(data.header2.hargaTotBeliNett);
+        $('#lblTotalTerimaNett').text(data.header2.hargaTotalTerimaNett);
         //loop data
         Object.keys(data.data_isi).forEach(function(){
           $('#tabel-detail').append('<tr class="tbl_modal_detail_row">'
                           +'<td>'+key+'</td>'
                           +'<td>'+data.data_isi[key-1].i_code+' '+data.data_isi[key-1].i_name+'</td>'
+                          +'<td>'+data.data_isi[key-1].d_pcsdt_qtyconfirm+'</td>'
+                          +'<td>'+data.data_isi[key-1].d_tbdt_qty+'</td>'
                           +'<td>'+data.data_isi[key-1].m_sname+'</td>'
-                          +'<td>'+data.data_isi[key-1].d_pcspdt_qty+'</td>'
-                          +'<td>'+data.data_isi[key-1].d_pcspdt_qtyconfirm+'</td>'
+                          +'<td>'+convertDecimalToRupiah(data.data_isi[key-1].d_tbdt_price)+'</td>'
+                          +'<td>'+convertDecimalToRupiah(data.data_isi[key-1].d_tbdt_pricetotal)+'</td>'
                           +'<td>'+data.data_stok[key-1].qtyStok+' '+data.data_satuan[key-1]+'</td>'
                           +'</tr>');
           key++;
         });
-        $('#modal-detail').modal('show');
-      },
-      error: function (jqXHR, textStatus, errorThrown)
-      {
-          alert('Error get data from ajax');
-      }
-    });
-  }
-
-  function detailPlanAll(id) 
-  {
-    $.ajax({
-      url : baseUrl + "/purchasing/rencanapembelian/get-detail-plan/"+id+"/all",
-      type: "GET",
-      dataType: "JSON",
-      success: function(data)
-      {
-        var key = 1;
-        //ambil data ke json->modal
-        $('#txt_span_status').text(data.spanTxt);
-        $("#txt_span_status").addClass('label'+' '+data.spanClass);
-        $('#lblCodePlan').text(data.header[0].d_pcsp_code);
-        $('#lblTglPlan').text(data.header[0].d_pcsp_datecreated);
-        $('#lblStaff').text(data.header[0].d_pcsp_staff);
-        $('#lblSupplier').text(data.header[0].s_company);
-        //loop data
-        Object.keys(data.data_isi).forEach(function(){
-          $('#tabel-detail').append('<tr class="tbl_modal_detail_row">'
-                          +'<td>'+key+'</td>'
-                          +'<td>'+data.data_isi[key-1].i_code+' '+data.data_isi[key-1].i_name+'</td>'
-                          +'<td>'+data.data_isi[key-1].m_sname+'</td>'
-                          +'<td>'+data.data_isi[key-1].d_pcspdt_qty+'</td>'
-                          +'<td>'+data.data_isi[key-1].d_pcspdt_qtyconfirm+'</td>'
-                          +'<td>'+data.data_stok[key-1].qtyStok+' '+data.data_satuan[key-1]+'</td>'
-                          +'</tr>');
-          key++;
-        });
-        $('#modal-detail').modal('show');
-      },
-      error: function (jqXHR, textStatus, errorThrown)
-      {
-          alert('Error get data from ajax');
-      }
-    });
-  }
-
-  function editPlanAll(id) 
-  {
-    $.ajax({
-      url : baseUrl + "/purchasing/rencanapembelian/get-edit-plan/"+id+"/all",
-      type: "GET",
-      dataType: "JSON",
-      success: function(data)
-      {
-        var key = 1;
-        //ambil data ke json->modal
-        $('#txt_span_status_edit').text(data.spanTxt);
-        $("#txt_span_status_edit").addClass('label'+' '+data.spanClass);
-        $('#lblCodeEdit').text(data.header[0].d_pcsp_code);
-        $('#lblTglEdit').text(data.header[0].d_pcsp_datecreated);
-        $('#lblStaffEdit').text(data.header[0].d_pcsp_staff);
-        $('#lblSupplierEdit').text(data.header[0].s_company);
-        $('#id_plan').val(data.header[0].d_pcsp_id);
-        //loop data
-        Object.keys(data.data_isi).forEach(function(){
-          $('#tabel-edit').append('<tr class="tbl_modal_edit_row">'
-                          +'<td>'+key+'</td>'
-                          +'<td>'+data.data_isi[key-1].i_code+' '+data.data_isi[key-1].i_name+'</td>'
-                          +'<td>'+data.data_isi[key-1].m_sname
-                          +'<input type="hidden" value="'+data.data_isi[key-1].m_sid+'" name="fieldIdSat[]" class="form-control"/></td>'
-                          +'<td><input type="text" value="'+data.data_isi[key-1].d_pcspdt_qty+'" name="fieldQty[]" class="form-control numberinput input-sm"/>'
-                          +'<input type="hidden" value="'+data.data_isi[key-1].d_pcspdt_id+'" name="fieldIdDt[]" class="form-control"/></td>'
-                          +'<td>'+data.data_isi[key-1].d_pcspdt_qtyconfirm+'</td>'
-                          +'<td>'+convertDecimalToRupiah(data.data_isi[key-1].d_pcspdt_prevcost)+'</td>'
-                          +'<td>'+data.data_stok[key-1].qtyStok+' '+data.data_satuan[key-1]+'</td>'
-                          +'</tr>');
-          key++;
-        });
-        $('#modal-edit').modal('show');
-      },
-      error: function (jqXHR, textStatus, errorThrown)
-      {
-          alert('Error get data from ajax');
-      }
-    });
-  }
-
-  function editPlan(id) 
-  {
-    $.ajax({
-      url : baseUrl + "/purchasing/rencanapembelian/get-edit-plan/"+id+"/confirmed",
-      type: "GET",
-      dataType: "JSON",
-      success: function(data)
-      {
-        var key = 1;
-        //ambil data ke json->modal
-        $('#txt_span_status_edit').text(data.spanTxt);
-        $("#txt_span_status_edit").addClass('label'+' '+data.spanClass);
-        $('#lblCodeEdit').text(data.header[0].d_pcsp_code);
-        $('#lblTglEdit').text(data.header[0].d_pcsp_datecreated);
-        $('#lblStaffEdit').text(data.header[0].d_pcsp_staff);
-        $('#lblSupplierEdit').text(data.header[0].s_company);
-        //loop data
-        Object.keys(data.data_isi).forEach(function(){
-          $('#tabel-edit').append('<tr class="tbl_modal_edit_row">'
-                          +'<td>'+key+'</td>'
-                          +'<td>'+data.data_isi[key-1].i_code+' '+data.data_isi[key-1].i_name+'</td>'
-                          +'<td>'+data.data_isi[key-1].m_sname
-                          +'<input type="hidden" value="'+data.data_isi[key-1].m_sid+'" name="fieldIdSat[]" class="form-control"/></td>'
-                          +'<td><input type="text" value="'+data.data_isi[key-1].d_pcspdt_qty+'" name="fieldQty[]" class="form-control numberinput input-sm"/>'
-                          +'<input type="hidden" value="'+data.data_isi[key-1].d_pcspdt_id+'" name="fieldIdDt[]" class="form-control"/></td>'
-                          +'<td>'+data.data_isi[key-1].d_pcspdt_qtyconfirm+'</td>'
-                          +'<td>'+convertDecimalToRupiah(data.data_isi[key-1].d_pcspdt_prevcost)+'</td>'
-                          +'<td>'+data.data_stok[key-1].qtyStok+' '+data.data_satuan[key-1]+'</td>'
-                          +'</tr>');
-          key++;
-        });
-        $('#modal-edit').modal('show');
+        $('#modal_detail').modal('show');
       },
       error: function (jqXHR, textStatus, errorThrown)
       {
@@ -464,7 +354,7 @@
               if(response.status == "sukses")
               {
                   alert(response.pesan);
-                  $('#btn_simpan').text('Saving...'); //change button text
+                  $('#btn_simpan').text('Submit'); //change button text
                   $('#btn_simpan').attr('disabled',false); //set button enable
                   $('#modal_terima_beli').modal('hide');
                   $('#tbl-daftar').DataTable().ajax.reload();
@@ -472,7 +362,7 @@
               else
               {
                   alert(response.pesan);
-                  $('#btn_simpan').text('Saving...'); //change button text
+                  $('#btn_simpan').text('Submit'); //change button text
                   $('#btn_simpan').attr('disabled',false); //set button enable
                   $('#modal_terima_beli').modal('hide');
                   $('#tbl-daftar').DataTable().ajax.reload();
@@ -486,33 +376,33 @@
     }
   }
 
-  function deletePlan(idPlan) 
+  function deletePenerimaan(id) 
   {
     if(confirm('Yakin hapus data ?'))
     {
-        $.ajax({
-            url : baseUrl + "/purchasing/rencanapembelian/delete-data-plan",
-            type: "POST",
-            dataType: "JSON",
-            data: {idPlan:idPlan, "_token": "{{ csrf_token() }}"},
-            success: function(response)
+      $.ajax({
+          url : baseUrl + "/inventory/p_suplier/delete-data-penerimaan",
+          type: "POST",
+          dataType: "JSON",
+          data: {id:id, "_token": "{{ csrf_token() }}"},
+          success: function(response)
+          {
+            if(response.status == "sukses")
             {
-                if(response.status == "sukses")
-                {
-                    alert(response.pesan);
-                    $('#tbl-daftar').DataTable().ajax.reload();
-                }
-                else
-                {
-                    alert(response.pesan);
-                    $('#tbl-daftar').DataTable().ajax.reload();
-                }
-            },
-            error: function (jqXHR, textStatus, errorThrown)
-            {
-                alert('Error updating data');
+              alert(response.pesan);
+              $('#tbl-daftar').DataTable().ajax.reload();
             }
-        });
+            else
+            {
+              alert(response.pesan);
+              $('#tbl-daftar').DataTable().ajax.reload();
+            }
+          },
+          error: function (jqXHR, textStatus, errorThrown)
+          {
+              alert('Error updating data');
+          }
+      });
     }
   }
 
