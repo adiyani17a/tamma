@@ -23,9 +23,10 @@ class MasterFormulaController extends Controller
     $data = d_formula_result::select( 'i_code',
                                 'i_name',
                                 'fr_result',
-                                'fr_scale',
+                                'm_sname',
                                 'fr_id')
                 ->join('m_item','i_id','=','fr_adonan')
+                ->join('m_satuan','m_sid','=','fr_scale')
                 ->get();
                 // dd($data);
     return DataTables::of($data)
@@ -81,6 +82,7 @@ class MasterFormulaController extends Controller
     $results = array();
     
     $queries = m_item::where('m_item.i_name', 'LIKE', '%'.$term.'%')
+      ->join('m_satuan','m_sid','=','i_sat1')
       ->where('i_type','BB')
       ->take(50)->get();
     
@@ -92,7 +94,7 @@ class MasterFormulaController extends Controller
         $results[] = [  'id' => $query->i_id, 
                         'label' => $query->i_code .' - '.$query->i_name,
                         'name' => $query->i_name,
-                        'satuan' =>[$query->i_sat1, $query->i_sat2, $query->i_sat3],
+                        'satuan' =>[$query->m_sname, $query->m_sname, $query->m_sname],
                         'i_code' => $query->i_code ];
       }
     } 
@@ -106,6 +108,7 @@ class MasterFormulaController extends Controller
     $results = array();
     
     $queries = m_item::where('m_item.i_name', 'LIKE', '%'.$term.'%')
+      ->join('m_satuan','m_sid','=','i_sat1')
       ->where('i_type','BP')
       ->take(50)->get();
     
@@ -117,7 +120,7 @@ class MasterFormulaController extends Controller
         $results[] = [  'id' => $query->i_id, 
                         'label' => $query->i_code .' - '.$query->i_name,
                         'name' => $query->i_name,
-                        'satuan' =>[$query->i_sat1, $query->i_sat2, $query->i_sat3] ];
+                        'satuan' =>[$query->m_sname, $query->m_sname, $query->m_sname] ];
       }
     } 
 

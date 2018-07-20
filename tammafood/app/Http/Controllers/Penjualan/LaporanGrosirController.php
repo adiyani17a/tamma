@@ -38,6 +38,7 @@ class LaporanGrosirController extends Controller
                 ->join('m_satuan','m_item.i_sat1','=','m_satuan.m_sid')
                 ->join('m_customer','d_sales.s_customer','=','m_customer.c_id')
                 ->where('d_sales.s_channel', '=', "GR")
+                ->where('s_status','!=','DR')
                 ->whereBetween('d_sales.s_date', [$tanggal1, $tanggal2])
                 ->orderBy('d_sales_dt.sd_item', 'DESC')
                 ->get();
@@ -50,13 +51,26 @@ class LaporanGrosirController extends Controller
     ]);*/
 
     return DataTables::of($data)
-    ->editColumn('nama', function ($data)
-    {
+    ->editColumn('nama', function ($data){
        return $data->i_code.' - '.$data->i_name;
     })
-    ->editColumn('kurs', function ($data)
-    {
+    ->editColumn('s_date', function ($data){
+       return date('d M Y', strtotime($data->s_date));
+    })
+    ->addColumn('j_tempo', function($data){
+        return ''; 
+    })
+    ->editColumn('kurs', function ($data){
        return '1';
+    })
+    ->editColumn('sd_price', function ($data){
+       return number_format($data->sd_price,2,',','.');
+    })
+    ->editColumn('sd_disc_value', function ($data){
+       return number_format($data->sd_disc_value,2,',','.');
+    })
+    ->editColumn('sd_total', function ($data){
+       return number_format($data->sd_total,2,',','.');
     })
     ->make(true);
   }
@@ -78,30 +92,30 @@ class LaporanGrosirController extends Controller
                 ->join('m_item','d_sales_dt.sd_item','=','m_item.i_id')
                 ->join('m_satuan','m_item.i_sat1','=','m_satuan.m_sid')
                 ->join('m_customer','d_sales.s_customer','=','m_customer.c_id')
-                ->where('d_sales.s_channel', '=', "GR")->where('d_sales.s_status', '=', 'FN')
+                ->where('d_sales.s_channel', '=', "GR")
                 ->whereBetween('d_sales.s_date', [$tanggal1, $tanggal2])
                 ->orderBy('m_item.i_name' ,'DESC')
                 ->get()->toArray();
     // SUM
     $data_sum = DB::table('d_sales_dt')
-                ->select( (DB::raw('SUM(d_sales_dt.sd_total) as total_penjualan')), DB::raw('SUM(d_sales_dt.sd_qty) as total_qty'), DB::raw('SUM(d_sales_dt.sd_disc_value) as total_disc_val') )
+                ->select( (DB::raw('SUM(d_sales_dt.sd_total) as total_penjualan')), DB::raw('SUM(d_sales_dt.sd_qty) as total_qty'),DB::raw('SUM(d_sales_dt.sd_disc_vpercent) as sd_disc_vpercent'),DB::raw('SUM(d_sales_dt.sd_disc_value) as sd_disc_value') )
                 ->join('d_sales','d_sales_dt.sd_sales','=','d_sales.s_id')
                 ->join('m_item','d_sales_dt.sd_item','=','m_item.i_id')
                 ->join('m_satuan','m_item.i_sat1','=','m_satuan.m_sid')
                 ->join('m_customer','d_sales.s_customer','=','m_customer.c_id')
-                ->where('d_sales.s_channel', '=', "GR")->where('d_sales.s_status', '=', 'FN')
+                ->where('d_sales.s_channel', '=', "GR")
                 ->whereBetween('d_sales.s_date', [$tanggal1, $tanggal2])
                 ->orderBy('m_item.i_name' ,'DESC')
                 ->groupBy('m_item.i_name')
                 ->get()->toArray();
 
     $data_sum_all = DB::table('d_sales_dt')
-                ->select( (DB::raw('SUM(d_sales_dt.sd_total) as total_semua_penjualan')),(DB::raw('SUM(d_sales_dt.sd_disc_vpercent) as total_semua_vdisc_penjualan')),(DB::raw('SUM(d_sales_dt.sd_disc_value) as total_semua_disc_val_penjualan')) )
+                ->select( (DB::raw('SUM(d_sales_dt.sd_total) as total_semua_penjualan')),DB::raw('SUM(d_sales_dt.sd_disc_vpercent) as allsd_disc_vpercent'), DB::raw('SUM(d_sales_dt.sd_disc_value) as allsd_disc_value') )
                 ->join('d_sales','d_sales_dt.sd_sales','=','d_sales.s_id')
                 ->join('m_item','d_sales_dt.sd_item','=','m_item.i_id')
                 ->join('m_satuan','m_item.i_sat1','=','m_satuan.m_sid')
                 ->join('m_customer','d_sales.s_customer','=','m_customer.c_id')
-                ->where('d_sales.s_channel', '=', "GR")->where('d_sales.s_status', '=', 'FN')
+                ->where('d_sales.s_channel', '=', "GR")
                 ->whereBetween('d_sales.s_date', [$tanggal1, $tanggal2])
                 ->orderBy('m_item.i_name' ,'DESC')
                 ->get()->toArray();

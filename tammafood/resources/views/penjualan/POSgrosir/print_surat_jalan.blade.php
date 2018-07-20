@@ -164,14 +164,14 @@
 				<td colspan="3" class="border-none-right">Koli :</td>
 				
 				<td class="border-none-right border-none-left">Jumlah</td>
-				<td class="border-none-left text-right">1,600,000.00</td>
+				<td class="border-none-left text-right">{{ number_format($dataTotal[0]->total,2,'.',',')}}</td>
 			</tr>
 			<tr>
-				<td colspan="5" class="vertical-baseline border-none-right" style="position: relative;">
+				<td colspan="3" class="vertical-baseline border-none-right" style="position: relative;">
 					
 					<div class="float-left" style="width: 40vw;">
 						<ul style="padding-left: -15px;">
-							<li>Barang yang sudah dibeli tidak bisa dikemblikan lagi kecuali ada perjanjian</li>
+							<li>Barang yang sudah dibeli tidak bisa dikembalikan lagi kecuali ada perjanjian</li>
 							<li>Keterlambatan, kehilangan atau kerusakan barang selama pengiriman tidak menjadi tanggung jawab kami.</li>
 							<li>Klaim dilayani 1x24 jam setelah barang diterima</li>
 						</ul>

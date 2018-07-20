@@ -211,7 +211,7 @@
     {data: 'i_name', name: 'i_name'},
     {data: 'formula', name: 'formula', orderable: false},
     {data: 'fr_result', name: 'fr_result'},
-    {data: 'fr_scale', name: 'fr_scale'},
+    {data: 'm_sname', name: 'm_sname'},
     {data: 'action', name: 'action', orderable: false, searchable: false},
     ],
   });
